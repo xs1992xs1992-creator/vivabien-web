@@ -7,6 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '882086747967886');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=882086747967886&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <style>
 :root{
   --color-deep:#1B3A4B;
@@ -821,6 +840,14 @@ function addToCart(){
   renderCart();
   showToast();
   triggerFabBounce();
+
+  fbq('track', 'AddToCart', {
+    content_ids: [PRODUCT.id],
+    content_type: 'product',
+    content_name: PRODUCT.name,
+    value: PRODUCT.price * qty,
+    currency: 'DOP'
+  });
 }
 
 function removeItem(id){
@@ -908,6 +935,14 @@ function goToStep2(){
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');
   document.getElementById('cartTitle').textContent = 'Datos de entrega';
+
+  fbq('track', 'InitiateCheckout', {
+    content_ids: cart.map(i => i.id),
+    content_type: 'product',
+    value: getCartTotal(),
+    currency: 'DOP',
+    num_items: getCartCount()
+  });
 }
 function backToStep1(){
   document.getElementById('step2').classList.remove('active');
@@ -967,6 +1002,11 @@ function updateMessagePreview(){
 }
 
 function sendOrder(){
+  fbq('track', 'Contact', {
+    value: getCartTotal(),
+    currency: 'DOP'
+  });
+
   const message = buildWhatsAppMessage();
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
