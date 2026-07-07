@@ -10,7 +10,7 @@ import csv, os, re, html, shutil, unicodedata
 # ============ 配置区（只需要改这里）============
 WHATSAPP   = "18092811992"          # ← 改成你的 WhatsApp 号码（国家码+号码，不带+号）
 PIXEL_ID   = "882086747967886"      # Meta Pixel
-SITE_NAME  = "Caoba"                # 品牌名（设计稿用的 Caoba，想用 VivaBien 就改这里）
+SITE_NAME  = "VivaBien"             # 品牌名
 SITE_URL   = "https://vivabien.xyz" # 你的域名
 CSV_PATH   = "data/products.csv"
 IMG_DIR    = "images"               # 商品图片文件夹（VBxxxx.jpg 都放这里）
@@ -31,22 +31,19 @@ CAT_ICONS = {
 DEFAULT_ICON = "🛍️"
 
 def parse_row(r):
-    """兼容表格里 14 字段和 16 字段两种行结构"""
-    if len(r) == 16:
-        return dict(handle=r[0], title=r[1], body=r[2], type=r[4],
-                    published=r[6], sku=r[7], price=r[8], img=r[10])
-    if len(r) == 14:
-        return dict(handle=r[0], title=r[1], body=r[2], type=r[4],
-                    published=r[5], sku=r[6], price=r[7], img=r[9])
-    return None
+    """按列名读取（DictReader 行），不再依赖列的位置和数量"""
+    return dict(handle=r.get("Handle", ""), title=r.get("Title", ""),
+                body=r.get("Body (HTML)", ""), type=r.get("Type", ""),
+                published=r.get("Published", ""), sku=r.get("Variant SKU", ""),
+                price=r.get("Variant Price", ""), img=r.get("Image Src", ""))
 
 def load_products():
     with open(CSV_PATH, encoding="utf-8-sig") as f:
-        rows = list(csv.reader(f))
+        rows = list(csv.DictReader(f))
     seen, products = set(), []
-    for r in rows[1:]:
+    for r in rows:
         p = parse_row(r)
-        if not p or not p["title"].strip() or not p["handle"].strip():
+        if not p["title"].strip() or not p["handle"].strip():
             continue
         if p["handle"] in seen:              # 去重
             continue

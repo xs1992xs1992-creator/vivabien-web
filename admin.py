@@ -15,8 +15,9 @@ PORT     = 8765
 CSV_PATH = "data/products.csv"
 IMG_DIR  = "images"
 
-# ---------- CSV 读写（兼容 14/16 字段行） ----------
-IDX = {16: dict(handle=0, title=1, body=2, type=4, published=6, sku=7, price=8, img=10),
+# ---------- CSV 读写（兼容 14/16/17 字段行） ----------
+IDX = {17: dict(handle=0, title=1, body=2, type=4, published=6, sku=7, price=8, img=10),
+       16: dict(handle=0, title=1, body=2, type=4, published=6, sku=7, price=8, img=10),
        14: dict(handle=0, title=1, body=2, type=4, published=5, sku=6, price=7, img=9)}
 
 def load_rows():
