@@ -255,7 +255,10 @@ button{font-family:inherit}
 @media(min-width:760px){.dt{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:26px 18px 40px;align-items:start}}
 .dt .pic{background:#F0F3F8}
 @media(min-width:760px){.dt .pic{border-radius:22px;overflow:hidden;position:sticky;top:80px}}
-.dt .pic img{width:100%;aspect-ratio:1;object-fit:cover}
+.dt .pic img.main{width:100%;aspect-ratio:1;object-fit:cover}
+.thumbs{display:flex;gap:8px;padding:10px;background:#fff}
+.thumbs img{width:58px;height:58px;border-radius:12px;object-fit:cover;border:2px solid transparent;cursor:pointer;background:#F0F3F8}
+.thumbs img.on{border-color:#2563D9}
 .panel{background:#fff;border-radius:24px 24px 0 0;margin-top:-22px;position:relative;padding:22px 20px 16px}
 @media(min-width:760px){.panel{border-radius:22px;margin-top:0;border:1px solid #EDF1F7}}
 .panel h1{font-weight:800;font-size:21px;line-height:1.25;margin-bottom:12px;letter-spacing:-.02em}
@@ -542,6 +545,19 @@ document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
 
     # ---- 详情页 ----
     for p in products:
+        # 多图画廊：主图 + 场景图/尺寸图/补充图（按文件是否存在）
+        gal = [p["img"]] if p["img"] else []
+        stem = p["img"][:-4] if p["img"].lower().endswith(".jpg") else p["img"]
+        extra = [f"{stem}_scene.jpg", f"{stem}_dim.jpg"] + [f"{stem}_{i}.jpg" for i in range(2, 10)]
+        gal += [f for f in extra if os.path.isfile(os.path.join(IMG_DIR, f))]
+        main_img = f'<img class="main" id="mainImg" src="../images/{esc(gal[0] if gal else "")}" alt="{esc(p["title"])}" onerror="this.style.opacity=0">'
+        thumbs = ""
+        if len(gal) > 1:
+            thumbs = '<div class="thumbs">' + "".join(
+                f'<img src="../images/{esc(g)}" class="{"on" if i==0 else ""}" '
+                f'onclick="document.getElementById(\'mainImg\').src=this.src;'
+                f'this.parentElement.querySelectorAll(\'img\').forEach(t=>t.classList.remove(\'on\'));'
+                f'this.classList.add(\'on\')">' for i, g in enumerate(gal)) + '</div>'
         price_html = (f'<div class="price">{fmt_price(p["price"])}</div>' if p["price"] is not None
                       else '<div class="price ask">Consultar precio por WhatsApp</div>')
         desc_html = body_html(p["body"]) if len(p["body"].strip()) > 10 else esc(p["title"])
@@ -574,7 +590,7 @@ function addCart(b){
         detail = f"""{header("../")}
 <div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['group'])} / {esc(p['sub'])}</div>
 <div class="dt">
-<div class="pic"><img src="../images/{esc(p['img'])}" alt="{esc(p['title'])}" onerror="this.style.opacity=0"></div>
+<div class="pic">{main_img}{thumbs}</div>
 <div>
 <div class="panel">
 <h1>{esc(p['title'])}</h1>
