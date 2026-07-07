@@ -5,6 +5,9 @@ dist/
 images/*_original*
 images/*_price_crop*
 
+# 后台登录密码 — 绝不上传
+admin_password.txt
+
 # 系统/缓存
 .DS_Store
 __pycache__/

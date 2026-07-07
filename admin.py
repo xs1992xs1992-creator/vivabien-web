@@ -9,6 +9,7 @@ VivaBien 本地商品管理后台
 数据直接读写 data/products.csv，与 build.py 共用同一数据源
 """
 import csv, os, io, re, sys, json, html, uuid, shutil, subprocess, threading, webbrowser
+import hmac, hashlib, secrets, time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from urllib.parse import parse_qs, unquote
@@ -16,6 +17,56 @@ from urllib.parse import parse_qs, unquote
 PORT     = 8765
 CSV_PATH = "data/products.csv"
 IMG_DIR  = "images"
+
+# ---------- 登录密码 ----------
+# 密码存在 admin_password.txt（已加入 .gitignore，不会上传）。
+# 想换密码：直接编辑那个文件，重启 admin.py，所有已登录设备都要重新登录。
+PW_FILE = "admin_password.txt"
+def _load_password():
+    if os.path.isfile(PW_FILE):
+        pw = open(PW_FILE, encoding="utf-8").read().strip()
+        if pw: return pw
+    pw = secrets.token_urlsafe(9)
+    with open(PW_FILE, "w", encoding="utf-8") as f:
+        f.write(pw + "\n")
+    return pw
+PASSWORD = _load_password()
+_TOKEN = hmac.new(PASSWORD.encode(), b"vivabien-admin-session-v1", hashlib.sha256).hexdigest()
+_fails = []  # 失败时间戳，防爆破
+
+def check_cookie(headers):
+    c = headers.get("Cookie", "")
+    m = re.search(r"vbadmin=([0-9a-f]{64})", c)
+    return bool(m and hmac.compare_digest(m.group(1), _TOKEN))
+
+def try_login(pw):
+    now = time.time()
+    recent = [t for t in _fails if now - t < 300]
+    _fails[:] = recent
+    if len(recent) >= 10:
+        return None  # 5分钟内错10次，锁定
+    if hmac.compare_digest(pw.strip(), PASSWORD):
+        return _TOKEN
+    _fails.append(now)
+    time.sleep(1)
+    return False
+
+LOGIN_HTML = """<!DOCTYPE html><html lang="zh"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VivaBien 后台登录</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.box{background:#fff;border:1px solid #EDF1F7;border-radius:20px;padding:34px 28px;width:min(360px,92vw);text-align:center;box-shadow:0 10px 40px rgba(20,40,80,.08)}
+.box h2{font-size:19px;margin-bottom:6px}.box p{font-size:13px;color:#8a93a2;margin-bottom:18px}
+input{width:100%;border:1.5px solid #E5EAF2;border-radius:12px;padding:13px;font-size:15px;margin-bottom:12px;text-align:center}
+button{width:100%;background:#2563D9;color:#fff;border:0;border-radius:12px;padding:13px;font-weight:700;font-size:15px;cursor:pointer}
+.err{color:#c0392b;font-size:13px;margin-bottom:10px;font-weight:600}</style></head><body>
+<form class="box" method="POST" action="/login">
+<h2>🛠️ VivaBien 商品管理</h2><p>请输入后台密码</p>
+__ERR__
+<input type="password" name="pw" autofocus autocomplete="current-password">
+<button>登录</button>
+</form></body></html>"""
 
 # ---------- CSV 读写（兼容 14/16/17 字段行） ----------
 IDX = {17: dict(handle=0, title=1, body=2, type=4, published=6, sku=7, price=8, img=10),
@@ -392,6 +443,8 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         p = unquote(self.path.split("?")[0])
         qs = parse_qs(self.path.partition("?")[2])
+        if not check_cookie(self.headers):
+            return self.send(200, LOGIN_HTML.replace("__ERR__", ""))
         if p == "/":
             return self.send(200, page_html())
         if p == "/body":
@@ -418,6 +471,23 @@ class H(BaseHTTPRequestHandler):
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length)
         p = self.path
+        if p == "/login":
+            q = parse_qs(body.decode("utf-8"))
+            r = try_login(q.get("pw", [""])[0])
+            if r is None:
+                return self.send(200, LOGIN_HTML.replace("__ERR__", '<div class="err">尝试次数过多，请 5 分钟后再试</div>'))
+            if not r:
+                return self.send(200, LOGIN_HTML.replace("__ERR__", '<div class="err">密码不对</div>'))
+            data = "已登录，跳转中…<script>location.href='/'</script>".encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Set-Cookie", f"vbadmin={r}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+            return
+        if not check_cookie(self.headers):
+            return self.send(403, "请先登录")
         try:
             if p == "/update":
                 q = parse_qs(body.decode("utf-8"))
