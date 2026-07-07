@@ -1,37 +1,149 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Caoba / VivaBien 静态站构建脚本
-读取 data/products.csv → 生成 dist/ 整站（首页 + 每个商品详情页）
+VivaBien 静态站构建脚本
+读取 data/products.csv → 生成 dist/ 整站（首页 + 商品详情页 + 购物车结算页）
 用法: python3 build.py
 """
 import csv, os, re, html, shutil, unicodedata
 
 # ============ 配置区（只需要改这里）============
-WHATSAPP   = "18092811992"          # ← 改成你的 WhatsApp 号码（国家码+号码，不带+号）
+WHATSAPP   = "18092811992"          # WhatsApp 号码（国家码+号码，不带+号）
 PIXEL_ID   = "882086747967886"      # Meta Pixel
 SITE_NAME  = "VivaBien"             # 品牌名
 SITE_URL   = "https://vivabien.xyz" # 你的域名
 CSV_PATH   = "data/products.csv"
 IMG_DIR    = "images"               # 商品图片文件夹（VBxxxx.jpg 都放这里）
 OUT_DIR    = "dist"
+
+# 银行转账收款账户（结算页展示）
+BANKS = [
+    ("Banco Popular", "820011674",   "Corner Store"),
+    ("Banco BHD",     "39058710013", "Wenwen Shi"),
+    ("Banreservas",   "9607180504",  "Weixiong Chen"),
+]
 # ===============================================
 
-# 分类 → 图标(emoji) 映射，新分类会自动用默认图标
-CAT_ICONS = {
-    "Electrónicos y Tecnología": "📱",
-    "Cocina y Hogar": "🍳",
-    "Belleza y Cuidado Personal": "✨",
-    "Bebés y Maternidad": "🍼",
-    "Decoración del Hogar": "🛋️",
-    "Herramientas y Ferretería": "🔧",
-    "Baño y Sanitarios": "🚿",
-    "Papelería y Oficina": "✏️",
+# ---------- 多级分类：大组 ----------
+GROUPS = {
+    "Belleza y Cuidado Personal": "Belleza",
+    "Cocina y Hogar":             "Hogar y Cocina",
+    "Decoración del Hogar":       "Hogar y Cocina",
+    "Baño y Sanitarios":          "Hogar y Cocina",
+    "Electrónicos y Tecnología":  "Electrónica",
+    "Herramientas y Ferretería":  "Herramientas",
+    "Bebés y Maternidad":         "Bebés y Niños",
+    "Juguetes y Juegos":          "Bebés y Niños",
+    "Papelería y Oficina":        "Más categorías",
+    "Artículos para Adultos":     "Más categorías",
+    "Otros":                      "Más categorías",
 }
-DEFAULT_ICON = "🛍️"
+GROUP_ORDER = ["Belleza", "Hogar y Cocina", "Herramientas",
+               "Electrónica", "Bebés y Niños", "Más categorías"]
+GROUP_ICONS = {"Belleza": "✨", "Hogar y Cocina": "🏠", "Herramientas": "🔧",
+               "Electrónica": "📱", "Bebés y Niños": "🍼", "Más categorías": "🛍️"}
+
+# ---------- 多级分类：子分类关键词规则（按标题匹配，顺序优先） ----------
+SUBRULES = {
+    "Belleza": [
+        ("Pestañas y Cejas",      ['pestañ', 'ceja']),
+        ("Uñas",                  ['uña', 'manicura', 'esmalte', 'nail', 'acrilic', 'sticker', 'calcomania']),
+        ("Cuidado de Pies",       ['pies', 'pomez', 'callo', 'pedicur', 'talon']),
+        ("Cabello",               ['cabello', 'pelo', 'peluca', 'rizador', 'trenza', 'peine',
+                                   'diadema', 'moño', 'turbante', 'secador', 'lazo', 'scrunchie']),
+        ("Maquillaje",            ['maquillaje', 'labial', 'brocha', 'sombra', 'delineador', 'paleta',
+                                   'rubor', 'corrector', 'cosmetiquera', 'gloss', 'esponja de maquillaje']),
+        ("Cuidado de la Piel",    ['mascarilla', 'facial', 'crema', 'serum', 'colageno',
+                                   'exfoliante', 'limpiador', 'acne', 'hidratante', 'protector solar', 'parche']),
+        ("Perfumes",              ['perfume', 'colonia', 'fragancia', 'aromatic', 'spray aromatico']),
+        ("Higiene Personal",      ['diente', 'dental', 'jabon', 'desodorante', 'afeita', 'rasurad', 'rastrillo',
+                                   'depila', 'cera', 'hisopo', 'algodon', 'toallitas', 'oido', 'cortauña',
+                                   'masaje', 'talco', 'alcohol', 'antibacterial', 'antimicrobiano', 'depresor']),
+    ],
+    "Hogar y Cocina": [
+        ("Cocina",                ['cocina', 'olla', 'sarten', 'cuchillo', 'tabla de picar', 'rallador',
+                                   'colador', 'exprimidor', 'abrelatas', 'molde', 'batidor', 'espatula',
+                                   'taza', 'vaso', 'plato', 'cubierto', 'cuchara', 'tenedor', 'termo',
+                                   'botella', 'jarra', 'picador', 'pelador', 'recipiente', 'hermetico',
+                                   'dispensador', 'especias', 'huevo']),
+        ("Electrodomésticos",     ['waflera', 'waffle', 'sanduchera', 'sandwich', 'freidora', 'estufa',
+                                   'hornilla', 'parrilla', 'calentador', 'humidificador', 'cafetera',
+                                   'licuadora', 'hervidor', 'maquina de', 'maquina para', 'donut', 'dona',
+                                   'barquillo', 'electrica', 'electrico', 'bomba de agua']),
+        ("Baño",                  ['baño', 'ducha', 'jabonera', 'inodoro', 'toalla', 'banera',
+                                   'destapador', 'papel higienico', 'desague', 'trampa']),
+        ("Organización",          ['organizador', 'estante', 'repisa', 'gancho', 'colgador', 'cesta',
+                                   'perchero', 'zapatero', 'armario', 'closet', 'almacenamiento', 'caja']),
+        ("Limpieza",              ['trapeador', 'escoba', 'limpieza', 'limpiador', 'guante',
+                                   'zafacon', 'basura', 'plumero', 'cepillo', 'abrillantador']),
+        ("Textiles",              ['sabana', 'almohada', 'cobija', 'manta', 'edredon', 'cojin', 'funda',
+                                   'mosquitero', 'tul', 'pabellon']),
+        ("Decoración",            ['espejo', 'cuadro', 'florero', 'planta', 'vela', 'adorno', 'tapete',
+                                   'alfombra', 'cortina', 'reloj de pared', 'decorativ', 'decoracion', 'luces',
+                                   'guirnalda', 'marco', 'jarron', 'lampara', 'portalampara', 'difusor',
+                                   'aceite esencial', 'esencia', 'ambientador', 'aromatic', 'bandeja', 'charola',
+                                   'numero', 'letra', 'letrero', 'sticker', 'autoadhesiv', 'adhesiv', 'madera']),
+    ],
+    "Herramientas": [
+        ("Herramientas Eléctricas", ['taladro', 'pulidora', 'amoladora', 'soldador', 'soldadura',
+                                     'pistola de calor', 'esmeril', 'rotomartillo', 'sierra electrica',
+                                     'bomba de agua', 'motobomba', 'tester', 'probador']),
+        ("Plomería y Grifería",     ['grifo', 'manguera', 'llave de agua', 'llave de fregadero',
+                                     'llave de cocina', 'valvula', 'tuberia', 'conector', 'rociador',
+                                     'regadera', 'filtro de agua', 'fregadero']),
+        ("Electricidad",            ['regleta', 'extension', 'enchufe', 'interruptor', 'cable', 'bombillo',
+                                     'foco', 'voltaje', 'toma corriente', 'tomacorriente', 'switch', 'socket',
+                                     'portalampara', 'conexiones electricas', 'linterna']),
+        ("Tornillos y Herrajes",    ['tornillo', 'screw', 'perno', 'varilla roscada', 'arandela', 'clavo',
+                                     'abrazadera', 'tirrap', 'zip tie', 'tiras plasticas', 'bisagra', 'gozne',
+                                     'charnela', 'gancho', 'separadores']),
+        ("Pintura y Sellado",       ['pintura', 'spray', 'aerosol', 'silicon', 'sellador', 'impermeabiliz',
+                                     'terebentina', 'aguarras', 'pega ', 'pegamento', 'teflon', 'cinta', 'adhesiv']),
+        ("Seguridad",               ['candado', 'cerradura', 'cadena de seguridad', 'pestillo', 'cerrojo',
+                                     'tranca', 'cono', 'señal']),
+        ("Herramientas Manuales",   ['destornillador', 'martillo', 'alicate', 'llave inglesa', 'llave de tubo',
+                                     'cinta metrica', 'nivel', 'sierra', 'lima', 'juego de herramientas',
+                                     'navaja', 'multiherramienta', 'remachadora', 'allen', 'broca', 'tijera',
+                                     'espatula', 'rasqueta', 'disco de corte', 'hoja diamantada', 'guante',
+                                     'rastrillo', 'kit de herramientas']),
+    ],
+    "Electrónica": [
+        ("Audio",                   ['audifono', 'bocina', 'speaker', 'microfono', 'radio', 'karaoke']),
+        ("Celulares y Accesorios",  ['celular', 'cargador', 'usb', 'tipo c', 'forro', 'protector de pantalla',
+                                     'soporte de celular', 'power bank', 'bateria portatil', 'manos libres']),
+        ("Relojes",                 ['reloj', 'smartwatch']),
+        ("Electrodomésticos",       ['ventilador', 'licuadora', 'hervidor', 'plancha', 'aspiradora',
+                                     'cafetera', 'freidora', 'sandwichera']),
+        ("Iluminación",             ['led', 'lampara', 'luz', 'tira de luces', 'proyector']),
+    ],
+    "Bebés y Niños": [
+        ("Juguetes",                ['juguete', 'juego', 'peluche', 'muñec', 'rompecabezas', 'bloques']),
+        ("Alimentación del Bebé",   ['biberon', 'tetera', 'chupon', 'comida de bebe', 'procesador', 'babero']),
+    ],
+}
+SUB_DEFAULT = {"Belleza": "Accesorios de Belleza", "Hogar y Cocina": "Más del Hogar",
+               "Herramientas": "Más de Ferretería", "Electrónica": "Más de Electrónica",
+               "Bebés y Niños": "Cuidado del Bebé", "Más categorías": "Otros"}
+
+def norm(s):
+    """小写 + 去重音（保留 ñ）"""
+    s = s.lower().replace('ñ', '\x01')
+    s = ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+    return s.replace('\x01', 'ñ')
+
+def classify(p):
+    """返回 (大组, 子分类)"""
+    group = GROUPS.get(p["type"], "Más categorías")
+    if group == "Más categorías":
+        return group, (p["type"] if p["type"] in GROUPS else "Otros")
+    t = norm(p["title"])
+    for sub, kws in SUBRULES.get(group, []):
+        for kw in kws:
+            if kw in t:
+                return group, sub
+    return group, SUB_DEFAULT[group]
 
 def parse_row(r):
-    """按列名读取（DictReader 行），不再依赖列的位置和数量"""
     return dict(handle=r.get("Handle", ""), title=r.get("Title", ""),
                 body=r.get("Body (HTML)", ""), type=r.get("Type", ""),
                 published=r.get("Published", ""), sku=r.get("Variant SKU", ""),
@@ -45,7 +157,7 @@ def load_products():
         p = parse_row(r)
         if not p["title"].strip() or not p["handle"].strip():
             continue
-        if p["handle"] in seen:              # 去重
+        if p["handle"] in seen:
             continue
         if p["published"].strip().upper() != "TRUE":
             continue
@@ -54,9 +166,9 @@ def load_products():
         p["type"]  = p["type"].strip() or "Otros"
         p["price"] = float(p["price"]) if p["price"].strip() else None
         p["img"]   = p["img"].strip()
+        p["group"], p["sub"] = classify(p)
         products.append(p)
-    # 有价格的排前面
-    products.sort(key=lambda p: (p["price"] is None, p["type"]))
+    products.sort(key=lambda p: (p["price"] is None, p["group"], p["sub"]))
     return products
 
 def fmt_price(v):
@@ -66,7 +178,6 @@ def esc(s):
     return html.escape(s, quote=True)
 
 def body_html(raw):
-    """商品描述：转义 + 换行转 <br>"""
     t = esc(raw.strip())
     return t.replace("\n", "<br>")
 
@@ -91,21 +202,25 @@ fbq('init','{PIXEL_ID}');fbq('track','PageView');{extra}
 </script><noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id={PIXEL_ID}&ev=PageView&noscript=1"/></noscript>"""
 
-# WhatsApp 图标 SVG（内联，无外部依赖）
 WA_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5s1.07 2.9 1.22 3.1c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.7.25-1.3.18-1.42-.08-.13-.28-.2-.58-.35zM12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.82 9.82 0 0 1-1.51-5.26c0-5.44 4.43-9.87 9.89-9.87a9.8 9.8 0 0 1 6.99 2.9 9.8 9.8 0 0 1 2.89 6.98c0 5.45-4.43 9.88-9.88 9.88zm8.41-18.29A11.8 11.8 0 0 0 12.05 0C5.5 0 .16 5.33.16 11.89c0 2.1.55 4.14 1.59 5.94L.06 24l6.33-1.66a11.9 11.9 0 0 0 5.66 1.44h.01c6.55 0 11.89-5.33 11.89-11.88 0-3.18-1.24-6.16-3.49-8.4z"/></svg>'
+BAG_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'
 
 CSS = """
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#F7F9FD;color:#16202E}
 a{text-decoration:none;color:inherit}
 img{display:block}
+button{font-family:inherit}
 .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 /* header */
 .hd{background:#fff;border-bottom:1px solid #EEF1F6;position:sticky;top:0;z-index:50}
 .hd-in{display:flex;align-items:center;justify-content:space-between;height:62px}
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:20px;letter-spacing:-.03em}
 .logo .ic{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#2563D9,#3b82f6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px}
+.hd-r{display:flex;align-items:center;gap:10px}
 .hd-wa{display:flex;align-items:center;gap:7px;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:99px}
+.hd-cart{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1.5px solid #E5EAF2;border-radius:13px;color:#2563D9;background:#fff}
+.cart-n{position:absolute;top:-6px;right:-6px;background:#FF6B4A;color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 4px}
 /* hero */
 .hero{margin:16px auto 4px;background:linear-gradient(120deg,#2563D9,#1A47A6);border-radius:22px;padding:28px 24px;color:#fff;position:relative;overflow:hidden}
 .hero h1{font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.02em;max-width:340px}
@@ -115,6 +230,11 @@ img{display:block}
 .cats::-webkit-scrollbar{display:none}
 .chip{flex:none;display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #E5EAF2;color:#5a6577;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:99px;cursor:pointer;white-space:nowrap}
 .chip.on{background:#2563D9;border-color:#2563D9;color:#fff}
+.subcats{display:none;gap:7px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.subcats.show{display:flex}
+.subcats::-webkit-scrollbar{display:none}
+.schip{flex:none;background:#EAF0FB;border:1.5px solid transparent;color:#2563D9;font-weight:700;font-size:12px;padding:7px 13px;border-radius:99px;cursor:pointer;white-space:nowrap}
+.schip.on{background:#16202E;color:#fff}
 /* grid */
 .count{font-size:13px;color:#8a93a2;margin:10px 0 12px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;padding-bottom:60px}
@@ -131,7 +251,7 @@ img{display:block}
 .card .pr b{font-weight:800;font-size:16px}
 .card .pr .ask{font-weight:700;font-size:12px;color:#FF6B4A}
 /* detail */
-.dt{max-width:920px;margin:0 auto;padding:0 0 90px}
+.dt{max-width:920px;margin:0 auto;padding:0 0 100px}
 @media(min-width:760px){.dt{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:26px 18px 40px;align-items:start}}
 .dt .pic{background:#F0F3F8}
 @media(min-width:760px){.dt .pic{border-radius:22px;overflow:hidden;position:sticky;top:80px}}
@@ -148,14 +268,73 @@ img{display:block}
 .sec{font-weight:800;font-size:15px;margin-bottom:8px}
 .desc{font-size:13px;color:#3a4250;line-height:1.65;margin-bottom:18px}
 /* action bar */
-.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EEF1F6;padding:12px 16px calc(14px + env(safe-area-inset-bottom));display:flex;gap:12px;z-index:60}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EEF1F6;padding:12px 16px calc(14px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:60}
 @media(min-width:760px){.bar{position:static;border:0;padding:0;background:transparent}}
-.btn-wa{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;background:#25D366;color:#fff;font-weight:800;font-size:16px;height:52px;border-radius:16px;cursor:pointer}
+.btn-wa{flex:none;width:54px;height:52px;display:flex;align-items:center;justify-content:center;background:#25D366;color:#fff;border-radius:16px;cursor:pointer}
+.btn-wa.wide{flex:1;gap:9px;font-weight:800;font-size:16px}
 .btn-back{flex:none;width:54px;height:52px;border:2px solid #2563D9;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#2563D9;font-size:20px}
+.btn-add{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;background:#FF6B4A;color:#fff;font-weight:800;font-size:16px;height:52px;border-radius:16px;cursor:pointer;border:0}
+.btn-add.added{background:#16a34a}
 .crumb{padding:14px 18px 0;font-size:13px;color:#8a93a2}
 .crumb a{color:#2563D9;font-weight:700}
 footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 0 34px}
+/* ---- carrito ---- */
+.ct{max-width:640px;margin:0 auto;padding:18px 18px 40px}
+.ct h1{font-weight:800;font-size:24px;margin:8px 0 16px;letter-spacing:-.02em}
+.box{background:#fff;border:1px solid #EDF1F7;border-radius:20px;padding:16px;margin-bottom:14px}
+.box .bt{display:flex;align-items:center;gap:7px;font-weight:800;font-size:15px;margin-bottom:12px}
+.ci{display:flex;gap:12px;align-items:center;padding:10px 0}
+.ci+.ci{border-top:1px solid #F1F4F9}
+.ci img{width:64px;height:64px;border-radius:14px;object-fit:cover;background:#F0F3F8}
+.ci .t{flex:1;min-width:0}
+.ci .nm{font-weight:700;font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ci .pr{font-weight:800;font-size:14px;margin-top:4px}
+.qty{display:flex;align-items:center;gap:10px;margin-top:6px}
+.qty button{width:26px;height:26px;border-radius:9px;border:1.5px solid #E5EAF2;background:#fff;color:#2563D9;font-weight:800;font-size:15px;cursor:pointer}
+.qty span{font-weight:800;font-size:14px;min-width:16px;text-align:center}
+.ci .rm{border:0;background:none;color:#c3cad6;font-size:17px;cursor:pointer;padding:4px}
+.empty{text-align:center;padding:40px 0;color:#8a93a2;font-weight:600}
+.empty a{color:#2563D9;font-weight:800}
+/* form */
+.fld{margin-bottom:10px}
+.fld label{display:block;font-weight:700;font-size:12px;color:#5a6577;margin-bottom:5px}
+.fld input,.fld textarea{width:100%;border:1.5px solid #E5EAF2;border-radius:13px;padding:12px 14px;font-size:14px;font-family:inherit;background:#fff}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:#2563D9}
+/* pago radios */
+.pay{display:flex;flex-direction:column;gap:9px}
+.pay label{display:flex;align-items:center;gap:11px;border:1.5px solid #E5EAF2;border-radius:15px;padding:14px;cursor:pointer;font-weight:700;font-size:14px;background:#fff}
+.pay label.on{border-color:#2563D9;box-shadow:0 0 0 1px #2563D9}
+.pay input{accent-color:#2563D9;width:18px;height:18px}
+.bank{display:none;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:15px;padding:13px;margin-top:9px}
+.bank.show{display:block}
+.bank .bk{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.bank .bk+.bk{border-top:1px solid #E9EDF4}
+.bank .bn{font-weight:800;font-size:13px}
+.bank .bo{font-size:11px;color:#8a93a2;font-weight:600}
+.bank .ba{font-weight:800;font-size:14px;letter-spacing:.02em}
+.bank .note{font-size:11.5px;color:#5a6577;margin-top:9px;line-height:1.5}
+/* totals */
+.tot .ln{display:flex;justify-content:space-between;font-size:13.5px;color:#5a6577;font-weight:600;padding:4px 0}
+.tot .ln b{color:#16202E}
+.tot .gt{display:flex;justify-content:space-between;font-weight:800;font-size:19px;border-top:1px solid #F1F4F9;margin-top:8px;padding-top:12px}
+.btn-conf{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:#FF6B4A;color:#fff;font-weight:800;font-size:16px;height:54px;border-radius:16px;border:0;cursor:pointer;margin-top:6px}
+.btn-conf:disabled{opacity:.5}
+.sub-note{text-align:center;font-size:11.5px;color:#9aa3b2;margin-top:10px}
+/* confirmación */
+.ok{display:none;min-height:70vh;background:linear-gradient(160deg,#2563D9,#1A47A6);border-radius:24px;margin:18px;padding:60px 24px;text-align:center;color:#fff}
+.ok .ck{width:86px;height:86px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:38px}
+.ok h2{font-weight:800;font-size:26px;margin-bottom:12px}
+.ok p{font-size:14px;color:#d3e0fb;line-height:1.6;max-width:320px;margin:0 auto 26px}
+.ok a{display:inline-block;background:#fff;color:#2563D9;font-weight:800;font-size:15px;padding:14px 30px;border-radius:16px}
 """
+
+CART_JS = """<script>
+function vbCart(){try{return JSON.parse(localStorage.getItem('vb_cart')||'[]')}catch(e){return[]}}
+function vbSave(c){localStorage.setItem('vb_cart',JSON.stringify(c));vbBadge()}
+function vbBadge(){var n=vbCart().reduce(function(a,b){return a+b.qty},0);
+ var el=document.getElementById('cartN');if(el){el.textContent=n>99?'99+':n;el.style.display=n?'flex':'none'}}
+document.addEventListener('DOMContentLoaded',vbBadge);
+</script>"""
 
 def page(title, body, pixel_extra="", desc=""):
     return f"""<!DOCTYPE html>
@@ -166,6 +345,7 @@ def page(title, body, pixel_extra="", desc=""):
 {FONT}
 <style>{CSS}</style>
 {pixel(pixel_extra)}
+{CART_JS}
 </head><body>
 {body}
 <footer>© {SITE_NAME} · Envíos en toda República Dominicana · Pago contra entrega</footer>
@@ -174,66 +354,225 @@ def page(title, body, pixel_extra="", desc=""):
 def header(rel=""):
     return f"""<div class="hd"><div class="wrap hd-in">
 <a class="logo" href="{rel}index.html"><span class="ic">{SITE_NAME[0]}</span>{esc(SITE_NAME)}</a>
+<div class="hd-r">
 <a class="hd-wa" href="https://wa.me/{WHATSAPP}" target="_blank" onclick="fbq('track','Contact')">{WA_SVG} WhatsApp</a>
+<a class="hd-cart" href="{rel}carrito.html" aria-label="Carrito">{BAG_SVG}<span class="cart-n" id="cartN"></span></a>
+</div>
 </div></div>"""
+
+# ---------- 购物车/结算页 ----------
+def carrito_page():
+    banks_html = "".join(
+        f'<div class="bk"><div><div class="bn">{esc(b)}</div><div class="bo">{esc(o)}</div></div>'
+        f'<div class="ba">{esc(a)}</div></div>' for b, a, o in BANKS)
+    bank_lines = "\\n".join(f"{b}: {a} ({o})" for b, a, o in BANKS)
+
+    body = header() + """
+<div class="ct" id="main">
+<h1>Tu compra</h1>
+<div class="box" id="itemsBox"><div class="bt">🛍️ Productos</div><div id="items"></div></div>
+
+<div class="box" id="formBox">
+<div class="bt">🚚 Datos de entrega</div>
+<div class="fld"><label>Nombre completo *</label><input id="fNom" placeholder="Tu nombre"></div>
+<div class="fld"><label>Teléfono / WhatsApp *</label><input id="fTel" inputmode="tel" placeholder="809 000 0000"></div>
+<div class="fld"><label>Dirección *</label><textarea id="fDir" rows="2" placeholder="Calle, sector, ciudad"></textarea></div>
+<div class="fld"><label>Nota (opcional)</label><input id="fNota" placeholder="Referencia, horario..."></div>
+</div>
+
+<div class="box" id="payBox">
+<div class="bt">💳 ¿Cómo pagas?</div>
+<div class="pay">
+<label class="on" id="lCod"><input type="radio" name="pay" value="cod" checked onchange="payUI()"> 🤝 Contra entrega (efectivo)</label>
+<label id="lTra"><input type="radio" name="pay" value="transfer" onchange="payUI()"> 🏦 Transferencia bancaria</label>
+</div>
+<div class="bank" id="bankPanel">
+__BANKS__
+<div class="note">Realiza la transferencia y envíanos el comprobante por WhatsApp. Tu pedido se despacha al confirmar el pago.</div>
+</div>
+</div>
+
+<div class="box tot" id="totBox">
+<div class="ln">Subtotal <b id="tSub">RD$ 0</b></div>
+<div class="ln">Envío <b>Se confirma por WhatsApp</b></div>
+<div class="gt">Total <span id="tTot">RD$ 0</span></div>
+<button class="btn-conf" id="btnConf" onclick="confirmar()">🛡️ Confirmar pedido</button>
+<div class="sub-note">Al confirmar se abre WhatsApp con tu pedido listo para enviar.</div>
+</div>
+</div>
+
+<div class="ok" id="okScreen">
+<div class="ck">✓</div>
+<h2>¡Pedido enviado!</h2>
+<p>Tu pedido <b id="okId"></b> fue enviado por WhatsApp.<br>Te confirmaremos la entrega en breve.</p>
+<a href="index.html">Seguir comprando</a>
+</div>
+
+<script>
+var WA='__WA__';
+function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
+function render(){
+ var c=vbCart(),box=document.getElementById('items'),sub=0;
+ if(!c.length){
+  document.getElementById('itemsBox').innerHTML='<div class="empty">Tu carrito está vacío.<br><br><a href="index.html">← Ver productos</a></div>';
+  ['formBox','payBox','totBox'].forEach(function(i){document.getElementById(i).style.display='none'});
+  return;}
+ box.innerHTML=c.map(function(it,i){sub+=it.price*it.qty;
+  return '<div class="ci"><img src="images/'+it.img+'" onerror="this.style.opacity=0">'
+  +'<div class="t"><div class="nm">'+it.title+'</div><div class="pr">'+money(it.price)+'</div>'
+  +'<div class="qty"><button onclick="qty('+i+',-1)">−</button><span>'+it.qty+'</span><button onclick="qty('+i+',1)">+</button></div></div>'
+  +'<button class="rm" onclick="rm('+i+')">✕</button></div>';}).join('');
+ document.getElementById('tSub').textContent=money(sub);
+ document.getElementById('tTot').textContent=money(sub);
+ document.getElementById('btnConf').textContent='🛡️ Confirmar pedido · '+money(sub);
+}
+function qty(i,d){var c=vbCart();c[i].qty+=d;if(c[i].qty<1)c[i].qty=1;vbSave(c);render()}
+function rm(i){var c=vbCart();c.splice(i,1);vbSave(c);render()}
+function payUI(){
+ var t=document.querySelector('input[name=pay]:checked').value;
+ document.getElementById('lCod').classList.toggle('on',t==='cod');
+ document.getElementById('lTra').classList.toggle('on',t==='transfer');
+ document.getElementById('bankPanel').classList.toggle('show',t==='transfer');
+}
+function confirmar(){
+ var c=vbCart();if(!c.length)return;
+ var nom=document.getElementById('fNom').value.trim(),
+     tel=document.getElementById('fTel').value.trim(),
+     dir=document.getElementById('fDir').value.trim(),
+     nota=document.getElementById('fNota').value.trim();
+ if(!nom||!tel||!dir){alert('Por favor completa nombre, teléfono y dirección.');return;}
+ var pay=document.querySelector('input[name=pay]:checked').value;
+ var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
+ var sub=0,lines=c.map(function(it){sub+=it.price*it.qty;
+   return it.qty+'x '+it.title+' ('+it.sku+') — '+money(it.price*it.qty)});
+ var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
+  +'\\n*Total: '+money(sub)+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+dir
+  +(nota?'\\n📝 '+nota:'')
+  +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
+  +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
+ fbq('track','Contact');
+ try{fbq('track','InitiateCheckout',{value:sub,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
+ window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+ localStorage.removeItem('vb_cart');vbBadge();
+ document.getElementById('okId').textContent=oid;
+ document.getElementById('main').style.display='none';
+ document.getElementById('okScreen').style.display='block';
+ window.scrollTo(0,0);
+}
+render();payUI();
+</script>"""
+    body = body.replace("__BANKS__", banks_html).replace("__WA__", WHATSAPP).replace("__BANKLINES__", bank_lines)
+    return page(f"Tu compra — {SITE_NAME}", body,
+                pixel_extra="fbq('track','InitiateCheckout');",
+                desc="Carrito de compras VivaBien — pago contra entrega o transferencia.")
 
 def build():
     products = load_products()
-    cats = sorted({p["type"] for p in products})
     if os.path.exists(OUT_DIR):
         shutil.rmtree(OUT_DIR)
     os.makedirs(f"{OUT_DIR}/producto", exist_ok=True)
     if os.path.isdir(IMG_DIR):
-        # 跳过原图和价格截图：网站用不到，且不应公开
         shutil.copytree(IMG_DIR, f"{OUT_DIR}/images",
                         ignore=shutil.ignore_patterns("*_original*", "*_price_crop*", ".*"))
     else:
         os.makedirs(f"{OUT_DIR}/images", exist_ok=True)
         print(f"⚠️  未找到 {IMG_DIR}/ 文件夹，图片将显示为占位背景")
 
+    # ---- 分类结构：大组 → 子分类 ----
+    subs_of = {}
+    for p in products:
+        subs_of.setdefault(p["group"], {}).setdefault(p["sub"], 0)
+        subs_of[p["group"]][p["sub"]] += 1
+    groups = [g for g in GROUP_ORDER if g in subs_of]
+
     # ---- 商品卡 ----
     cards = []
     for p in products:
         price_html = (f'<b>{fmt_price(p["price"])}</b>' if p["price"] is not None
                       else '<span class="ask">Consultar</span>')
-        cards.append(f"""<a class="card" data-cat="{esc(p['type'])}" href="producto/{p['handle']}.html">
+        cards.append(f"""<a class="card" data-g="{esc(p['group'])}" data-s="{esc(p['sub'])}" href="producto/{p['handle']}.html">
 <div class="imgbox"><img src="images/{esc(p['img'])}" alt="{esc(p['title'])}" loading="lazy"
- onerror="this.style.display='none'"><span class="badge">{esc(p['type'])}</span></div>
+ onerror="this.style.display='none'"><span class="badge">{esc(p['sub'])}</span></div>
 <div class="info"><div class="nm">{esc(p['title'])}</div>
 <div class="pr">{price_html}</div></div></a>""")
 
-    chips = ['<div class="chip on" data-cat="*">Todos</div>'] + [
-        f'<div class="chip" data-cat="{esc(c)}">{CAT_ICONS.get(c, DEFAULT_ICON)} {esc(c)}</div>' for c in cats]
+    chips = ['<div class="chip on" data-g="*">Todos</div>'] + [
+        f'<div class="chip" data-g="{esc(g)}">{GROUP_ICONS.get(g, "🛍️")} {esc(g)}</div>' for g in groups]
+    subrows = []
+    for g in groups:
+        schips = ['<div class="schip on" data-s="*">Todo</div>'] + [
+            f'<div class="schip" data-s="{esc(s)}">{esc(s)} · {n}</div>'
+            for s, n in sorted(subs_of[g].items(), key=lambda kv: -kv[1])]
+        subrows.append(f'<div class="subcats" data-g="{esc(g)}">{"".join(schips)}</div>')
 
     home_body = f"""{header()}
 <div class="wrap">
 <div class="hero"><h1>Compra fácil, paga seguro</h1>
 <div class="sub">🛡️ Pago contra entrega · Envíos a todo el país</div></div>
 <div class="cats">{''.join(chips)}</div>
+{''.join(subrows)}
 <div class="count"><span id="n">{len(products)}</span> productos</div>
 <div class="grid" id="grid">{''.join(cards)}</div>
 </div>
 <script>
+var curG='*',curS='*';
+function apply(){{let n=0;
+ document.querySelectorAll('.card').forEach(cd=>{{
+  const ok=(curG==='*'||cd.dataset.g===curG)&&(curS==='*'||cd.dataset.s===curS);
+  cd.style.display=ok?'':'none';if(ok)n++;}});
+ document.getElementById('n').textContent=n;}}
 document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{{
  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
- ch.classList.add('on');const cat=ch.dataset.cat;let n=0;
- document.querySelectorAll('.card').forEach(cd=>{{
-  const show=cat==='*'||cd.dataset.cat===cat;cd.style.display=show?'':'none';if(show)n++;}});
- document.getElementById('n').textContent=n;}});
+ ch.classList.add('on');curG=ch.dataset.g;curS='*';
+ document.querySelectorAll('.subcats').forEach(r=>{{
+  r.classList.toggle('show',r.dataset.g===curG);
+  r.querySelectorAll('.schip').forEach((s,i)=>s.classList.toggle('on',i===0));}});
+ apply();}});
+document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
+ sc.parentElement.querySelectorAll('.schip').forEach(s=>s.classList.remove('on'));
+ sc.classList.add('on');curS=sc.dataset.s;apply();}});
 </script>"""
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
         f.write(page(f"{SITE_NAME} — Tienda online RD", home_body,
-                     desc="Hogar, electrónica y más. Pago contra entrega en República Dominicana."))
+                     desc="Hogar, belleza, herramientas, electrónica y más. Pago contra entrega en República Dominicana."))
+
+    # ---- 购物车页 ----
+    with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
+        f.write(carrito_page())
 
     # ---- 详情页 ----
     for p in products:
         price_html = (f'<div class="price">{fmt_price(p["price"])}</div>' if p["price"] is not None
                       else '<div class="price ask">Consultar precio por WhatsApp</div>')
         desc_html = body_html(p["body"]) if len(p["body"].strip()) > 10 else esc(p["title"])
-        safe_name = esc(p["title"])  # esc已把引号转义,JS字符串安全
+        safe_name = esc(p["title"])
         ve = (f"""fbq('track','ViewContent',{{content_ids:['{p["sku"]}'],content_name:'{safe_name}',content_type:'product',value:{p["price"] or 0},currency:'DOP'}});""")
+        if p["price"] is not None:
+            actions = f"""<a class="btn-back" href="../index.html">←</a>
+<a class="btn-wa" href="{wa_link(p['title'])}" target="_blank" aria-label="WhatsApp"
+ onclick="fbq('track','Contact',{{content_ids:['{p["sku"]}']}})">{WA_SVG}</a>
+<button class="btn-add" id="btnAdd" data-sku="{esc(p['sku'])}" data-handle="{esc(p['handle'])}"
+ data-title="{esc(p['title'])}" data-price="{p['price']}" data-img="{esc(p['img'])}"
+ onclick="addCart(this)">{BAG_SVG} Agregar al carrito</button>"""
+            add_js = """<script>
+function addCart(b){
+ var c=vbCart(),sku=b.dataset.sku,f=c.find(function(x){return x.sku===sku});
+ if(f){f.qty++}else{c.push({sku:sku,handle:b.dataset.handle,title:b.dataset.title,
+  price:parseFloat(b.dataset.price),img:b.dataset.img,qty:1})}
+ vbSave(c);
+ fbq('track','AddToCart',{content_ids:[sku],content_type:'product',
+  value:parseFloat(b.dataset.price),currency:'DOP'});
+ b.classList.add('added');b.innerHTML='✓ Agregado — Ver carrito';
+ b.onclick=function(){location.href='../carrito.html'};
+}
+</script>"""
+        else:
+            actions = f"""<a class="btn-back" href="../index.html">←</a>
+<a class="btn-wa wide" href="{wa_link(p['title'])}" target="_blank"
+ onclick="fbq('track','Contact',{{content_ids:['{p["sku"]}']}})">{WA_SVG} Pedir por WhatsApp</a>"""
+            add_js = ""
         detail = f"""{header("../")}
-<div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['type'])}</div>
+<div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['group'])} / {esc(p['sub'])}</div>
 <div class="dt">
 <div class="pic"><img src="../images/{esc(p['img'])}" alt="{esc(p['title'])}" onerror="this.style.opacity=0"></div>
 <div>
@@ -248,19 +587,20 @@ document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{{
 <div class="sec">Descripción</div>
 <div class="desc">{desc_html}</div>
 <div class="bar">
-<a class="btn-back" href="../index.html">←</a>
-<a class="btn-wa" href="{wa_link(p['title'])}" target="_blank"
- onclick="fbq('track','Contact',{{content_ids:['{p["sku"]}']}})">{WA_SVG} Pedir por WhatsApp</a>
+{actions}
 </div>
 </div>
 </div>
-</div>"""
+</div>
+{add_js}"""
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
             f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve, desc=p["body"][:150]))
 
-    print(f"✅ 构建完成: {len(products)} 个商品, {len(cats)} 个分类 → {OUT_DIR}/")
-    print(f"   首页: {OUT_DIR}/index.html")
-    print(f"   详情页: {OUT_DIR}/producto/ ({len(products)} 页)")
+    # ---- 分类统计 ----
+    print(f"✅ 构建完成: {len(products)} 个商品 → {OUT_DIR}/")
+    for g in groups:
+        subs = sorted(subs_of[g].items(), key=lambda kv: -kv[1])
+        print(f"   {g}: " + ", ".join(f"{s}({n})" for s, n in subs))
 
 if __name__ == "__main__":
     build()
