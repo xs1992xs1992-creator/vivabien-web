@@ -64,7 +64,10 @@ button{width:100%;background:#2563D9;color:#fff;border:0;border-radius:12px;padd
 <form class="box" method="POST" action="/login">
 <h2>🛠️ VivaBien 商品管理</h2><p>请输入后台密码</p>
 __ERR__
-<input type="password" name="pw" autofocus autocomplete="current-password">
+<input type="password" name="pw" id="pw" autofocus autocomplete="current-password">
+<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#5a6577;margin-bottom:12px;justify-content:center;cursor:pointer">
+<input type="checkbox" style="width:auto;margin:0" onchange="document.getElementById('pw').type=this.checked?'text':'password'"> 显示密码
+</label>
 <button>登录</button>
 </form></body></html>"""
 
