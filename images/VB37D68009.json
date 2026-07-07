@@ -1,0 +1,28 @@
+{
+  "sku": "VB37D68009",
+  "nombre_zh": "三开墙壁开关",
+  "titulo_es": "Switch triple blanco con luz indicadora para pared",
+  "precio": 110.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Switch triple blanco con luz indicadora para pared\n\n📦 Características:\n• 白色\n• 三开设计\n• 带指示灯\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以优化为：'Interruptor triple blanco con luz LED indicadora para pared'，使其更具体。"
+    ],
+    "summary": "商品符合上架标准，各方面表现良好。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:55"
+}

@@ -1,0 +1,36 @@
+{
+  "sku": "VB0806F2EB",
+  "nombre_zh": "眼贴膜",
+  "titulo_es": "Parche de gel verde para ojos / mascarilla ocular hidratante",
+  "precio": 35.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 35，请在审核台确认"
+  ],
+  "descripcion_es": "Parche de gel verde para ojos / mascarilla ocular hidratante\n\n📦 Características:\n• 绿色\n• 凝胶材质\n• 护肤\n\n💰 Precio: RD$ 35\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB0806F2EB_original.jpg"
+  ],
+  "precio_candidatos": [
+    35
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，类目正确，图片清晰，审核无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:26"
+}

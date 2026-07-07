@@ -1,0 +1,36 @@
+{
+  "sku": "VBA7334693",
+  "nombre_zh": "玫瑰按摩器",
+  "titulo_es": "Masajeador en forma de flor / rosa color violeta",
+  "precio": 650.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 650，请在审核台确认"
+  ],
+  "descripcion_es": "Masajeador en forma de flor / rosa color violeta\n\n📦 Características:\n• 紫色\n• 花朵造型\n\n💰 Precio: RD$ 650\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBA7334693_original.jpg"
+  ],
+  "precio_candidatos": [
+    650
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，价格标签清晰，类目和图片无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:36"
+}

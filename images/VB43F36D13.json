@@ -1,0 +1,33 @@
+{
+  "sku": "VB43F36D13",
+  "nombre_zh": "地漏排水器",
+  "titulo_es": "Desagüe de piso / trampa negra anti-retorno de agua",
+  "precio": 110.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Desagüe de piso / trampa negra anti-retorno de agua\n\n📦 Características:\n• 防反水设计\n• 黑色\n• 适用于地面排水\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签可能需要进一步确认"
+    ],
+    "suggestions": [
+      "确认原图中价格标签数字是否清晰；注意标签容易反光导致模糊"
+    ],
+    "summary": "商品信息整体准确，页面设计清晰，图片规范性良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:22"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VBF2E0FF94",
+  "nombre_zh": "无线耳机",
+  "titulo_es": "Audífonos inalámbricos / Bluetooth 30h sonido puro",
+  "precio": 980.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 980，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos inalámbricos / Bluetooth 30h sonido puro\n\n📦 Características:\n• 30小时播放时间\n• 纯低音音效\n• 新一代V6.0\n• 自动连接\n\n💰 Precio: RD$ 980\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF2E0FF94_original.jpg"
+  ],
+  "precio_candidatos": [
+    980
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确且价格合理，图片展示规范。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:09"
+}

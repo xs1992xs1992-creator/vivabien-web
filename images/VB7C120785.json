@@ -1,0 +1,29 @@
+{
+  "sku": "VB7C120785",
+  "nombre_zh": "手持花洒套装",
+  "titulo_es": "Ducha de mano / teléfono de ducha con manguera silver",
+  "precio": 230.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 230，请在审核台确认"
+  ],
+  "descripcion_es": "Ducha de mano / teléfono de ducha con manguera silver\n\n📦 Características:\n• 银色\n• 带软管\n• 方形喷头\n\n💰 Precio: RD$ 230\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整无误，符合标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:21"
+}

@@ -1,0 +1,27 @@
+{
+  "sku": "VBC6A5771B",
+  "nombre_zh": "美甲镊子",
+  "titulo_es": "Pinzas pa uñas rosas, herramientas de manicura",
+  "precio": 90.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['颜色粉色', '美甲工具']"
+  ],
+  "descripcion_es": "Pinzas pa uñas rosas, herramientas de manicura\n\n📦 Características:\n• 颜色粉色\n• 美甲工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以更自然地改为：Pinza para uñas rosa, herramienta de manicura"
+    ],
+    "summary": "商品信息准确，图片规范，价格合理，适合上架。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:01"
+}

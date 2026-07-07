@@ -1,0 +1,35 @@
+{
+  "sku": "VBD3B768CC",
+  "nombre_zh": "充电电池",
+  "titulo_es": "Baterías recargables AA 1.2V / Ni-MH 4800mAh 4 unidades",
+  "precio": 210.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 210，请在审核台确认"
+  ],
+  "descripcion_es": "Baterías recargables AA 1.2V / Ni-MH 4800mAh 4 unidades\n\n📦 Características:\n• 4个\n• 4800mAh\n• Ni-MH\n• AA 1.2V\n\n💰 Precio: RD$ 210\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD3B768CC_original.jpg"
+  ],
+  "precio_candidatos": [
+    210
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本正确，图片质量良好，核价符合实际。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 210,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:11"
+}

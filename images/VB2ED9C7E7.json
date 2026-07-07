@@ -1,0 +1,32 @@
+{
+  "sku": "VB2ED9C7E7",
+  "nombre_zh": "自粘数字贴",
+  "titulo_es": "Números adhesivos plateados 75mm / pegatinas para puertas",
+  "precio": 55.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 55，请在审核台确认"
+  ],
+  "descripcion_es": "Números adhesivos plateados 75mm / pegatinas para puertas\n\n📦 Características:\n• 高度75mm\n• 银色\n• 自粘\n\n💰 Precio: RD$ 55\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    55
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述准确，价格合理，图片质量合格。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:49"
+}

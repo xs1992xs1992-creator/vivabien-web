@@ -1,0 +1,27 @@
+{
+  "sku": "VB6B2AB0C2",
+  "nombre_zh": "Hello Style彩妆盘",
+  "titulo_es": "Paleta Hello Style colores, rosa, portátil, tapa clara",
+  "precio": 125.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['粉色外壳', '多色（珠光/哑光）', '便携设计', '透明盖']"
+  ],
+  "descripcion_es": "Paleta Hello Style colores, rosa, portátil, tapa clara\n\n📦 Características:\n• 粉色外壳\n• 多色（珠光/哑光）\n• 便携设计\n• 透明盖\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题较准确，但可优化为：'Paleta portátil para maquillaje Hello Style, colores rosa, con tapa transparente'以更符合西语习惯。"
+    ],
+    "summary": "商品图片和信息基本合规，标题可稍作优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:06"
+}

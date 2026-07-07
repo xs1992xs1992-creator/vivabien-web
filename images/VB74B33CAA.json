@@ -1,0 +1,37 @@
+{
+  "sku": "VB74B33CAA",
+  "nombre_zh": "婴儿棉签",
+  "titulo_es": "Hisopos para bebé / bastoncillos 100% algodón 55 unidades",
+  "precio": 85.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 85，请在审核台确认"
+  ],
+  "descripcion_es": "Hisopos para bebé / bastoncillos 100% algodón 55 unidades\n\n📦 Características:\n• 55支\n• 100%棉\n• 安全设计\n\n💰 Precio: RD$ 85\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB74B33CAA_original.jpg"
+  ],
+  "precio_candidatos": [
+    85
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:15",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品基本符合要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "母婴用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:30",
+  "finalized_at": "2026-07-03 21:30"
+}

@@ -1,0 +1,28 @@
+{
+  "sku": "VBB2BBC27D",
+  "nombre_zh": "双开插座",
+  "titulo_es": "Doble enchufe con protección infantil y alta potencia, seguro y durade",
+  "precio": 100.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Doble enchufe con protección infantil y alta potencia, seguro y durade\n\n📦 Características:\n• 儿童锁保护\n• 高功率\n• 无缝结构\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以改为 'Enchufe doble con protección infantil y alto rendimiento'，这样语言风格更自然。"
+    ],
+    "summary": "商品符合要求，售价合理，图片清晰，信息准确。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:54"
+}

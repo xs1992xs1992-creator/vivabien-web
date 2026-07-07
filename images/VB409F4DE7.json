@@ -1,0 +1,29 @@
+{
+  "sku": "VB409F4DE7",
+  "nombre_zh": "燃气阀门套装",
+  "titulo_es": "Kit de conexión para gas / manguera naranja / válvula verde",
+  "precio": 265.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 265，请在审核台确认"
+  ],
+  "descripcion_es": "Kit de conexión para gas / manguera naranja / válvula verde\n\n📦 Características:\n• 橙色软管\n• 绿色阀门\n• 适用于燃气连接\n\n💰 Precio: RD$ 265\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，价格标签经核实无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:17"
+}

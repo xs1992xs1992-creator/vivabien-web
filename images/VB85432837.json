@@ -1,0 +1,23 @@
+{
+  "sku": "VB85432837",
+  "nombre_zh": "泡沫清洁剂",
+  "titulo_es": "Espuma limpiadora / desengrasante con cepillo aroma limón",
+  "precio": 160.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Espuma limpiadora / desengrasante con cepillo aroma limón\n\n📦 Características:\n• 柠檬香型\n• 抗菌除臭\n• 霉菌去污\n• 带刷头设计\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-06-28 20:47",
+  "review_ignored": false
+}

@@ -1,0 +1,42 @@
+{
+  "sku": "VB122EA612",
+  "nombre_zh": "指甲剪",
+  "titulo_es": "Cortaúñas / corta uñas de acero inoxidable",
+  "precio": 130.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Cortaúñas / corta uñas de acero inoxidable\n\n📦 Características:\n• 不锈钢材质\n• 适合修剪指甲和死皮\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB122EA612_original.jpg"
+  ],
+  "precio_candidatos": [
+    130,
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签看不清楚",
+      "西语标题可以优化更清晰"
+    ],
+    "suggestions": [
+      "建议价格标签拍摄清晰以便核实",
+      "建议标题修改为 'Cortador de cutículas de acero inoxidable'，更精确描述商品用途"
+    ],
+    "summary": "商品基本符合要求，但需优化西语标题，并核实价格标签。",
+    "price_check": "unclear",
+    "suggested_titulo_es": "Cortador de cutículas de acero inoxidable",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:18"
+}

@@ -1,0 +1,41 @@
+{
+  "sku": "VB8F49F942",
+  "nombre_zh": "土豆切片器",
+  "titulo_es": "Rebanador de papas manual de metal",
+  "precio": 580.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 580，请在审核台确认"
+  ],
+  "descripcion_es": "Rebanador de papas manual de metal\n\n📦 Características:\n• 金属材质\n• 手动操作\n\n💰 Precio: RD$ 580\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8F49F942_original.jpg"
+  ],
+  "precio_candidatos": [
+    580
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:48",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "无明显问题"
+    ],
+    "suggestions": [
+      "无修改建议"
+    ],
+    "summary": "产品信息准确，符合多米尼加市场需求，标签与系统价格一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:04",
+  "finalized_at": "2026-07-03 14:04"
+}

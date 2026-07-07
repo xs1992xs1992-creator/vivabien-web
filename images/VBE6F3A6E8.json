@@ -1,0 +1,29 @@
+{
+  "sku": "VBE6F3A6E8",
+  "nombre_zh": "马桶配件套装",
+  "titulo_es": "Kit reparación inodoro / tanque / retrete plástico blanco",
+  "precio": 270.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 270，请在审核台确认"
+  ],
+  "descripcion_es": "Kit reparación inodoro / tanque / retrete plástico blanco\n\n📦 Características:\n• 白色\n• 蓝色\n• 塑料材质\n• 适用于马桶维修\n\n💰 Precio: RD$ 270\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体符合要求，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:17"
+}

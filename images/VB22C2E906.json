@@ -1,0 +1,32 @@
+{
+  "sku": "VB22C2E906",
+  "nombre_zh": "木柄锤子",
+  "titulo_es": "Martillo / maceta mango de madera cabeza de metal",
+  "precio": 210.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 210，请在审核台确认"
+  ],
+  "descripcion_es": "Martillo / maceta mango de madera cabeza de metal\n\n📦 Características:\n• 木柄\n• 金属锤头\n• 适合敲击作业\n\n💰 Precio: RD$ 210\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    210
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品图片清晰，西语标题准确，价格与标签一致，类目选择正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:08"
+}

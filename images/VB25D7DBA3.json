@@ -1,0 +1,39 @@
+{
+  "sku": "VB25D7DBA3",
+  "nombre_zh": "便携风扇",
+  "titulo_es": "Ventilador portátil / abanico recargable con base 24h",
+  "precio": 735.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 735，请在审核台确认"
+  ],
+  "descripcion_es": "Ventilador portátil / abanico recargable con base 24h\n\n📦 Características:\n• 180°可调角度\n• 工作时长5-24小时\n• 大容量电池\n• 带手机支架\n\n💰 Precio: RD$ 735\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB25D7DBA3_original.jpg"
+  ],
+  "precio_candidatos": [
+    735
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题存在改进空间"
+    ],
+    "suggestions": [
+      "将标题修改为更符合多米尼加共和国消费者习惯的描述，建议：Abanico portátil recargable con base, duración de batería hasta 24 horas"
+    ],
+    "summary": "商品信息大致符合要求，标题可优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Abanico portátil recargable con base, duración de batería hasta 24 horas",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:28"
+}

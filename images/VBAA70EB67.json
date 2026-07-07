@@ -1,0 +1,33 @@
+{
+  "sku": "VBAA70EB67",
+  "nombre_zh": "60cm  1315",
+  "titulo_es": "Planta decorativa 60cm 3 bolas plástico verde",
+  "precio": null,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Planta decorativa 60cm 3 bolas plástico verde\n\n📦 Características:\n• 3个球形\n• 绿色\n• 塑料材质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBAA70EB67_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "etiqueta": "planta",
+  "version": 3,
+  "confirmed_at": "2026-07-03 22:22",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体信息基本符合要求，仅需补充价格。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:15",
+  "finalized_at": "2026-07-04 10:15"
+}

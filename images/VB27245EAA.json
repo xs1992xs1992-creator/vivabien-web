@@ -1,0 +1,27 @@
+{
+  "sku": "VB27245EAA",
+  "nombre_zh": "盒装化妆棉",
+  "titulo_es": "Caja de algodón pa desmaquillar, suavecita y económica",
+  "precio": 120.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.70，卖点:['透明盒装', '白色棉片']"
+  ],
+  "descripcion_es": "Caja de algodón pa desmaquillar, suavecita y económica\n\n📦 Características:\n• 透明盒装\n• 白色棉片\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议将标题修改为更符合多米尼加购物习惯的描述，例如：'Caja de algodón para desmaquillar económica y suave'."
+    ],
+    "summary": "商品质检通过，标题稍作优化更符合习惯。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:10"
+}

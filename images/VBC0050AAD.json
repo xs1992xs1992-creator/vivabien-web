@@ -1,0 +1,40 @@
+{
+  "sku": "VBC0050AAD",
+  "nombre_zh": "指甲边剪",
+  "titulo_es": "Cortaúñas / alicate de uñas profesional inoxidable naranja",
+  "precio": 130.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Cortaúñas / alicate de uñas profesional inoxidable naranja\n\n📦 Características:\n• 不锈钢材质\n• 橙色\n• 专业指甲修剪工具\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC0050AAD_original.jpg"
+  ],
+  "precio_candidatos": [
+    130,
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "无主要问题"
+    ],
+    "suggestions": [
+      "西语标题可以稍调整以更自然，例如加入具体用途"
+    ],
+    "summary": "商品整体符合市场要求，价格合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": "Cortaúñas profesional de acero inoxidable - Naranja",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:07"
+}

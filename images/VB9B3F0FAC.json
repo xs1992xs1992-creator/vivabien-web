@@ -1,0 +1,42 @@
+{
+  "sku": "VB9B3F0FAC",
+  "nombre_zh": "无线音箱",
+  "titulo_es": "Bocina inalámbrica / altavoz Bluetooth 4\" con micrófono portátil",
+  "precio": 530.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 530，请在审核台确认"
+  ],
+  "descripcion_es": "Bocina inalámbrica / altavoz Bluetooth 4\" con micrófono portátil\n\n📦 Características:\n• 1个\n• 4英寸\n• 带麦克风\n• 便携式\n\n💰 Precio: RD$ 530\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9B3F0FAC_original.jpg"
+  ],
+  "precio_candidatos": [
+    530
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 3,
+  "confirmed_at": "2026-07-02 11:49",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签位置含胶带，可能影响清晰度"
+    ],
+    "suggestions": [
+      "建议确保价格标签清晰可辨以避免误解"
+    ],
+    "summary": "商品信息整体无误且符合市场定位，仅需确认定价标签清晰度。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:23",
+  "finalized_at": "2026-07-03 13:23"
+}

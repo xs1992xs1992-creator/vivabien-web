@@ -1,0 +1,33 @@
+{
+  "sku": "VB6D8DFF73",
+  "nombre_zh": "高质量挂锁",
+  "titulo_es": "Candado / cerradura 50mm con llave metálico resistente",
+  "precio": 120.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Candado / cerradura 50mm con llave metálico resistente\n\n📦 Características:\n• 尺寸50mm\n• 带钥匙\n• 金属材质\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显冗长"
+    ],
+    "suggestions": [
+      "建议修改标题为‘Candado metálico resistente con llave, 50mm’以更简洁自然"
+    ],
+    "summary": "商品符合多米尼加共和国市场要求，价格合理，类目正确，图片品质良好。",
+    "price_check": "match",
+    "suggested_titulo_es": "Candado metálico resistente con llave, 50mm",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:42"
+}

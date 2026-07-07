@@ -1,0 +1,44 @@
+{
+  "sku": "VBC1B07AAF",
+  "nombre_zh": "双头燃气炉",
+  "titulo_es": "Estufa de gas / fogón de gas 2 quemadores negra metal.",
+  "precio": 895,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1295，请在审核台确认"
+  ],
+  "descripcion_es": "Estufa de gas / fogón de gas 2 quemadores negra metal.\n\n📦 Características:\n• 2个燃气头\n• 黑色金属材质\n• 手动调节阀门\n\n💰 Precio: RD$ 1295\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC1B07AAF_original.jpg"
+  ],
+  "precio_candidatos": [
+    1295
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-04 10:18",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格标签可能看不清",
+      "标题可以稍作优化以增强吸引力"
+    ],
+    "suggestions": [
+      "核实价格标签清晰度",
+      "标题可优化为：Fogón de gas de 2 quemadores - diseño resistente en metal"
+    ],
+    "summary": "商品整体信息准确，细化标题可更吸引消费者，需确认价格标签清晰度。",
+    "price_check": "unclear",
+    "suggested_titulo_es": "Fogón de gas de 2 quemadores - diseño resistente en metal",
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 11:41",
+  "finalized_at": "2026-07-04 11:41"
+}

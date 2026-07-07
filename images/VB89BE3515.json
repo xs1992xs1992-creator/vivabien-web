@@ -1,0 +1,36 @@
+{
+  "sku": "VB89BE3515",
+  "nombre_zh": "男用安全套",
+  "titulo_es": "Preservativos / condones 3 unidades de látex lubricados",
+  "precio": 100.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Preservativos / condones 3 unidades de látex lubricados\n\n📦 Características:\n• 3个\n• 天然橡胶乳胶\n• 润滑\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB89BE3515_original.jpg"
+  ],
+  "precio_candidatos": [
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，符合多米尼加市场规范。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:36"
+}

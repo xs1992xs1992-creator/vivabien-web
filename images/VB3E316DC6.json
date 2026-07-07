@@ -1,0 +1,35 @@
+{
+  "sku": "VB3E316DC6",
+  "nombre_zh": "彩钻贴纸",
+  "titulo_es": "Stickers 3D / calcomanías adhesivas de colores decorativas",
+  "precio": 40.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 40，请在审核台确认"
+  ],
+  "descripcion_es": "Stickers 3D / calcomanías adhesivas de colores decorativas\n\n📦 Características:\n• 多色\n• 自粘\n• 3D装饰\n\n💰 Precio: RD$ 40\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3E316DC6_original.jpg"
+  ],
+  "precio_candidatos": [
+    40
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，审核通过。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:15"
+}

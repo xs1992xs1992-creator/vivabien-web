@@ -1,0 +1,35 @@
+{
+  "sku": "VBD5A20F4E",
+  "nombre_zh": "化妆镜",
+  "titulo_es": "Espejo redondo con base / espejo para maquillar",
+  "precio": 340,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Espejo redondo con base / espejo para maquillar\n\n📦 Características:\n• 圆形\n• 带支架\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD5A20F4E_original.jpg"
+  ],
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:06"
+}

@@ -1,0 +1,37 @@
+{
+  "sku": "VB5591CF9F",
+  "nombre_zh": "摩卡咖啡壶",
+  "titulo_es": "Greca / cafetera moka roja aluminio 3 tazas",
+  "precio": 1040,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 280，请在审核台确认"
+  ],
+  "descripcion_es": "Greca / cafetera moka roja aluminio 3 tazas\n\n📦 Características:\n• 3杯\n• 铸铝材质\n• 红色\n\n💰 Precio: RD$ 280\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5591CF9F_original.jpg"
+  ],
+  "precio_candidatos": [
+    280
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:46",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合标准要求，仅需确认系统生成价格标签与实际一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:05",
+  "finalized_at": "2026-07-03 14:05"
+}

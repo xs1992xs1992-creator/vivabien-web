@@ -1,0 +1,33 @@
+{
+  "sku": "VB4102BFBD",
+  "nombre_zh": "金色镂空摆件",
+  "titulo_es": "Adorno decorativo dorado / figura con cristal redondo",
+  "precio": null,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Adorno decorativo dorado / figura con cristal redondo\n\n📦 Características:\n• 金色\n• 镂空设计\n• 圆形水晶装饰\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4102BFBD_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格未填写"
+    ],
+    "suggestions": [
+      "建议填写合适的价格参考商定范围，例如 RD$300-1000，以吸引消费者。"
+    ],
+    "summary": "商品标题自然，类目正确，白底图与原图一致，需补充价格。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": 500,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:36"
+}

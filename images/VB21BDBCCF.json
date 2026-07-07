@@ -1,0 +1,18 @@
+{
+  "sku": "VB21BDBCCF",
+  "nombre_zh": "粉色香水瓶",
+  "titulo_es": "Perfume rosado con diseño de estrella y botella esférica en spray",
+  "precio": 160,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Perfume rosado con diseño de estrella y botella esférica en spray\n\n📦 Características:\n• 粉色\n• 星形图案\n• 球形瓶身\n• 喷雾设计\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-06-26 19:11",
+  "review_ignored": false
+}

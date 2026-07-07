@@ -1,0 +1,39 @@
+{
+  "sku": "VB86586147",
+  "nombre_zh": "银色大象摆件",
+  "titulo_es": "Figura decorativa / adorno de elefante plateado 1 unidad",
+  "precio": 80.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认"
+  ],
+  "descripcion_es": "Figura decorativa / adorno de elefante plateado 1 unidad\n\n📦 Características:\n• 1个\n• 银色\n• 陶瓷材质\n\n💰 Precio: RD$ 80\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB86586147_original.jpg"
+  ],
+  "precio_candidatos": [
+    80
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签模糊，无法确认"
+    ],
+    "suggestions": [
+      "请人工确认价格标签上的数字是否为 RD$ 80"
+    ],
+    "summary": "商品总体符合要求，但需确认价格标签数字，标题及类目合适，白底图干净完整。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:40"
+}

@@ -1,0 +1,37 @@
+{
+  "sku": "VBE00D6C06",
+  "nombre_zh": "玻璃花瓶灯",
+  "titulo_es": "Florero / lámpara de cristal decorativo",
+  "precio": 475,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 475，请在审核台确认",
+    "价格经二次OCR修正：475 → RD$ 175"
+  ],
+  "descripcion_es": "Florero / jarrón de vidrio 193mm x 86mm\n\n📦 Características:\n• 193mm\n• 86mm\n• 玻璃材质\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE00D6C06_original.jpg"
+  ],
+  "precio_candidatos": [
+    475
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "整体表现良好，商品信息准确，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

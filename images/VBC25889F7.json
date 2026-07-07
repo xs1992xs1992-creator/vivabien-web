@@ -1,0 +1,35 @@
+{
+  "sku": "VBC25889F7",
+  "nombre_zh": "USB数据线",
+  "titulo_es": "Cable USB / Type-C 100cm carga rápida 6A",
+  "precio": 95.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Cable USB / Type-C 100cm carga rápida 6A\n\n📦 Características:\n• 100cm\n• Type-C接口\n• 快速充电\n• 6A电流\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC25889F7_original.jpg"
+  ],
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，审核通过。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:11"
+}

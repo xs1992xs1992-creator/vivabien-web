@@ -1,0 +1,39 @@
+{
+  "sku": "VB6B71B65B",
+  "nombre_zh": "手动辅食机",
+  "titulo_es": "Máquina manual para comida de bebé / procesador 1.5L",
+  "precio": 435,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格 4.35 尾数异常（多米尼加价格结尾应为0或5），请人工核对",
+    "价格由 AI 从图片识别：RD$ 4，请在审核台确认"
+  ],
+  "descripcion_es": "Máquina manual para comida de bebé / procesador 1.5L\n\n📦 Características:\n• 1.5L\n• 手动操作\n• 多功能\n• 婴儿辅食\n\n💰 Precio: RD$ 4\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6B71B65B_original.jpg"
+  ],
+  "precio_candidatos": [
+    4.35
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-03 21:02",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，但仍需人工核查价格标签。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "母婴用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:05",
+  "finalized_at": "2026-07-03 21:05"
+}

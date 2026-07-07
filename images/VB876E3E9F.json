@@ -1,0 +1,35 @@
+{
+  "sku": "VB876E3E9F",
+  "nombre_zh": "爱字挂钩",
+  "titulo_es": "Ganchos / colgadores madera 3 unidades letras doradas",
+  "precio": 190,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Ganchos / colgadores madera 3 unidades letras doradas\n\n📦 Características:\n• 3个挂钩\n• 木质\n• 金色字母装饰\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB876E3E9F_original.jpg"
+  ],
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体合格，价格和信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:32"
+}

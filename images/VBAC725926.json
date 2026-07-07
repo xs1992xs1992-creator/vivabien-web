@@ -1,0 +1,27 @@
+{
+  "sku": "VBAC725926",
+  "nombre_zh": "美容工具套装",
+  "titulo_es": "Kit de herramientas de belleza rosado, varios tamaños, estuche plástic",
+  "precio": 220.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['粉色', '多规格', '塑料盒包装', '分类收纳']"
+  ],
+  "descripcion_es": "Kit de herramientas de belleza rosado, varios tamaños, estuche plástic\n\n📦 Características:\n• 粉色\n• 多规格\n• 塑料盒包装\n• 分类收纳\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以优化为：Kit de herramientas de belleza en rosa con estuche de plástico, varios tamaños，以更贴近用户语言表达习惯。"
+    ],
+    "summary": "商品详情基本符合要求，标题有优化空间。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:03"
+}

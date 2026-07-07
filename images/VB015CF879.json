@@ -1,0 +1,37 @@
+{
+  "sku": "VB015CF879",
+  "nombre_zh": "婴儿凡士林",
+  "titulo_es": "Vaselina para bebé / crema hidratante rosa sin especificar tamaño",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Vaselina para bebé / crema hidratante rosa sin especificar tamaño\n\n📦 Características:\n• 容量不详\n• 粉色包装\n• 婴儿专用\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB015CF879_original.jpg"
+  ],
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:19",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片符合要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:32",
+  "finalized_at": "2026-07-03 21:32"
+}

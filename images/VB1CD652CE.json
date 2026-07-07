@@ -1,0 +1,29 @@
+{
+  "sku": "VB1CD652CE",
+  "nombre_zh": "COLOR STYLE彩妆盘",
+  "titulo_es": "Maquillaje Color Style paleta ojazos cartoon🥰",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['可爱卡通包装', '多色眼影']"
+  ],
+  "descripcion_es": "Maquillaje Color Style paleta ojazos cartoon🥰\n\n📦 Características:\n• 可爱卡通包装\n• 多色眼影\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "西语标题稍显不自然"
+    ],
+    "suggestions": [
+      "修改标题为：Paleta de maquillaje Color Style diseño estilo dibujo"
+    ],
+    "summary": "整体符合上架要求，标题稍作调整更能吸引消费者。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:12"
+}

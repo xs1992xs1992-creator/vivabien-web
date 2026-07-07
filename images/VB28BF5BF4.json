@@ -1,0 +1,41 @@
+{
+  "sku": "VB28BF5BF4",
+  "nombre_zh": "早餐机",
+  "titulo_es": "Máquina de desayuno 7.4L / cafetera 400ml / 1050W roja",
+  "precio": 3255,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 325，请在审核台确认"
+  ],
+  "descripcion_es": "Máquina de desayuno 7.4L / cafetera 400ml / 1050W roja\n\n📦 Características:\n• 7.4L容量\n• 400ml咖啡壶\n• 1050W功率\n• 温度控制\n• 视觉玻璃门\n• 红色\n\n💰 Precio: RD$ 325\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB28BF5BF4_original.jpg"
+  ],
+  "precio_candidatos": [
+    325
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:02",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题略显繁琐，建议简化"
+    ],
+    "suggestions": [
+      "将标题修改为更符合多米尼加购物习惯的简洁标题"
+    ],
+    "summary": "商品整体符合要求，但标题可适当简化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Máquina de Desayuno 3 en 1, 7.4L, 400ml Cafetera, 1050W Roja",
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:06",
+  "finalized_at": "2026-07-03 21:06"
+}

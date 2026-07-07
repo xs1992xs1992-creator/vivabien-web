@@ -1,0 +1,41 @@
+{
+  "sku": "VB213488D4",
+  "nombre_zh": "双刃剃须刀",
+  "titulo_es": "Afeitadora desechable / rasuradora doble filo fija",
+  "precio": 50.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（5.0），已自动修正为 RD$ 50",
+    "价格由 AI 从图片识别：RD$ 50，请在审核台确认"
+  ],
+  "descripcion_es": "Afeitadora desechable / rasuradora doble filo fija\n\n📦 Características:\n• 双刃\n• 一次性\n• 固定式\n\n💰 Precio: RD$ 50\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB213488D4_original.jpg"
+  ],
+  "precio_candidatos": [
+    5
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显冗长，可优化",
+      "价格标签在原图中模糊难以辨认"
+    ],
+    "suggestions": [
+      "建议将标题调整为更简洁的表达，例如：‘Afeitadoras desechables doble filo tipo fijo’"
+    ],
+    "summary": "商品图片清晰，内容相符，但标题与价格标签需要进一步核实优化。",
+    "price_check": "unclear",
+    "suggested_titulo_es": "Afeitadoras desechables doble filo tipo fijo",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:17"
+}

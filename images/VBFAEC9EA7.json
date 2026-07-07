@@ -1,0 +1,37 @@
+{
+  "sku": "VBFAEC9EA7",
+  "nombre_zh": "火焰香薰机",
+  "titulo_es": "Difusor de aromaterapia / humidificador efecto llama 2.4MHz",
+  "precio": 520.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 520，请在审核台确认"
+  ],
+  "descripcion_es": "Difusor de aromaterapia / humidificador efecto llama 2.4MHz\n\n📦 Características:\n• 2.4MHz超声波频率\n• 模拟火焰灯效\n• 自动断电\n• 2档亮度\n• 香薰功能\n\n💰 Precio: RD$ 520\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBFAEC9EA7_original.jpg"
+  ],
+  "precio_candidatos": [
+    520
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题无需修改，但可以进一步优化为“Humidificador/Difusor de Aromaterapia con Efecto Llama 2.4MHz”以更清晰表达功能。"
+    ],
+    "summary": "商品描述清晰准确，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": "Humidificador/Difusor de Aromaterapia con Efecto Llama 2.4MHz",
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

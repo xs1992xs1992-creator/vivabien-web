@@ -1,0 +1,39 @@
+{
+  "sku": "VB8C6682BE",
+  "nombre_zh": "华夫饼机",
+  "titulo_es": "Máquina para waffles / gofres 1200W 1 año garantía",
+  "precio": 1275.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（129.0），已自动修正为 RD$ 1290",
+    "价格由 AI 从图片识别：RD$ 1290，请在审核台确认",
+    "价格经二次OCR修正：129 → RD$ 1275"
+  ],
+  "descripcion_es": "Máquina para waffles / gofres 1200W 1 año garantía\n\n📦 Características:\n• 1200W\n• 1年保修\n\n💰 Precio: RD$ 1275\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8C6682BE_original.jpg"
+  ],
+  "precio_candidatos": [
+    129
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:48",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合标准，信息准确且清晰。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:04",
+  "finalized_at": "2026-07-03 14:04"
+}

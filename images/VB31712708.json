@@ -1,0 +1,35 @@
+{
+  "sku": "VB31712708",
+  "nombre_zh": "美白面霜",
+  "titulo_es": "Crema blanqueadora rápida / crema aclarante con colágeno",
+  "precio": 180.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Crema blanqueadora rápida / crema aclarante con colágeno\n\n📦 Características:\n• 快速美白\n• 胶原蛋白\n• 牛奶成分\n• 3天见效\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB31712708_original.jpg"
+  ],
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架条件，各方面均无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 180,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:16"
+}

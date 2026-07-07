@@ -1,0 +1,33 @@
+{
+  "sku": "VB37D54A91",
+  "nombre_zh": "足部护理刷",
+  "titulo_es": "Cepillo para pies / piedra pómez / lima 4 en 1 azul",
+  "precio": 120,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Cepillo para pies / piedra pómez / lima 4 en 1 azul\n\n📦 Características:\n• 蓝色手柄\n• 4合1功能\n• 包含刷子、浮石、金属锉和抛光锉\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB37D54A91_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "商品原图中有价格标签，需核实是否一致"
+    ],
+    "suggestions": [
+      "标题可以稍作简化，如改为更自然的“Cepillo 4-en-1 para pies con piedra pómez”"
+    ],
+    "summary": "商品整体符合要求，但建议优化标题使其更自然流畅。",
+    "price_check": "match",
+    "suggested_titulo_es": "Cepillo 4-en-1 para pies con piedra pómez",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:16"
+}

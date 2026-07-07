@@ -1,0 +1,34 @@
+{
+  "sku": "VB3DF4F6F4",
+  "nombre_zh": "水龙头配件",
+  "titulo_es": "Llave de fregadero / grifo giratoria 360° metálica 5 años",
+  "precio": 95.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Llave de fregadero / grifo giratoria 360° metálica 5 años\n\n📦 Características:\n• 360°旋转\n• 金属材质\n• 5年质保\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": true,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图存在价格标签，需要核实价格一致性"
+    ],
+    "suggestions": [
+      "标题可考虑调整以更清晰描述商品特性，例如包括 'con adaptador' 或 'conexión económica'",
+      "确认市场定价是否符合 RD$ 95 的合理性"
+    ],
+    "summary": "商品信息显示良好，仅需价格标签一致性确认。",
+    "price_check": "match",
+    "suggested_titulo_es": "Llave de fregadero giratoria metálica 360° con adaptador, garantía 5 años",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:17"
+}

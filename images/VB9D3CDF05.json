@@ -1,0 +1,37 @@
+{
+  "sku": "VB9D3CDF05",
+  "nombre_zh": "绞肉机",
+  "titulo_es": "Picadora de carne / moledora 2500W 110V cuchillas acero",
+  "precio": 2840.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 2840，请在审核台确认"
+  ],
+  "descripcion_es": "Picadora de carne / moledora 2500W 110V cuchillas acero\n\n📦 Características:\n• 2500W\n• 420 SS刀片\n• 反转模式\n• 金属切割盘\n• 110V\n\n💰 Precio: RD$ 2840\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9D3CDF05_original.jpg"
+  ],
+  "precio_candidatos": [
+    2840
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:48",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本正确，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:03",
+  "finalized_at": "2026-07-03 14:03"
+}

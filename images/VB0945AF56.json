@@ -1,0 +1,35 @@
+{
+  "sku": "VB0945AF56",
+  "nombre_zh": "快充数据线",
+  "titulo_es": "Cable USB-C a USB-C 3A carga rápida",
+  "precio": 190.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 190，请在审核台确认"
+  ],
+  "descripcion_es": "Cable USB-C a USB-C 3A carga rápida\n\n📦 Características:\n• USB-C to USB-C\n• 3A\n• 支持快速充电\n\n💰 Precio: RD$ 190\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB0945AF56_original.jpg"
+  ],
+  "precio_candidatos": [
+    190
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合所有审核要求，标题、价格、类目均无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:16"
+}

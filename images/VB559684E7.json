@@ -1,0 +1,27 @@
+{
+  "sku": "VB559684E7",
+  "nombre_zh": "RubyFace睫毛夹",
+  "titulo_es": "Rubí Face pinza pa pestañas rosita, rizo perfecto",
+  "precio": 110.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['粉色', '卷翘睫毛']"
+  ],
+  "descripcion_es": "Rubí Face pinza pa pestañas rosita, rizo perfecto\n\n📦 Características:\n• 粉色\n• 卷翘睫毛\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以优化为：Rubí Face rizador de pestañas rosado para un rizo perfecto，以使其更加正式和自然。"
+    ],
+    "summary": "商品描述准确，价格合理，上架无明显问题。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:07"
+}

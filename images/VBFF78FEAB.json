@@ -1,0 +1,29 @@
+{
+  "sku": "VBFF78FEAB",
+  "nombre_zh": "水槽排水器",
+  "titulo_es": "Filtro para fregadero / lavamanos de acero inoxidable",
+  "precio": 160.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Filtro para fregadero / lavamanos de acero inoxidable\n\n📦 Características:\n• 不锈钢材质\n• 适用于水槽\n• 带过滤功能\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": true,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，信息无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:16"
+}

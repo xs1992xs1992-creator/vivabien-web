@@ -1,0 +1,28 @@
+{
+  "sku": "VB2B705786",
+  "nombre_zh": "双开关插座",
+  "titulo_es": "Toma corriente doble con protección infantil y diseño moderno",
+  "precio": 100.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Toma corriente doble con protección infantil y diseño moderno\n\n📦 Características:\n• 儿童保护\n• 高功率\n• 简洁设计\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以优化为：Toma corriente doble con interruptores modernos y protección infantil，以更符合当地购物习惯。"
+    ],
+    "summary": "商品符合标准，适合上架，仅需微调标题以优化描述。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:11"
+}

@@ -1,0 +1,36 @@
+{
+  "sku": "VB091B7F0D",
+  "nombre_zh": "婚礼相框套装",
+  "titulo_es": "Set de portarretratos / marcos boda 1 set blanco y rojo corazón",
+  "precio": 365,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（599.0），已自动修正为 RD$ 5990",
+    "价格由 AI 从图片识别：RD$ 5990，请在审核台确认"
+  ],
+  "descripcion_es": "Set de portarretratos / marcos boda 1 set blanco y rojo corazón\n\n📦 Características:\n• 一套\n• 白色\n• 红色心形装饰\n• 婚礼主题\n\n💰 Precio: RD$ 5990\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB091B7F0D_original.jpg"
+  ],
+  "precio_candidatos": [
+    599
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品总体符合上架要求，信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:06"
+}

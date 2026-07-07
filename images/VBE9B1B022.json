@@ -1,0 +1,41 @@
+{
+  "sku": "VBE9B1B022",
+  "nombre_zh": "男士延时凝胶",
+  "titulo_es": "Gel retardante masculino 50g / lubricante íntimo",
+  "precio": 160.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Gel retardante masculino 50g / lubricante íntimo\n\n📦 Características:\n• 50g\n• 延时功能\n• 双重金装\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE9B1B022_original.jpg"
+  ],
+  "precio_candidatos": [
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "标签价格可能模糊，需进一步确认",
+      "西语标题略显不自然，可优化"
+    ],
+    "suggestions": [
+      "重新确认标签价格是否清晰为 RD$ 160",
+      "使用更简洁的标题，如 'Gel retardante para hombres - lubricante íntimo 50g'"
+    ],
+    "summary": "商品名称和分类基本正确，白底图符合要求，但标题略显冗长，价格标签可能模糊需人工确认。",
+    "price_check": "unclear",
+    "suggested_titulo_es": "Gel retardante para hombres - lubricante íntimo 50g",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:10"
+}

@@ -1,0 +1,29 @@
+{
+  "sku": "VB22557C84",
+  "nombre_zh": "高质量挂锁",
+  "titulo_es": "Candado / padlock 63mm con llave color dorado",
+  "precio": 160.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Candado / padlock 63mm con llave color dorado\n\n📦 Características:\n• 63mm\n• 带钥匙\n• 金色\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体符合要求，只有少量优化建议。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:43"
+}

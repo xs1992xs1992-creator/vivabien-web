@@ -1,0 +1,30 @@
+{
+  "sku": "VB10720259",
+  "nombre_zh": "金色毛巾环",
+  "titulo_es": "Toallero dorado / gancho redondo para baño con tornillos",
+  "precio": 65.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 65，请在审核台确认"
+  ],
+  "descripcion_es": "Toallero dorado / gancho redondo para baño con tornillos\n\n📦 Características:\n• 金色\n• 圆形\n• 带螺丝\n\n💰 Precio: RD$ 65\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，价格与标签一致，图片清晰。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:18"
+}

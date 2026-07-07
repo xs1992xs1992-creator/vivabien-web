@@ -1,0 +1,39 @@
+{
+  "sku": "VBD2FF2A12",
+  "nombre_zh": "男士剃须刀",
+  "titulo_es": "Rastrillo / afeitadora de hombre 3 hojas con aloe vera",
+  "precio": 100.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Rastrillo / afeitadora de hombre 3 hojas con aloe vera\n\n📦 Características:\n• 韩国制造刀片\n• 三层刀片\n• 润滑芦荟条\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD2FF2A12_original.jpg"
+  ],
+  "precio_candidatos": [
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格识别准确性需确认"
+    ],
+    "suggestions": [
+      "西语标题可以更简洁：改为‘Afeitadora para hombre con 3 hojas y aloe vera’"
+    ],
+    "summary": "商品符合要求，相关信息基本准确，需调整标题和确认价格。",
+    "price_check": "match",
+    "suggested_titulo_es": "Afeitadora para hombre con 3 hojas y aloe vera",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:06"
+}

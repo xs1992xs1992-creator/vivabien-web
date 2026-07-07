@@ -1,0 +1,35 @@
+{
+  "sku": "VBD76C72E5",
+  "nombre_zh": "迷你喷瓶",
+  "titulo_es": "Botellita spray / atomizador mini transparente",
+  "precio": 60.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 60，请在审核台确认"
+  ],
+  "descripcion_es": "Botellita spray / atomizador mini transparente\n\n📦 Características:\n• 透明材质\n• 按压式喷头\n\n💰 Precio: RD$ 60\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD76C72E5_original.jpg"
+  ],
+  "precio_candidatos": [
+    60
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题准确、类目及价格合理，图像符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:21"
+}

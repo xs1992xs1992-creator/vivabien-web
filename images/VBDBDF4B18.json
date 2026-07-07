@@ -1,0 +1,35 @@
+{
+  "sku": "VBDBDF4B18",
+  "nombre_zh": "黑面膜",
+  "titulo_es": "Mascarilla negra / mascarilla facial de frutas blanqueadora",
+  "precio": 230.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 230，请在审核台确认"
+  ],
+  "descripcion_es": "Mascarilla negra / mascarilla facial de frutas blanqueadora\n\n📦 Características:\n• 美白\n• 焕肤\n• 果味\n\n💰 Precio: RD$ 230\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDBDF4B18_original.jpg"
+  ],
+  "precio_candidatos": [
+    230
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架要求，标题准确且类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 230,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:20"
+}

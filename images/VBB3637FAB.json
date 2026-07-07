@@ -1,0 +1,38 @@
+{
+  "sku": "VBB3637FAB",
+  "nombre_zh": "快充数据线",
+  "titulo_es": "Cable de carga rápida Type-C a Type-C 66W",
+  "precio": 145.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 145，请在审核台确认"
+  ],
+  "descripcion_es": "Cable de carga rápida Type-C a Type-C 66W\n\n📦 Características:\n• Type-C to Type-C\n• 66W\n• 快速充电\n• 智能芯片\n\n💰 Precio: RD$ 145\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB3637FAB_original.jpg"
+  ],
+  "precio_candidatos": [
+    145,
+    595
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签核实存在轻微反光，但读数仍然清晰。"
+    ],
+    "suggestions": [],
+    "summary": "商品信息整体准确，价格合理且类目正确，白底图与原图一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:12"
+}

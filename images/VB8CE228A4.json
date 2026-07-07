@@ -1,0 +1,35 @@
+{
+  "sku": "VB8CE228A4",
+  "nombre_zh": "游戏鼠标",
+  "titulo_es": "Mouse gamer / ratón gaming USB LED DPI 1600-3200 4D",
+  "precio": 170.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Mouse gamer / ratón gaming USB LED DPI 1600-3200 4D\n\n📦 Características:\n• 4D\n• DPI 1600/2400/3200\n• LED灯\n• USB接口\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8CE228A4_original.jpg"
+  ],
+  "precio_candidatos": [
+    170
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品逻辑清晰，基本符合上架标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:13"
+}

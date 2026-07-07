@@ -1,0 +1,39 @@
+{
+  "sku": "VB7FF4D3F4",
+  "nombre_zh": "防磨贴片",
+  "titulo_es": "Parche protector / pegatina para rozaduras resistente",
+  "precio": 60.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 60，请在审核台确认"
+  ],
+  "descripcion_es": "Parche protector / pegatina para rozaduras resistente\n\n📦 Características:\n• 高弹性PE泡棉\n• 耐磨舒适\n• 防水防汗\n• 无残留胶\n\n💰 Precio: RD$ 60\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7FF4D3F4_original.jpg"
+  ],
+  "precio_candidatos": [
+    60
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显生硬，可优化"
+    ],
+    "suggestions": [
+      "将标题修改为：Pegatinas resistentes para evitar rozaduras"
+    ],
+    "summary": "商品信息基本完整，对应类目正确，白底图质量良好，但标题可优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Pegatinas resistentes para evitar rozaduras",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:12"
+}

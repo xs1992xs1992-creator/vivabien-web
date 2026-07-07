@@ -1,0 +1,36 @@
+{
+  "sku": "VB0087DE44",
+  "nombre_zh": "金色苹果摆件",
+  "titulo_es": "Adorno cerámico dorado / decoración / pieza única",
+  "precio": 95.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno cerámico dorado / decoración / pieza única\n\n📦 Características:\n• 金色\n• 摆件\n• 陶瓷材质\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB0087DE44_original.jpg"
+  ],
+  "precio_candidatos": [
+    95,
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品质量和展示符合要求，少有问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 95,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:48"
+}

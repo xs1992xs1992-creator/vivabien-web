@@ -1,0 +1,29 @@
+{
+  "sku": "VB227A0888",
+  "nombre_zh": "花园水管",
+  "titulo_es": "Manguera de jardín / tubo de agua 7.5m anti-torceduras",
+  "precio": 495,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 595，请在审核台确认"
+  ],
+  "descripcion_es": "Manguera de jardín / tubo de agua 7.5m anti-torceduras\n\n📦 Características:\n• 7.5米\n• 1/2英寸直径\n• 抗紫外线\n• 防扭结\n• 多用途\n\n💰 Precio: RD$ 595\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合上架要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:50"
+}

@@ -1,0 +1,36 @@
+{
+  "sku": "VB4282B710",
+  "nombre_zh": "开关插座",
+  "titulo_es": "Switch eléctrico con diseño moderno, seguro para niños y alta potencia",
+  "precio": 100,
+  "categoria": "工具五金",
+  "estado": "confirmado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 10，请在审核台确认"
+  ],
+  "descripcion_es": "Switch eléctrico con diseño moderno, seguro para niños y alta potencia\n\n📦 Características:\n• 儿童锁保护\n• 高功率支持\n• 简洁设计\n\n💰 Precio: RD$ 10\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": false,
+    "score": 5,
+    "issues": [
+      "价格不合理，RD$ 10 过低，可能是错误定价。",
+      "西语标题中 'Switch eléctrico con diseño moderno, seguro para niños y alta potencia' 使用 'Switch' 而不是 'Interruptor'，可能不符合多米尼加本地习惯。",
+      "商品归类到 '工具五金' 类目可能需要审慎评估，其主要用途与房屋电器相关。",
+      "第一张图片背景较杂乱，且标签部分有损伤，影响展示效果。"
+    ],
+    "suggestions": [
+      "将西语标题修改为 'Interruptor eléctrico con diseño moderno, seguro para niños y alta potencia'，使其更加本地化。",
+      "检查价格标签并与定价部门确认，建议调整价格至 RD$100-500 之间。",
+      "考虑将商品归类到 '家居装饰 > 电器开关插座'，与实际用途更匹配。",
+      "确保原图标签清晰，避免不必要的质疑；或进一步优化图片质量。"
+    ],
+    "summary": "商品定价、标题翻译、图片质量与类目均存在问题，建议调整后再行上架。",
+    "price_check": "mismatch"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:07"
+}}

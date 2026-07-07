@@ -1,0 +1,37 @@
+{
+  "sku": "VB850AF15D",
+  "nombre_zh": "婴儿舒缓膏",
+  "titulo_es": "Pomada para bebé 50g / crema calmante eucalipto y manzanilla",
+  "precio": 170.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Pomada para bebé 50g / crema calmante eucalipto y manzanilla\n\n📦 Características:\n• 50g\n• 含桉树和洋甘菊香味\n• 适合3个月以上婴儿\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB850AF15D_original.jpg"
+  ],
+  "precio_candidatos": [
+    170
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:15",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "整体符合上架要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:29",
+  "finalized_at": "2026-07-03 21:29"
+}

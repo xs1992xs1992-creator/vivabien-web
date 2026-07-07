@@ -1,0 +1,35 @@
+{
+  "sku": "VB520763B4",
+  "nombre_zh": "玫瑰护肤套装",
+  "titulo_es": "Set de Cuidado Facial 5 Piezas / Hidratante y Iluminador",
+  "precio": 865.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 865，请在审核台确认"
+  ],
+  "descripcion_es": "Set de Cuidado Facial 5 Piezas / Hidratante y Iluminador\n\n📦 Características:\n• 植物基配方\n• 5件套\n• 舒缓保湿\n• 提亮肤色\n\n💰 Precio: RD$ 865\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB520763B4_original.jpg"
+  ],
+  "precio_candidatos": [
+    865
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整、准确，与图片一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:25"
+}

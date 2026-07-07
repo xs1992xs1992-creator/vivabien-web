@@ -1,0 +1,35 @@
+{
+  "sku": "VB4DEB9DF8",
+  "nombre_zh": "按压式美甲",
+  "titulo_es": "Uñas postizas / uñas acrílicas 12 piezas nude gel",
+  "precio": 85.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 85，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / uñas acrílicas 12 piezas nude gel\n\n📦 Características:\n• 12片装\n• 凝胶材质\n• 自然裸色\n\n💰 Precio: RD$ 85\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4DEB9DF8_original.jpg"
+  ],
+  "precio_candidatos": [
+    85
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片匹配，价格准确，标题自然流畅。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:15"
+}

@@ -1,0 +1,41 @@
+{
+  "sku": "VBCB9A2D04",
+  "nombre_zh": "迷你手持风扇",
+  "titulo_es": "Abanico portátil / mini ventilador USB recargable silencioso",
+  "precio": 165.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 145，请在审核台确认",
+    "价格经二次OCR修正：145 → RD$ 165"
+  ],
+  "descripcion_es": "Abanico portátil / mini ventilador USB recargable silencioso\n\n📦 Características:\n• 内置电池\n• 低噪音\n• USB充电\n• 绿色和黄色\n\n💰 Precio: RD$ 165\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBCB9A2D04_original.jpg"
+  ],
+  "precio_candidatos": [
+    145,
+    165
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签稍有瑕疵，但可辨认"
+    ],
+    "suggestions": [
+      "无"
+    ],
+    "summary": "商品基本符合标准，信息正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

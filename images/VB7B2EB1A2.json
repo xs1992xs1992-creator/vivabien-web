@@ -1,0 +1,39 @@
+{
+  "sku": "VB7B2EB1A2",
+  "nombre_zh": "蓝色刷子",
+  "titulo_es": "Cepillo / escobilla azul con mango cómodo para limpieza",
+  "precio": 45.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 45，请在审核台确认"
+  ],
+  "descripcion_es": "Cepillo / escobilla azul con mango cómodo para limpieza\n\n📦 Características:\n• 蓝色\n• 手柄设计\n\n💰 Precio: RD$ 45\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7B2EB1A2_original.jpg"
+  ],
+  "precio_candidatos": [
+    45
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格略低，西语标题稍微可以更优化"
+    ],
+    "suggestions": [
+      "建议提高价格以符合常见区间，标题可简化为更易搜索的内容"
+    ],
+    "summary": "商品整体符合要求，但价格与标题有优化空间。",
+    "price_check": "match",
+    "suggested_titulo_es": "Escobilla azul para limpieza con mango cómodo",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:12"
+}

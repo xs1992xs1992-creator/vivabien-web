@@ -1,0 +1,44 @@
+{
+  "sku": "VBBF2C1663",
+  "nombre_zh": "化妆纸",
+  "titulo_es": "Papel facial / toallitas para maquillaje 100 hojas",
+  "precio": 110,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 145，请在审核台确认"
+  ],
+  "descripcion_es": "Bloques blancos rectangulares\n\n📦 Características:\n• 白色\n• 长方形\n\n💰 Precio: RD$ 145\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBBF2C1663_original.jpg"
+  ],
+  "precio_candidatos": [
+    145
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:13",
+  "review": {
+    "pass": false,
+    "score": 2,
+    "issues": [
+      "商品与西语标题不符，照片中商品不是化妆纸，而是打磨抛光块。",
+      "类目错误，商品应属于美容个护-指甲护理类。",
+      "价格标签上的数字不符合系统识别的 RD$145。"
+    ],
+    "suggestions": [
+      "将西语标题修改为更符合商品实际的描述，例如“Bloque pulidor de uñas / herramienta de manicura”。",
+      "更新系统价格为 RD$35，以匹配标签上的数字。",
+      "调整类目到美容个护，明确是指甲护理工具。"
+    ],
+    "summary": "原商品信息与图片中商品不符，需要更正标题、价格和类目。",
+    "price_check": "mismatch",
+    "suggested_titulo_es": "Bloque pulidor de uñas / herramienta de manicura",
+    "suggested_precio": 35,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:27"
+}

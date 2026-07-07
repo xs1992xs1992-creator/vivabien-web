@@ -1,0 +1,32 @@
+{
+  "sku": "VB0BAA9E6C",
+  "nombre_zh": "六角自攻螺丝",
+  "titulo_es": "Tornillos auto-roscantes 6x60mm cabeza hexagonal",
+  "precio": 35.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 35，请在审核台确认"
+  ],
+  "descripcion_es": "Tornillos auto-roscantes 6x60mm cabeza hexagonal\n\n📦 Características:\n• 6x60mm\n• 外六角头\n• 自攻功能\n\n💰 Precio: RD$ 35\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    35
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合质量要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:51"
+}

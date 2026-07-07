@@ -1,0 +1,27 @@
+{
+  "sku": "VB4E1BDE39",
+  "nombre_zh": "胶原眉定型皂",
+  "titulo_es": "Colágeno pa’ cejas fijas 10g",
+  "precio": 70.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['眉毛定型', '净含量10g']"
+  ],
+  "descripcion_es": "Colágeno pa’ cejas fijas 10g\n\n📦 Características:\n• 眉毛定型\n• 净含量10g\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可稍作优化以更自然：Colágeno para cejas fijas, 10g"
+    ],
+    "summary": "商品描述准确、图片合规，仅建议小幅优化标题。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:08"
+}

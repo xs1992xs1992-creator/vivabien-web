@@ -1,0 +1,34 @@
+{
+  "sku": "VBB8EF11BC",
+  "nombre_zh": "这个是用于这个是睫毛刷",
+  "titulo_es": "Cepillo para pestañas portátil y fácil de usar",
+  "precio": 80.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['美甲工具', '睫毛刷功能', '金属粉工具', '黑色毛刷']"
+  ],
+  "descripcion_es": "Juego de brochas para uñas y metal en polvo\n\n📦 Características:\n• 美甲工具\n• 睫毛刷功能\n• 金属粉工具\n• 黑色毛刷\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": false,
+    "score": 6,
+    "issues": [
+      "西语标题不准确，商品是指甲刷而非睫毛刷",
+      "白底图背景不完全纯白",
+      "商品类别描述不完全准确"
+    ],
+    "suggestions": [
+      "将标题修改为：Cepillo portátil para uñas fácil de usar",
+      "确认背景纯白并去除多余的边缘杂质",
+      "将类目调整为‘美甲工具’更加准确"
+    ],
+    "summary": "商品信息与图片不完全匹配，标题和类目需调整，白底图可优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:02",
+  "review_ignored": true
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VBE4922967",
+  "nombre_zh": "电池充电器",
+  "titulo_es": "Cargador de baterías AA / AAA / 9V NiCd y NiMH",
+  "precio": 280.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 280，请在审核台确认"
+  ],
+  "descripcion_es": "Cargador de baterías AA / AAA / 9V NiCd y NiMH\n\n📦 Características:\n• 适用AA/AAA/9V电池\n• 支持NiCd和NiMH电池\n\n💰 Precio: RD$ 280\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE4922967_original.jpg"
+  ],
+  "precio_candidatos": [
+    280
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，类别和价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:10"
+}

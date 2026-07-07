@@ -1,0 +1,36 @@
+{
+  "sku": "VB78CADD90",
+  "nombre_zh": "祛斑护肤霜",
+  "titulo_es": "Crema para manchas / piel grasa y mixta 100g",
+  "precio": 255.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": true,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 255，请在审核台确认",
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Crema para manchas / piel grasa y mixta 100g\n\n📦 Características:\n• 100g\n• 抗斑\n• 适合油性及混合性皮肤\n\n💰 Precio: RD$ 255\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB78CADD90_original.jpg"
+  ],
+  "precio_candidatos": [
+    255
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:12"
+}

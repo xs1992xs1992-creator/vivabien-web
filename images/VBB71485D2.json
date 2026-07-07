@@ -1,0 +1,37 @@
+{
+  "sku": "VBB71485D2",
+  "nombre_zh": "无线耳机",
+  "titulo_es": "Audífonos inalámbricos / cascos Bluetooth plateados",
+  "precio": 320.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 320，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos inalámbricos / cascos Bluetooth plateados\n\n📦 Características:\n• 一套\n• 银色\n• 头戴式\n\n💰 Precio: RD$ 320\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB71485D2_original.jpg"
+  ],
+  "precio_candidatos": [
+    320
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 10:41",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品审核通过，信息准确且无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:22",
+  "finalized_at": "2026-07-03 13:22"
+}

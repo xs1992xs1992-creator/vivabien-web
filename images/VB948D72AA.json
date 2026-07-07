@@ -1,0 +1,28 @@
+{
+  "sku": "VB948D72AA",
+  "nombre_zh": "DIY时钟套装",
+  "titulo_es": "Reloj DIY para armar con números coloridos y detalles plateados",
+  "precio": 580,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（2164.0），已自动修正为 RD$ 21640",
+    "价格由 AI 从图片识别：RD$ 21640，请在审核台确认",
+    "价格经二次OCR修正：2164 → RD$ 1580"
+  ],
+  "descripcion_es": "Reloj DIY / reloj para armar con números coloridos y manecillas platea\n\n📦 Características:\n• 一套\n• 彩色数字\n• 银色指针\n\n💰 Precio: RD$ 1580\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB948D72AA_original.jpg"
+  ],
+  "precio_candidatos": [
+    2164
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-01 17:37",
+  "review_ignored": false
+}

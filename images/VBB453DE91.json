@@ -1,0 +1,35 @@
+{
+  "sku": "VBB453DE91",
+  "nombre_zh": "按压瓶",
+  "titulo_es": "Pomo / dispensador transparente con tapa negra",
+  "precio": 110.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Pomo / dispensador transparente con tapa negra\n\n📦 Características:\n• 透明材质\n• 黑色按压盖\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB453DE91_original.jpg"
+  ],
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本正确且符合电商平台要求",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:08"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VB214F1056",
+  "nombre_zh": "美白面霜",
+  "titulo_es": "Crema blanqueadora rápida / para aclarar piel 3 días",
+  "precio": 150.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Crema blanqueadora rápida / para aclarar piel 3 días\n\n📦 Características:\n• 快速美白\n• 胶原蛋白\n• 牛奶成分\n• 3天见效\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB214F1056_original.jpg"
+  ],
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:17"
+}

@@ -1,0 +1,36 @@
+{
+  "sku": "VB920CF250",
+  "nombre_zh": "电源变压器",
+  "titulo_es": "Transformador de voltaje 220V a 110V / Regulador eléctrico",
+  "precio": 1200.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1200，请在审核台确认"
+  ],
+  "descripcion_es": "Transformador de voltaje 220V a 110V / Regulador eléctrico\n\n📦 Características:\n• 220V转100V\n• 温控变压器\n• 过载保护\n\n💰 Precio: RD$ 1200\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    1200
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显生硬，可优化以更符合购物习惯"
+    ],
+    "suggestions": [
+      "建议将标题调整为 'Transformador de voltaje 220V a 110V, regulador eléctrico para uso doméstico'"
+    ],
+    "summary": "商品通过审核，标题略可优化，价格合理，图片规范。",
+    "price_check": "match",
+    "suggested_titulo_es": "Transformador de voltaje 220V a 110V, regulador eléctrico para uso doméstico",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:06"
+}

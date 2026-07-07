@@ -1,0 +1,35 @@
+{
+  "sku": "VB427C0990",
+  "nombre_zh": "维C洗面奶",
+  "titulo_es": "Limpiador facial / jabón de cara Vitamina C hidratante antiacné",
+  "precio": 160.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Limpiador facial / jabón de cara Vitamina C hidratante antiacné\n\n📦 Características:\n• 维生素C\n• 玻尿酸\n• 深层清洁\n• 控油\n• 抗痘\n• 保湿\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB427C0990_original.jpg"
+  ],
+  "precio_candidatos": [
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品通过审核，标题准确，价格合理，类目正确，图片清晰且对应同一商品。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:25"
+}

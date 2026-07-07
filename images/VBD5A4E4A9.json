@@ -1,0 +1,35 @@
+{
+  "sku": "VBD5A4E4A9",
+  "nombre_zh": "Type-C耳机",
+  "titulo_es": "Audífonos / auriculares Type-C blanco in-ear estéreo",
+  "precio": 225.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 225，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos / auriculares Type-C blanco in-ear estéreo\n\n📦 Características:\n• Type-C接口\n• 白色\n• 入耳式\n• 立体声\n\n💰 Precio: RD$ 225\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD5A4E4A9_original.jpg"
+  ],
+  "precio_candidatos": [
+    225
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合质检标准，信息完整且价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:11"
+}

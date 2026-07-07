@@ -1,0 +1,32 @@
+{
+  "sku": "VB46625C6D",
+  "nombre_zh": "滚筒刷",
+  "titulo_es": "Rodillo / brocha de pintar con mango azul y rodillo blanco",
+  "precio": 120.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Rodillo / brocha de pintar con mango azul y rodillo blanco\n\n📦 Características:\n• 蓝色手柄\n• 白色滚筒\n• 适用于涂漆\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片符合要求，价格核实一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

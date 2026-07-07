@@ -1,0 +1,36 @@
+{
+  "sku": "VB1D3C5052",
+  "nombre_zh": "锯片",
+  "titulo_es": "Disco de sierra / hoja circular TCT alta calidad",
+  "precio": 125.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Disco de sierra / hoja circular TCT alta calidad\n\n📦 Características:\n• TCT材质\n• 圆形\n• 高质量认证\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    125
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签可读性较弱"
+    ],
+    "suggestions": [
+      "确认图片中价格标签，如必要重新拍摄清晰图像确保标签无误"
+    ],
+    "summary": "商品信息整体良好，图片呈现和类目合理，价格需进一步人工确认。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:23"
+}

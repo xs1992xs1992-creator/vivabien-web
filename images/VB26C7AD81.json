@@ -1,0 +1,28 @@
+{
+  "sku": "VB26C7AD81",
+  "nombre_zh": "开关插座",
+  "titulo_es": "Switch y tomacorriente modernos para tu hogar u oficina",
+  "precio": 50.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 50，请在审核台确认"
+  ],
+  "descripcion_es": "Toma corriente con protector infantil y alta potencia, seguro y confia\n\n📦 Características:\n• 儿童锁保护\n• 高功率\n• 布线结构\n\n💰 Precio: RD$ 50\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以稍微优化为：'Diseño moderno: interruptor y tomacorriente para hogar u oficina'，更加精炼和吸引人。"
+    ],
+    "summary": "商品信息整体准确，图片清晰，符合上架要求。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:15"
+}

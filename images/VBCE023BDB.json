@@ -1,0 +1,23 @@
+{
+  "sku": "VBCE023BDB",
+  "nombre_zh": "巨型木棒（50根）",
+  "titulo_es": "15cm palitos de madera 50 unids pa manualidades",
+  "precio": null,
+  "categoria": "文具办公",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "categoria_es": "Papelería y Oficina",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议将西语标题修改为：Palitos de madera jumbo 50 unidades para manualidades，以使标题更自然并符合当地购物习惯。"
+    ],
+    "summary": "商品标题准确但可优化，类目正确，图片合格。",
+    "price_check": "none"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:01"
+}

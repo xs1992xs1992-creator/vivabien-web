@@ -1,0 +1,27 @@
+{
+  "sku": "VBE8142818",
+  "nombre_zh": "蓝色香氛喷雾",
+  "titulo_es": "Perfume en spray 80ml con tapa metálica y botella azul elegante",
+  "precio": 160,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Perfume en spray 80ml con tapa metálica y botella azul elegante\n\n📦 Características:\n• 80ml\n• 香氛喷雾\n• 蓝色瓶身\n• 金属质感瓶盖\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图中价格标签与系统价格存在不完全清晰的显示。"
+    ],
+    "suggestions": [
+      "西语标题建议修改为“Spray de perfume 80ml con botella azul y tapa brillante”以更符合商品描述习惯。"
+    ],
+    "summary": "商品描述基本准确、图像合规，价格合理，系统记录与产品一致性需进一步确认。",
+    "price_check": "unclear"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:00",
+  "review_ignored": true
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VBBF3882DD",
+  "nombre_zh": "假发胶去除剂",
+  "titulo_es": "Removedor de pegamento para peluca / lace front 30ml",
+  "precio": 140.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 140，请在审核台确认"
+  ],
+  "descripcion_es": "Removedor de pegamento para peluca / lace front 30ml\n\n📦 Características:\n• 30ml\n• 用于假发胶带\n\n💰 Precio: RD$ 140\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBBF3882DD_original.jpg"
+  ],
+  "precio_candidatos": [
+    140
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量好，价格标签与系统记录一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:21"
+}

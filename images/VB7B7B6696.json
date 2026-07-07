@@ -1,0 +1,32 @@
+{
+  "sku": "VB7B7B6696",
+  "nombre_zh": "逆变电焊机",
+  "titulo_es": "Máquina de soldar inversora / soldadora eléctrica 160A",
+  "precio": 7995.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 7995，请在审核台确认"
+  ],
+  "descripcion_es": "Máquina de soldar inversora / soldadora eléctrica 160A\n\n📦 Características:\n• 双电压\n• 20-160A电流范围\n• IGBT技术\n• ISO9001认证\n\n💰 Precio: RD$ 7995\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    7995
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:07"
+}

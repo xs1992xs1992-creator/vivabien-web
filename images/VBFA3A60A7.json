@@ -1,0 +1,41 @@
+{
+  "sku": "VBFA3A60A7",
+  "nombre_zh": "青柠香膏",
+  "titulo_es": "Bálsamo sólido / ungüento sólido olor a limón",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 图片可能拍反，价格从旋转图中识别",
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Bálsamo sólido / ungüento sólido olor a limón\n\n📦 Características:\n• 青柠味\n• 固体\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBFA3A60A7_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-04 10:11",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "标题表达可以优化"
+    ],
+    "suggestions": [
+      "西语标题建议修改为 'Bálsamo sólido con aroma a limón'，以使表达更自然。产品主要功能突出强调'香味'更符合用户习惯。"
+    ],
+    "summary": "商品符合标准，但可稍作优化标题以提升用户体验。",
+    "price_check": "match",
+    "suggested_titulo_es": "Bálsamo sólido con aroma a limón",
+    "suggested_precio": 95,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:15",
+  "finalized_at": "2026-07-04 10:15"
+}

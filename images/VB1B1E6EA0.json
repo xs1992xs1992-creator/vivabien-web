@@ -1,0 +1,36 @@
+{
+  "sku": "VB1B1E6EA0",
+  "nombre_zh": "迷你风扇",
+  "titulo_es": "Mini abanico / ventilador USB recargable portátil de mesa",
+  "precio": 235.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 235，请在审核台确认"
+  ],
+  "descripcion_es": "Mini abanico / ventilador USB recargable portátil de mesa\n\n📦 Características:\n• USB充电\n• 便携\n• 桌面使用\n\n💰 Precio: RD$ 235\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1B1E6EA0_original.jpg"
+  ],
+  "precio_candidatos": [
+    235,
+    225
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，标题与类目皆符合购物习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 235,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:29"
+}

@@ -1,0 +1,40 @@
+{
+  "sku": "VB2299C026",
+  "nombre_zh": "折叠台灯风扇",
+  "titulo_es": "Abanico / lámpara plegable 2 en 1 azul y rosado",
+  "precio": 690,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 690，请在审核台确认",
+    "价格经二次OCR修正：690 → RD$ 400"
+  ],
+  "descripcion_es": "Abanico / lámpara plegable 2 en 1 azul y rosado\n\n📦 Características:\n• 2个\n• 蓝色\n• 粉色\n• 折叠功能\n• 循环风扇\n• 台灯\n\n💰 Precio: RD$ 400\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2299C026_original.jpg"
+  ],
+  "precio_candidatos": [
+    690
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题过于简单，可进一步优化以吸引用户，例如突出'2 en 1'功能。"
+    ],
+    "suggestions": [
+      "建议修改标题为'Abanico y lámpara de mesa plegable 2 en 1 - Azul y Rosado'，更完整地描述商品功能。"
+    ],
+    "summary": "商品信息基本准确，定价合理，但西语标题可优化；查看价格标签与系统价格一致。",
+    "price_check": "match",
+    "suggested_titulo_es": "Abanico y lámpara de mesa plegable 2 en 1 - Azul y Rosado",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:29"
+}

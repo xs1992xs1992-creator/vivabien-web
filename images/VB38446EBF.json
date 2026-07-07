@@ -1,0 +1,35 @@
+{
+  "sku": "VB38446EBF",
+  "nombre_zh": "车载香薰",
+  "titulo_es": "Ambientador para carro / aromatizante 1 unidad jazmín",
+  "precio": 120.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Ambientador para carro / aromatizante 1 unidad jazmín\n\n📦 Características:\n• 1个\n• 绿色绳子\n• 玻璃瓶\n• 茉莉香味\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB38446EBF_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，描述准确，白底图规范，价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:28"
+}

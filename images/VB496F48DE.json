@@ -1,0 +1,37 @@
+{
+  "sku": "VB496F48DE",
+  "nombre_zh": "无线鼠标",
+  "titulo_es": "Mouse inalámbrico / ratón recargable 2.4GHz Bluetooth RGB",
+  "precio": 290.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 290，请在审核台确认"
+  ],
+  "descripcion_es": "Mouse inalámbrico / ratón recargable 2.4GHz Bluetooth RGB\n\n📦 Características:\n• 2.4GHz\n• 5.0蓝牙\n• 1600dpi\n• RGB灯光\n• 可充电\n\n💰 Precio: RD$ 290\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB496F48DE_original.jpg"
+  ],
+  "precio_candidatos": [
+    290
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题准确且自然，无需修改。"
+    ],
+    "summary": "商品信息准确，价格合理，分类正确，图片清晰，问题较少。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 290,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:15"
+}

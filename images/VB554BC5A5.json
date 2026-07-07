@@ -1,0 +1,36 @@
+{
+  "sku": "VB554BC5A5",
+  "nombre_zh": "椰子眼膜",
+  "titulo_es": "Mascarilla / parches de coco para ojos hidratante y antiedad",
+  "precio": 20.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 20，请在审核台确认"
+  ],
+  "descripcion_es": "Mascarilla / parches de coco para ojos hidratante y antiedad\n\n📦 Características:\n• 保湿\n• 眼部护理\n• 平滑眼部肌肤\n\n💰 Precio: RD$ 20\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB554BC5A5_original.jpg"
+  ],
+  "precio_candidatos": [
+    20
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题和分类准确，价格合理，白底图干净，原图和白底图一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:25"
+}

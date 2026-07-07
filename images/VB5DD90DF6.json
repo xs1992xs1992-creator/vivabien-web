@@ -1,0 +1,27 @@
+{
+  "sku": "VB5DD90DF6",
+  "nombre_zh": "闪粉美妆膏",
+  "titulo_es": "✨Maquillaje glitter morado con borde marrón✨",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.60，卖点:['紫色闪粉', '棕色边缘', '透明包装']"
+  ],
+  "descripcion_es": "✨Maquillaje glitter morado con borde marrón✨\n\n📦 Características:\n• 紫色闪粉\n• 棕色边缘\n• 透明包装\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以略微简化为：Maquillaje glitter morado"
+    ],
+    "summary": "商品信息准确，符合要求，图片整洁完整。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:07"
+}

@@ -1,0 +1,27 @@
+{
+  "sku": "VB5DF00545",
+  "nombre_zh": "带梳眉夹",
+  "titulo_es": "Tijera con peine y pinza de cejas, acero inoxidable, mango negro",
+  "precio": 80.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['带梳设计', '不锈钢夹头', '黑色手柄']"
+  ],
+  "descripcion_es": "Tijera con peine y pinza de cejas, acero inoxidable, mango negro\n\n📦 Características:\n• 带梳设计\n• 不锈钢夹头\n• 黑色手柄\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以改为：Pinzas para cejas con peine, acero inoxidable, mango negro，以使标题更简洁自然。"
+    ],
+    "summary": "商品标题自然、图片合规，定价合理，类目正确，符合上架要求。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:07"
+}

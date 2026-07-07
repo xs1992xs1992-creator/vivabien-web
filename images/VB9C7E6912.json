@@ -1,0 +1,32 @@
+{
+  "sku": "VB9C7E6912",
+  "nombre_zh": "临时停车牌",
+  "titulo_es": "Cartel / placa temporal para parqueo negro con números",
+  "precio": 95.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Cartel / placa temporal para parqueo negro con números\n\n📦 Características:\n• 黑色主体\n• 数字显示\n• 用于临时停车\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，类目正确，图片均合格。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:21"
+}

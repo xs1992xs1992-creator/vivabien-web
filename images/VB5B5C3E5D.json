@@ -1,0 +1,27 @@
+{
+  "sku": "VB5B5C3E5D",
+  "nombre_zh": "Catula化妆刷套装",
+  "titulo_es": "Kit de 8 brochas de maquillaje + esponja, mango rosa y dorado",
+  "precio": 130.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['含8支刷子+粉扑', '粉色手柄', '金色刷杆', '专业美妆工具']"
+  ],
+  "descripcion_es": "Kit de 8 brochas de maquillaje + esponja, mango rosa y dorado\n\n📦 Características:\n• 含8支刷子+粉扑\n• 粉色手柄\n• 金色刷杆\n• 专业美妆工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以稍微优化，如：'Set de brochas de maquillaje (8 piezas) + esponja, mango en rosa y dorado'，使描述更具体和流畅。"
+    ],
+    "summary": "商品信息准确，定价合理，图片清晰，类目匹配。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:07"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VB746CD1F7",
+  "nombre_zh": "维C手膜",
+  "titulo_es": "Mascarilla de manos vitamina C / niacinamida hidratante 40g",
+  "precio": 70.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Mascarilla de manos vitamina C / niacinamida hidratante 40g\n\n📦 Características:\n• 维生素C\n• 烟酰胺\n• 保湿\n• 修复\n• 提亮\n• 40g\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB746CD1F7_original.jpg"
+  ],
+  "precio_candidatos": [
+    70
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:24"
+}

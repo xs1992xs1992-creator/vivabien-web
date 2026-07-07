@@ -1,0 +1,35 @@
+{
+  "sku": "VB8FD1C286",
+  "nombre_zh": "维C美白套装",
+  "titulo_es": "Set blanqueador de piel / Kit cuidado facial con ácido hialurónico",
+  "precio": 425.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 425，请在审核台确认"
+  ],
+  "descripcion_es": "Set blanqueador de piel / Kit cuidado facial con ácido hialurónico\n\n📦 Características:\n• 美白\n• 亮肤\n• 含玻尿酸\n• 三件套\n\n💰 Precio: RD$ 425\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8FD1C286_original.jpg"
+  ],
+  "precio_candidatos": [
+    425
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确无误，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:22"
+}

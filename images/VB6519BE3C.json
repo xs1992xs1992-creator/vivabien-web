@@ -1,0 +1,29 @@
+{
+  "sku": "VB6519BE3C",
+  "nombre_zh": "家用延长线",
+  "titulo_es": "Regleta / extensión eléctrica negra 30 pies con tapa segura",
+  "precio": 215,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 33，请在审核台确认"
+  ],
+  "descripcion_es": "Regleta / extensión eléctrica negra 30 pies con tapa segura\n\n📦 Características:\n• 30英尺\n• 黑色\n• 带安全盖\n\n💰 Precio: RD$ 33\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:53"
+}

@@ -1,0 +1,37 @@
+{
+  "sku": "VB7E0F7EE2",
+  "nombre_zh": "硬蜡豆",
+  "titulo_es": "Cera depilatoria / cera brasilera roja 300g para cuerpo y cara",
+  "precio": 220.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 220，请在审核台确认"
+  ],
+  "descripcion_es": "Cera depilatoria / cera brasilera roja 300g para cuerpo y cara\n\n📦 Características:\n• 300g\n• 红色\n• 适用于脸部和身体\n• 巴西蜡\n\n💰 Precio: RD$ 220\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7E0F7EE2_original.jpg"
+  ],
+  "precio_candidatos": [
+    220
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:15",
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息符合要求，图片和描述均无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:29",
+  "finalized_at": "2026-07-03 21:29"
+}

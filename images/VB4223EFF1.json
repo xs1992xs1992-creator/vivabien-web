@@ -1,0 +1,29 @@
+{
+  "sku": "VB4223EFF1",
+  "nombre_zh": "不锈钢铰链",
+  "titulo_es": "Bisagra / gozne / pernio de acero inoxidable 4x3x2.5",
+  "precio": 190.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 190，请在审核台确认"
+  ],
+  "descripcion_es": "Bisagra / gozne / pernio de acero inoxidable 4x3x2.5\n\n📦 Características:\n• 不锈钢材质\n• 尺寸4x3x2.5\n• 高质量\n\n💰 Precio: RD$ 190\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整且符合多米尼加市场习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:43"
+}

@@ -1,0 +1,40 @@
+{
+  "sku": "VB4DF173C7",
+  "nombre_zh": "充电电池",
+  "titulo_es": "Baterías recargables AAA / pila Ni-MH 2800mAh 1.2V 2 unidades",
+  "precio": 145.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 145，请在审核台确认"
+  ],
+  "descripcion_es": "Baterías recargables AAA / pila Ni-MH 2800mAh 1.2V 2 unidades\n\n📦 Características:\n• 2节\n• 2800mAh\n• Ni-MH\n• AAA1.2V\n\n💰 Precio: RD$ 145\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4DF173C7_original.jpg"
+  ],
+  "precio_candidatos": [
+    145
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签清晰，但需重新确认是否准确",
+      "西语标题语法稍显冗余，可优化"
+    ],
+    "suggestions": [
+      "建议移除标题中的多余空格，简化为‘Baterías recargables AAA Ni-MH 2800 mAh 1.2V (Pack de 2)’"
+    ],
+    "summary": "商品信息清晰，图片处理较好；价格合理，但标题需稍作调整。",
+    "price_check": "match",
+    "suggested_titulo_es": "Baterías recargables AAA Ni-MH 2800 mAh 1.2V (Pack de 2)",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:15"
+}

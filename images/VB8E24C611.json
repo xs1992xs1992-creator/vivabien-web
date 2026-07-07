@@ -1,0 +1,33 @@
+{
+  "sku": "VB8E24C611",
+  "nombre_zh": "手持花洒",
+  "titulo_es": "Ducha de mano / regadera portátil azul con manguera metálica",
+  "precio": 230.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 230，请在审核台确认"
+  ],
+  "descripcion_es": "Ducha de mano / regadera portátil azul con manguera metálica\n\n📦 Características:\n• 蓝色喷头\n• 金属软管\n• 多孔设计\n\n💰 Precio: RD$ 230\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图价格标签可能导致误读，应更清晰标注"
+    ],
+    "suggestions": [
+      "价格标签可选择更显眼的红底白字使其更容易被阅读"
+    ],
+    "summary": "商品信息总体符合要求，标题准确，价格合理，图片质量好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "浴室卫浴"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:21"
+}

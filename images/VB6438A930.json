@@ -1,0 +1,37 @@
+{
+  "sku": "VB6438A930",
+  "nombre_zh": "双头燃气灶",
+  "titulo_es": "Estufa de gas / fogón de mesa 2 quemadores vidrio negro-rojo",
+  "precio": 2210,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1210，请在审核台确认"
+  ],
+  "descripcion_es": "Estufa de gas / fogón de mesa 2 quemadores vidrio negro-rojo\n\n📦 Características:\n• 2个炉头\n• 玻璃面板\n• 黑红配色\n\n💰 Precio: RD$ 1210\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6438A930_original.jpg"
+  ],
+  "precio_candidatos": [
+    1210
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:03",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，标题、价格和图片均合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:05",
+  "finalized_at": "2026-07-03 21:05"
+}

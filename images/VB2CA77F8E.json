@@ -1,0 +1,34 @@
+{
+  "sku": "VB2CA77F8E",
+  "nombre_zh": "重型轮胎修理工具",
+  "titulo_es": "Kit de herramientas metálicas para gomas / neumáticos",
+  "precio": 245.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 245，请在审核台确认"
+  ],
+  "descripcion_es": "Kit de herramientas metálicas para gomas / neumáticos\n\n📦 Características:\n• 金属材质\n• 包含多种工具\n• 适用于轮胎修理\n\n💰 Precio: RD$ 245\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    245,
+    245
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格和类目合理，图片清晰，标题无问题，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

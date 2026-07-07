@@ -1,0 +1,35 @@
+{
+  "sku": "VB3190E6BF",
+  "nombre_zh": "经典香水书假书",
+  "titulo_es": "Caja secreta / libro falso diseño perfume clásico",
+  "precio": 130.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Perfume en forma de libro / fragancia diseño original\n\n📦 Características:\n• 封面设计\n• 精装\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3190E6BF_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合所有要求，信息准确无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:05"
+}

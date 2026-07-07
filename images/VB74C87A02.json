@@ -1,0 +1,37 @@
+{
+  "sku": "VB74C87A02",
+  "nombre_zh": "细头画笔",
+  "titulo_es": "Pincel fino / brocha para detalles con mango transparente",
+  "precio": 100.0,
+  "categoria": "文具办公",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Pincel fino / brocha para detalles con mango transparente\n\n📦 Características:\n• 透明手柄\n• 细尖笔头\n• 适合精细绘画\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB74C87A02_original.jpg"
+  ],
+  "precio_candidatos": [
+    100,
+    170,
+    200
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体合格，但推荐优化西语标题。",
+    "price_check": "match",
+    "suggested_titulo_es": "Pincel fino para detalles con mango transparente",
+    "suggested_precio": null,
+    "suggested_categoria": "文具办公"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:13"
+}

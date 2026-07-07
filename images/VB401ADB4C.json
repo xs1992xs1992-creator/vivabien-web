@@ -1,0 +1,38 @@
+{
+  "sku": "VB401ADB4C",
+  "nombre_zh": "婴儿爽身粉",
+  "titulo_es": "Talco para bebé / polvo corporal 16oz 400g con vitamina E",
+  "precio": 155.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 155，请在审核台确认"
+  ],
+  "descripcion_es": "Talco para bebé / polvo corporal 16oz 400g con vitamina E\n\n📦 Características:\n• 16oz\n• 400g\n• 含维生素E\n\n💰 Precio: RD$ 155\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB401ADB4C_original.jpg"
+  ],
+  "precio_candidatos": [
+    155,
+    255
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:18",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本正确，定价合理，各项符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "母婴用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:31",
+  "finalized_at": "2026-07-03 21:31"
+}

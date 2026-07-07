@@ -1,0 +1,37 @@
+{
+  "sku": "VB56570385",
+  "nombre_zh": "大容量空气炸锅",
+  "titulo_es": "Freidora de aire / air fryer 6L 2400W pantalla táctil LCD",
+  "precio": 3060,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认"
+  ],
+  "descripcion_es": "Freidora de aire / air fryer 6L 2400W pantalla táctil LCD\n\n📦 Características:\n• 2400W\n• 6L\n• LCD触控\n• 德国技术\n\n💰 Precio: RD$ 350\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB56570385_original.jpg"
+  ],
+  "precio_candidatos": [
+    350
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 22:03",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题、类目和价格均合理，图片质量符合要求，建议上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:16",
+  "finalized_at": "2026-07-04 10:16"
+}

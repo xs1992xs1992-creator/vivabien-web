@@ -1,0 +1,32 @@
+{
+  "sku": "VBD4345EA8",
+  "nombre_zh": "电烙铁",
+  "titulo_es": "Soldador eléctrico / cautín con mango de madera",
+  "precio": 350.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认"
+  ],
+  "descripcion_es": "Soldador eléctrico / cautín con mango de madera\n\n📦 Características:\n• 木质手柄\n• 电源线\n• 金属加热头\n\n💰 Precio: RD$ 350\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    350
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰并符合质量要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:20"
+}

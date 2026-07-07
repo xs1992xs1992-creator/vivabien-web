@@ -1,0 +1,29 @@
+{
+  "sku": "VB2B8FE70F",
+  "nombre_zh": "门锁套装",
+  "titulo_es": "Cerradura / cerrojo de puerta plateada 3 llaves 20 años",
+  "precio": 280.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 280，请在审核台确认"
+  ],
+  "descripcion_es": "Cerradura / cerrojo de puerta plateada 3 llaves 20 años\n\n📦 Características:\n• 银色\n• 包含3把钥匙\n• 适用门厚35-45mm\n• 20年质保\n\n💰 Precio: RD$ 280\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体通过审核，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:43"
+}

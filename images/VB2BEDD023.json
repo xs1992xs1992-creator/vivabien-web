@@ -1,0 +1,42 @@
+{
+  "sku": "VB2BEDD023",
+  "nombre_zh": "姜黄美白乳",
+  "titulo_es": "Crema blanqueadora / antiarrugas 500ml aclarado piel",
+  "precio": 260.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 260，请在审核台确认"
+  ],
+  "descripcion_es": "Crema blanqueadora / antiarrugas 500ml aclarado piel\n\n📦 Características:\n• 500ml\n• 美白\n• 抗皱\n• 提亮肤色\n• 抗黑斑\n\n💰 Precio: RD$ 260\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2BEDD023_original.jpg"
+  ],
+  "precio_candidatos": [
+    260
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签稍有反光",
+      "西语标题稍显简略，可优化"
+    ],
+    "suggestions": [
+      "优化标题为更具体的描述，例如：Crema de aclarado de piel con jengibre antiarrugas 500ml",
+      "价格标签稍微模糊但基本可以判断为RD$ 260"
+    ],
+    "summary": "商品图片清晰准确，类别、价格合理，白底图优质，可上线。",
+    "price_check": "match",
+    "suggested_titulo_es": "Crema de aclarado de piel con jengibre antiarrugas 500ml",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:26"
+}

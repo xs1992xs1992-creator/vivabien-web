@@ -1,0 +1,37 @@
+{
+  "sku": "VBC8404A23",
+  "nombre_zh": "早餐机",
+  "titulo_es": "Máquina de desayuno / sandwichera / horno 1200W",
+  "precio": 1150,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Máquina de desayuno / sandwichera / horno 1200W\n\n📦 Características:\n• 1200W\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC8404A23_original.jpg"
+  ],
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:04",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，标题准确、价格合理、类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:05",
+  "finalized_at": "2026-07-03 21:05"
+}

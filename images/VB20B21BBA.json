@@ -1,0 +1,35 @@
+{
+  "sku": "VB20B21BBA",
+  "nombre_zh": "芦荟橄榄沐浴露",
+  "titulo_es": "Gel de baño / Jabón líquido 750ml aloe y aceite de oliva",
+  "precio": 175.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Gel de baño / Jabón líquido 750ml aloe y aceite de oliva\n\n📦 Características:\n• 750ml\n• 保湿效果\n• 含芦荟和橄榄油\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB20B21BBA_original.jpg"
+  ],
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确完整，所有审核项均符合标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:17"
+}

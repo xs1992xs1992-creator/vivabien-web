@@ -1,0 +1,33 @@
+{
+  "sku": "VB0B978B09",
+  "nombre_zh": "门栓锁",
+  "titulo_es": "Pestillo / cerrojo metálico 60mm con tornillos",
+  "precio": 65.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 65，请在审核台确认"
+  ],
+  "descripcion_es": "Pestillo / cerrojo metálico 60mm con tornillos\n\n📦 Características:\n• 60mm\n• 金属材质\n• 附带螺丝\n\n💰 Precio: RD$ 65\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题可以更加简洁"
+    ],
+    "suggestions": [
+      "将西语标题修改为更简洁的描述：Pestillo metálico 60mm con tornillos"
+    ],
+    "summary": "商品符合标准，但标题建议优化为更简洁版本。",
+    "price_check": "match",
+    "suggested_titulo_es": "Pestillo metálico 60mm con tornillos",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:54"
+}

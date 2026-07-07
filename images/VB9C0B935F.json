@@ -1,0 +1,35 @@
+{
+  "sku": "VB9C0B935F",
+  "nombre_zh": "女士剃须刀",
+  "titulo_es": "Afeitadora / rasuradora femenina 3 hojas para piel sensible",
+  "precio": 85.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 85，请在审核台确认"
+  ],
+  "descripcion_es": "Afeitadora / rasuradora femenina 3 hojas para piel sensible\n\n📦 Características:\n• 3刀片\n• 敏感肌适用\n• 粉色\n• 带旋转头\n\n💰 Precio: RD$ 85\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9C0B935F_original.jpg"
+  ],
+  "precio_candidatos": [
+    85
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，价格合理，类目与描述均正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:09"
+}

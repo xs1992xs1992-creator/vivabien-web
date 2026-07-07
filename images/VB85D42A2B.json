@@ -1,0 +1,42 @@
+{
+  "sku": "VB85D42A2B",
+  "nombre_zh": "双槽烤面包机",
+  "titulo_es": "Tostadora / máquina de pan 2 rebanadas 650W fácil limpiar",
+  "precio": 925.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": true,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 925，请在审核台确认",
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Tostadora / máquina de pan 2 rebanadas 650W fácil limpiar\n\n📦 Características:\n• 2片\n• 650W\n• 易清洁\n• 卡槽设计\n• 快速省时\n\n💰 Precio: RD$ 925\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB85D42A2B_original.jpg"
+  ],
+  "precio_candidatos": [
+    925
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:48",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "西语标题可优化"
+    ],
+    "suggestions": [
+      "建议修改标题为 'Tostadora eléctrica de 2 rebanadas, 650W, fácil de limpiar'，以确保更符合多米尼加消费者习惯。"
+    ],
+    "summary": "商品通过审核，标题建议优化，价格和类目合理。",
+    "price_check": "match",
+    "suggested_titulo_es": "Tostadora eléctrica de 2 rebanadas, 650W, fácil de limpiar",
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:04",
+  "finalized_at": "2026-07-03 14:04"
+}

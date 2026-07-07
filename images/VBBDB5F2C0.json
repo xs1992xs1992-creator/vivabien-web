@@ -1,0 +1,36 @@
+{
+  "sku": "VBBDB5F2C0",
+  "nombre_zh": "闪粉假指甲",
+  "titulo_es": "Uñas postizas / uñas acrílicas largas rosadas con brillo 12 piezas",
+  "precio": 70.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / uñas acrílicas largas rosadas con brillo 12 piezas\n\n📦 Características:\n• 12片装\n• 粉色闪粉\n• 长形设计\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBBDB5F2C0_original.jpg"
+  ],
+  "precio_candidatos": [
+    70,
+    50
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片均符合电商规则，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:08"
+}

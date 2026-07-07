@@ -1,0 +1,27 @@
+{
+  "sku": "VBD83F7D8E",
+  "nombre_zh": "蚕丝嫁接睫毛",
+  "titulo_es": "Pestañas postizas 14mm 0.10 C curly 12 filas",
+  "precio": 145.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['14mm长度', '0.10C卷度', '12行']"
+  ],
+  "descripcion_es": "Pestañas postizas 14mm 0.10 C curly 12 filas\n\n📦 Características:\n• 14mm长度\n• 0.10C卷度\n• 12行\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以保留，但若需要更贴合本地建议改为：Extensiones de pestañas de seda 14mm, 0.10C, 12 hileras"
+    ],
+    "summary": "商品信息整体准确，图片合规，价格合理。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:00"
+}

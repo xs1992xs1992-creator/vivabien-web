@@ -1,0 +1,36 @@
+{
+  "sku": "VB9DCA75D1",
+  "nombre_zh": "按摩器",
+  "titulo_es": "Masajeador / máquina de masajes vibratoria marrón",
+  "precio": 390.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 390，请在审核台确认"
+  ],
+  "descripcion_es": "Masajeador / máquina de masajes vibratoria marrón\n\n📦 Características:\n• 棕色包装\n• 振动功能\n\n💰 Precio: RD$ 390\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9DCA75D1_original.jpg"
+  ],
+  "precio_candidatos": [
+    390
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，图片符合平台要求，价格合理，白底图和原图对应。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "情趣用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:36"
+}

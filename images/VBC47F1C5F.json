@@ -1,0 +1,37 @@
+{
+  "sku": "VBC47F1C5F",
+  "nombre_zh": "无线鼠标",
+  "titulo_es": "Mouse inalámbrico / ratón inalámbrico 1 unidad modelo M36 colores arco",
+  "precio": 100.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（1.0），已自动修正为 RD$ 10",
+    "价格由 AI 从图片识别：RD$ 10，请在审核台确认",
+    "价格经二次OCR修正：1 → RD$ 100"
+  ],
+  "descripcion_es": "Mouse inalámbrico / ratón inalámbrico 1 unidad modelo M36 colores arco\n\n📦 Características:\n• 1个\n• 彩虹色\n• 型号M36\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC47F1C5F_original.jpg"
+  ],
+  "precio_candidatos": [
+    1
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，分类正确，图片符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:11"
+}

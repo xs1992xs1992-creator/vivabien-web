@@ -1,0 +1,36 @@
+{
+  "sku": "VB59CBB6CD",
+  "nombre_zh": "玫瑰果皂",
+  "titulo_es": "Jabón de rosa mosqueta / jabón corporal 11oz para piel dañada",
+  "precio": 115.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 115，请在审核台确认"
+  ],
+  "descripcion_es": "Jabón de rosa mosqueta / jabón corporal 11oz para piel dañada\n\n📦 Características:\n• 玫瑰果成分\n• 适合受损肌肤\n• 手部和身体使用\n• 容量11盎司\n\n💰 Precio: RD$ 115\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB59CBB6CD_original.jpg"
+  ],
+  "precio_candidatos": [
+    115
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合多数审核标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:14"
+}

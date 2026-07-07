@@ -1,0 +1,40 @@
+{
+  "sku": "VB75EE33E9",
+  "nombre_zh": "银色树形摆件",
+  "titulo_es": "Adorno metálico plateado en forma de árbol",
+  "precio": 120,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认",
+    "价格经二次OCR修正：120 → RD$ 20"
+  ],
+  "descripcion_es": "Adorno metálico plateado en forma de árbol\n\n📦 Características:\n• 银色\n• 金属材质\n\n💰 Precio: RD$ 20\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB75EE33E9_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "无明显问题，商品信息整体准确"
+    ],
+    "suggestions": [
+      "无需修改"
+    ],
+    "summary": "商品描述准确，图片和信息一致，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:41"
+}

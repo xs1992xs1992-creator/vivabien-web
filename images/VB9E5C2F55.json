@@ -1,0 +1,35 @@
+{
+  "sku": "VB9E5C2F55",
+  "nombre_zh": "美国牛仔书假书",
+  "titulo_es": "Set de libros decorativos estilo vintage / libros falsos.",
+  "precio": 130.0,
+  "categoria": "文具办公",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Cuaderno vaquero diseño blanco y negro\n\n📦 Características:\n• 黑白封面\n• 骑马图案\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9E5C2F55_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品审核通过，信息清晰准确，标签与系统价格一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "文具办公"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:01"
+}

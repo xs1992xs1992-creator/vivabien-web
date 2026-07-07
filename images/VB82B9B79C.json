@@ -1,0 +1,23 @@
+{
+  "sku": "VB82B9B79C",
+  "nombre_zh": "29cm",
+  "titulo_es": "Frasco de vidrio transparente 29cm con tapa metálica",
+  "precio": 350.0,
+  "categoria": "家居装饰",
+  "estado": "pendiente",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认"
+  ],
+  "descripcion_es": "Frasco de vidrio transparente 29cm con tapa metálica\n\n📦 Características:\n• 1个\n• 透明玻璃\n• 金属盖\n\n💰 Precio: RD$ 350\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB82B9B79C_original.jpg"
+  ],
+  "precio_candidatos": [
+    350
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "planta"
+}

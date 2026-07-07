@@ -1,0 +1,35 @@
+{
+  "sku": "VBA8EE2B9C",
+  "nombre_zh": "蓝莓眼膜",
+  "titulo_es": "Parches de ojos / mascarilla con arándanos para ojeras",
+  "precio": 20.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 20，请在审核台确认"
+  ],
+  "descripcion_es": "Parches de ojos / mascarilla con arándanos para ojeras\n\n📦 Características:\n• 蓝莓成分\n• 保湿\n• 淡化黑眼圈\n\n💰 Precio: RD$ 20\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBA8EE2B9C_original.jpg"
+  ],
+  "precio_candidatos": [
+    20
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息总体准确，标题、价格、类目等均符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:22"
+}

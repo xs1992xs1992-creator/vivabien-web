@@ -1,0 +1,39 @@
+{
+  "sku": "VBEBB61CA4",
+  "nombre_zh": "金刚石切割片",
+  "titulo_es": "Disco de corte / amoladora 115mm profesional diamantado",
+  "precio": 50.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 50，请在审核台确认"
+  ],
+  "descripcion_es": "Disco de corte / amoladora 115mm profesional diamantado\n\n📦 Características:\n• 115mm\n• 专业级\n• 金刚石材质\n\n💰 Precio: RD$ 50\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    50
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "无明显问题，但建议优化标题以更说明用途"
+    ],
+    "suggestions": [
+      "西语标题建议增加具体用途，如 'Disco de corte para concreto y granito 115mm - profesional diamantado'，更清晰地描述切割片的使用范围。",
+      "价格 RD$50 在工具五金品类中较低，合理且应保留不变。",
+      "检查商品系统描述及实际用途确保与标题的细节保持一致。"
+    ],
+    "summary": "商品整体通过审核，标题略显普通，建议优化以提高对目标用途的描述。",
+    "price_check": "match",
+    "suggested_titulo_es": "Disco de corte para concreto y granito 115mm - profesional diamantado",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:19"
+}

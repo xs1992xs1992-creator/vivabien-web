@@ -1,0 +1,28 @@
+{
+  "sku": "VB9E0784C9",
+  "nombre_zh": "墙壁插座",
+  "titulo_es": "Toma corriente blanco de pared, diseño empotrado con un solo enchufe",
+  "precio": 70.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Toma corriente blanco de pared, diseño empotrado con un solo enchufe\n\n📦 Características:\n• 白色\n• 单插口\n• 嵌入式设计\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可优化为：“Toma corriente de pared blanco, un solo enchufe empotrado”"
+    ],
+    "summary": "商品信息准确，图片质量高，适合上架。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:54"
+}

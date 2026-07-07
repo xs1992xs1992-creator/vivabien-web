@@ -1,0 +1,40 @@
+{
+  "sku": "VBE756C856",
+  "nombre_zh": "香薰",
+  "titulo_es": "Difusor de aromas / aromatizador eléctrico",
+  "precio": 225,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 225，请在审核台确认",
+    "价格经二次OCR修正：225 → RD$ 220"
+  ],
+  "descripcion_es": "Difusor de aroma / frasco aromático 50ml con palitos y flores\n\n📦 Características:\n• 50ml\n• 花形装饰\n• 香薰棒\n\n💰 Precio: RD$ 220\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE756C856_original.jpg"
+  ],
+  "precio_candidatos": [
+    225,
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-03 21:20",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，质量合格，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 225,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:25",
+  "finalized_at": "2026-07-03 21:25"
+}

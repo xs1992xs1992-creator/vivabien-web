@@ -1,0 +1,33 @@
+{
+  "sku": "VB6AEFAC7C",
+  "nombre_zh": "珍珠面膜",
+  "titulo_es": "Mascarilla facial / mascarilla hidratante de perlas 23ml",
+  "precio": 50,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Mascarilla facial / mascarilla hidratante de perlas 23ml\n\n📦 Características:\n• 23ml\n• 含珍珠提取物\n• 滋润肌肤\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6AEFAC7C_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图中无价格标签，无法核实是否与系统价格一致"
+    ],
+    "suggestions": [
+      "在商品标题中加入额外强调，如 'Mascarilla facial hidratante con extracto de perlas'（珍珠提取物保湿面膜），以更清晰表达产品功能"
+    ],
+    "summary": "商品整体符合要求，标题自然，价格和品类合理，但价格标签无法核实。",
+    "price_check": "none",
+    "suggested_titulo_es": "Mascarilla facial hidratante con extracto de perlas 23ml",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:24"
+}

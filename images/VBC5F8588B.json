@@ -1,0 +1,35 @@
+{
+  "sku": "VBC5F8588B",
+  "nombre_zh": "小刷子",
+  "titulo_es": "Cepillito / brocha pequeña blanca de plástico",
+  "precio": 40.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 40，请在审核台确认"
+  ],
+  "descripcion_es": "Cepillito / brocha pequeña blanca de plástico\n\n📦 Características:\n• 白色\n• 塑料材质\n• 细毛刷\n\n💰 Precio: RD$ 40\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC5F8588B_original.jpg"
+  ],
+  "precio_candidatos": [
+    40
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片符合要求，基本无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:07"
+}

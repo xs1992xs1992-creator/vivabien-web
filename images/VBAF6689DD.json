@@ -1,0 +1,36 @@
+{
+  "sku": "VBAF6689DD",
+  "nombre_zh": "螺丝刀套装",
+  "titulo_es": "Juego de destornilladores / desarmadores con caja transparente",
+  "precio": 150.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Juego de destornilladores / desarmadores con caja transparente\n\n📦 Características:\n• 多规格螺丝头\n• 透明收纳盒\n• 手柄设计\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格合理性需进一步确认"
+    ],
+    "suggestions": [
+      "价格可能稍低，建议核对成本与销售政策"
+    ],
+    "summary": "商品质量整体较好，标题自然准确，类目和对应商品一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:05"
+}

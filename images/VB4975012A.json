@@ -1,0 +1,29 @@
+{
+  "sku": "VB4975012A",
+  "nombre_zh": "简约挂钟",
+  "titulo_es": "Reloj de pared / reloj colgante gris redondo de vidrio",
+  "precio": 290,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Reloj de pared / reloj colgante gris redondo de vidrio\n\n📦 Características:\n• 1个\n• 灰色\n• 圆形\n• 玻璃材质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4975012A_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合标准，图片清晰，标题自然，价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:05"
+}

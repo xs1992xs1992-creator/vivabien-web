@@ -1,0 +1,37 @@
+{
+  "sku": "VB542AB0A8",
+  "nombre_zh": "数字万用表",
+  "titulo_es": "Multímetro digital amarillo multifuncional con cables de prueba inclui",
+  "precio": 3.4,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 3，请在审核台确认"
+  ],
+  "descripcion_es": "Multímetro digital amarillo multifuncional con cables de prueba inclui\n\n📦 Características:\n• 黄色外壳\n• 多功能测量\n• 附带测试线\n\n💰 Precio: RD$ 3\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": true,
+  "review": {
+    "pass": false,
+    "score": 7,
+    "issues": [
+      "原图中价格标签显示为$3.40，与系统价格RD$ 3不一致。",
+      "西语标题中未强调功能或特性，缺乏吸引力。",
+      "价格过低，可能是标注或系统错误。",
+      "原图和白底图对应同一商品，但需进一步确认价格问题。"
+    ],
+    "suggestions": [
+      "修改标题为：Multímetro digital multifuncional amarillo con cables de prueba incluidos para medir corriente, voltaje y resistencia。",
+      "检查商品标价是否存在输入错误，并与供应商确认最终定价。",
+      "建议类目的细化，以便提高用户定位准确性。",
+      "白底图背景符合要求，保持清洁完整。",
+      "调整价格标签或系统标注以确保一致性。"
+    ],
+    "summary": "商品质检不通过，主要问题在于价格标签与系统记录不一致，标题和类目需进一步优化。",
+    "price_check": "mismatch"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:07"
+}

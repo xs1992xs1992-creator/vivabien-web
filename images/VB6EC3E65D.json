@@ -1,0 +1,36 @@
+{
+  "sku": "VB6EC3E65D",
+  "nombre_zh": "硅胶密封胶",
+  "titulo_es": "Silicón transparente / pega selladora 35g resistente al agua",
+  "precio": 75.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 75，请在审核台确认"
+  ],
+  "descripcion_es": "Silicón transparente / pega selladora 35g resistente al agua\n\n📦 Características:\n• 35g\n• 透明\n• 耐UV\n• 防水\n• 内外通用\n\n💰 Precio: RD$ 75\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    75
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "Original price needs validation"
+    ],
+    "suggestions": [
+      "Consider verifying the price with a clearer image if possible."
+    ],
+    "summary": "The product meets listing requirements but relies on price confirmation.",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 75,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:21"
+}

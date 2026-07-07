@@ -1,0 +1,32 @@
+{
+  "sku": "VB1D9B4E7C",
+  "nombre_zh": "多功能胶带",
+  "titulo_es": "Cinta mágica / adhesiva reutilizable y lavable",
+  "precio": 110.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta mágica / adhesiva reutilizable y lavable\n\n📦 Características:\n• 可重复使用\n• 可移除\n• 可清洗\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片审核通过，所有内容均符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

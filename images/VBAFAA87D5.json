@@ -1,0 +1,35 @@
+{
+  "sku": "VBAFAA87D5",
+  "nombre_zh": "血橙面膜",
+  "titulo_es": "Mascarilla facial hidratante de colágeno / mascarilla de naranja",
+  "precio": 45.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 45，请在审核台确认"
+  ],
+  "descripcion_es": "Mascarilla facial hidratante de colágeno / mascarilla de naranja\n\n📦 Características:\n• 补水\n• 含胶原蛋白\n• 23ml\n\n💰 Precio: RD$ 45\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBAFAA87D5_original.jpg"
+  ],
+  "precio_candidatos": [
+    45
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息符合要求，且图片质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:22"
+}

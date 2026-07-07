@@ -1,0 +1,28 @@
+{
+  "sku": "VBD4AE47DF",
+  "nombre_zh": "开关插座",
+  "titulo_es": "Switch eléctrico con enchufe y protección infantil, alta potencia",
+  "precio": 105.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 105，请在审核台确认"
+  ],
+  "descripcion_es": "Switch eléctrico con enchufe y protección infantil, alta potencia\n\n📦 Características:\n• 儿童锁保护\n• 高功率\n\n💰 Precio: RD$ 105\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题已基本准确，但可优化为“Interruptor eléctrico con enchufe y protección infantil, alta potencia”，让表述更加符合当地表达习惯。"
+    ],
+    "summary": "商品符合上架要求，信息准确，但标题可进行轻微优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:54"
+}

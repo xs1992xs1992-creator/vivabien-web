@@ -1,0 +1,36 @@
+{
+  "sku": "VB76BFA9B2",
+  "nombre_zh": "指甲胶水",
+  "titulo_es": "Pegamento para uñas / goma transparente rápida",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Pegamento para uñas / goma transparente rápida\n\n📦 Características:\n• 透明瓶装\n• 快速粘合\n• 适用于指甲\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB76BFA9B2_original.jpg"
+  ],
+  "precio_candidatos": [
+    95,
+    85
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，类目正确，对应图片一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:12"
+}

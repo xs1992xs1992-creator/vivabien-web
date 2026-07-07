@@ -1,0 +1,24 @@
+{
+  "sku": "VB6AEE6CDB",
+  "nombre_zh": "38cm 1995",
+  "titulo_es": "Florero / Jarrón cerámico blanco con detalles dorados 38cm",
+  "precio": 1995.0,
+  "categoria": "家居装饰",
+  "estado": "pendiente",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1995，请在审核台确认"
+  ],
+  "descripcion_es": "Florero / Jarrón cerámico blanco con detalles dorados 38cm\n\n📦 Características:\n• 白色\n• 金色装饰\n• 陶瓷材质\n\n💰 Precio: RD$ 1995\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6AEE6CDB_original.jpg"
+  ],
+  "precio_candidatos": [
+    1995,
+    1895
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "planta"
+}

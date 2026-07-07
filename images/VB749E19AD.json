@@ -1,0 +1,36 @@
+{
+  "sku": "VB749E19AD",
+  "nombre_zh": "心形相框",
+  "titulo_es": "Portarretratos / Marcos de fotos 4x6 corazón rojo 2 unidades",
+  "precio": 225.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 275，请在审核台确认",
+    "价格经二次OCR修正：275 → RD$ 225"
+  ],
+  "descripcion_es": "Portarretratos / Marcos de fotos 4x6 corazón rojo 2 unidades\n\n📦 Características:\n• 2个4x6相框\n• 红色\n• 心形边框\n\n💰 Precio: RD$ 225\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB749E19AD_original.jpg"
+  ],
+  "precio_candidatos": [
+    275
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品基本信息正确，无重大问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:03"
+}

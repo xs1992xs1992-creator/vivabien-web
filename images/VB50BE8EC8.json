@@ -1,0 +1,36 @@
+{
+  "sku": "VB50BE8EC8",
+  "nombre_zh": "USB电源适配器",
+  "titulo_es": "Adaptador de corriente USB / cargador Power 3.0 1 unidad",
+  "precio": 190.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 190，请在审核台确认"
+  ],
+  "descripcion_es": "Adaptador de corriente USB / cargador Power 3.0 1 unidad\n\n📦 Características:\n• 1个\n• 支持Power 3.0\n\n💰 Precio: RD$ 190\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB50BE8EC8_original.jpg"
+  ],
+  "precio_candidatos": [
+    190
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确无误，各项符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:15"
+}

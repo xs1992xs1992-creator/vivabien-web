@@ -1,0 +1,36 @@
+{
+  "sku": "VB4DA6DF20",
+  "nombre_zh": "迷你手持风扇",
+  "titulo_es": "Abanico portátil / mini ventilador recargable USB 3 velocidades",
+  "precio": 165.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 165，请在审核台确认"
+  ],
+  "descripcion_es": "Abanico portátil / mini ventilador recargable USB 3 velocidades\n\n📦 Características:\n• 3档调速\n• 内置电池\n• USB充电\n• 低噪音\n\n💰 Precio: RD$ 165\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4DA6DF20_original.jpg"
+  ],
+  "precio_candidatos": [
+    165,
+    125
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述准确，符合多米尼加市场需求，图片和价格信息基本符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:28"
+}

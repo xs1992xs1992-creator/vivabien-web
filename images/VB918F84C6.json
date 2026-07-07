@@ -1,0 +1,42 @@
+{
+  "sku": "VB918F84C6",
+  "nombre_zh": "草本保鲜盒",
+  "titulo_es": "Envase plástico / caja plástica 3 semanas blanco",
+  "precio": 165.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 65，请在审核台确认",
+    "价格经二次OCR修正：65 → RD$ 165"
+  ],
+  "descripcion_es": "Envase plástico / caja plástica 3 semanas blanco\n\n📦 Características:\n• 延长保鲜时间3周\n• 白色\n• 透明窗口\n\n💰 Precio: RD$ 165\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB918F84C6_original.jpg"
+  ],
+  "precio_candidatos": [
+    65
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:48",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题不够精确，可优化以更符合商品特性"
+    ],
+    "suggestions": [
+      "将西语标题修改为 'Caja de plástico para conservar hierbas frescas (hasta 3 semanas) - Blanco'"
+    ],
+    "summary": "商品整体符合要求，价格合理，类目正确，白底图清晰完整，但标题可进一步优化以更贴合商品用途。",
+    "price_check": "match",
+    "suggested_titulo_es": "Caja de plástico para conservar hierbas frescas (hasta 3 semanas) - Blanco",
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:03",
+  "finalized_at": "2026-07-03 14:03"
+}

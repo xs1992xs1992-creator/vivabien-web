@@ -1,0 +1,35 @@
+{
+  "sku": "VB95B32768",
+  "nombre_zh": "银色叶形盘",
+  "titulo_es": "Bandeja plateada metálica en forma de hoja",
+  "precio": 130,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 430，请在审核台确认"
+  ],
+  "descripcion_es": "Bandeja plateada metálica en forma de hoja\n\n📦 Características:\n• 单个\n• 银色\n• 金属材质\n\n💰 Precio: RD$ 430\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB95B32768_original.jpg"
+  ],
+  "precio_candidatos": [
+    430
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片质量整体合格，仅价格需人工核实。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:37"
+}

@@ -1,0 +1,37 @@
+{
+  "sku": "VBB1ED05D6",
+  "nombre_zh": "指甲胶",
+  "titulo_es": "Pegamento para uñas / Gel adhesivo 30ml secado rápido",
+  "precio": 180.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Pegamento para uñas / Gel adhesivo 30ml secado rápido\n\n📦 Características:\n• 30ml\n• 快速固化\n• 黑色包装\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB1ED05D6_original.jpg"
+  ],
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:13",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息符合标准，图片与描述一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:27",
+  "finalized_at": "2026-07-03 21:27"
+}

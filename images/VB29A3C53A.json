@@ -1,0 +1,39 @@
+{
+  "sku": "VB29A3C53A",
+  "nombre_zh": "美甲贴片",
+  "titulo_es": "Uñas postizas / tips morados con diseño de gatos y caricaturas",
+  "precio": 70.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / tips morados con diseño de gatos y caricaturas\n\n📦 Características:\n• 紫色主题\n• 卡通设计\n• 带猫图案\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB29A3C53A_original.jpg"
+  ],
+  "precio_candidatos": [
+    70
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格合理性需进一步明确"
+    ],
+    "suggestions": [
+      "标题稍作优化，使其更具吸引力，例如添加‘decorado de frutas lindas’来进一步强调设计"
+    ],
+    "summary": "商品信息整体准确，适合作为美容个护品上架。",
+    "price_check": "match",
+    "suggested_titulo_es": "Uñas postizas moradas con diseño de gatos y decorado de caricaturas y frutas lindas",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:17"
+}

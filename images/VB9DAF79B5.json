@@ -1,0 +1,33 @@
+{
+  "sku": "VB9DAF79B5",
+  "nombre_zh": "水平尺",
+  "titulo_es": "Nivel / nivelador / regla niveladora amarilla 32 pulgadas",
+  "precio": 175.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Nivel / nivelador / regla niveladora amarilla 32 pulgadas\n\n📦 Características:\n• 32寸\n• 黄色\n• 带水平泡\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述准确，图片和类目均符合规范。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:21"
+}

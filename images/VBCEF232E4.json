@@ -1,0 +1,35 @@
+{
+  "sku": "VBCEF232E4",
+  "nombre_zh": "爱心相框",
+  "titulo_es": "Portaretrato / marco de fotos blanco 5 piezas para pared",
+  "precio": 450,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Portaretrato / marco de fotos blanco 5 piezas para pared\n\n📦 Características:\n• 白色\n• 多框组合\n• 挂墙设计\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBCEF232E4_original.jpg"
+  ],
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体质量优秀，符合上架标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:59"
+}

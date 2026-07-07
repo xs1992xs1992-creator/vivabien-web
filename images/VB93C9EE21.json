@@ -1,0 +1,37 @@
+{
+  "sku": "VB93C9EE21",
+  "nombre_zh": "座机电话",
+  "titulo_es": "Teléfono fijo / residencial con alarma y pantalla",
+  "precio": 750.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 750，请在审核台确认"
+  ],
+  "descripcion_es": "Teléfono fijo / residencial con alarma y pantalla\n\n📦 Características:\n• 自动重拨\n• 来电显示\n• 6个月保修\n• 音乐保持\n• 闹钟功能\n\n💰 Precio: RD$ 750\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB93C9EE21_original.jpg"
+  ],
+  "precio_candidatos": [
+    750
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 11:01",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量符合要求，价格正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:23",
+  "finalized_at": "2026-07-03 13:23"
+}

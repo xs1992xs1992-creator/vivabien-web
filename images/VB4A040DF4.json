@@ -1,0 +1,29 @@
+{
+  "sku": "VB4A040DF4",
+  "nombre_zh": "安全挂锁",
+  "titulo_es": "Candado / traba / cerradura 50mm antióxido y anticorte",
+  "precio": 170.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Candado / traba / cerradura 50mm antióxido y anticorte\n\n📦 Características:\n• 50mm\n• 防锈\n• 防切割\n• 重型使用\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "该商品审核通过，信息可靠，标题和类目适配，价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:43"
+}

@@ -1,0 +1,41 @@
+{
+  "sku": "VBD1AE3985",
+  "nombre_zh": "金色熊摆件",
+  "titulo_es": "Adorno oso dorado / figura cerámica decorativa",
+  "precio": 175.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno oso dorado / figura cerámica decorativa\n\n📦 Características:\n• 金色\n• 陶瓷材质\n• 单个\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD1AE3985_original.jpg"
+  ],
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签核实难度",
+      "白底图边缘不完全干净"
+    ],
+    "suggestions": [
+      "考虑更清晰拍摄价格标签",
+      "对白底图做更多边缘处理以提升视觉整洁度"
+    ],
+    "summary": "商品总体验较好，应核实价格标签并改善白底图细节。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:32"
+}

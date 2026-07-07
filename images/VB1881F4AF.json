@@ -1,0 +1,32 @@
+{
+  "sku": "VB1881F4AF",
+  "nombre_zh": "电缆固定夹",
+  "titulo_es": "Clamp / sujetacable / abrazadera para cables 1/2\" blanca",
+  "precio": 55.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 55，请在审核台确认"
+  ],
+  "descripcion_es": "Clamp / sujetacable / abrazadera para cables 1/2\" blanca\n\n📦 Características:\n• 尺寸: 1/2英寸(12mm)\n• 颜色: 白色\n\n💰 Precio: RD$ 55\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    55
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，基本符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:09"
+}

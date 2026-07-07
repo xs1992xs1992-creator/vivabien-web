@@ -1,0 +1,35 @@
+{
+  "sku": "VB8E591527",
+  "nombre_zh": "化妆清洁刷",
+  "titulo_es": "Brocha limpiadora de maquillaje / cepillo de limpieza doble",
+  "precio": 60.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 60，请在审核台确认"
+  ],
+  "descripcion_es": "Brocha limpiadora de maquillaje / cepillo de limpieza doble\n\n📦 Características:\n• 紫色手柄\n• 双刷头设计\n• 适合清洁化妆工具\n\n💰 Precio: RD$ 60\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8E591527_original.jpg"
+  ],
+  "precio_candidatos": [
+    60
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量良好，价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:11"
+}

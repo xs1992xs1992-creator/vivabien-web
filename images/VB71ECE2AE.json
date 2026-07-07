@@ -1,0 +1,37 @@
+{
+  "sku": "VB71ECE2AE",
+  "nombre_zh": "无线音箱",
+  "titulo_es": "Bocina inalámbrica portátil / speaker 3 pulgadas luz azul",
+  "precio": 340,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 图片可能拍反，价格从旋转图中识别",
+    "⚠ 价格疑似识别有误（3.0），已自动修正为 RD$ 30",
+    "价格由 AI 从图片识别：RD$ 30，请在审核台确认"
+  ],
+  "descripcion_es": "Bocina inalámbrica portátil / speaker 3 pulgadas luz azul\n\n📦 Características:\n• 3英寸\n• 蓝色灯光\n• 便携式\n\n💰 Precio: RD$ 30\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB71ECE2AE_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 14:18",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片符合要求，价格标签一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:24",
+  "finalized_at": "2026-07-03 13:24"
+}

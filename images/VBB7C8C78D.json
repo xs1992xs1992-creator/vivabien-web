@@ -1,0 +1,35 @@
+{
+  "sku": "VBB7C8C78D",
+  "nombre_zh": "椰子磨砂沐浴露",
+  "titulo_es": "Exfoliante corporal / gel de baño coco 320ml hidratante",
+  "precio": 140.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 140，请在审核台确认"
+  ],
+  "descripcion_es": "Exfoliante corporal / gel de baño coco 320ml hidratante\n\n📦 Características:\n• 320ml\n• 椰子香味\n• 去角质\n• 深层清洁\n• 润肤\n\n💰 Precio: RD$ 140\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB7C8C78D_original.jpg"
+  ],
+  "precio_candidatos": [
+    140
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确且符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:08"
+}

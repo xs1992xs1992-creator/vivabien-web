@@ -1,0 +1,24 @@
+{
+  "sku": "VB6E95FA7B",
+  "nombre_zh": "香水喷雾",
+  "titulo_es": "Perfume en spray de larga duración - Fragancia irresistible",
+  "precio": 125,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Perfume gris 88ml con tapa dorada, fragancia única y elegante\n\n📦 Características:\n• 88ml\n• 灰色瓶身\n• 金色盖子\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以更简单直白，修改为：Perfume en spray de larga duración - Fresca y duradera."
+    ],
+    "summary": "商品描述和图片良好，价格合理，分类正确，适合上架。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:05"
+}

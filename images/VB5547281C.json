@@ -1,0 +1,34 @@
+{
+  "sku": "VB5547281C",
+  "nombre_zh": "木珠挂饰",
+  "titulo_es": "Colgante de madera / decoración con flecos azul gradiente",
+  "precio": 290,
+  "categoria": "",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Colgante de madera / decoración con flecos azul gradiente\n\n📦 Características:\n• 木质\n• 蓝色渐变装饰\n• 流苏设计\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5547281C_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "version": 3,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图中价格标签不清晰"
+    ],
+    "suggestions": [
+      "确保原图中没有价格标签，或者与系统价格一致后更新"
+    ],
+    "summary": "标题与价格较合理，白底图清洁，商品信息准确，值得上架。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:33"
+}

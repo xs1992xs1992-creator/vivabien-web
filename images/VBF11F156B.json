@@ -1,0 +1,37 @@
+{
+  "sku": "VBF11F156B",
+  "nombre_zh": "鼻毛修剪器",
+  "titulo_es": "Recortador de vellos nasales USB batería litio",
+  "precio": 260.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 260，请在审核台确认"
+  ],
+  "descripcion_es": "Recortador de vellos nasales USB batería litio\n\n📦 Características:\n• USB充电\n• 高性能锂电池\n• 锋利刀头\n• 无皮肤损伤\n\n💰 Precio: RD$ 260\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF11F156B_original.jpg"
+  ],
+  "precio_candidatos": [
+    260
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:09",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体准确且无明显问题，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:25",
+  "finalized_at": "2026-07-03 21:25"
+}

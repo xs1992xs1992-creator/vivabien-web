@@ -1,0 +1,36 @@
+{
+  "sku": "VBB9906135",
+  "nombre_zh": "硅胶化妆笔",
+  "titulo_es": "Brocha / pincel de silicón para maquillaje",
+  "precio": 170.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Lápiz de silicona / herramienta para tallar con mango de madera\n\n📦 Características:\n• 木质手柄\n• 硅胶头\n• 适合雕刻或造型\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB9906135_original.jpg"
+  ],
+  "precio_candidatos": [
+    170,
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架要求，没有发现问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:08"
+}

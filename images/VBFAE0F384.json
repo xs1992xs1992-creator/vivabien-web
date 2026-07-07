@@ -1,0 +1,34 @@
+{
+  "sku": "VBFAE0F384",
+  "nombre_zh": "防水喷漆",
+  "titulo_es": "Spray impermeable / pintura en aerosol resistente al agua",
+  "precio": 195,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 195，请在审核台确认"
+  ],
+  "descripcion_es": "Spray de goma 450ml / poliuretano / rellena grietas\n\n📦 Características:\n• 450ml\n• 聚氨酯材质\n• 修补裂缝\n\n💰 Precio: RD$ 195\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    195
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议修改部分西语标题以更加符合多米尼加购物习惯。"
+    ],
+    "summary": "商品基本信息准确，建议调整西语标题以更贴近当地消费者习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": "Pintura en aerosol impermeable / revestimiento resistente al agua",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:45"
+}

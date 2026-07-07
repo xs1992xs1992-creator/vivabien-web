@@ -1,0 +1,37 @@
+{
+  "sku": "VB6CC10DA0",
+  "nombre_zh": "方块工具套装",
+  "titulo_es": "Caja blanca / kit de herramientas metálicas",
+  "precio": 200.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 200，请在审核台确认"
+  ],
+  "descripcion_es": "Caja blanca / kit de herramientas metálicas\n\n📦 Características:\n• 白色方块\n• 带金属工具\n\n💰 Precio: RD$ 200\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6CC10DA0_original.jpg"
+  ],
+  "precio_candidatos": [
+    200,
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整，定价合理，图片符合要求，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:13"
+}

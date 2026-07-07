@@ -1,0 +1,26 @@
+{
+  "sku": "VBEF2FA3A5",
+  "nombre_zh": "香氛喷雾",
+  "titulo_es": "Spray aromático 250ml, fragancia duradera, diseño elegante oro y negro",
+  "precio": 260,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Spray aromático 250ml, fragancia duradera, diseño elegante oro y negro\n\n📦 Características:\n• 250ml\n• 香味持久\n• 金色与黑白设计\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议将西语标题改为：Spray aromático 250ml de fragancia duradera con elegante diseño en negro y oro para更自然地描述商品。"
+    ],
+    "summary": "商品整体符合要求，价格一致，标题可稍作优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 18:59"
+}

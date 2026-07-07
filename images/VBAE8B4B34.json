@@ -1,0 +1,27 @@
+{
+  "sku": "VBAE8B4B34",
+  "nombre_zh": "La Charme假睫毛",
+  "titulo_es": "Pestañas La Charme 12mm pelo real cinta carne tejidas",
+  "precio": 75.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['12mm', '100%人发', '肉色带', '手工编织']"
+  ],
+  "descripcion_es": "Pestañas La Charme 12mm pelo real cinta carne tejidas\n\n📦 Características:\n• 12mm\n• 100%人发\n• 肉色带\n• 手工编织\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题已准确描述商品信息，无需修改。"
+    ],
+    "summary": "商品信息准确，图片清晰，标题和类目符合要求。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:02"
+}

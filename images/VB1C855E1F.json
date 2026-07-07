@@ -1,0 +1,37 @@
+{
+  "sku": "VB1C855E1F",
+  "nombre_zh": "家居装饰挂件",
+  "titulo_es": "Cuadro decorativo madera negra con cuerda para colgar",
+  "precio": 190,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（199.0），已自动修正为 RD$ 1990",
+    "价格由 AI 从图片识别：RD$ 1990，请在审核台确认"
+  ],
+  "descripcion_es": "Cuadro decorativo madera negra con cuerda para colgar\n\n📦 Características:\n• 木质边框\n• 黑色背景\n• 带绳挂件\n\n💰 Precio: RD$ 1990\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1C855E1F_original.jpg"
+  ],
+  "precio_candidatos": [
+    199
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 4,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述准确，符合多米尼加市场需求，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:34"
+}

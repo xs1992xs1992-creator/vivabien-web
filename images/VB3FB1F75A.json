@@ -1,0 +1,33 @@
+{
+  "sku": "VB3FB1F75A",
+  "nombre_zh": "美工刀套装",
+  "titulo_es": "Cuchilla / Exacto / Cortador amarillo 18mm + repuestos",
+  "precio": 50.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 50，请在审核台确认"
+  ],
+  "descripcion_es": "Cuchilla / Exacto / Cortador amarillo 18mm + repuestos\n\n📦 Características:\n• 18mm刀片\n• 黄色手柄\n• 附带备用刀片\n\n💰 Precio: RD$ 50\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    50
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息及图片均符合要求，整体可通过审核。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

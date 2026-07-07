@@ -1,0 +1,35 @@
+{
+  "sku": "VB97BA7C8F",
+  "nombre_zh": "蓝牙耳机",
+  "titulo_es": "Audífonos Bluetooth / inalámbricos BT-45 V5.0 15m",
+  "precio": 280.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 280，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos Bluetooth / inalámbricos BT-45 V5.0 15m\n\n📦 Características:\n• BT-45\n• 无线版本V5.0+EDR\n• 传输距离15m\n• 待机时间120小时\n• 充电电压/电流5V/1A\n\n💰 Precio: RD$ 280\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB97BA7C8F_original.jpg"
+  ],
+  "precio_candidatos": [
+    280
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合审核要求，仅细节略有提升空间。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:13"
+}

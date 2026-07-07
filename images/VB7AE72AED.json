@@ -1,0 +1,39 @@
+{
+  "sku": "VB7AE72AED",
+  "nombre_zh": "婴儿护肤油",
+  "titulo_es": "Aceite para bebé / aceite infantil 200ml hidratante y suave",
+  "precio": 140.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 140，请在审核台确认"
+  ],
+  "descripcion_es": "Aceite para bebé / aceite infantil 200ml hidratante y suave\n\n📦 Características:\n• 200ml\n• 滋润\n• 温和\n\n💰 Precio: RD$ 140\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7AE72AED_original.jpg"
+  ],
+  "precio_candidatos": [
+    140
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:15",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以保持不变。"
+    ],
+    "summary": "商品符合规定，可以上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 140,
+    "suggested_categoria": "母婴用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:29",
+  "finalized_at": "2026-07-03 21:29"
+}

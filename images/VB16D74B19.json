@@ -1,0 +1,32 @@
+{
+  "sku": "VB16D74B19",
+  "nombre_zh": "尼龙扎带",
+  "titulo_es": "Tiras plásticas / abrazaderas nylon verdes 3x100mm 100 unidades",
+  "precio": 50.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 50，请在审核台确认"
+  ],
+  "descripcion_es": "Tiras plásticas / abrazaderas nylon verdes 3x100mm 100 unidades\n\n📦 Características:\n• 尺寸3x100mm\n• 颜色绿色\n• 数量100条\n\n💰 Precio: RD$ 50\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    50
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息总体准确，价格标签与系统记录一致，图片质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:23"
+}

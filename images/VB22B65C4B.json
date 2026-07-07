@@ -1,0 +1,37 @@
+{
+  "sku": "VB22B65C4B",
+  "nombre_zh": "硬蜡豆",
+  "titulo_es": "Cera dura / cera depilatoria 200g sabor fresa roja",
+  "precio": 160.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Cera dura / cera depilatoria 200g sabor fresa roja\n\n📦 Características:\n• 200g\n• 草莓味\n• 红色\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB22B65C4B_original.jpg"
+  ],
+  "precio_candidatos": [
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:23",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，建议正常上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:32",
+  "finalized_at": "2026-07-03 21:32"
+}

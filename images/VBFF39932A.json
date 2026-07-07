@@ -1,0 +1,35 @@
+{
+  "sku": "VBFF39932A",
+  "nombre_zh": "假发胶去除剂",
+  "titulo_es": "Removedor de pega / adhesivo para peluca / extensiones 30ml",
+  "precio": 130.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Removedor de pega / adhesivo para peluca / extensiones 30ml\n\n📦 Características:\n• 30ml\n• 用于假发胶和发片胶带\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBFF39932A_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架要求，信息完整准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:20"
+}

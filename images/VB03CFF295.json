@@ -1,0 +1,39 @@
+{
+  "sku": "VB03CFF295",
+  "nombre_zh": "金属摆件",
+  "titulo_es": "Figura decorativa de metal / muñeco metálico",
+  "precio": 320.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 320，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno de ciervo metálico / figurita en plata 1 unidad\n\n📦 Características:\n• 1个\n• 银色\n• 金属材质\n\n💰 Precio: RD$ 320\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB03CFF295_original.jpg"
+  ],
+  "precio_candidatos": [
+    320
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "西语标题略显不自然"
+    ],
+    "suggestions": [
+      "建议修改标题为“Figura decorativa metálica para el hogar”以更符合当地语言习惯"
+    ],
+    "summary": "商品基本合格，但标题可优化为更自然的表达。",
+    "price_check": "match",
+    "suggested_titulo_es": "Figura decorativa metálica para el hogar",
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:47"
+}

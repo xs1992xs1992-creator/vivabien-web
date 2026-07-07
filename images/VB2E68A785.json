@@ -1,0 +1,32 @@
+{
+  "sku": "VB2E68A785",
+  "nombre_zh": "防滑手套",
+  "titulo_es": "Guantes antideslizantes / de tela con puntos negros blancos",
+  "precio": 25.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 25，请在审核台确认"
+  ],
+  "descripcion_es": "Guantes antideslizantes / de tela con puntos negros blancos\n\n📦 Características:\n• 白色\n• 黑色防滑点\n• 针织材质\n\n💰 Precio: RD$ 25\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    25
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，图片规范，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 25,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:08"
+}

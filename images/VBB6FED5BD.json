@@ -1,0 +1,40 @@
+{
+  "sku": "VBB6FED5BD",
+  "nombre_zh": "快充数据线",
+  "titulo_es": "Cable de carga rápida USB 2A 100cm azul",
+  "precio": 100.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Cable de carga rápida USB 2A 100cm azul\n\n📦 Características:\n• 2A\n• 100cm\n• 蓝色\n• 快充\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB6FED5BD_original.jpg"
+  ],
+  "precio_candidatos": [
+    100,
+    140
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显不自然"
+    ],
+    "suggestions": [
+      "将标题修正为更符合多米尼加购物习惯的格式，例如 'Cable USB para carga rápida, longitud 100cm, 2A, color azul'"
+    ],
+    "summary": "商品整体符合要求，但西语标题可优化为更自然的表达。",
+    "price_check": "match",
+    "suggested_titulo_es": "Cable USB para carga rápida, longitud 100cm, 2A, color azul",
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:12"
+}

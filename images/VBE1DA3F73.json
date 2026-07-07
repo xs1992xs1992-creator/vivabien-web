@@ -1,0 +1,35 @@
+{
+  "sku": "VBE1DA3F73",
+  "nombre_zh": "玫瑰香薰油",
+  "titulo_es": "Aceite esencial / aromático de rosa 10ml",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Aceite esencial / aromático de rosa 10ml\n\n📦 Características:\n• 10ml\n• 玫瑰香型\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE1DA3F73_original.jpg"
+  ],
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量良好，西语标题自然，价格合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

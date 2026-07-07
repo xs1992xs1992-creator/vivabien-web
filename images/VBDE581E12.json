@@ -1,0 +1,33 @@
+{
+  "sku": "VBDE581E12",
+  "nombre_zh": "多功能螺丝刀套装",
+  "titulo_es": "Set destornilladores / desarmadores portátil con llavero",
+  "precio": 270.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 270，请在审核台确认"
+  ],
+  "descripcion_es": "Set destornilladores / desarmadores portátil con llavero\n\n📦 Características:\n• 多种螺丝刀头\n• 便携设计\n• 附带钥匙链\n\n💰 Precio: RD$ 270\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    270
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品通过审核，信息准确且完整。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:19"
+}

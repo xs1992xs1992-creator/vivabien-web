@@ -1,0 +1,29 @@
+{
+  "sku": "VBE2A1CD04",
+  "nombre_zh": "高质量挂锁",
+  "titulo_es": "Candado / tranca con llave 32mm resistente",
+  "precio": 80.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认"
+  ],
+  "descripcion_es": "Candado / tranca con llave 32mm resistente\n\n📦 Características:\n• 尺寸: 32mm\n• 带钥匙\n\n💰 Precio: RD$ 80\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整，满足上架要求，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:41"
+}

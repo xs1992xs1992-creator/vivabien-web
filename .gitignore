@@ -1,0 +1,11 @@
+# 构建产物 — Cloudflare Pages 自己构建，不入库
+dist/
+
+# 原图和价格截图 — 网站用不到，不上传
+images/*_original*
+images/*_price_crop*
+
+# 系统/缓存
+.DS_Store
+__pycache__/
+*.pyc

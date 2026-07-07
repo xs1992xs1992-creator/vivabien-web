@@ -1,0 +1,37 @@
+{
+  "sku": "VBE008192B",
+  "nombre_zh": "蓝牙音箱",
+  "titulo_es": "Bocina Bluetooth / parlante portátil con FM, USB y TF",
+  "precio": 715.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 715，请在审核台确认"
+  ],
+  "descripcion_es": "Bocina Bluetooth / parlante portátil con FM, USB y TF\n\n📦 Características:\n• USB接口\n• TF卡支持\n• 蓝牙功能\n• FM收音机\n• 便携设计\n\n💰 Precio: RD$ 715\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE008192B_original.jpg"
+  ],
+  "precio_candidatos": [
+    715
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 10:40",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，价格标签核对无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:21",
+  "finalized_at": "2026-07-03 13:21"
+}

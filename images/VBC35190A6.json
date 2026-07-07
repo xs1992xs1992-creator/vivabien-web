@@ -1,0 +1,37 @@
+{
+  "sku": "VBC35190A6",
+  "nombre_zh": "翻页日历",
+  "titulo_es": "Calendario de mesa / calendario diario floral con base 1 set",
+  "precio": 230.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 230，请在审核台确认"
+  ],
+  "descripcion_es": "Calendario de mesa / calendario diario floral con base 1 set\n\n📦 Características:\n• 一套\n• 紫色花卉装饰\n• 带底座\n\n💰 Precio: RD$ 230\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC35190A6_original.jpg"
+  ],
+  "precio_candidatos": [
+    230
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可稍作优化，添加实际用途。可改为：‘Calendario floral de mesa para decoración diaria’"
+    ],
+    "summary": "商品质量良好，信息基本准确，背景白底图符合规范，价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": "Calendario floral de mesa para decoración diaria",
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:00"
+}

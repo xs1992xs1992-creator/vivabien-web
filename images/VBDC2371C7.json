@@ -1,0 +1,35 @@
+{
+  "sku": "VBDC2371C7",
+  "nombre_zh": "金属熊摆件",
+  "titulo_es": "Adorno de oso metálico / figura decorativa color rosado",
+  "precio": 215.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 215，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno de oso metálico / figura decorativa color rosado\n\n📦 Características:\n• 金属材质\n• 玫瑰金色\n\n💰 Precio: RD$ 215\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDC2371C7_original.jpg"
+  ],
+  "precio_candidatos": [
+    215
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品基本符合要求，标签价格核实无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:31"
+}

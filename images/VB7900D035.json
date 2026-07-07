@@ -1,0 +1,34 @@
+{
+  "sku": "VB7900D035",
+  "nombre_zh": "睫毛膏",
+  "titulo_es": "Rímel original sellado, pestañas largas",
+  "precio": 55.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.70，卖点:['透明质酸保湿', '草莓图案', '便携小瓶', '粉色瓶盖']"
+  ],
+  "descripcion_es": "🍓 Bálsamo labial hidratante fresa, tapa rosa, mini\n\n📦 Características:\n• 透明质酸保湿\n• 草莓图案\n• 便携小瓶\n• 粉色瓶盖\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": false,
+    "score": 3,
+    "issues": [
+      "西语标题与图片商品不符",
+      "中文品名与图片商品不符",
+      "价格低于正常范围"
+    ],
+    "suggestions": [
+      "修改西语标题为：Fijador de Maquillaje Hidratante con Ácido Hialurónico",
+      "修改中文品名为：保湿定妆喷雾",
+      "核实商品价格，考虑提高至正常范围"
+    ],
+    "summary": "商品信息与图片不符，价格明显不合理。",
+    "price_check": "mismatch"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:05",
+  "review_ignored": true
+}

@@ -1,0 +1,32 @@
+{
+  "sku": "VB386F2072",
+  "nombre_zh": "卷尺",
+  "titulo_es": "Cinta métrica / wincha de medir 7.5m azul acero",
+  "precio": 180.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta métrica / wincha de medir 7.5m azul acero\n\n📦 Características:\n• 7.5米\n• 蓝色\n• 钢制\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，信息准确无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

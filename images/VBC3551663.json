@@ -1,0 +1,35 @@
+{
+  "sku": "VBC3551663",
+  "nombre_zh": "USB-C充电器",
+  "titulo_es": "Cargador rápido USB-C 25W / Adaptador de pared",
+  "precio": 280.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 280，请在审核台确认"
+  ],
+  "descripcion_es": "Cargador rápido USB-C 25W / Adaptador de pared\n\n📦 Características:\n• 25W\n\n💰 Precio: RD$ 280\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC3551663_original.jpg"
+  ],
+  "precio_candidatos": [
+    280
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片合规。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:11"
+}

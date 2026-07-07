@@ -1,0 +1,37 @@
+{
+  "sku": "VBA7C76A4E",
+  "nombre_zh": "维生素E护肤膏",
+  "titulo_es": "Crema para la piel con vitamina E 50g",
+  "precio": 150.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Crema para la piel con vitamina E 50g\n\n📦 Características:\n• 含维生素E\n• 滋养肌肤\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBA7C76A4E_original.jpg"
+  ],
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:14",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本没有问题，西语标题准确自然，价格合理，类目正确，白底图背景纯白且商品完整，原图与白底图对应同一商品。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:28",
+  "finalized_at": "2026-07-03 21:28"
+}

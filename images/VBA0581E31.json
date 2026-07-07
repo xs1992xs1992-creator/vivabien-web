@@ -1,0 +1,37 @@
+{
+  "sku": "VBA0581E31",
+  "nombre_zh": "咖啡机",
+  "titulo_es": "Cafetera / máquina de café 6 tazas vidrio 1 año garantía",
+  "precio": 1445.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1445，请在审核台确认"
+  ],
+  "descripcion_es": "Cafetera / máquina de café 6 tazas vidrio 1 año garantía\n\n📦 Características:\n• 6杯\n• 玻璃壶\n• 1年保修\n\n💰 Precio: RD$ 1445\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBA0581E31_original.jpg"
+  ],
+  "precio_candidatos": [
+    1445
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:48",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量良好，价格合理，商品与标题对应。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:03",
+  "finalized_at": "2026-07-03 14:03"
+}

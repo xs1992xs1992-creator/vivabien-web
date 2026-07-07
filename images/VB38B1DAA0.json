@@ -1,0 +1,27 @@
+{
+  "sku": "VB38B1DAA0",
+  "nombre_zh": "不锈钢美容夹",
+  "titulo_es": "Juego de pinzas belleza acero inoxidable negro",
+  "precio": 230.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['不锈钢材质', '黑色', '美容工具']"
+  ],
+  "descripcion_es": "Juego de pinzas belleza acero inoxidable negro\n\n📦 Características:\n• 不锈钢材质\n• 黑色\n• 美容工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议将标题改为 'Juego de pinzas de belleza de acero inoxidable color negro'，更符合西语表达习惯。"
+    ],
+    "summary": "商品信息与图片基本吻合，建议优化标题用词。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:09"
+}

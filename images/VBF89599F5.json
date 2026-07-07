@@ -1,0 +1,32 @@
+{
+  "sku": "VBF89599F5",
+  "nombre_zh": "塑料膨胀管",
+  "titulo_es": "Taco plástico gris / chazo plástico 15 unidades",
+  "precio": 40.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 40，请在审核台确认"
+  ],
+  "descripcion_es": "Taco plástico gris / chazo plástico 15 unidades\n\n📦 Características:\n• 灰色\n• 15个装\n• 塑料材质\n\n💰 Precio: RD$ 40\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    40
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图文匹配，符合发布要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:45"
+}

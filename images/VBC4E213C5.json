@@ -1,0 +1,35 @@
+{
+  "sku": "VBC4E213C5",
+  "nombre_zh": "复古闹钟",
+  "titulo_es": "Reloj despertador retro / alarma doble campana plateado",
+  "precio": 410,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 10，请在审核台确认"
+  ],
+  "descripcion_es": "Reloj despertador retro / alarma doble campana plateado\n\n📦 Características:\n• 银色\n• 金属材质\n• 双铃设计\n\n💰 Precio: RD$ 10\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC4E213C5_original.jpg"
+  ],
+  "precio_candidatos": [
+    10
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，标题、类目和价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:59"
+}

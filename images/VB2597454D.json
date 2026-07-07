@@ -1,0 +1,26 @@
+{
+  "sku": "VB2597454D",
+  "nombre_zh": "香水礼盒",
+  "titulo_es": "Set de perfume 60ml con gel de baño incluido, ideal para regalar",
+  "precio": 284,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Set de perfume 60ml con gel de baño incluido, ideal para regalar\n\n📦 Características:\n• 包含香水\n• 附赠沐浴露\n• 容量60ml\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以更精简，例如：'Set de Perfume con Gel de Baño, Ideal para Regalar (60ml)' 以更符合当地购物习惯。"
+    ],
+    "summary": "商品信息准确，图片质量良好，仅标题建议稍作优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:10"
+}

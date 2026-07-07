@@ -1,0 +1,33 @@
+{
+  "sku": "VB8B2175D7",
+  "nombre_zh": "球阀",
+  "titulo_es": "Llave de paso / válvula de bola plástica rojo para tuberías",
+  "precio": 40.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 40，请在审核台确认"
+  ],
+  "descripcion_es": "Llave de paso / válvula de bola plástica rojo para tuberías\n\n📦 Características:\n• 红色手柄\n• 塑料材质\n• 适用于水管\n\n💰 Precio: RD$ 40\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格与标题不完全匹配"
+    ],
+    "suggestions": [
+      "建议将标题中的 'Llave de paso' 修改为更具体的 'Válvula de bola plástica roja para tuberías'"
+    ],
+    "summary": "商品符合大部分审核要求，但标题需稍作调整以更加精准，同时价格标签确认一致。",
+    "price_check": "match",
+    "suggested_titulo_es": "Válvula de bola plástica roja para tuberías",
+    "suggested_precio": 40,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:21"
+}

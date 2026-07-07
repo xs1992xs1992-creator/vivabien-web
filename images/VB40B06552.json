@@ -1,0 +1,29 @@
+{
+  "sku": "VB40B06552",
+  "nombre_zh": "增压花洒",
+  "titulo_es": "Ducha de mano / teléfono de baño turbo con filtro integrado",
+  "precio": 425,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 45，请在审核台确认"
+  ],
+  "descripcion_es": "Ducha de mano / teléfono de baño turbo con filtro integrado\n\n📦 Características:\n• 强力增压\n• 内置涡轮\n• 过滤功能\n\n💰 Precio: RD$ 45\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题、价格、类目和图片均符合标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:49"
+}

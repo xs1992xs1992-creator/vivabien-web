@@ -1,0 +1,36 @@
+{
+  "sku": "VBE788FC17",
+  "nombre_zh": "内六角扳手套装",
+  "titulo_es": "Juego de llaves Allen / hexagonales CR-V 9 piezas",
+  "precio": 170.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Juego de llaves Allen / hexagonales CR-V 9 piezas\n\n📦 Características:\n• 9件套\n• CR-V材质\n• 星形内六角\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    170
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "系统价格标签识别正确性需人工确认"
+    ],
+    "suggestions": [
+      "标题可优化为 \"Juego de llaves Torx CR-V 9 piezas\" 更符合商品描述"
+    ],
+    "summary": "商品标题准确，系统价格识别正确，白底图清晰，类目合理，审核通过。",
+    "price_check": "match",
+    "suggested_titulo_es": "Juego de llaves Torx CR-V 9 piezas",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:04"
+}

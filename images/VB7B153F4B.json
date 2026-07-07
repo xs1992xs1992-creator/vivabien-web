@@ -1,0 +1,30 @@
+{
+  "sku": "VB7B153F4B",
+  "nombre_zh": "双插电源插座",
+  "titulo_es": "Regleta naranja doble 15A 125V para conectar tus equipos eléctricos",
+  "precio": 90.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 90，请在审核台确认"
+  ],
+  "descripcion_es": "Regleta naranja doble 15A 125V para conectar tus equipos eléctricos\n\n📦 Características:\n• 橙色\n• 15A\n• 125V\n\n💰 Precio: RD$ 90\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以保持目前内容，无需修改。",
+      "确保价格标签清晰可见以避免误识。",
+      "商品分类正确，符合工具五金类目。"
+    ],
+    "summary": "商品信息清晰，整体符合多米尼加市场需求，细节准确且图片匹配。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:07"
+}

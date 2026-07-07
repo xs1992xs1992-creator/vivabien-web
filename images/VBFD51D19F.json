@@ -1,0 +1,36 @@
+{
+  "sku": "VBFD51D19F",
+  "nombre_zh": "木质翻页日历",
+  "titulo_es": "Calendario de madera / almanaque con flores secas y números verdes",
+  "precio": 235.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 295，请在审核台确认",
+    "价格经二次OCR修正：295 → RD$ 235"
+  ],
+  "descripcion_es": "Calendario de madera / almanaque con flores secas y números verdes\n\n📦 Características:\n• 绿色数字块\n• 木质底座\n• 附装饰干花\n\n💰 Precio: RD$ 235\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBFD51D19F_original.jpg"
+  ],
+  "precio_candidatos": [
+    295
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，合规，问题轻微。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 11:35"
+}

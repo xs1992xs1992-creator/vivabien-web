@@ -1,0 +1,41 @@
+{
+  "sku": "VBAF0F9ED1",
+  "nombre_zh": "酒精喷雾",
+  "titulo_es": "Spray de alcohol 85% / antibacterial 4oz",
+  "precio": 110.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Spray de alcohol 85% / antibacterial 4oz\n\n📦 Características:\n• 85%\n• 4oz\n• 抗菌\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBAF0F9ED1_original.jpg"
+  ],
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:13",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "商品西语标题不够清晰，建议优化为更为具体的描述"
+    ],
+    "suggestions": [
+      "将西语标题修改为 'Spray de alcohol isopropílico 85% antibacterial 4oz'，以更准确描述商品特性"
+    ],
+    "summary": "商品整体符合上架要求，建议优化标题以增进准确性。",
+    "price_check": "match",
+    "suggested_titulo_es": "Spray de alcohol isopropílico 85% antibacterial 4oz",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:28",
+  "finalized_at": "2026-07-03 21:28"
+}

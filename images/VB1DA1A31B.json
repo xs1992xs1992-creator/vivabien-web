@@ -1,0 +1,35 @@
+{
+  "sku": "VB1DA1A31B",
+  "nombre_zh": "防晒油",
+  "titulo_es": "Bloqueador solar / protector solar SPF75 150ml coco y girasol",
+  "precio": 195.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 195，请在审核台确认"
+  ],
+  "descripcion_es": "Bloqueador solar / protector solar SPF75 150ml coco y girasol\n\n📦 Características:\n• SPF75\n• 抗氧化保护\n• 150ml\n• 含维生素B5、葵花籽油、椰子油\n\n💰 Precio: RD$ 195\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1DA1A31B_original.jpg"
+  ],
+  "precio_candidatos": [
+    195
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，标题、价格和类目均适合，价格标签也匹配。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:18"
+}

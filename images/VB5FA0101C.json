@@ -1,0 +1,39 @@
+{
+  "sku": "VB5FA0101C",
+  "nombre_zh": "美甲贴片",
+  "titulo_es": "Uñas postizas / tips 12 piezas estilo francés rosado",
+  "precio": 100.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / tips 12 piezas estilo francés rosado\n\n📦 Características:\n• 12片装\n• 粉色蝴蝶结装饰\n• 法式美甲风格\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5FA0101C_original.jpg"
+  ],
+  "precio_candidatos": [
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "暂无发现明显问题"
+    ],
+    "suggestions": [
+      "无"
+    ],
+    "summary": "商品描述和信息整体符合要求，价格标签清晰一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:14"
+}

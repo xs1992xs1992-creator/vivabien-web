@@ -1,0 +1,29 @@
+{
+  "sku": "VB3F65E7A5",
+  "nombre_zh": "门锁",
+  "titulo_es": "Cerradura / candado de puerta negro cilíndrico acero fuerte",
+  "precio": 599.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 599，请在审核台确认"
+  ],
+  "descripcion_es": "Cerradura / candado de puerta negro cilíndrico acero fuerte\n\n📦 Características:\n• 黑色\n• 圆柱形设计\n• 钢制结构\n\n💰 Precio: RD$ 599\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": true,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品基本符合要求，各方面没有明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:54"
+}

@@ -1,0 +1,30 @@
+{
+  "sku": "VBCF7BC894",
+  "nombre_zh": "防盗挂锁",
+  "titulo_es": "Candado / candao de seguridad 50mm acero inoxidable",
+  "precio": 170.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Candado / candao de seguridad 50mm acero inoxidable\n\n📦 Características:\n• 50mm\n• 不锈钢材质\n• 高安全性\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架要求，部分细节需确认。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:53"
+}

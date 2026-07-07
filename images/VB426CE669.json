@@ -1,0 +1,35 @@
+{
+  "sku": "VB426CE669",
+  "nombre_zh": "女士剃须刀",
+  "titulo_es": "Rastrillo / afeitadora femenina con doble hoja y aloe vera",
+  "precio": 235.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 235，请在审核台确认"
+  ],
+  "descripcion_es": "Rastrillo / afeitadora femenina con doble hoja y aloe vera\n\n📦 Características:\n• 双刀片\n• 含芦荟和维生素E\n\n💰 Precio: RD$ 235\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB426CE669_original.jpg"
+  ],
+  "precio_candidatos": [
+    235
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，西语标题准确自然，价格合理，类目正确，图片质量较高。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:15"
+}

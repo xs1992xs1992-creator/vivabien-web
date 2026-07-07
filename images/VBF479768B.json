@@ -1,0 +1,41 @@
+{
+  "sku": "VBF479768B",
+  "nombre_zh": "装饰画框",
+  "titulo_es": "Cuadro decorativo / marco 6\"x8\" / 15cmx20cm plateado",
+  "precio": 120.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Cuadro decorativo / marco 6\"x8\" / 15cmx20cm plateado\n\n📦 Características:\n• 6\"x8\"\n• 15cmx20cm\n• 银色边框\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF479768B_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图价格标签清晰可见，核对后显示价格一致"
+    ],
+    "suggestions": [
+      "标题可适当简化为 'Marco decorativo plateado 6\"x8\" / 15cmx20cm'",
+      "价格合理，无需调整",
+      "商品类目正确，无需变更"
+    ],
+    "summary": "商品信息准确，价格标签一致，图片质检通过。",
+    "price_check": "match",
+    "suggested_titulo_es": "Marco decorativo plateado 6\"x8\" / 15cmx20cm",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:56"
+}

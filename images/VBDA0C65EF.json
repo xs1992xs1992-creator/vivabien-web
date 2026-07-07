@@ -1,0 +1,35 @@
+{
+  "sku": "VBDA0C65EF",
+  "nombre_zh": "木质挂饰",
+  "titulo_es": "Decoración de madera / colgante con cordón y ganchos",
+  "precio": 210.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 210，请在审核台确认"
+  ],
+  "descripcion_es": "Decoración de madera / colgante con cordón y ganchos\n\n📦 Características:\n• 木质\n• 挂钩\n• 吊绳\n• 装饰珠\n\n💰 Precio: RD$ 210\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDA0C65EF_original.jpg"
+  ],
+  "precio_candidatos": [
+    210
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架标准，价格标签验证通过。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 11:35"
+}

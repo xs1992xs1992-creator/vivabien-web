@@ -1,0 +1,36 @@
+{
+  "sku": "VBF81CD3E6",
+  "nombre_zh": "耳机",
+  "titulo_es": "Audífonos / headphones con micrófono USB-C color negro",
+  "precio": 140.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 140，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos / headphones con micrófono USB-C color negro\n\n📦 Características:\n• 带麦克风\n• USB-C接口\n• 黑色\n\n💰 Precio: RD$ 140\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF81CD3E6_original.jpg"
+  ],
+  "precio_candidatos": [
+    140
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，价格合理，无需修正。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:09",
+  "version": 2
+}

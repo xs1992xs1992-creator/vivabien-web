@@ -1,0 +1,32 @@
+{
+  "sku": "VB227148BE",
+  "nombre_zh": "防水喷漆",
+  "titulo_es": "Spray impermeable / pintura en aerosol para agua",
+  "precio": 195.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 195，请在审核台确认"
+  ],
+  "descripcion_es": "Spray sellador / impermeabilizante 700ml para grietas\n\n📦 Características:\n• 700ml\n• 修补裂缝\n• 防水涂层\n\n💰 Precio: RD$ 195\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    195
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息符合标准，无需更改",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:50"
+}

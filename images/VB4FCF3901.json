@@ -1,0 +1,32 @@
+{
+  "sku": "VB4FCF3901",
+  "nombre_zh": "螺纹挂钩",
+  "titulo_es": "Set de 5 ganchos / colgadores metálicos azul con rosca",
+  "precio": 95.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Set de 5 ganchos / colgadores metálicos azul con rosca\n\n📦 Características:\n• 蓝色\n• 金属材质\n• 螺纹设计\n• 5个装\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述和定价准确，符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:48"
+}

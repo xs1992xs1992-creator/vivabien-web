@@ -1,0 +1,36 @@
+{
+  "sku": "VB126C7790",
+  "nombre_zh": "天然乳胶套",
+  "titulo_es": "Condones / preservativos de látex natural 10 unidades",
+  "precio": 180.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Condones / preservativos de látex natural 10 unidades\n\n📦 Características:\n• 10片\n• 天然乳胶\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB126C7790_original.jpg"
+  ],
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体符合规范，仅需进一步确认更大市场接受度。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:38"
+}

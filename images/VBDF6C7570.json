@@ -1,0 +1,35 @@
+{
+  "sku": "VBDF6C7570",
+  "nombre_zh": "木质相框",
+  "titulo_es": "Portarretrato / marco de fotos madera 10x15cm",
+  "precio": 120.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Portarretrato / marco de fotos madera 10x15cm\n\n📦 Características:\n• 尺寸10x15cm\n• 材质木质\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDF6C7570_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息与图片整体一致，问题不大。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:57"
+}

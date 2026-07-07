@@ -1,0 +1,35 @@
+{
+  "sku": "VB5FEC0233",
+  "nombre_zh": "美甲贴片",
+  "titulo_es": "Uñas postizas / tips rosados con pegamento LED 7 días",
+  "precio": 105.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 105，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / tips rosados con pegamento LED 7 días\n\n📦 Características:\n• 粉色\n• LED胶粘剂\n• 可维持7天\n\n💰 Precio: RD$ 105\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5FEC0233_original.jpg"
+  ],
+  "precio_candidatos": [
+    105
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合多米尼加市场需求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:13"
+}

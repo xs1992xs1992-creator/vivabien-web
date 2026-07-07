@@ -1,0 +1,27 @@
+{
+  "sku": "VBAC728750",
+  "nombre_zh": "AIKEMAN假睫毛套装",
+  "titulo_es": "Juego de pestañas 20 mix + herramientas",
+  "precio": 240.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['20排混合假睫毛', '含辅助工具']"
+  ],
+  "descripcion_es": "Juego de pestañas 20 mix + herramientas\n\n📦 Características:\n• 20排混合假睫毛\n• 含辅助工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以更具体，例如：\"Juego de pestañas AIKEMAN 20 mix + herramientas (con máscara incluida)\"，突出品牌和含配件信息以吸引顾客。"
+    ],
+    "summary": "商品信息整体准确，标题稍作优化后更契合本地市场习惯。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:03"
+}

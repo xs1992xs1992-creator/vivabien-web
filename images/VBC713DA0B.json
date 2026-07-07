@@ -1,0 +1,38 @@
+{
+  "sku": "VBC713DA0B",
+  "nombre_zh": "眼影套装",
+  "titulo_es": "Dúo de sombras / maquillaje ojos con brocha y brillo",
+  "precio": 60,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 图片可能拍反，价格从旋转图中识别",
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Dúo de sombras / maquillaje ojos con brocha y brillo\n\n📦 Características:\n• 双色眼影\n• 带刷子\n• 包装闪光\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC713DA0B_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签不清晰"
+    ],
+    "suggestions": [
+      "建议进一步核定第一张图片中的商品价格标签"
+    ],
+    "summary": "商品符合大部分要求，但价格需要人工核实。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:07"
+}

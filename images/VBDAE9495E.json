@@ -1,0 +1,37 @@
+{
+  "sku": "VBDAE9495E",
+  "nombre_zh": "手持搅拌器",
+  "titulo_es": "Batidora de mano / mezcladora eléctrica 260W 7 velocidades",
+  "precio": 415.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 415，请在审核台确认"
+  ],
+  "descripcion_es": "Batidora de mano / mezcladora eléctrica 260W 7 velocidades\n\n📦 Características:\n• 7档调速\n• 260W功率\n• 轻便易握\n\n💰 Precio: RD$ 415\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDAE9495E_original.jpg"
+  ],
+  "precio_candidatos": [
+    415
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:45",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，符合多米尼加市场习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:02",
+  "finalized_at": "2026-07-03 14:02"
+}

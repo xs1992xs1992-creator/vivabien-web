@@ -1,0 +1,23 @@
+{
+  "sku": "VB6511A1CD",
+  "nombre_zh": "33cm 950",
+  "titulo_es": "Ventiladores metálicos 33cm / abanicos plateados x3",
+  "precio": 895.0,
+  "categoria": "家居装饰",
+  "estado": "pendiente",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 895，请在审核台确认"
+  ],
+  "descripcion_es": "Ventiladores metálicos 33cm / abanicos plateados x3\n\n📦 Características:\n• 3个\n• 金属\n• 银色\n\n💰 Precio: RD$ 895\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6511A1CD_original.jpg"
+  ],
+  "precio_candidatos": [
+    895
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "planta"
+}

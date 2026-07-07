@@ -1,0 +1,30 @@
+{
+  "sku": "VBEDC173E2",
+  "nombre_zh": "不锈钢眉夹套装",
+  "titulo_es": "Pinza de cejas acero inoxidable, set de belleza",
+  "precio": 75.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['不锈钢材质', '美容工具']"
+  ],
+  "descripcion_es": "Pinza de cejas acero inoxidable, set de belleza\n\n📦 Características:\n• 不锈钢材质\n• 美容工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显简单，用词可以更符合当地购物习惯"
+    ],
+    "suggestions": [
+      "修改标题为：Set de pinzas para cejas de acero inoxidable - Juego de belleza"
+    ],
+    "summary": "整体符合上架要求，标题可稍作修改以更贴近购物习惯。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 18:59",
+  "review_ignored": false
+}

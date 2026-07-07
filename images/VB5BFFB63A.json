@@ -1,0 +1,28 @@
+{
+  "sku": "VB5BFFB63A",
+  "nombre_zh": "铃兰花语眼影",
+  "titulo_es": "Paleta 5 colores sombra natural, maquillaje de ojos suave",
+  "precio": null,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['五色', '眼影粉', '自然风格']",
+    "价格待补（AI 不估价）"
+  ],
+  "descripcion_es": "Paleta 5 colores sombra natural, maquillaje de ojos suave\n\n📦 Características:\n• 五色\n• 眼影粉\n• 自然风格\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题建议修改为：Paleta de sombras naturales, maquillaje suave para ojos."
+    ],
+    "summary": "商品标题、分类和图片质量均符合要求，价格信息需填写。",
+    "price_check": "none"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:07"
+}

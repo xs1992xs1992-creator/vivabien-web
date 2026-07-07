@@ -1,0 +1,32 @@
+{
+  "sku": "VBDB66655A",
+  "nombre_zh": "雨刷片",
+  "titulo_es": "Limpiavidrios / escobillas / paletas 24\" flexibles",
+  "precio": 140,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 595，请在审核台确认"
+  ],
+  "descripcion_es": "Limpiavidrios / escobillas / paletas 24\" flexibles\n\n📦 Características:\n• 24寸\n• 软骨设计\n\n💰 Precio: RD$ 595\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    595
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "总体质量优秀，商品信息准确，图片质量高。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:04"
+}

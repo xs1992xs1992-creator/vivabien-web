@@ -1,0 +1,39 @@
+{
+  "sku": "VB23E5414C",
+  "nombre_zh": "音频延长线",
+  "titulo_es": "Cable de audio 3.5mm / extensión 1.0m alta resolución",
+  "precio": 95.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Cable de audio 3.5mm / extensión 1.0m alta resolución\n\n📦 Características:\n• 1.0m\n• 3.5mm接口\n• Hi-Res音频\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB23E5414C_original.jpg"
+  ],
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "无明显问题"
+    ],
+    "suggestions": [
+      "商品信息整体准确，暂无修改建议"
+    ],
+    "summary": "商品审核通过，信息准确，图片符合规范。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:15"
+}

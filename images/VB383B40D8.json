@@ -1,0 +1,28 @@
+{
+  "sku": "VB383B40D8",
+  "nombre_zh": "高品质适配器",
+  "titulo_es": "Adaptador blanco con cable de corriente y enchufe para tu hogar",
+  "precio": 110.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Adaptador blanco con cable de corriente y enchufe para tu hogar\n\n📦 Características:\n• 白色\n• 带电源线\n• 插头适配器\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以稍作优化为：Adaptador con cable blanco y enchufe para uso doméstico. 更符合购物习惯。"
+    ],
+    "summary": "商品信息准确，价格合理，图片质量符合要求。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:07"
+}

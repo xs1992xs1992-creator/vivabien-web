@@ -1,0 +1,31 @@
+{
+  "sku": "VBB695334B",
+  "nombre_zh": "SKY HIGH美妆笔",
+  "titulo_es": "💜 Lápiz de belleza Sky High waterproof naranja #45",
+  "precio": 45.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.70，卖点:['防水', '紫色外观', '橙色标签（45）']"
+  ],
+  "descripcion_es": "💜 Lápiz de belleza Sky High waterproof naranja #45\n\n📦 Características:\n• 防水\n• 紫色外观\n• 橙色标签（45）\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": false,
+    "score": 6,
+    "issues": [
+      "西语标题信息不准确，与商品图片颜色信息不符",
+      "价格低于市场常见范围，可能有误"
+    ],
+    "suggestions": [
+      "将标题修改为：'💜 Lápiz de belleza Sky High waterproof morado #45'，以更新颜色描述为紫色，更符合图片实际颜色",
+      "核实价格是否正确，因为RD$ 45低于市场常见价格范围"
+    ],
+    "summary": "商品标题信息存在错误且价格明显低于市场范围，需调整内容后再审核。",
+    "price_check": "mismatch"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:02"
+}

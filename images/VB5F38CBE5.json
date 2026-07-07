@@ -1,0 +1,23 @@
+{
+  "sku": "VB5F38CBE5",
+  "nombre_zh": "25cm",
+  "titulo_es": "Plato decorativo 25cm cerámica dorado/blanco",
+  "precio": 1095.0,
+  "categoria": "家居装饰",
+  "estado": "pendiente",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1095，请在审核台确认"
+  ],
+  "descripcion_es": "Plato decorativo 25cm cerámica dorado/blanco\n\n📦 Características:\n• 1个\n• 金色和白色\n• 陶瓷材质\n\n💰 Precio: RD$ 1095\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5F38CBE5_original.jpg"
+  ],
+  "precio_candidatos": [
+    1095
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "planta"
+}

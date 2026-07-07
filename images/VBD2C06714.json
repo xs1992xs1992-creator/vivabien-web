@@ -1,0 +1,37 @@
+{
+  "sku": "VBD2C06714",
+  "nombre_zh": "电热单头炉",
+  "titulo_es": "Hornilla eléctrica / estufa eléctrica 1000W 155mm",
+  "precio": 415.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 415，请在审核台确认"
+  ],
+  "descripcion_es": "Hornilla eléctrica / estufa eléctrica 1000W 155mm\n\n📦 Características:\n• 1个\n• 155mm\n• 1000W\n• 防过热\n• 防粘涂层\n\n💰 Precio: RD$ 415\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD2C06714_original.jpg"
+  ],
+  "precio_candidatos": [
+    415
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:45",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息全面准确，无重大问题，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:02",
+  "finalized_at": "2026-07-03 14:02"
+}

@@ -1,0 +1,41 @@
+{
+  "sku": "VB3BFE0B22",
+  "nombre_zh": "无线耳机",
+  "titulo_es": "Audífonos Bluetooth / inalámbricos HiFi sonido estéreo",
+  "precio": 765.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 765，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos Bluetooth / inalámbricos HiFi sonido estéreo\n\n📦 Características:\n• 蓝牙\n• 立体声\n• HiFi解码\n• 智能芯片\n\n💰 Precio: RD$ 765\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3BFE0B22_original.jpg"
+  ],
+  "precio_candidatos": [
+    765
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 10:44",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "标题稍显冗长，可优化为更简洁的表达"
+    ],
+    "suggestions": [
+      "将西语标题优化为 'Audífonos Bluetooth inalámbricos con sonido estéreo HiFi'，更自然简洁"
+    ],
+    "summary": "商品基本符合要求，标题可优化为简洁表达。",
+    "price_check": "match",
+    "suggested_titulo_es": "Audífonos Bluetooth inalámbricos con sonido estéreo HiFi",
+    "suggested_precio": 765,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:25",
+  "finalized_at": "2026-07-03 13:25"
+}

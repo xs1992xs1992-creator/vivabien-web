@@ -1,0 +1,39 @@
+{
+  "sku": "VB22674A81",
+  "nombre_zh": "液体指甲胶",
+  "titulo_es": "Pegamento líquido para uñas 80ml / Gel morado",
+  "precio": 375.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 375，请在审核台确认"
+  ],
+  "descripcion_es": "Pegamento líquido para uñas 80ml / Gel morado\n\n📦 Características:\n• 容量80ml\n• 紫色液体\n\n💰 Precio: RD$ 375\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB22674A81_original.jpg"
+  ],
+  "precio_candidatos": [
+    375
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:20",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可更明确，如添加用途信息。建议标题修改为“Líquido acrílico para uñas 80ml / Gel morado”"
+    ],
+    "summary": "商品符合要求，建议稍作标题优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Líquido acrílico para uñas 80ml / Gel morado",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:32",
+  "finalized_at": "2026-07-03 21:32"
+}

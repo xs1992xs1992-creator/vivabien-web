@@ -1,0 +1,41 @@
+{
+  "sku": "VB1E0B2154",
+  "nombre_zh": "迷你甜甜圈机",
+  "titulo_es": "Mini máquina de donuts / donas 1200W 6 unidades",
+  "precio": 720.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 720，请在审核台确认"
+  ],
+  "descripcion_es": "Mini máquina de donuts / donas 1200W 6 unidades\n\n📦 Características:\n• 1200W\n• 6个甜甜圈\n\n💰 Precio: RD$ 720\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1E0B2154_original.jpg"
+  ],
+  "precio_candidatos": [
+    720
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:01",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "保持标题原样，不需修改。",
+      "价格在合理范围内，可保持原价。",
+      "白底图背景纯白，商品完整且边缘干净，无需修改。"
+    ],
+    "summary": "商品信息准确，图片清晰，符合多米尼加市场习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:06",
+  "finalized_at": "2026-07-03 21:06"
+}

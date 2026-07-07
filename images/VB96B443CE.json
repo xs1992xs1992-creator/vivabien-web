@@ -1,0 +1,32 @@
+{
+  "sku": "VB96B443CE",
+  "nombre_zh": "油漆刷",
+  "titulo_es": "Brocha / pincel para pintar 2\" mango amarillo metálica",
+  "precio": 40.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 40，请在审核台确认"
+  ],
+  "descripcion_es": "Brocha / pincel para pintar 2\" mango amarillo metálica\n\n📦 Características:\n• 2寸\n• 黄色手柄\n• 金属刷头\n\n💰 Precio: RD$ 40\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    40
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量良好，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:05"
+}

@@ -1,0 +1,36 @@
+{
+  "sku": "VB88CFC216",
+  "nombre_zh": "假指甲贴",
+  "titulo_es": "Uñas postizas / uñas acrílicas azul con diseño de puntos",
+  "precio": 60.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 60，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / uñas acrílicas azul con diseño de puntos\n\n📦 Características:\n• 蓝色\n• 波点图案\n• 长形设计\n\n💰 Precio: RD$ 60\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB88CFC216_original.jpg"
+  ],
+  "precio_candidatos": [
+    60
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:11"
+}

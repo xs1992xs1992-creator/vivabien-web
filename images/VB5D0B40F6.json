@@ -1,0 +1,29 @@
+{
+  "sku": "VB5D0B40F6",
+  "nombre_zh": "插头转换器",
+  "titulo_es": "Adaptador eléctrico amarillo portátil de 3 entradas, ideal para viajes",
+  "precio": 45,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 5，请在审核台确认"
+  ],
+  "descripcion_es": "Adaptador eléctrico amarillo portátil de 3 entradas, ideal para viajes\n\n📦 Características:\n• 黄色主体\n• 三孔插座\n• 便携设计\n\n💰 Precio: RD$ 5\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": true,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题自然且准确，但可以更加具体为：Adaptador eléctrico portátil amarillo de 3 entradas, ideal para viajes domésticos y exteriores。",
+      "可以在商品描述补充更多关于适用插头类型的信息，便于消费者了解产品功能。"
+    ],
+    "summary": "商品描述合理，价格合适，图片白底图完整，对应正确，类目正确。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:14"
+}

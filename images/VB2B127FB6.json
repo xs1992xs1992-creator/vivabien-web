@@ -1,0 +1,35 @@
+{
+  "sku": "VB2B127FB6",
+  "nombre_zh": "蚊帐",
+  "titulo_es": "Mosquitero / tul para cama 2.5 plazas 60x56x80 pulgadas",
+  "precio": 620,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认"
+  ],
+  "descripcion_es": "Mosquitero / tul para cama 2.5 plazas 60x56x80 pulgadas\n\n📦 Características:\n• 2.5床位\n• 60x56x80英寸\n• 粉色\n• 100%聚酯纤维\n• 带弹性可调\n\n💰 Precio: RD$ 350\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2B127FB6_original.jpg"
+  ],
+  "precio_candidatos": [
+    350
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整且准确，无需更改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:32"
+}

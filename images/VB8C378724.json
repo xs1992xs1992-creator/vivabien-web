@@ -1,0 +1,32 @@
+{
+  "sku": "VB8C378724",
+  "nombre_zh": "电动打磨机",
+  "titulo_es": "Pulidora eléctrica / amoladora 115mm 750W 24500RPM",
+  "precio": 1985,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 985，请在审核台确认"
+  ],
+  "descripcion_es": "Pulidora eléctrica / amoladora 115mm 750W 24500RPM\n\n📦 Características:\n• 115mm\n• 750W功率\n• 24500RPM转速\n\n💰 Precio: RD$ 985\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    985
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量较高，价格核实无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:06"
+}

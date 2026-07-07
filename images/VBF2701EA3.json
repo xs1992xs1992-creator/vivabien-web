@@ -1,0 +1,32 @@
+{
+  "sku": "VBF2701EA3",
+  "nombre_zh": "密码线锁",
+  "titulo_es": "Candado de cable / cadena con clave azul alta calidad",
+  "precio": 160.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Candado de cable / cadena con clave azul alta calidad\n\n📦 Características:\n• 蓝色\n• 密码锁\n• 高质量\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息与图片基本匹配，适合多米尼加市场。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:03"
+}

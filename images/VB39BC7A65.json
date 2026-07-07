@@ -1,0 +1,40 @@
+{
+  "sku": "VB39BC7A65",
+  "nombre_zh": "USB小风扇",
+  "titulo_es": "Abanico / ventilador USB recargable portátil mini",
+  "precio": 225.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 225，请在审核台确认"
+  ],
+  "descripcion_es": "Abanico / ventilador USB recargable portátil mini\n\n📦 Características:\n• 手持\n• 桌面\n• USB充电\n• 不可拆卸电池\n• 迷你\n• 自然风\n• 便携\n\n💰 Precio: RD$ 225\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB39BC7A65_original.jpg"
+  ],
+  "precio_candidatos": [
+    225,
+    165
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题可以更自然优化"
+    ],
+    "suggestions": [
+      "优化标题：在西语标题中加入【portátil】以强调便携性，例如：‘Ventilador USB portátil recargable mini para escritorio o mano’"
+    ],
+    "summary": "商品整体合规，价格合理，图片质量合格，可通过审核。",
+    "price_check": "match",
+    "suggested_titulo_es": "Ventilador USB portátil recargable mini para escritorio o mano",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:28"
+}

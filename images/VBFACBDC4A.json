@@ -1,0 +1,41 @@
+{
+  "sku": "VBFACBDC4A",
+  "nombre_zh": "发胶粘合剂",
+  "titulo_es": "Pegamento / gel para pegar cabello 60ml tapa roja",
+  "precio": 60,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 25，请在审核台确认"
+  ],
+  "descripcion_es": "Pegamento / gel para pegar cabello 60ml tapa roja\n\n📦 Características:\n• 60ml\n• 红色瓶盖\n• 头发粘合用\n\n💰 Precio: RD$ 25\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBFACBDC4A_original.jpg"
+  ],
+  "precio_candidatos": [
+    25
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格标签模糊",
+      "西语标题不够具体"
+    ],
+    "suggestions": [
+      "人工核实价格标签数字是否为 RD$60",
+      "改为更准确标题，如 ‘Pegamento para extensiones de cabello con tapa roja 60ml’"
+    ],
+    "summary": "商品整体合格，但需要核实价格标签并优化标题描述。",
+    "price_check": "unclear",
+    "suggested_titulo_es": "Pegamento para extensiones de cabello con tapa roja 60ml",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:20"
+}

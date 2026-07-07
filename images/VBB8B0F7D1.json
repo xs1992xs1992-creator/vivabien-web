@@ -1,0 +1,32 @@
+{
+  "sku": "VBB8B0F7D1",
+  "nombre_zh": "绝缘胶带",
+  "titulo_es": "Cinta eléctrica / aislante amarilla 18MM x 15M resistente",
+  "precio": 80.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta eléctrica / aislante amarilla 18MM x 15M resistente\n\n📦 Características:\n• 18MM*15M\n• 黄色\n• 阻燃\n• 强力粘附\n• 防漏\n\n💰 Precio: RD$ 80\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    80
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题准确，价格合理，类目正确，白底图背景干净，原图与白底图一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:20"
+}

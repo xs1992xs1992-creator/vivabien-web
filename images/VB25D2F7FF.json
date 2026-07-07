@@ -1,0 +1,35 @@
+{
+  "sku": "VB25D2F7FF",
+  "nombre_zh": "芦荟洗手液",
+  "titulo_es": "Jabón líquido de sábila / gel antibacterial 11 oz",
+  "precio": 115.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 115，请在审核台确认"
+  ],
+  "descripcion_es": "Jabón líquido de sábila / gel antibacterial 11 oz\n\n📦 Características:\n• 芦荟成分\n• 适合敏感肌\n• 手部和身体使用\n• 容量11盎司\n\n💰 Precio: RD$ 115\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB25D2F7FF_original.jpg"
+  ],
+  "precio_candidatos": [
+    115
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确且符合规范，少部分内容可进一步优化。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:17"
+}

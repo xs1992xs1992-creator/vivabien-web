@@ -1,0 +1,41 @@
+{
+  "sku": "VBA2404301",
+  "nombre_zh": "三明治机",
+  "titulo_es": "Sandwichera eléctrica 1400W / 24cm / 8 sándwiches",
+  "precio": 1605,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 16，请在审核台确认"
+  ],
+  "descripcion_es": "Sandwichera eléctrica 1400W / 24cm / 8 sándwiches\n\n📦 Características:\n• 1400W\n• 24CM\n• 8孔\n\n💰 Precio: RD$ 16\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBA2404301_original.jpg"
+  ],
+  "precio_candidatos": [
+    16.05
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:47",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题清晰自然，无需修改。",
+      "价格在合理范围内，无需调整。",
+      "确保商品说明与实际功能一致，避免误导消费者。"
+    ],
+    "summary": "该商品整体符合上架要求，商品描述清晰，价格合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:03",
+  "finalized_at": "2026-07-03 14:03"
+}

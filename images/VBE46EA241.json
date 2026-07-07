@@ -1,0 +1,35 @@
+{
+  "sku": "VBE46EA241",
+  "nombre_zh": "紫色亮片美甲",
+  "titulo_es": "Uñas postizas moradas / uñas acrílicas con brillo",
+  "precio": 75.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 75，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas moradas / uñas acrílicas con brillo\n\n📦 Características:\n• 紫色\n• 亮片\n• 假指甲\n\n💰 Precio: RD$ 75\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE46EA241_original.jpg"
+  ],
+  "precio_candidatos": [
+    75
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体符合要求，仅需确认其在市场中是否有需求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:05"
+}

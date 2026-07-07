@@ -1,0 +1,37 @@
+{
+  "sku": "VB96BCBFE1",
+  "nombre_zh": "70%酒精喷雾",
+  "titulo_es": "Alcohol 70% en spray / desinfectante / antiséptico",
+  "precio": 120.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Alcohol 70% en spray / desinfectante / antiséptico\n\n📦 Características:\n• 70%\n• 喷雾瓶\n• 消毒\n• 杀菌\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB96BCBFE1_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:14",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整，所有字段均符合标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:28",
+  "finalized_at": "2026-07-03 21:28"
+}

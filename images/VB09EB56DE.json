@@ -1,0 +1,27 @@
+{
+  "sku": "VB09EB56DE",
+  "nombre_zh": "USHAS遮瑕盘",
+  "titulo_es": "Disco de corrector Ushas, varios tonos, cremoso, pa' cubrir ojeras",
+  "precio": 195.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['多色号', '圆形膏体', '塑料包装']"
+  ],
+  "descripcion_es": "Disco de corrector Ushas, varios tonos, cremoso, pa' cubrir ojeras\n\n📦 Características:\n• 多色号\n• 圆形膏体\n• 塑料包装\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议标题修改为：Paleta de corrector cremoso Ushas, varios tonos para cubrir ojeras y manchas"
+    ],
+    "summary": "商品信息准确，价格合理，分类正确，图片符合要求。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:14"
+}

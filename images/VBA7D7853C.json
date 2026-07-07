@@ -1,0 +1,29 @@
+{
+  "sku": "VBA7D7853C",
+  "nombre_zh": "厨房水龙头",
+  "titulo_es": "Llave de fregadero / grifo cocina 360° giratoria fría y caliente",
+  "precio": 1295.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1295，请在审核台确认"
+  ],
+  "descripcion_es": "Llave de fregadero / grifo cocina 360° giratoria fría y caliente\n\n📦 Características:\n• 冷热双控\n• 360°旋转\n• 陶瓷阀芯\n• 弹性设计\n\n💰 Precio: RD$ 1295\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本准确，图片符合规范。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "浴室卫浴"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:17"
+}

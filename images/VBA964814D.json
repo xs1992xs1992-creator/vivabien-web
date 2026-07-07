@@ -1,0 +1,32 @@
+{
+  "sku": "VBA964814D",
+  "nombre_zh": "墙壁开关",
+  "titulo_es": "Switch blanco de pared resistente al fuego, diseño moderno y seguro",
+  "precio": 75.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 75，请在审核台确认"
+  ],
+  "descripcion_es": "Switch blanco de pared resistente al fuego, diseño moderno y seguro\n\n📦 Características:\n• 白色\n• 单开关\n• 防火材质\n\n💰 Precio: RD$ 75\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签及系统价格一致，但可附加更多促销信息提升吸引力"
+    ],
+    "suggestions": [
+      "西语标题建议改为：Interruptor de pared blanco, resistente al fuego, diseño moderno y seguro",
+      "价格合理，可考虑添加促销活动吸引顾客",
+      "类目正确，无需修改"
+    ],
+    "summary": "商品符合要求，西语标题略有优化空间，价格及分类准确。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:06"
+}

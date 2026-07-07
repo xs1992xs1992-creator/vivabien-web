@@ -1,0 +1,36 @@
+{
+  "sku": "VB6BA5E13E",
+  "nombre_zh": "杀虫喷雾",
+  "titulo_es": "Spray mata insectos / fumigador 510ml líquido verde",
+  "precio": 335.0,
+  "categoria": "其他",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 335，请在审核台确认"
+  ],
+  "descripcion_es": "Spray mata insectos / fumigador 510ml líquido verde\n\n📦 Características:\n• 510ml\n• 绿色液体\n• 喷雾\n\n💰 Precio: RD$ 335\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6BA5E13E_original.jpg"
+  ],
+  "precio_candidatos": [
+    335,
+    240
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合要求，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:31"
+}

@@ -1,0 +1,36 @@
+{
+  "sku": "VB8948B29F",
+  "nombre_zh": "美甲贴片",
+  "titulo_es": "Uñas postizas / uñas acrílicas arcoíris naturales cómodas",
+  "precio": 85.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 85，请在审核台确认"
+  ],
+  "descripcion_es": "Uñas postizas / uñas acrílicas arcoíris naturales cómodas\n\n📦 Características:\n• 彩虹色\n• 自然舒适佩戴\n• 专业品质\n\n💰 Precio: RD$ 85\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8948B29F_original.jpg"
+  ],
+  "precio_candidatos": [
+    85,
+    75
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "所有审核项均符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:11"
+}

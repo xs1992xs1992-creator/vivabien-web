@@ -1,0 +1,33 @@
+{
+  "sku": "VB4AE76827",
+  "nombre_zh": "心形金属美护瓶",
+  "titulo_es": "Delineador",
+  "precio": 65.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['玫瑰金', '心形瓶身', '尖嘴设计']"
+  ],
+  "descripcion_es": "💗 Botella rosa oro forma corazón, pico fino pa' tu beauty 💅✨\n\n📦 Características:\n• 玫瑰金\n• 心形瓶身\n• 尖嘴设计\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": false,
+    "score": 6,
+    "issues": [
+      "西语标题不够准确，仅写'Delineador'无法具体描述产品特征",
+      "价格过低，可能低于市场常见价格，需确认产品质量",
+      "商品类目建议更细化，以便更贴合用户搜索需求"
+    ],
+    "suggestions": [
+      "将西语标题改为'Delineador Líquido con Diseño de Frasco en Forma de Corazón'",
+      "检查价格是否正确，或调整至合理市场范围，比如RD$200-500",
+      "若商品为美妆类，建议类目更改为 '美妆化妆品' 而非 '美容个护'"
+    ],
+    "summary": "商品的信息需要进一步优化，标题不够具体，价格较低，类目需要确认。",
+    "price_check": "mismatch"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:08"
+}

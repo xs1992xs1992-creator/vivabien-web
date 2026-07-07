@@ -1,0 +1,35 @@
+{
+  "sku": "VBD78C3031",
+  "nombre_zh": "头发粘合胶",
+  "titulo_es": "Pegamento para pelucas / lace / extensiones 118ml super fuerte",
+  "precio": 190.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 190，请在审核台确认"
+  ],
+  "descripcion_es": "Pegamento para pelucas / lace / extensiones 118ml super fuerte\n\n📦 Características:\n• 118毫升\n• 超级粘合\n• 适用于头发粘合\n\n💰 Precio: RD$ 190\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD78C3031_original.jpg"
+  ],
+  "precio_candidatos": [
+    190
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合多米尼加市场购物习惯，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:21"
+}

@@ -1,0 +1,34 @@
+{
+  "sku": "VB691D0E81",
+  "nombre_zh": "螺丝刀套装",
+  "titulo_es": "Juego destornillador / desarmador multiuso con mango",
+  "precio": 150.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Juego destornillador / desarmador multiuso con mango\n\n📦 Características:\n• 多种螺丝头\n• 透明塑料包装\n• 附带手柄\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以保持现状，简洁自然。"
+    ],
+    "summary": "商品信息清晰，符合审核要求，定价合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:21"
+}

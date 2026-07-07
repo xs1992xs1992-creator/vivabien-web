@@ -1,0 +1,38 @@
+{
+  "sku": "VB259C8BFA",
+  "nombre_zh": "P9 Pro Max耳机",
+  "titulo_es": "Audífonos Bluetooth P9 Pro Max negros alta fidelidad 40mm",
+  "precio": 385.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 385，请在审核台确认"
+  ],
+  "descripcion_es": "Audífonos Bluetooth P9 Pro Max negros alta fidelidad 40mm\n\n📦 Características:\n• 40mm动圈喇叭\n• 高保真\n• 支持AAC/SBC解码\n• 黑色\n\n💰 Precio: RD$ 385\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB259C8BFA_original.jpg"
+  ],
+  "precio_candidatos": [
+    385
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-02 11:00",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体符合要求，标题自然准确，类目和价格合理，图片背景纯白且商品完整。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:26",
+  "finalized_at": "2026-07-03 13:26"
+}

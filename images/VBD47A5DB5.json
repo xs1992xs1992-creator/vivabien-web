@@ -1,0 +1,29 @@
+{
+  "sku": "VBD47A5DB5",
+  "nombre_zh": "门栓锁",
+  "titulo_es": "Pestillo / cerrojo / tranca puerta 50mm con tornillos",
+  "precio": 60.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 60，请在审核台确认"
+  ],
+  "descripcion_es": "Pestillo / cerrojo / tranca puerta 50mm con tornillos\n\n📦 Características:\n• 50mm\n• 附带螺丝\n• 金属材质\n\n💰 Precio: RD$ 60\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "标题自然，价格合理，类目正确，图片白底完整无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:53"
+}

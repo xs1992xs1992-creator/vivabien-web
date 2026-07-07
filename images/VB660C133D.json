@@ -1,0 +1,35 @@
+{
+  "sku": "VB660C133D",
+  "nombre_zh": "红色装饰字母相框",
+  "titulo_es": "Portarretrato decorativo rojo letras",
+  "precio": 130.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Letras decorativas rojas plásticas 1 set / juego\n\n📦 Características:\n• 红色\n• 塑料材质\n• 一套\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB660C133D_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品基本符合要求，标题、价格、类目等信息准确，图片质量佳。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:04"
+}

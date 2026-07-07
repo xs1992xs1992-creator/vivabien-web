@@ -1,0 +1,39 @@
+{
+  "sku": "VB0BB9C3D9",
+  "nombre_zh": "指甲钳",
+  "titulo_es": "Cortaúñas / alicate dorado portátil con estuche",
+  "precio": 205.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 205，请在审核台确认"
+  ],
+  "descripcion_es": "Cortaúñas / alicate dorado portátil con estuche\n\n📦 Características:\n• 金色\n• 便携包装\n\n💰 Precio: RD$ 205\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB0BB9C3D9_original.jpg"
+  ],
+  "precio_candidatos": [
+    205
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "标题可稍作优化以更自然"
+    ],
+    "suggestions": [
+      "建议将标题更改为'Cortaúñas portátiles dorados con estuche'以使其更符合购物习惯"
+    ],
+    "summary": "商品整体合格，但标题可稍作优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Cortaúñas portátiles dorados con estuche",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:18"
+}

@@ -1,0 +1,32 @@
+{
+  "sku": "VBE53D7E8B",
+  "nombre_zh": "钢缆锁",
+  "titulo_es": "Candado cable de acero / candado de seguridad azul llave",
+  "precio": 210.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 210，请在审核台确认"
+  ],
+  "descripcion_es": "Candado cable de acero / candado de seguridad azul llave\n\n📦 Características:\n• 蓝色\n• 带钥匙\n• 高质量\n\n💰 Precio: RD$ 210\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    210
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体准确，图文一致，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:04"
+}

@@ -1,0 +1,37 @@
+{
+  "sku": "VBD3724C01",
+  "nombre_zh": "三明治机",
+  "titulo_es": "Sandwichera eléctrica 750W / máquina de sándwich 110V",
+  "precio": 1285,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1285，请在审核台确认"
+  ],
+  "descripcion_es": "Sandwichera eléctrica 750W / máquina de sándwich 110V\n\n📦 Características:\n• 750W\n• AC 110V\n\n💰 Precio: RD$ 1285\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD3724C01_original.jpg"
+  ],
+  "precio_candidatos": [
+    1285
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:45",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:02",
+  "finalized_at": "2026-07-03 14:02"
+}

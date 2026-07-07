@@ -1,0 +1,35 @@
+{
+  "sku": "VBC4B191B0",
+  "nombre_zh": "多功能泡沫清洁剂",
+  "titulo_es": "Espuma limpiadora / desinfectante multiuso para superficies",
+  "precio": 180.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Espuma limpiadora / desinfectante multiuso para superficies\n\n📦 Características:\n• 清洁\n• 消毒\n• 除臭\n• 适用于可清洗表面\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题自然准确，无需修改。",
+      "价格合理，无需调整。"
+    ],
+    "summary": "商品信息准确，类目、图片和价格均合理，符合多米尼加市场需求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "其他"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:46"
+}

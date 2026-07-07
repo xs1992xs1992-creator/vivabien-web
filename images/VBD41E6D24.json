@@ -1,0 +1,39 @@
+{
+  "sku": "VBD41E6D24",
+  "nombre_zh": "RGB环形灯",
+  "titulo_es": "Aro de luz RGB / lámpara LED multicolor",
+  "precio": 1075,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（58.0），已自动修正为 RD$ 580",
+    "价格由 AI 从图片识别：RD$ 580，请在审核台确认",
+    "价格经二次OCR修正：58 → RD$ 565"
+  ],
+  "descripcion_es": "Aro de luz RGB / lámpara LED multicolor\n\n📦 Características:\n• RGB\n• 多色温\n• 夜光模式\n• 中国制造\n\n💰 Precio: RD$ 565\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD41E6D24_original.jpg"
+  ],
+  "precio_candidatos": [
+    58
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 14:41",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图文一致，符合上架标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:22",
+  "finalized_at": "2026-07-03 13:22"
+}

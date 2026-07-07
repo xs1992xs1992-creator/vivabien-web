@@ -1,0 +1,40 @@
+{
+  "sku": "VB0C90316D",
+  "nombre_zh": "香薰摆件套装",
+  "titulo_es": "Set aromático / difusor con bandeja de madera y 5 varitas",
+  "precio": 1235.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 12，请在审核台确认",
+    "价格经二次OCR修正：12.5 → RD$ 1235"
+  ],
+  "descripcion_es": "Set aromático / difusor con bandeja de madera y 5 varitas\n\n📦 Características:\n• 木质托盘1个\n• 藤条香薰1个\n• 玻璃香薰蜡烛1个\n• 茶蜡1个\n• 香薰藤条5根\n• 沙子\n• 石头\n\n💰 Precio: RD$ 1235\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB0C90316D_original.jpg"
+  ],
+  "precio_candidatos": [
+    12.5
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题略显笨重"
+    ],
+    "suggestions": [
+      "修改标题，使其更简洁，例如：Set aromático con difusor y bandeja de madera"
+    ],
+    "summary": "商品整体符合多米尼加市场需求，但标题可优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Set aromático con difusor y bandeja de madera",
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:29"
+}

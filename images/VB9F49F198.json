@@ -1,0 +1,37 @@
+{
+  "sku": "VB9F49F198",
+  "nombre_zh": "编织挂镜",
+  "titulo_es": "Espejo redondo 40cm borde tejido color crema",
+  "precio": 580.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 25，请在审核台确认",
+    "价格经二次OCR修正：25 → RD$ 580"
+  ],
+  "descripcion_es": "Espejo redondo 40cm borde tejido color crema\n\n📦 Características:\n• 圆形镜子\n• 编织边框\n• 米白色\n• 约40cm\n\n💰 Precio: RD$ 580\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9F49F198_original.jpg"
+  ],
+  "precio_candidatos": [
+    25
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，价格、标题和类目无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:32"
+}

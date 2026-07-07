@@ -1,0 +1,28 @@
+{
+  "sku": "VBE5057992",
+  "nombre_zh": "哑光矿物粉底",
+  "titulo_es": "Base mineral mate 4 tonos pa acabado natural",
+  "precio": 145.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['4色', '哑光']"
+  ],
+  "descripcion_es": "Base mineral mate 4 tonos pa acabado natural\n\n📦 Características:\n• 4色\n• 哑光\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可具体化为 'Base mineral mate con 4 tonos para un acabado natural', 更符合自然表述。"
+    ],
+    "summary": "商品信息准确，图片符合电商要求，价格合理。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:00",
+  "review_ignored": false
+}

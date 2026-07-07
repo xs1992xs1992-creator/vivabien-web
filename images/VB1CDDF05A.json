@@ -1,0 +1,35 @@
+{
+  "sku": "VB1CDDF05A",
+  "nombre_zh": "指甲修剪套装",
+  "titulo_es": "Set de manicura / cortaúñas / tijeras de uñas metálico",
+  "precio": 130,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Set de manicura / cortaúñas / tijeras de uñas metálico\n\n📦 Características:\n• 包含指甲钳\n• 包含指甲剪\n• 金属材质\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1CDDF05A_original.jpg"
+  ],
+  "precio_candidatos": [
+    125
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合上架要求，图片清晰，信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:18"
+}

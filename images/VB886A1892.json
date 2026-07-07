@@ -1,0 +1,31 @@
+{
+  "sku": "VB886A1892",
+  "nombre_zh": "门锁套装",
+  "titulo_es": "Cerradura / pestillo negro con llave para puertas interiores",
+  "precio": 370.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 370，请在审核台确认"
+  ],
+  "descripcion_es": "Cerradura / pestillo negro con llave para puertas interiores\n\n📦 Características:\n• 黑色\n• 带钥匙\n• 隐私功能\n• 适用于门\n\n💰 Precio: RD$ 370\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "白底图的背景干净且纯白，商品完整无缺；商品类别正确；标题准确且符合购物习惯，无需修改。"
+    ],
+    "summary": "商品符合多米尼加市场标准，价格和标题都无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:42"
+}

@@ -1,0 +1,32 @@
+{
+  "sku": "VB4FE5E8C5",
+  "nombre_zh": "油漆刷",
+  "titulo_es": "Brocha / pincel para pintar 2.5\" / 63.5mm mango blanco",
+  "precio": 75,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Brocha / pincel para pintar 2.5\" / 63.5mm mango blanco\n\n📦 Características:\n• 2.5英寸\n• 63.5毫米\n• 白色手柄\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确、价格合理、类目正确，图片质量符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:08"
+}

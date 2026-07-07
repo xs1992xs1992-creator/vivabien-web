@@ -1,0 +1,33 @@
+{
+  "sku": "VB862170C4",
+  "nombre_zh": "钢丝剪刀",
+  "titulo_es": "Pinza / corta alambre 18\" mango naranja heavy duty",
+  "precio": 635.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": true,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 635，请在审核台确认",
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Pinza / corta alambre 18\" mango naranja heavy duty\n\n📦 Características:\n• 18英寸\n• 橙色手柄\n• 重型设计\n\n💰 Precio: RD$ 635\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    635
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格标签与系统价格一致，各项信息合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:07"
+}

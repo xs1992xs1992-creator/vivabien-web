@@ -1,0 +1,35 @@
+{
+  "sku": "VBC7DA3792",
+  "nombre_zh": "家居假书装饰摆件",
+  "titulo_es": "Libros decorativos / libros falsos para casa y oficina",
+  "precio": 615,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 515，请在审核台确认"
+  ],
+  "descripcion_es": "Set de adornos blancos de madera con soga\n\n📦 Características:\n• 一套\n• 白色\n• 木质\n• 带麻绳装饰\n\n💰 Precio: RD$ 515\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC7DA3792_original.jpg"
+  ],
+  "precio_candidatos": [
+    515
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，仅需核对价格信息。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 615,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:59"
+}

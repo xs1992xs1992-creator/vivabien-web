@@ -1,0 +1,36 @@
+{
+  "sku": "VB38CA295B",
+  "nombre_zh": "假发胶水",
+  "titulo_es": "Pegamento para pelucas / lace front / extensiones 38ml",
+  "precio": 130,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Pegamento para pelucas / lace front / extensiones 38ml\n\n📦 Características:\n• 38ml\n• 防水\n• 强力粘合\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB38CA295B_original.jpg"
+  ],
+  "precio_candidatos": [
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合上架标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:25"
+}

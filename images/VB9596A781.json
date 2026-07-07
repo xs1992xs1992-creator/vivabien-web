@@ -1,0 +1,37 @@
+{
+  "sku": "VB9596A781",
+  "nombre_zh": "婴儿天然油",
+  "titulo_es": "Aceite natural para bebé 118ml",
+  "precio": 150.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Aceite natural para bebé 118ml\n\n📦 Características:\n• 118ml\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9596A781_original.jpg"
+  ],
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:14",
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，符合多米尼加共和国市场上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "母婴用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:28",
+  "finalized_at": "2026-07-03 21:28"
+}

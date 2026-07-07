@@ -1,0 +1,43 @@
+{
+  "sku": "VBE202B6F2",
+  "nombre_zh": "美甲打磨机",
+  "titulo_es": "Pulidor de uñas eléctrico / torno para uñas recargable",
+  "precio": 2590,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 250，请在审核台确认",
+    "价格经二次OCR修正：250 → RD$ 2500"
+  ],
+  "descripcion_es": "Pulidora eléctrica azul / esmeriladora 1 unidad\n\n📦 Características:\n• 一套\n• 蓝色\n• 电动\n\n💰 Precio: RD$ 2500\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE202B6F2_original.jpg"
+  ],
+  "precio_candidatos": [
+    250
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-03 21:23",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签部分被遮挡，建议清晰展示"
+    ],
+    "suggestions": [
+      "重新拍摄原图，确保价格标签完全可见"
+    ],
+    "summary": "商品审核通过，但原图价格标签部分不清晰，建议优化图片质量。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:26",
+  "finalized_at": "2026-07-03 21:26"
+}

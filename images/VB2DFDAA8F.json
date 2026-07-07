@@ -1,0 +1,31 @@
+{
+  "sku": "VB2DFDAA8F",
+  "nombre_zh": "燃气灶",
+  "titulo_es": "Estufa de gas / cocina de gas 4 quemadores inoxidable",
+  "precio": 7930,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Estufa de gas / cocina de gas 4 quemadores inoxidable\n\n📦 Características:\n• 4个燃气炉头\n• 不锈钢材质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2DFDAA8F_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "confirmed_at": "2026-07-04 10:13",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片一致，审核无明显问题。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:17",
+  "finalized_at": "2026-07-04 10:17"
+}

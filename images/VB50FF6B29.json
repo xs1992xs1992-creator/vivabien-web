@@ -1,0 +1,28 @@
+{
+  "sku": "VB50FF6B29",
+  "nombre_zh": "双开墙壁开关",
+  "titulo_es": "Switch de pared doble azul, diseño moderno y fácil de instalar",
+  "precio": 125.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Switch de pared doble azul, diseño moderno y fácil de instalar\n\n📦 Características:\n• 蓝色面板\n• 双开设计\n• 墙壁安装\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可稍作调整为：Interruptor de pared doble azul, moderno y fácil de instalar，以使描述更加清晰自然。"
+    ],
+    "summary": "商品质量良好，标题和分类基本合理，价格准确但可进一步审视市场参考值。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:14"
+}

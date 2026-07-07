@@ -1,0 +1,28 @@
+{
+  "sku": "VB5162410B",
+  "nombre_zh": "双开墙插",
+  "titulo_es": "Enchufe doble con protección infantil y soporte de alta potencia",
+  "precio": 100.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Enchufe doble con protección infantil y soporte de alta potencia\n\n📦 Características:\n• 儿童锁保护\n• 高功率支持\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以稍微调整，使其更精准：'Enchufe doble con protección infantil, apto para alta potencia'"
+    ],
+    "summary": "商品描述准确，价格合理，图片清晰。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:14"
+}

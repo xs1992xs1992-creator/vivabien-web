@@ -1,0 +1,35 @@
+{
+  "sku": "VBE57E6B33",
+  "nombre_zh": "灯泡加湿器",
+  "titulo_es": "Humidificador / lámpara nocturna mini 1 unidad",
+  "precio": 265.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 265，请在审核台确认"
+  ],
+  "descripcion_es": "Humidificador / lámpara nocturna mini 1 unidad\n\n📦 Características:\n• 1个\n• 迷你夜灯\n• 透明灯泡造型\n• 加湿功能\n\n💰 Precio: RD$ 265\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE57E6B33_original.jpg"
+  ],
+  "precio_candidatos": [
+    265
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

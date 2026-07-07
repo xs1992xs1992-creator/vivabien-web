@@ -1,0 +1,37 @@
+{
+  "sku": "VBE89A8EC7",
+  "nombre_zh": "手动饮水泵",
+  "titulo_es": "Bomba manual para agua de botellón / galón",
+  "precio": 125.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Bomba manual para agua de botellón / galón\n\n📦 Características:\n• 适用于桶装水\n• 真空泵设计\n• 易操作\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE89A8EC7_original.jpg"
+  ],
+  "precio_candidatos": [
+    125
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:44",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，类目及图片合规。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:01",
+  "finalized_at": "2026-07-03 14:01"
+}

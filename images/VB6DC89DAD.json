@@ -1,0 +1,40 @@
+{
+  "sku": "VB6DC89DAD",
+  "nombre_zh": "无线耳机",
+  "titulo_es": "Audífonos inalámbricos / headphones Bluetooth V5.1 HD",
+  "precio": 545.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（549.0），已自动修正为 RD$ 5490",
+    "价格由 AI 从图片识别：RD$ 5490，请在审核台确认",
+    "价格经二次OCR修正：549 → RD$ 545"
+  ],
+  "descripcion_es": "Audífonos inalámbricos / headphones Bluetooth V5.1 HD\n\n📦 Características:\n• 无线\n• V5.1\n• 高清麦克风\n• 降噪\n• 立体声\n• 低音效果\n\n💰 Precio: RD$ 545\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6DC89DAD_original.jpg"
+  ],
+  "precio_candidatos": [
+    549
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-02 11:44",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合上架标准，信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:24",
+  "finalized_at": "2026-07-03 13:24"
+}

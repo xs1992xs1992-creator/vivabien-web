@@ -1,0 +1,35 @@
+{
+  "sku": "VB3AB90188",
+  "nombre_zh": "多媒体音箱",
+  "titulo_es": "Bocina / parlante multimedia 12 pulgadas 5000mAh con micrófono",
+  "precio": 3180,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Bocina / parlante multimedia 12 pulgadas 5000mAh con micrófono\n\n📦 Características:\n• 12寸\n• 5000mAh\n• 超重低音\n• 带麦克风\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3AB90188_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "confirmed_at": "2026-07-02 14:18",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图中未发现价格标签，无法核实价格"
+    ],
+    "suggestions": [
+      "西语标题可以更精炼，例如：'Bocina multimedia de 12 pulgadas (5000mAh) con micrófono.'"
+    ],
+    "summary": "商品信息整体准确，图片质量良好，系统价格合理，建议优化标题表述。",
+    "price_check": "none",
+    "suggested_titulo_es": "Bocina multimedia de 12 pulgadas (5000mAh) con micrófono",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:25",
+  "finalized_at": "2026-07-03 13:25"
+}

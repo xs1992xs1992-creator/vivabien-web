@@ -1,0 +1,35 @@
+{
+  "sku": "VBD46D28A4",
+  "nombre_zh": "40cm 1530",
+  "titulo_es": "Florero / jarrón cerámico dorado con tapa 40cm",
+  "precio": 1530,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Florero / jarrón cerámico dorado con tapa 40cm\n\n📦 Características:\n• 金色\n• 陶瓷\n• 带盖\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD46D28A4_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "etiqueta": "planta",
+  "talla_ancho": null,
+  "talla_alto": "40",
+  "version": 3,
+  "confirmed_at": "2026-07-03 22:10",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品无重大问题，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:15",
+  "finalized_at": "2026-07-04 10:15"
+}

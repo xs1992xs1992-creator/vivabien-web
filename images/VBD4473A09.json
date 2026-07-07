@@ -1,0 +1,39 @@
+{
+  "sku": "VBD4473A09",
+  "nombre_zh": "婴儿润肤乳",
+  "titulo_es": "Crema hidratante bebé / loción 250ml lavanda ayuda dormir",
+  "precio": 225.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": true,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 220，请在审核台确认",
+    "价格经二次OCR修正：220 → RD$ 225",
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Crema hidratante bebé / loción 250ml lavanda ayuda dormir\n\n📦 Características:\n• 250ml\n• 薰衣草香\n• 保湿\n• 助眠\n\n💰 Precio: RD$ 225\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD4473A09_original.jpg"
+  ],
+  "precio_candidatos": [
+    220
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:11",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息与图片基本匹配，整体合规。",
+    "price_check": "mismatch",
+    "suggested_titulo_es": null,
+    "suggested_precio": 220,
+    "suggested_categoria": "母婴用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:26",
+  "finalized_at": "2026-07-03 21:26"
+}

@@ -1,0 +1,26 @@
+{
+  "sku": "VB814FCBE0",
+  "nombre_zh": "发胶",
+  "titulo_es": "Pegamento para extensiones de cabello",
+  "precio": 80.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认"
+  ],
+  "descripcion_es": "Silicón / pega anti moho 30mL para baño y cocina\n\n📦 Características:\n• 30mL\n• 防霉功能\n\n💰 Precio: RD$ 80\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB814FCBE0_original.jpg"
+  ],
+  "precio_candidatos": [
+    80
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-06-29 21:23",
+  "review_ignored": false
+}

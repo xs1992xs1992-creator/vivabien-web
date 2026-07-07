@@ -1,0 +1,44 @@
+{
+  "sku": "VB680ED829",
+  "nombre_zh": "金色人体摆件",
+  "titulo_es": "Figura decorativa dorada / estatua metálica",
+  "precio": 320,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 320，请在审核台确认",
+    "价格经二次OCR修正：320 → RD$ 820"
+  ],
+  "descripcion_es": "Figura decorativa dorada / estatua metálica\n\n📦 Características:\n• 金色\n• 金属材质\n\n💰 Precio: RD$ 820\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB680ED829_original.jpg"
+  ],
+  "precio_candidatos": [
+    320
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": false,
+    "score": 6,
+    "issues": [
+      "价格标签显示为$320，与系统价格RD$820不一致。",
+      "西语标题中'figura decorativa dorada / estatua metálica'有些冗余，可简化。",
+      "商品价格相较于多米尼加常见范围略高，需确认其合理性。"
+    ],
+    "suggestions": [
+      "将标题修改为'Figura Humana Decorativa Dorada'以更简洁和符合购物习惯。",
+      "核实价格是否更改为与标签一致的价格320 RD$。",
+      "保留类目为家居装饰，但需补充更多信息证明价格合理性，例如材质说明。"
+    ],
+    "summary": "商品标题可接受但需优化；价格信息与标签不一致，需修改；类目正确，白底图合格。",
+    "price_check": "mismatch",
+    "suggested_titulo_es": "Figura Humana Decorativa Dorada",
+    "suggested_precio": 320,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:43"
+}

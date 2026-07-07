@@ -1,0 +1,32 @@
+{
+  "sku": "VB2A68405D",
+  "nombre_zh": "红色喷漆",
+  "titulo_es": "Spray rojo / pintura en spray 400ml rápido secado",
+  "precio": 135.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 135，请在审核台确认"
+  ],
+  "descripcion_es": "Spray rojo / pintura en spray 400ml rápido secado\n\n📦 Características:\n• 400ml\n• 红色\n• 热塑性丙烯酸\n• 快速修复\n\n💰 Precio: RD$ 135\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    135
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片对应，审核无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:50"
+}

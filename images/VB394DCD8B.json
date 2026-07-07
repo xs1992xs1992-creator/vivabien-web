@@ -1,0 +1,33 @@
+{
+  "sku": "VB394DCD8B",
+  "nombre_zh": "足部护理膏",
+  "titulo_es": "Crema para pies / pomada para pies 454g anti-fatiga y grietas",
+  "precio": 425,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Crema para pies / pomada para pies 454g anti-fatiga y grietas\n\n📦 Características:\n• 454g\n• 缓解腿脚疲劳\n• 修复干裂\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB394DCD8B_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "confirmed_at": "2026-07-04 10:26",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图未显示价格标签，无法核实价格"
+    ],
+    "suggestions": [],
+    "summary": "商品信息整体符合要求，但原图未提供价格标签以供核实。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 11:42",
+  "finalized_at": "2026-07-04 11:42"
+}

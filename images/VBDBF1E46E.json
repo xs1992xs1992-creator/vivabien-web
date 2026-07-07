@@ -1,0 +1,39 @@
+{
+  "sku": "VBDBF1E46E",
+  "nombre_zh": "38cm 1995",
+  "titulo_es": "Florero / jarrón blanco cerámico diseño calado 38cm",
+  "precio": 1995,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Florero / jarrón blanco cerámico diseño calado 38cm\n\n📦 Características:\n• 白色\n• 陶瓷\n• 镂空设计\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDBF1E46E_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "etiqueta": "planta",
+  "talla_ancho": null,
+  "talla_alto": "38",
+  "version": 3,
+  "confirmed_at": "2026-07-03 22:07",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图中有价格标签，需核实价格"
+    ],
+    "suggestions": [
+      "确保价格标签与系统价格一致，若标签为 RD$ 1995 则无需更改"
+    ],
+    "summary": "商品整体无明显问题，图片展示清晰，建议核实价格标签一致性。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:15",
+  "finalized_at": "2026-07-04 10:15"
+}

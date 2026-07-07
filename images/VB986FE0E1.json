@@ -1,0 +1,36 @@
+{
+  "sku": "VB986FE0E1",
+  "nombre_zh": "儿童指甲贴",
+  "titulo_es": "Calcomanías / stickers para uñas de niñas con diseños cute",
+  "precio": 50.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 50，请在审核台确认"
+  ],
+  "descripcion_es": "Calcomanías / stickers para uñas de niñas con diseños cute\n\n📦 Características:\n• 儿童专用\n• 卡通图案\n• 指甲贴纸\n\n💰 Precio: RD$ 50\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB986FE0E1_original.jpg"
+  ],
+  "precio_candidatos": [
+    50
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片与对应信息一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:10"
+}

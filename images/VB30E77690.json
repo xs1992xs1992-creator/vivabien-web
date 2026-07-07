@@ -1,0 +1,32 @@
+{
+  "sku": "VB30E77690",
+  "nombre_zh": "防水喷雾",
+  "titulo_es": "Spray impermeabilizante rápido 750ml / sellador multiuso",
+  "precio": 215.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 215，请在审核台确认"
+  ],
+  "descripcion_es": "Spray impermeabilizante rápido 750ml / sellador multiuso\n\n📦 Características:\n• 750ml\n• 多功能\n• 快干\n• 黑白灰透明多色可选\n\n💰 Precio: RD$ 215\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    215
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息全面准确，各项审核符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:49"
+}

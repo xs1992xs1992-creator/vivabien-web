@@ -1,0 +1,26 @@
+{
+  "sku": "VB1B23CDBB",
+  "nombre_zh": "旅行风格杂志假书",
+  "titulo_es": "Revista decorativa estilo viaje",
+  "precio": 130.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Revista de viaje 1 unidad / diseño plantas / en inglés\n\n📦 Características:\n• 一本\n• 植物封面\n• 英文内容\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1B23CDBB_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-01 13:06",
+  "review_ignored": false
+}

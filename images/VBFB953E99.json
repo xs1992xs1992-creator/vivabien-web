@@ -1,0 +1,32 @@
+{
+  "sku": "VBFB953E99",
+  "nombre_zh": "滚筒刷",
+  "titulo_es": "Rodillo / brocha de pintar paredes exteriores ecológico",
+  "precio": 35.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 35，请在审核台确认"
+  ],
+  "descripcion_es": "Rodillo / brocha de pintar paredes exteriores ecológico\n\n📦 Características:\n• 适用于外墙涂料\n• 绿色包装\n\n💰 Precio: RD$ 35\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    35
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:19"
+}

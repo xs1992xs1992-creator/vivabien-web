@@ -1,0 +1,38 @@
+{
+  "sku": "VBD0E564F6",
+  "nombre_zh": "双头燃气灶",
+  "titulo_es": "Estufa de gas / fogón doble automático resistente",
+  "precio": 1980,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 图片可能拍反，价格从旋转图中识别",
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认"
+  ],
+  "descripcion_es": "Estufa de gas / fogón doble automático resistente\n\n📦 Características:\n• 双头\n• 自动点火\n• 耐用锅架\n• 厚机身\n\n💰 Precio: RD$ 350\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD0E564F6_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-04 10:17",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图价格不清晰"
+    ],
+    "suggestions": [],
+    "summary": "商品整体质量良好，仅需确认价格信息。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 11:41",
+  "finalized_at": "2026-07-04 11:41"
+}

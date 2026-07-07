@@ -1,0 +1,35 @@
+{
+  "sku": "VBD9568E8F",
+  "nombre_zh": "折叠风扇",
+  "titulo_es": "Abanico portátil / ventilador plegable verde KC-5811",
+  "precio": 595.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 595，请在审核台确认"
+  ],
+  "descripcion_es": "Abanico portátil / ventilador plegable verde KC-5811\n\n📦 Características:\n• 绿色\n• 多功能\n• KC-5811\n\n💰 Precio: RD$ 595\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD9568E8F_original.jpg"
+  ],
+  "precio_candidatos": [
+    595
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图文一致，定价合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

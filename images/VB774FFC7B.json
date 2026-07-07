@@ -1,0 +1,35 @@
+{
+  "sku": "VB774FFC7B",
+  "nombre_zh": "维C美白精华",
+  "titulo_es": "Sérum blanqueador / vitamina C / ácido hialurónico antiarrugas",
+  "precio": 230.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 230，请在审核台确认"
+  ],
+  "descripcion_es": "Sérum blanqueador / vitamina C / ácido hialurónico antiarrugas\n\n📦 Características:\n• 美白\n• 深层滋养\n• 抗衰老\n• 含谷胱甘肽\n• 含透明质酸\n\n💰 Precio: RD$ 230\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB774FFC7B_original.jpg"
+  ],
+  "precio_candidatos": [
+    230
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整且符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:24"
+}

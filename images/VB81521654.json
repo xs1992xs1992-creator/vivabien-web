@@ -1,0 +1,38 @@
+{
+  "sku": "VB81521654",
+  "nombre_zh": "夹式紫外灯",
+  "titulo_es": "Lámpara UV clip ajustable / luz violeta",
+  "precio": 340.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认",
+    "价格经二次OCR修正：350 → RD$ 340"
+  ],
+  "descripcion_es": "Lámpara UV clip ajustable / luz violeta\n\n📦 Características:\n• 可调角度\n• 紫色\n\n💰 Precio: RD$ 340\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB81521654_original.jpg"
+  ],
+  "precio_candidatos": [
+    350
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:15",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体准确，符合多米尼加市场习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:29",
+  "finalized_at": "2026-07-03 21:29"
+}

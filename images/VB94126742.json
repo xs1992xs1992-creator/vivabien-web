@@ -1,0 +1,42 @@
+{
+  "sku": "VB94126742",
+  "nombre_zh": "鼻毛修剪器",
+  "titulo_es": "Recortador de vellos nariz / orejas 1 unidad negro",
+  "precio": 155.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 155，请在审核台确认"
+  ],
+  "descripcion_es": "Recortador de vellos nariz / orejas 1 unidad negro\n\n📦 Características:\n• 1个\n• 黑色\n• 鼻毛修剪\n• 耳毛修剪\n\n💰 Precio: RD$ 155\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB94126742_original.jpg"
+  ],
+  "precio_candidatos": [
+    155
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-03 21:21",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签不够明显，需进一步确认"
+    ],
+    "suggestions": [
+      "建议人工确认价格标签上的数字是否清晰无误"
+    ],
+    "summary": "商品整体质量符合标准，标题自然合理，白底图符合要求，希望人工复核价格标签。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:28",
+  "finalized_at": "2026-07-03 21:28"
+}

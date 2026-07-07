@@ -1,0 +1,37 @@
+{
+  "sku": "VBB31427E9",
+  "nombre_zh": "棉签",
+  "titulo_es": "Hisopos / aplicadores / cotonetes de madera caja 200 unidades",
+  "precio": 80.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认"
+  ],
+  "descripcion_es": "Hisopos / aplicadores / cotonetes de madera caja 200 unidades\n\n📦 Características:\n• 木质杆\n• 带盒装\n\n💰 Precio: RD$ 80\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB31427E9_original.jpg"
+  ],
+  "precio_candidatos": [
+    80
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:13",
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合审核标准，各项信息准确无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:27",
+  "finalized_at": "2026-07-03 21:27"
+}

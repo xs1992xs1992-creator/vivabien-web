@@ -1,0 +1,23 @@
+{
+  "sku": "VB2F699645",
+  "nombre_zh": "160cm 2655",
+  "titulo_es": "Rollo de manguera plástica verde 1.8m / 160cm",
+  "precio": 2995.0,
+  "categoria": "家居装饰",
+  "estado": "pendiente",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 2995，请在审核台确认"
+  ],
+  "descripcion_es": "Rollo de manguera plástica verde 1.8m / 160cm\n\n📦 Características:\n• 1.8m\n• 绿色\n• 塑料材质\n\n💰 Precio: RD$ 2995\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2F699645_original.jpg"
+  ],
+  "precio_candidatos": [
+    2995
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "planta"
+}

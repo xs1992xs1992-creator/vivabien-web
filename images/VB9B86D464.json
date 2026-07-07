@@ -1,0 +1,35 @@
+{
+  "sku": "VB9B86D464",
+  "nombre_zh": "姜黄美白油",
+  "titulo_es": "Aceite de cúrcuma / turmeric 500ml para manchas y piel joven",
+  "precio": 325,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 32，请在审核台确认"
+  ],
+  "descripcion_es": "Aceite de cúrcuma / turmeric 500ml para manchas y piel joven\n\n📦 Características:\n• 500ml\n• 美白\n• 抗衰老\n• 修复暗斑\n\n💰 Precio: RD$ 32\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9B86D464_original.jpg"
+  ],
+  "precio_candidatos": [
+    32.5
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合要求，少量改动即可上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:09"
+}

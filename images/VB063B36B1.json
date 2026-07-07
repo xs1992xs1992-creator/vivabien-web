@@ -1,0 +1,33 @@
+{
+  "sku": "VB063B36B1",
+  "nombre_zh": "美甲工具套装",
+  "titulo_es": "Set de herramientas manicura/pedicura rosado multifuncional",
+  "precio": 150,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Set de herramientas manicura/pedicura rosado multifuncional\n\n📦 Características:\n• 粉色\n• 多功能\n• 修脚修甲工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB063B36B1_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签不清晰"
+    ],
+    "suggestions": [
+      "核实商品价格是否一致，若一致可考虑标明对应价格标签以保证透明度"
+    ],
+    "summary": "商品整体符合上架标准，标题准确，类目正确，白底图合规，但需核对价格标签。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:19"
+}

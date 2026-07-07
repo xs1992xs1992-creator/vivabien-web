@@ -1,0 +1,37 @@
+{
+  "sku": "VB34BF8991",
+  "nombre_zh": "指甲护理套装",
+  "titulo_es": "Set de cuidado de uñas / kit manicura acero inoxidable",
+  "precio": 110.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Set de cuidado de uñas / kit manicura acero inoxidable\n\n📦 Características:\n• 不锈钢材质\n• 包含指甲钳、剪刀、推皮棒\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB34BF8991_original.jpg"
+  ],
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "考虑在西语标题中提及手足护理的综合性，更符合当地消费者习惯，例如 'Kit de cuidado integral para uñas y manos'。"
+    ],
+    "summary": "商品整体质量良好，标题规范价格合理，图片清晰完整，对应无误。",
+    "price_check": "match",
+    "suggested_titulo_es": "Kit de cuidado integral para uñas",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:16"
+}

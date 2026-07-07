@@ -1,0 +1,34 @@
+{
+  "sku": "VBCC234DFE",
+  "nombre_zh": "燃气灶",
+  "titulo_es": "Estufa de gas / fogón de gas 5 quemadores acero inoxidable",
+  "precio": 7640,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Estufa de gas / fogón de gas 5 quemadores acero inoxidable\n\n📦 Características:\n• 5个灶头\n• 不锈钢材质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBCC234DFE_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "confirmed_at": "2026-07-04 10:17",
+  "review": {
+    "pass": false,
+    "score": 6,
+    "issues": [
+      "价格明显异常，超出常见商品价格区间"
+    ],
+    "suggestions": [
+      "重新评估定价"
+    ],
+    "summary": "价格异常，需要重新定价",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 11:41"
+}

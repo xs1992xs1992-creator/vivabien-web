@@ -1,0 +1,28 @@
+{
+  "sku": "VB088CD87A",
+  "nombre_zh": "墙插带USB",
+  "titulo_es": "Tomacorriente de pared con doble puerto USB y tornillos incluidos",
+  "precio": 85.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 85，请在审核台确认"
+  ],
+  "descripcion_es": "Tomacorriente de pared con doble puerto USB y tornillos incluidos\n\n📦 Características:\n• 双USB接口\n• 墙壁插座\n• 附带螺丝安装\n\n💰 Precio: RD$ 85\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review_status": "done",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以进一步优化为：'Interruptor de pared con dos puertos USB y tornillos incluidos'，更贴合商品描述。"
+    ],
+    "summary": "商品合格，可上架；建议优化西语标题以提升表达自然性。",
+    "price_check": "match"
+  },
+  "review_at": "2026-06-27 21:08"
+}

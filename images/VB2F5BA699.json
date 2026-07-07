@@ -1,0 +1,36 @@
+{
+  "sku": "VB2F5BA699",
+  "nombre_zh": "迷你风扇",
+  "titulo_es": "Abanico mini / ventilador portátil 1 unidad azul diseño cartoon",
+  "precio": 260.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": true,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 260，请在审核台确认",
+    "⚠️ AI 生图失败，可点「重新生图」重试: 图片被内容安全系统拦截，且豆包备用接口也失败。\n建议：换一张图片后重试。"
+  ],
+  "descripcion_es": "Abanico mini / ventilador portátil 1 unidad azul diseño cartoon\n\n📦 Características:\n• 1个\n• 蓝色\n• 卡通设计\n• 便携\n\n💰 Precio: RD$ 260\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2F5BA699_original.jpg"
+  ],
+  "precio_candidatos": [
+    260
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息合理，标题准确，价格与标签一致，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:28"
+}

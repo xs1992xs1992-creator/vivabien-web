@@ -1,0 +1,37 @@
+{
+  "sku": "VBC90D3B6B",
+  "nombre_zh": "电动蒜泥机",
+  "titulo_es": "Picadora de ajo eléctrica 250ml rosada",
+  "precio": 285.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 285，请在审核台确认"
+  ],
+  "descripcion_es": "Picadora de ajo eléctrica 250ml rosada\n\n📦 Características:\n• 250ml\n• 电动\n• 粉色\n\n💰 Precio: RD$ 285\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC90D3B6B_original.jpg"
+  ],
+  "precio_candidatos": [
+    285
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:45",
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述完整且符合要求，价格与标签一致，白底图背景干净，商品类别正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:02",
+  "finalized_at": "2026-07-03 14:02"
+}

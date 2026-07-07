@@ -1,0 +1,27 @@
+{
+  "sku": "VB5F9C8294",
+  "nombre_zh": "7支化妆刷套装",
+  "titulo_es": "Juego de 7 brochas de maquillaje, mango rosado, kit completo",
+  "precio": 160.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['7支装', '粉色手柄', '美妆工具']"
+  ],
+  "descripcion_es": "Juego de 7 brochas de maquillaje, mango rosado, kit completo\n\n📦 Características:\n• 7支装\n• 粉色手柄\n• 美妆工具\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题已经较为准确，无需修改。"
+    ],
+    "summary": "商品符合上架标准，信息准确，图片清晰。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:06"
+}

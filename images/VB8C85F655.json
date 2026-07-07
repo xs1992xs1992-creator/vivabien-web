@@ -1,0 +1,29 @@
+{
+  "sku": "VB8C85F655",
+  "nombre_zh": "手持花洒",
+  "titulo_es": "Ducha de mano / regadera portátil plateada con accesorios",
+  "precio": 130.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Ducha de mano / regadera portátil plateada con accesorios\n\n📦 Características:\n• 银色\n• 手持式\n• 带安装配件\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本符合要求，各方面表现较好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:21"
+}

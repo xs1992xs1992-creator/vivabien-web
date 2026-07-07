@@ -1,0 +1,32 @@
+{
+  "sku": "VB59ABEF8D",
+  "nombre_zh": "金属钻头",
+  "titulo_es": "Broca / barrena metálica 4.0mm HSS acero rápido",
+  "precio": 30.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 30，请在审核台确认"
+  ],
+  "descripcion_es": "Broca / barrena metálica 4.0mm HSS acero rápido\n\n📦 Características:\n• 4.0mm\n• HSS高速钢\n• DIN 338标准\n• 135°钻尖角度\n\n💰 Precio: RD$ 30\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    30
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整准确，图片内容和描述均无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

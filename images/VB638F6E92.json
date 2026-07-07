@@ -1,0 +1,27 @@
+{
+  "sku": "VB638F6E92",
+  "nombre_zh": "多功能组合刷",
+  "titulo_es": "Juego de brochas doble punta azul claro multiuso",
+  "precio": 100.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['浅蓝色', '双头设计', '多功能']"
+  ],
+  "descripcion_es": "Juego de brochas doble punta azul claro multiuso\n\n📦 Características:\n• 浅蓝色\n• 双头设计\n• 多功能\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议优化标题为：Juego de brochas de doble punta azul claro para maquillaje"
+    ],
+    "summary": "商品描述清晰，图片符合规范，价格合理，类目正确。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:06"
+}

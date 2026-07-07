@@ -1,0 +1,32 @@
+{
+  "sku": "VB898CE146",
+  "nombre_zh": "胶枪",
+  "titulo_es": "Pistola de silicón / pistola de pega azul manual metalizada",
+  "precio": 135.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 135，请在审核台确认"
+  ],
+  "descripcion_es": "Pistola de silicón / pistola de pega azul manual metalizada\n\n📦 Características:\n• 蓝色\n• 金属材质\n• 手动操作\n\n💰 Precio: RD$ 135\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    135
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片审核符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:06"
+}

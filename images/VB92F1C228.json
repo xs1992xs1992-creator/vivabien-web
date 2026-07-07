@@ -1,0 +1,35 @@
+{
+  "sku": "VB92F1C228",
+  "nombre_zh": "充电宝",
+  "titulo_es": "Power bank / batería portátil 10000mAh 2 USB",
+  "precio": 740.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 740，请在审核台确认"
+  ],
+  "descripcion_es": "Power bank / batería portátil 10000mAh 2 USB\n\n📦 Características:\n• 10000mAh\n• 双USB接口\n• 便携\n\n💰 Precio: RD$ 740\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB92F1C228_original.jpg"
+  ],
+  "precio_candidatos": [
+    740
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:13"
+}

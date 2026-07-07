@@ -1,0 +1,28 @@
+{
+  "sku": "VB21655436",
+  "nombre_zh": "花香香水",
+  "titulo_es": "Perfume floral con diseño rosado y de flores, solo RD$3.15",
+  "precio": 315,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Perfume floral con diseño rosado y de flores, solo RD$3.15\n\n📦 Características:\n• 粉色瓶身\n• 植物花卉图案\n• 标价$3.15\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "西语标题中的价格信息写为RD$3.15，与实际价格不符"
+    ],
+    "suggestions": [
+      "修改西语标题为：Perfume floral con diseño rosado y de flores, precio RD$315"
+    ],
+    "summary": "商品整体符合标准，但标题价格存在错误。",
+    "price_check": "mismatch"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:11"
+}

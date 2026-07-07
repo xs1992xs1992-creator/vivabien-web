@@ -1,0 +1,27 @@
+{
+  "sku": "VB5653DB59",
+  "nombre_zh": "蚕丝嫁接睫毛",
+  "titulo_es": "Pestañas 10mm 0.10C x12 filas seda natural",
+  "precio": 145.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['10mm长度', '0.10C粗度', '12行', '蚕丝材质']"
+  ],
+  "descripcion_es": "Pestañas 10mm 0.10C x12 filas seda natural\n\n📦 Características:\n• 10mm长度\n• 0.10C粗度\n• 12行\n• 蚕丝材质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以保留，无需修改，符合目标市场的语言使用习惯。"
+    ],
+    "summary": "商品信息准确，图片背景干净，类目合适，价格合理。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:07"
+}

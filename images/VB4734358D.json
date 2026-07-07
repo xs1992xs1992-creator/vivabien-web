@@ -1,0 +1,39 @@
+{
+  "sku": "VB4734358D",
+  "nombre_zh": "经典爽身粉",
+  "titulo_es": "Talco para bebé / polvo corporal clásico 100g",
+  "precio": 270.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 270，请在审核台确认"
+  ],
+  "descripcion_es": "Talco para bebé / polvo corporal clásico 100g\n\n📦 Características:\n• 100g\n\n💰 Precio: RD$ 270\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4734358D_original.jpg"
+  ],
+  "precio_candidatos": [
+    200,
+    270,
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:17",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合大部分要求，定价合理，信息完整，白底图清晰，与原图一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:31",
+  "finalized_at": "2026-07-03 21:31"
+}

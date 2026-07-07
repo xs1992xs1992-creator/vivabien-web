@@ -1,0 +1,30 @@
+{
+  "sku": "VB34345054",
+  "nombre_zh": "RGB音箱",
+  "titulo_es": "Bocina / parlante RGB portátil con radio AM/FM y USB",
+  "precio": 880,
+  "categoria": "",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Bocina / parlante RGB portátil con radio AM/FM y USB\n\n📦 Características:\n• RGB灯效\n• 便携式\n• 内置电池\n• 支持USB\n• 支持TF卡\n• 支持AM/FM收音机\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB34345054_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "标题准确，价格合理，品类匹配，图像整体质量优秀。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:26",
+  "finalized_at": "2026-07-03 13:26"
+}

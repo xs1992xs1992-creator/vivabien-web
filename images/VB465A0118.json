@@ -1,0 +1,41 @@
+{
+  "sku": "VB465A0118",
+  "nombre_zh": "防晒霜",
+  "titulo_es": "Protector solar / bloqueador SPF 90+ resistente al agua",
+  "precio": 100.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Protector solar / bloqueador SPF 90+ resistente al agua\n\n📦 Características:\n• SPF 90+\n• PA+++\n• 高光防护\n• 适合敏感肌\n• 防水80分钟\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB465A0118_original.jpg"
+  ],
+  "precio_candidatos": [
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签辨识不够清晰",
+      "西语标题可优化以增强本地化"
+    ],
+    "suggestions": [
+      "改进标题为更符合当地习惯的表达",
+      "人工二次确认价格标签以确保定价无误"
+    ],
+    "summary": "商品整体符合上架要求，但标题可以优化，同时需确认价格标签的准确性。",
+    "price_check": "unclear",
+    "suggested_titulo_es": "Protector solar SPF 90+ resistente al agua para rostro y cuerpo",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:15"
+}

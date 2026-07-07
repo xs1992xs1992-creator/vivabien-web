@@ -1,0 +1,27 @@
+{
+  "sku": "VB1B42C1B3",
+  "nombre_zh": "一鹿有你眼影盘",
+  "titulo_es": "Paleta 9 colores tierra tono nude, tapa clara, nueva",
+  "precio": 120.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['9色眼影', '大地色系', '透明外壳']"
+  ],
+  "descripcion_es": "Paleta 9 colores tierra tono nude, tapa clara, nueva\n\n📦 Características:\n• 9色眼影\n• 大地色系\n• 透明外壳\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以改为：'Paleta de sombras de 9 colores tonos tierra, tapa clara, nueva'，使描述更详尽更流畅。"
+    ],
+    "summary": "商品信息准确，图片清晰，类别和价格合理。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:12"
+}

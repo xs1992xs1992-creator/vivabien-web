@@ -1,0 +1,26 @@
+{
+  "sku": "VBEC8C217D",
+  "nombre_zh": "香氛喷雾",
+  "titulo_es": "Spray aromático 250ml con diseño en dorado y rojo",
+  "precio": 240,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Spray aromático 250ml con diseño en dorado y rojo\n\n📦 Características:\n• 250ml\n• 金色与红色装饰\n• 香氛喷雾\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题未提及具体香型或主要特点，略显笼统"
+    ],
+    "suggestions": [
+      "将标题修改为 'Spray aromático burbujeante con diseño elegante en dorado y rojo, 250ml'"
+    ],
+    "summary": "商品整体符合要求，部分标题表达可优化",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 18:59"
+}

@@ -1,0 +1,33 @@
+{
+  "sku": "VBAB418C2E",
+  "nombre_zh": "木珠挂饰",
+  "titulo_es": "Colgante / decoración de madera púrpura y dorado 1 metro",
+  "precio": 260,
+  "categoria": "",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Colgante / decoración de madera púrpura y dorado 1 metro\n\n📦 Características:\n• 长度约1米\n• 紫色与金色木珠\n• 麻绳材质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBAB418C2E_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "标题可以稍微明确材质及用途"
+    ],
+    "suggestions": [
+      "将标题修改为更详细的描述，例如：'Adorno colgante decorativo de madera púrpura y dorado 1 metro'"
+    ],
+    "summary": "商品展示良好，稍作标题优化即可。",
+    "price_check": "match",
+    "suggested_titulo_es": "Adorno colgante decorativo de madera púrpura y dorado 1 metro",
+    "suggested_precio": 260,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 12:32"
+}

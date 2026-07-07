@@ -1,0 +1,32 @@
+{
+  "sku": "VB9D1B7D35",
+  "nombre_zh": "睫毛膏",
+  "titulo_es": "Pestañina original, largas y espesas",
+  "precio": 110.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.60，卖点:['透明瓶身', '绿色部件', '便携']"
+  ],
+  "descripcion_es": "Atomizador verde botella spray portatil transparente\n\n📦 Características:\n• 透明瓶身\n• 绿色部件\n• 便携\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": false,
+    "score": 6,
+    "issues": [
+      "标题描述过于笼统，未明确商品为睫毛膏",
+      "商品图片显示为睫毛刷，可能不符合标题和品名描述"
+    ],
+    "suggestions": [
+      "修改标题为更明确的：Cepillo para pestañas natural, ideal para alargar y definir",
+      "确认商品信息是否与图片一致，若为睫毛刷则修改品名与标题描述"
+    ],
+    "summary": "标题不明确且商品图片可能不符合描述，需要进一步核对信息。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:03",
+  "review_ignored": true
+}

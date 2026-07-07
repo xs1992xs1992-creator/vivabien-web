@@ -1,0 +1,34 @@
+{
+  "sku": "VB561F2FE3",
+  "nombre_zh": "LED花洒",
+  "titulo_es": "Regadera / ducha LED sin baterías temperatura colores",
+  "precio": 895.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 895，请在审核台确认"
+  ],
+  "descripcion_es": "Regadera / ducha LED sin baterías temperatura colores\n\n📦 Características:\n• LED灯光\n• 无电池\n• 温度感应变色\n\n💰 Precio: RD$ 895\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": true,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签存在，但系统价格与标签一致"
+    ],
+    "suggestions": [
+      "建议将标题翻译微调为：Regadera LED sin batería que cambia colores según temperatura para mayor claridad"
+    ],
+    "summary": "商品符合标准，标题和价格合理，分类正确，图片质量高。",
+    "price_check": "match",
+    "suggested_titulo_es": "Regadera LED sin batería que cambia colores según temperatura",
+    "suggested_precio": null,
+    "suggested_categoria": "浴室卫浴"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:21"
+}

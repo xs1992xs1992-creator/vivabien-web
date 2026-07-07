@@ -1,0 +1,44 @@
+{
+  "sku": "VBC040446A",
+  "nombre_zh": "电动美甲修甲的那个替换的，应该叫什么来着？",
+  "titulo_es": "Limas eléctricas / pulidoras de uñas 5 piezas",
+  "precio": 295.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 295，请在审核台确认"
+  ],
+  "descripcion_es": "Kit de accesorios metálicos / piezas metálicas 1 set\n\n📦 Características:\n• 一套\n• 金属材质\n\n💰 Precio: RD$ 295\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC040446A_original.jpg"
+  ],
+  "precio_candidatos": [
+    295
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:12",
+  "review": {
+    "pass": false,
+    "score": 5,
+    "issues": [
+      "商品照片展示的物品与西语标题和中文品名描述不一致，图片显示的商品是五金配件，而非电动美甲修甲替换件。",
+      "类目错误，商品更适合归类为工具五金。",
+      "西语标题与商品实际不符，需要修正。"
+    ],
+    "suggestions": [
+      "修正西语标题为：'Conjunto de accesorios metálicos / piezas de repuesto'.",
+      "调整类目为：工具五金。",
+      "进一步核实商品定位，避免类似错误匹配。"
+    ],
+    "summary": "商品标题、类目与实物不符，应修正后上架。",
+    "price_check": "match",
+    "suggested_titulo_es": "Conjunto de accesorios metálicos / piezas de repuesto",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:27"
+}

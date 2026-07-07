@@ -1,0 +1,37 @@
+{
+  "sku": "VBD963DA3A",
+  "nombre_zh": "口红震动器",
+  "titulo_es": "Labial / pinta labios rojo vibrador portátil",
+  "precio": 225.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 225，请在审核台确认"
+  ],
+  "descripcion_es": "Labial / pinta labios rojo vibrador portátil\n\n📦 Características:\n• 红色\n• 便携式\n• 震动功能\n\n💰 Precio: RD$ 225\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD963DA3A_original.jpg"
+  ],
+  "precio_candidatos": [
+    225,
+    1365
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本正确，价格标签一致，标题符合多米尼加购物习惯。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:36"
+}

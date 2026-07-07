@@ -1,0 +1,27 @@
+{
+  "sku": "VBAA0E97AB",
+  "nombre_zh": "化妆刷套装",
+  "titulo_es": "Juego de 5 brochas de maquillaje profesionales, mango blanco y dorado",
+  "precio": 445.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['5支装', '白色手柄', '金色刷杆', '专业品质']"
+  ],
+  "descripcion_es": "Juego de 5 brochas de maquillaje profesionales, mango blanco y dorado\n\n📦 Características:\n• 5支装\n• 白色手柄\n• 金色刷杆\n• 专业品质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以保留，但建议加上具体用途的信息，如 'para ojos y rostro'，以便更清晰。修改建议：'Juego de 5 brochas de maquillaje profesionales para ojos y rostro, mango blanco y dorado.'"
+    ],
+    "summary": "商品信息准确，图片符合电商要求，价格合理，类目正确。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:03"
+}

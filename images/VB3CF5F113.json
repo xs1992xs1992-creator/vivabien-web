@@ -1,0 +1,41 @@
+{
+  "sku": "VB3CF5F113",
+  "nombre_zh": "动圈麦克风",
+  "titulo_es": "Micrófono dinámico / cardioide / alta fidelidad",
+  "precio": 340.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 340，请在审核台确认"
+  ],
+  "descripcion_es": "Micrófono dinámico / cardioide / alta fidelidad\n\n📦 Características:\n• 单向\n• 高保真\n\n💰 Precio: RD$ 340\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3CF5F113_original.jpg"
+  ],
+  "precio_candidatos": [
+    340
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 11:51",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题准确，无需修改。",
+      "价格合理，建议保持不变。",
+      "白底图背景纯白且干净，商品完整。"
+    ],
+    "summary": "商品信息准确，图片质量良好，价格合理，无显著问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 340,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:25",
+  "finalized_at": "2026-07-03 13:25"
+}

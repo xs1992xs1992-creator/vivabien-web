@@ -1,0 +1,40 @@
+{
+  "sku": "VBEB324479",
+  "nombre_zh": "杀虫喷雾",
+  "titulo_es": "Spray mata insectos / zancudos olor limón 500ml",
+  "precio": 215.0,
+  "categoria": "其他",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 215，请在审核台确认"
+  ],
+  "descripcion_es": "Spray mata insectos / zancudos olor limón 500ml\n\n📦 Características:\n• 喷雾\n• 柠檬香型\n• 杀灭蚊虫\n\n💰 Precio: RD$ 215\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBEB324479_original.jpg"
+  ],
+  "precio_candidatos": [
+    215,
+    220
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题可以稍作优化"
+    ],
+    "suggestions": [
+      "建议修改标题为：Aerosol limón mata insectos y zancudos 500ml 更加简洁自然。"
+    ],
+    "summary": "商品整体是否合格，价格合理，白底图干净。",
+    "price_check": "match",
+    "suggested_titulo_es": "Aerosol limón mata insectos y zancudos 500ml",
+    "suggested_precio": null,
+    "suggested_categoria": "其他"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:30"
+}

@@ -1,0 +1,39 @@
+{
+  "sku": "VB86FBFF69",
+  "nombre_zh": "迷你冷风扇",
+  "titulo_es": "Mini abanico portátil / ventilador de mano 3 velocidades",
+  "precio": 540.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 540，请在审核台确认"
+  ],
+  "descripcion_es": "Mini abanico portátil / ventilador de mano 3 velocidades\n\n📦 Características:\n• 三档风力\n• 便携设计\n\n💰 Precio: RD$ 540\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB86FBFF69_original.jpg"
+  ],
+  "precio_candidatos": [
+    540
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签核实结果不完全清晰，但整体商品描述无明显问题"
+    ],
+    "suggestions": [
+      "建议进一步人工确认价格标签是否为RD$ 540"
+    ],
+    "summary": "商品符合要求，价格合理，类目正确，图片质量较高。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:27"
+}

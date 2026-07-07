@@ -1,0 +1,35 @@
+{
+  "sku": "VB7914CD0A",
+  "nombre_zh": "足部护理面膜",
+  "titulo_es": "Mascarilla / mascarilla para pies blanqueadora 40ml",
+  "precio": 115.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 115，请在审核台确认"
+  ],
+  "descripcion_es": "Mascarilla / mascarilla para pies blanqueadora 40ml\n\n📦 Características:\n• 20分钟使用\n• 美白提亮\n• 除臭效果\n• 控制出汗\n• 40ml\n\n💰 Precio: RD$ 115\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7914CD0A_original.jpg"
+  ],
+  "precio_candidatos": [
+    115
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息整体准确，价格合理，图片质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:23"
+}

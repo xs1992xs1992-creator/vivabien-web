@@ -1,0 +1,39 @@
+{
+  "sku": "VB1D27B767",
+  "nombre_zh": "充电器套装",
+  "titulo_es": "Cargador / adaptador con cable USB 1 unidad",
+  "precio": 265.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 265，请在审核台确认"
+  ],
+  "descripcion_es": "Cargador / adaptador con cable USB 1 unidad\n\n📦 Características:\n• 1个充电头\n• 1根充电线\n\n💰 Precio: RD$ 265\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1D27B767_original.jpg"
+  ],
+  "precio_candidatos": [
+    265
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图上的价格标签与系统价格不一致"
+    ],
+    "suggestions": [
+      "建议将系统价格调整为 RD$265 以与原图标签一致"
+    ],
+    "summary": "商品审核通过，但需调整价格信息以确保与标签一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 265,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:16"
+}

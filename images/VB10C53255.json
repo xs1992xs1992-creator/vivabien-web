@@ -1,0 +1,24 @@
+{
+  "sku": "VB10C53255",
+  "nombre_zh": "香水礼盒",
+  "titulo_es": "Perfume en caja de regalo con frasco azul y spray incluido",
+  "precio": 295,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Perfume en caja de regalo con frasco azul y spray incluido\n\n📦 Características:\n• 蓝色瓶装\n• 附赠喷雾瓶\n• 礼盒包装\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "优化标题为：Estuche de perfume con frasco azul y gel de afeitar incluido，突出礼盒包含的两个商品，进一步体现吸引力。"
+    ],
+    "summary": "商品整体信息准确，系统价格与标签一致，标题可以稍作优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:14"
+}

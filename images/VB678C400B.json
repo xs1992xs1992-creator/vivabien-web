@@ -1,0 +1,38 @@
+{
+  "sku": "VB678C400B",
+  "nombre_zh": "LED环形灯",
+  "titulo_es": "Aro de luz LED multicolor / lámpara anillo 30cm",
+  "precio": 1375.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认",
+    "价格经二次OCR修正：175 → RD$ 1375"
+  ],
+  "descripcion_es": "Aro de luz LED multicolor / lámpara anillo 30cm\n\n📦 Características:\n• 多色温\n• 夜间核心极致\n• 中国制造\n\n💰 Precio: RD$ 1375\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB678C400B_original.jpg"
+  ],
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 12:01",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确且符合市场需求",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:24",
+  "finalized_at": "2026-07-03 13:24"
+}

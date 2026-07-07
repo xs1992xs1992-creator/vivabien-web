@@ -1,0 +1,35 @@
+{
+  "sku": "VB126E19D5",
+  "nombre_zh": "女性标识牌",
+  "titulo_es": "Letrero mujer madera con cuerda / cartel baño madera",
+  "precio": 170.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 170，请在审核台确认"
+  ],
+  "descripcion_es": "Letrero mujer madera con cuerda / cartel baño madera\n\n📦 Características:\n• 木质\n• 绳挂设计\n\n💰 Precio: RD$ 170\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB126E19D5_original.jpg"
+  ],
+  "precio_candidatos": [
+    170
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架要求，定价、标题及类目适当。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 11:39"
+}

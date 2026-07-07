@@ -1,0 +1,35 @@
+{
+  "sku": "VBC24906BB",
+  "nombre_zh": "圣卢西亚旅行书假书",
+  "titulo_es": "Libro decorativo / falso libro para viajar a Santa Lucía",
+  "precio": 130.0,
+  "categoria": "文具办公",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Libro de viaje / guía turística rosa\n\n📦 Características:\n• 粉色封面\n• 旅行系列\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC24906BB_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片描述准确，价格标签核对无误，白底图质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "文具办公"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:00"
+}

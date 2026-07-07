@@ -1,0 +1,36 @@
+{
+  "sku": "VBF71EF629",
+  "nombre_zh": "金粉透明胶棒",
+  "titulo_es": "Isopo de cejas",
+  "precio": 100.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.70，卖点:['透明带金粉', '袋装']"
+  ],
+  "descripcion_es": "🌟✨ LÁPIZ PEGAMENTO TRANSPARENTE CON PURPURINA - BOLSA\n\n📦 Características:\n• 透明带金粉\n• 袋装\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": false,
+    "score": 4,
+    "issues": [
+      "西语标题翻译不准确，与商品不符",
+      "价格较低，可能不符合市场常规",
+      "类目选择不正确",
+      "商品边缘不够干净，不完全符合白底图标准"
+    ],
+    "suggestions": [
+      "建议修改标题为 'Pegamento transparente con glitter' 或类似描述商品用途的标题",
+      "检查商品成本与定价，确保合理性",
+      "建议将类目调整为 '办公用品' 或 '手工制作工具'",
+      "优化白底图，确保商品边缘更加干净"
+    ],
+    "summary": "标题翻译不准确，价格略低，类目与商品不符，白底图需优化",
+    "price_check": "unclear"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 18:58",
+  "review_ignored": true
+}

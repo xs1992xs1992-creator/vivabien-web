@@ -1,0 +1,41 @@
+{
+  "sku": "VB01127056",
+  "nombre_zh": "华夫饼机",
+  "titulo_es": "Máquina para waffles / waflera 1000W antiadherente 3 años",
+  "precio": 1330.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1330，请在审核台确认"
+  ],
+  "descripcion_es": "Máquina para waffles / waflera 1000W antiadherente 3 años\n\n📦 Características:\n• 1000W\n• 不粘涂层\n• 双面加热\n• 易清洁\n• 3年质保\n\n💰 Precio: RD$ 1330\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB01127056_original.jpg"
+  ],
+  "precio_candidatos": [
+    1330
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:01",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签的清晰度不足，可能需要进一步确认"
+    ],
+    "suggestions": [
+      "对价格标签进行人工确认以确保系统识别的准确性"
+    ],
+    "summary": "商品总体符合上架要求，建议对价格标签进行人工验证。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "厨房家居"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:06",
+  "finalized_at": "2026-07-03 21:06"
+}

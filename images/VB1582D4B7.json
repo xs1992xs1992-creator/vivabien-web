@@ -1,0 +1,36 @@
+{
+  "sku": "VB1582D4B7",
+  "nombre_zh": "双面泡沫胶带",
+  "titulo_es": "Cinta doble cara / pega fuerte para pared / decoraciones",
+  "precio": 80.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta doble cara / pega fuerte para pared / decoraciones\n\n📦 Características:\n• 双面粘贴\n• 承重2磅\n• 适合墙面装饰\n\n💰 Precio: RD$ 80\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    80
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格可能偏低"
+    ],
+    "suggestions": [
+      "建议确认包装上的价格标签是否正确"
+    ],
+    "summary": "商品基本信息准确，图片清晰一致，但价格可能需要确认。",
+    "price_check": "match",
+    "suggested_titulo_es": "Cinta adhesiva de espuma de doble cara para pared y decoraciones",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:23"
+}

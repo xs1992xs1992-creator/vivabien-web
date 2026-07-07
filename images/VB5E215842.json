@@ -1,0 +1,39 @@
+{
+  "sku": "VB5E215842",
+  "nombre_zh": "强力定型喷雾",
+  "titulo_es": "Spray / fijador / laca fuerte 260g botella amarilla",
+  "precio": 425.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 425，请在审核台确认"
+  ],
+  "descripcion_es": "Spray / fijador / laca fuerte 260g botella amarilla\n\n📦 Características:\n• 黄色瓶身\n• 强力定型\n• 容量260g\n\n💰 Precio: RD$ 425\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5E215842_original.jpg"
+  ],
+  "precio_candidatos": [
+    425
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "原图背景杂乱，标签部分难以辨认"
+    ],
+    "suggestions": [
+      "采用更加清晰的原图，保证价格标签易读"
+    ],
+    "summary": "商品信息基本准确，图片质量有所提升空间。",
+    "price_check": "match",
+    "suggested_titulo_es": "Spray fijador fuerte para cabello 260g botella amarilla",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:25"
+}

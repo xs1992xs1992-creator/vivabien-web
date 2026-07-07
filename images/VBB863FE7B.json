@@ -1,0 +1,32 @@
+{
+  "sku": "VBB863FE7B",
+  "nombre_zh": "透明胶带",
+  "titulo_es": "Tape transparente / cinta adhesiva 12mmx21m 2 unidades",
+  "precio": 55.0,
+  "categoria": "文具办公",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 55，请在审核台确认"
+  ],
+  "descripcion_es": "Tape transparente / cinta adhesiva 12mmx21m 2 unidades\n\n📦 Características:\n• 尺寸: 12mmx21m\n• 2卷装\n\n💰 Precio: RD$ 55\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    55
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合多米尼加市场需求，图片和信息一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "文具办公"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:20"
+}

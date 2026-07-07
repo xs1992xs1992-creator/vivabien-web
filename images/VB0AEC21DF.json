@@ -1,0 +1,42 @@
+{
+  "sku": "VB0AEC21DF",
+  "nombre_zh": "无线音箱",
+  "titulo_es": "Bocina inalámbrica / corneta Bluetooth 6.5\" recargable FM USB SD",
+  "precio": 820,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 820，请在审核台确认",
+    "价格经二次OCR修正：820 → RD$ 280"
+  ],
+  "descripcion_es": "Bocina inalámbrica / corneta Bluetooth 6.5\" recargable FM USB SD\n\n📦 Características:\n• 6.5寸\n• 无线技术\n• 可充电电池\n• FM收音功能\n• 支持USB和Micro SD\n\n💰 Precio: RD$ 280\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB0AEC21DF_original.jpg"
+  ],
+  "precio_candidatos": [
+    820
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 10:41",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "标题中 'FM Raido Function' 有拼写错误"
+    ],
+    "suggestions": [
+      "建议修正标题中的拼写错误，将 'FM Raido Function' 改为 'FM Radio Function'"
+    ],
+    "summary": "商品基本合格，但标题中存在拼写错误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:26",
+  "finalized_at": "2026-07-03 13:26"
+}

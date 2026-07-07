@@ -1,0 +1,34 @@
+{
+  "sku": "VB6FAAFA5A",
+  "nombre_zh": "亮肤洁面乳",
+  "titulo_es": "Limpiador facial / jabón líquido con niacinamida para todo tipo de pie",
+  "precio": 240,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 图片可能拍反，价格从旋转图中识别",
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Limpiador facial / jabón líquido con niacinamida para todo tipo de pie\n\n📦 Características:\n• 深层清洁\n• 含烟酰胺\n• 适合所有肤质\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6FAAFA5A_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整，符合审核要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:24"
+}

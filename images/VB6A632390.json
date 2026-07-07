@@ -1,0 +1,35 @@
+{
+  "sku": "VB6A632390",
+  "nombre_zh": "可可油",
+  "titulo_es": "Aceite de coco / crema hidratante 200ml piel radiante",
+  "precio": 180.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 180，请在审核台确认"
+  ],
+  "descripcion_es": "Aceite de coco / crema hidratante 200ml piel radiante\n\n📦 Características:\n• 200ml\n• 美白\n• 保湿\n• 修复肌肤\n• 抗衰老\n\n💰 Precio: RD$ 180\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB6A632390_original.jpg"
+  ],
+  "precio_candidatos": [
+    180
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息符合要求，无需修改。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:13"
+}

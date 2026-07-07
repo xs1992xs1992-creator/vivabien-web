@@ -1,0 +1,35 @@
+{
+  "sku": "VB71C6AE58",
+  "nombre_zh": "USB充电器",
+  "titulo_es": "Cargador rápido 20W USB-C a Lightning",
+  "precio": 295.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 295，请在审核台确认"
+  ],
+  "descripcion_es": "Cargador rápido 20W USB-C a Lightning\n\n📦 Características:\n• 20W\n• USB-C转Lightning\n\n💰 Precio: RD$ 295\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB71C6AE58_original.jpg"
+  ],
+  "precio_candidatos": [
+    295
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确无误，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:14"
+}

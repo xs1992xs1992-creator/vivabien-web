@@ -1,0 +1,35 @@
+{
+  "sku": "VB48C4762D",
+  "nombre_zh": "颈挂USB风扇",
+  "titulo_es": "Mini abanico USB / ventilador portátil de cuello y escritorio",
+  "precio": 350.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 350，请在审核台确认"
+  ],
+  "descripcion_es": "Mini abanico USB / ventilador portátil de cuello y escritorio\n\n📦 Características:\n• 双头\n• USB充电\n• 便携\n• 桌面和颈挂两用\n\n💰 Precio: RD$ 350\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB48C4762D_original.jpg"
+  ],
+  "precio_candidatos": [
+    350
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述和展示基本符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:28"
+}

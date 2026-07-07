@@ -1,0 +1,35 @@
+{
+  "sku": "VBB74748E2",
+  "nombre_zh": "木质双头棒",
+  "titulo_es": "Paleta de madera / Doble punta / Utensilio multiuso",
+  "precio": 150.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Paleta de madera / Doble punta / Utensilio multiuso\n\n📦 Características:\n• 木质\n• 双头设计\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB74748E2_original.jpg"
+  ],
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确无误，图文一致，标题自然，价格合理，白底图干净。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:08"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VBB7A7BFD7",
+  "nombre_zh": "电源适配器",
+  "titulo_es": "Adaptador de corriente / cargador 5V/1A 5V/2A 12V/1A 12V/2A",
+  "precio": 240.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 240，请在审核台确认"
+  ],
+  "descripcion_es": "Adaptador de corriente / cargador 5V/1A 5V/2A 12V/1A 12V/2A\n\n📦 Características:\n• 5V/1A\n• 5V/2A\n• 12V/1A\n• 12V/2A\n\n💰 Precio: RD$ 240\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBB7A7BFD7_original.jpg"
+  ],
+  "precio_candidatos": [
+    240
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，标题自然，价格合理，类目和图片均正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:12"
+}

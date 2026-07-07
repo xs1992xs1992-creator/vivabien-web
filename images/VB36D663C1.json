@@ -1,0 +1,29 @@
+{
+  "sku": "VB36D663C1",
+  "nombre_zh": "酒精喷雾",
+  "titulo_es": "Spray de alcohol al 70% en botella transparente, pequeño",
+  "precio": 8,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（8.0），已自动修正为 RD$ 80",
+    "价格由 AI 从图片识别：RD$ 80，请在审核台确认",
+    "价格经二次OCR修正：8 → RD$ 85"
+  ],
+  "descripcion_es": "Spray de alcohol 70% botella pequeña transparente\n\n📦 Características:\n• 70%浓度\n• 透明瓶\n• 小容量\n\n💰 Precio: RD$ 85\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB36D663C1_original.jpg"
+  ],
+  "precio_candidatos": [
+    8
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:18",
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-03 21:32",
+  "review_ignored": false
+}

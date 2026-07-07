@@ -1,0 +1,33 @@
+{
+  "sku": "VB6579B88E",
+  "nombre_zh": "黄色安全帽",
+  "titulo_es": "Casco de seguridad / casco protector amarillo plástico",
+  "precio": 165,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 15，请在审核台确认"
+  ],
+  "descripcion_es": "Casco de seguridad / casco protector amarillo plástico\n\n📦 Características:\n• 黄色\n• 塑料材质\n\n💰 Precio: RD$ 15\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    15
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 4,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "该商品信息准确，符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:24"
+}

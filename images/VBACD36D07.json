@@ -1,0 +1,31 @@
+{
+  "sku": "VBACD36D07",
+  "nombre_zh": "闪粉化妆刷套装",
+  "titulo_es": "Juego de brochas de maquillaje moradas con brillo, multi",
+  "precio": 145.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['紫色手柄', '闪粉装饰', '多刷头']"
+  ],
+  "descripcion_es": "Juego de brochas de maquillaje moradas con brillo, multi\n\n📦 Características:\n• 紫色手柄\n• 闪粉装饰\n• 多刷头\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "西语标题可以更自然",
+      "白底图背景轻微反光"
+    ],
+    "suggestions": [
+      "将西语标题修改为：Set de brochas de maquillaje brillantes moradas, multicolor",
+      "优化白底图背景，减少反光"
+    ],
+    "summary": "商品符合上架要求，建议优化标题表述，并调整图片质量。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:02"
+}

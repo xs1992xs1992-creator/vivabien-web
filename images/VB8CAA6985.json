@@ -1,0 +1,38 @@
+{
+  "sku": "VB8CAA6985",
+  "nombre_zh": "粉色按摩器",
+  "titulo_es": "Masajeador / vibrador rosa 3 funciones",
+  "precio": 585.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 585，请在审核台确认"
+  ],
+  "descripcion_es": "Masajeador / vibrador rosa 3 funciones\n\n📦 Características:\n• 3个\n• 粉色\n• 多功能\n\n💰 Precio: RD$ 585\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8CAA6985_original.jpg"
+  ],
+  "precio_candidatos": [
+    585
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以保留，已足够简洁直接。"
+    ],
+    "summary": "商品信息清晰，图片核实无误，且适合上架情趣用品类目。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 585,
+    "suggested_categoria": "情趣用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:36"
+}

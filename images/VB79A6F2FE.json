@@ -1,0 +1,35 @@
+{
+  "sku": "VB79A6F2FE",
+  "nombre_zh": "指甲剪",
+  "titulo_es": "Cortaúñas / alicate para uñas acrílicas azul",
+  "precio": 110.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Cortaúñas / alicate para uñas acrílicas azul\n\n📦 Características:\n• 蓝色手柄\n• 用于修剪指甲\n• 适合丙烯酸指甲\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB79A6F2FE_original.jpg"
+  ],
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理且核实无误，类目、白底图以及商品对应情况均正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:12"
+}

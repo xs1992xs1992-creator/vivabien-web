@@ -1,0 +1,32 @@
+{
+  "sku": "VB6D6AB00B",
+  "nombre_zh": "除锈润滑剂",
+  "titulo_es": "Lubricante / Spray para óxido 280ml anti-corrosión",
+  "precio": 110.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Lubricante / Spray para óxido 280ml anti-corrosión\n\n📦 Características:\n• 280ML\n• 快速除锈\n• 清洁\n• 抗氧化\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合多米尼加市场标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:48"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VB99351099",
+  "nombre_zh": "防晒喷雾",
+  "titulo_es": "Spray solar / protector solar SPF75 150ml antiacné",
+  "precio": 240.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 240，请在审核台确认"
+  ],
+  "descripcion_es": "Spray solar / protector solar SPF75 150ml antiacné\n\n📦 Características:\n• SPF75\n• 抗氧化保护\n• 含金缕梅提取物\n• 水杨酸\n• 150ml\n\n💰 Precio: RD$ 240\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB99351099_original.jpg"
+  ],
+  "precio_candidatos": [
+    240
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本符合要求，无重大问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:10"
+}

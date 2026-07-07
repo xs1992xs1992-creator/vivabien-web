@@ -1,0 +1,28 @@
+{
+  "sku": "VBF0E53DBA",
+  "nombre_zh": "化妆刷套装",
+  "titulo_es": "Juego de brochas de maquillaje dorado y plateado, multi piezas",
+  "precio": 310.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['多支装', '金色包装', '刷杆银灰', '刷毛棕色']"
+  ],
+  "descripcion_es": "Juego de brochas de maquillaje dorado y plateado, multi piezas\n\n📦 Características:\n• 多支装\n• 金色包装\n• 刷杆银灰\n• 刷毛棕色\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [],
+    "suggestions": [
+      "建议优化标题为：Juego de brochas para maquillaje, colores dorado y plateado, set multi piezas，以使标题更自然、更符合多米尼加用户习惯。"
+    ],
+    "summary": "商品质检通过，标题稍作优化即可更符合本地购物习惯。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 18:59",
+  "review_ignored": false
+}

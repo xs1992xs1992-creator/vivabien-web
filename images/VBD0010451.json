@@ -1,0 +1,35 @@
+{
+  "sku": "VBD0010451",
+  "nombre_zh": "发胶造型",
+  "titulo_es": "Gel / fijador / spray para pelo fuerte no pegajoso 6 oz",
+  "precio": 650.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 650，请在审核台确认"
+  ],
+  "descripcion_es": "Gel / fijador / spray para pelo fuerte no pegajoso 6 oz\n\n📦 Características:\n• 6 oz (170 g)\n• 强力定型\n• 适合竖直造型\n• 非粘性\n\n💰 Precio: RD$ 650\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD0010451_original.jpg"
+  ],
+  "precio_candidatos": [
+    650
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，分类正确。",
+    "price_check": "match",
+    "suggested_titulo_es": "Gel fijador fuerte no pegajoso para cabello 6 oz",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:21"
+}

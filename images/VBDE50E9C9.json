@@ -1,0 +1,36 @@
+{
+  "sku": "VBDE50E9C9",
+  "nombre_zh": "脚部磨砂器",
+  "titulo_es": "Lima eléctrica / pedicura / removedor callos pies",
+  "precio": 130.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Lima eléctrica / pedicura / removedor callos pies\n\n📦 Características:\n• 黑色磨砂面\n• 粉色手柄\n• 用于脚部护理\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDE50E9C9_original.jpg"
+  ],
+  "precio_candidatos": [
+    130,
+    40
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息无明显问题，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:05"
+}

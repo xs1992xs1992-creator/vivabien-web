@@ -1,0 +1,38 @@
+{
+  "sku": "VB318E41DA",
+  "nombre_zh": "光疗机",
+  "titulo_es": "Máquina de uñas UV/LED inteligente 12 luces 30s/60s/90s",
+  "precio": 465.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 865，请在审核台确认",
+    "价格经二次OCR修正：865 → RD$ 465"
+  ],
+  "descripcion_es": "Máquina de uñas UV/LED inteligente 12 luces 30s/60s/90s\n\n📦 Características:\n• 12灯\n• UV/LED\n• 智能\n• 30s/60s/90s定时\n\n💰 Precio: RD$ 465\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB318E41DA_original.jpg"
+  ],
+  "precio_candidatos": [
+    865
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:18",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息正确，图片清晰，审核合格。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:32",
+  "finalized_at": "2026-07-03 21:32"
+}

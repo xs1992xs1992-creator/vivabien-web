@@ -1,0 +1,37 @@
+{
+  "sku": "VB3A2CA782",
+  "nombre_zh": "电烤盘",
+  "titulo_es": "Parrilla eléctrica / plancha eléctrica antiadherente 12 meses garantía",
+  "precio": 1010.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1010，请在审核台确认"
+  ],
+  "descripcion_es": "Parrilla eléctrica / plancha eléctrica antiadherente 12 meses garantía\n\n📦 Características:\n• 12个月保修\n• 不粘涂层\n• 电加热\n\n💰 Precio: RD$ 1010\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3A2CA782_original.jpg"
+  ],
+  "precio_candidatos": [
+    1010
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 13:47",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述准确，价格匹配，类目和白底图均无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 14:05",
+  "finalized_at": "2026-07-03 14:05"
+}

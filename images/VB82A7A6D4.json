@@ -1,0 +1,33 @@
+{
+  "sku": "VB82A7A6D4",
+  "nombre_zh": "金色装饰摆件",
+  "titulo_es": "Adorno dorado / decoración con cristal diseño calado",
+  "precio": null,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Adorno dorado / decoración con cristal diseño calado\n\n📦 Características:\n• 金色\n• 镂空设计\n• 水晶装饰\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB82A7A6D4_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格未填写"
+    ],
+    "suggestions": [
+      "补充商品价格"
+    ],
+    "summary": "商品图片完整一致，标题准确但缺少价格。",
+    "price_check": "none",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:36"
+}

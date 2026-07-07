@@ -1,0 +1,35 @@
+{
+  "sku": "VB4F6ED7FB",
+  "nombre_zh": "驱虫清洁剂",
+  "titulo_es": "Limpiador multiusos 32oz / repelente de insectos voladores y rastreros",
+  "precio": 200.0,
+  "categoria": "其他",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 200，请在审核台确认"
+  ],
+  "descripcion_es": "Limpiador multiusos 32oz / repelente de insectos voladores y rastreros\n\n📦 Características:\n• 32oz\n• 多用途\n• 驱赶爬行和飞行昆虫\n\n💰 Precio: RD$ 200\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4F6ED7FB_original.jpg"
+  ],
+  "precio_candidatos": [
+    200
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片与描述完全一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "其他"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:31"
+}

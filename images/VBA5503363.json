@@ -1,0 +1,39 @@
+{
+  "sku": "VBA5503363",
+  "nombre_zh": "日本文化书假书",
+  "titulo_es": "Libro decorativo japonés / libro falso",
+  "precio": 130.0,
+  "categoria": "文具办公",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 130，请在审核台确认"
+  ],
+  "descripcion_es": "Libro de cultura japonesa 1 unidad / blanco / diseño redondo\n\n📦 Características:\n• 一册\n• 白色封面\n• 圆形设计\n\n💰 Precio: RD$ 130\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBA5503363_original.jpg"
+  ],
+  "precio_candidatos": [
+    130
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格可接受但偏低，可能影响商品定位"
+    ],
+    "suggestions": [
+      "建议提高价格，以增强产品的文化价值感。"
+    ],
+    "summary": "商品整体状态良好，标题自然，价格与系统一致，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 150,
+    "suggested_categoria": "文具办公"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:01"
+}

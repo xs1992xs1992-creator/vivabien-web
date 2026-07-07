@@ -1,0 +1,37 @@
+{
+  "sku": "VBAA009312",
+  "nombre_zh": "黄色胶带",
+  "titulo_es": "Cinta adhesiva amarilla / tape amarillo en rollo",
+  "precio": 70,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 10，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta adhesiva amarilla / tape amarillo en rollo\n\n📦 Características:\n• 黄色\n• 卷状\n\n💰 Precio: RD$ 10\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    10
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 6,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格标签没有100%明确地显示RD$ 70"
+    ],
+    "suggestions": [
+      "核对价格标签显示内容，确保准确"
+    ],
+    "summary": "商品基本符合要求，必要时调整价格标签信息",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:22"
+}

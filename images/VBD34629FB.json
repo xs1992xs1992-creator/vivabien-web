@@ -1,0 +1,29 @@
+{
+  "sku": "VBD34629FB",
+  "nombre_zh": "灭蚊灯",
+  "titulo_es": "Lámpara mata mosquitos / luz anti zancudos 360° blanca",
+  "precio": 325,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Lámpara mata mosquitos / luz anti zancudos 360° blanca\n\n📦 Características:\n• 360度光源\n• 白色\n• 电子捕蚊功能\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD34629FB_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题准确，类目和价格合理，各项审核符合标准。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 19:30"
+}

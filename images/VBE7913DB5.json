@@ -1,0 +1,29 @@
+{
+  "sku": "VBE7913DB5",
+  "nombre_zh": "防滑胶带",
+  "titulo_es": "Cinta antideslizante / pega antirresbalante 15x60cm negra",
+  "precio": 125.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta antideslizante / pega antirresbalante 15x60cm negra\n\n📦 Características:\n• 15CM x 60CM\n• 防滑\n• 黑色\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品整体符合要求，信息准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:41"
+}

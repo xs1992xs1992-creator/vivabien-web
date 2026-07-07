@@ -1,0 +1,37 @@
+{
+  "sku": "VBE9E9129B",
+  "nombre_zh": "保湿爽肤水",
+  "titulo_es": "Tónico facial hidratante 400ml / agua refrescante piel seca",
+  "precio": 300,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（3.0），已自动修正为 RD$ 30",
+    "价格由 AI 从图片识别：RD$ 30，请在审核台确认"
+  ],
+  "descripcion_es": "Tónico facial hidratante 400ml / agua refrescante piel seca\n\n📦 Características:\n• 400ml\n• 深层保湿\n• 舒缓肌肤\n\n💰 Precio: RD$ 30\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBE9E9129B_original.jpg"
+  ],
+  "precio_candidatos": [
+    3.0
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确无误，符合平台要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:05"
+}

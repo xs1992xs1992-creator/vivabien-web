@@ -1,0 +1,32 @@
+{
+  "sku": "VBC2248D56",
+  "nombre_zh": "喷漆罐",
+  "titulo_es": "Spray / pintura en lata verde rápido secado alta durabilidad",
+  "precio": 110.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 110，请在审核台确认"
+  ],
+  "descripcion_es": "Spray / pintura en lata verde rápido secado alta durabilidad\n\n📦 Características:\n• 绿色\n• 快干\n• 高耐久\n• 高亮度\n• 优质产品\n\n💰 Precio: RD$ 110\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    110
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品描述、价格及类目无明显问题，图片符合平台要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:46"
+}

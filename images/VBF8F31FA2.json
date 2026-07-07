@@ -1,0 +1,35 @@
+{
+  "sku": "VBF8F31FA2",
+  "nombre_zh": "电子修脚器",
+  "titulo_es": "Lima eléctrica / removedor de callos recargable waterproof",
+  "precio": 245.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 245，请在审核台确认"
+  ],
+  "descripcion_es": "Lima eléctrica / removedor de callos recargable waterproof\n\n📦 Características:\n• 防水\n• 易清洁\n• 双速\n• 可充电锂电池\n• 两种磨头\n\n💰 Precio: RD$ 245\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF8F31FA2_original.jpg"
+  ],
+  "precio_candidatos": [
+    245
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量良好，适合上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:04"
+}

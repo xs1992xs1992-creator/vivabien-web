@@ -1,0 +1,36 @@
+{
+  "sku": "VB4428EB0F",
+  "nombre_zh": "脚部磨砂板",
+  "titulo_es": "Lima para pies / piedra pómez con mango plástico blanco",
+  "precio": 100.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Lima para pies / piedra pómez con mango plástico blanco\n\n📦 Características:\n• 黑色磨砂面\n• 白色塑料手柄\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4428EB0F_original.jpg"
+  ],
+  "precio_candidatos": [
+    100,
+    300
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息完整，图片和标题符合要求，价格合理。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:15"
+}

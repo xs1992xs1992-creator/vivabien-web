@@ -1,0 +1,36 @@
+{
+  "sku": "VBACED6E73",
+  "nombre_zh": "柑橘身体磨砂",
+  "titulo_es": "Exfoliante corporal cítrico / scrub de naranja 680g vitamina E",
+  "precio": 195,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Exfoliante corporal cítrico / scrub de naranja 680g vitamina E\n\n📦 Características:\n• 680g\n• 柑橘香型\n• 富含维生素E\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBACED6E73_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题稍显繁琐",
+      "白底图中英文信息较多，可能分散注意力"
+    ],
+    "suggestions": [
+      "建议优化标题为'Exfoliante Corporal de Cítricos con Vitamina E (680g)'以简洁自然",
+      "白底图注意清晰突出商品主体，减少视觉干扰"
+    ],
+    "summary": "商品标题自然度稍可优化，图片质量良好，价格合理。",
+    "price_check": "none",
+    "suggested_titulo_es": "Exfoliante Corporal de Cítricos con Vitamina E (680g)",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:09"
+}

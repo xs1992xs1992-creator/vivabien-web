@@ -1,0 +1,38 @@
+{
+  "sku": "VB90796FB5",
+  "nombre_zh": "汽车挡泥板",
+  "titulo_es": "Guardalodo / protector de barro carro universal negro",
+  "precio": 280,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 200，请在审核台确认"
+  ],
+  "descripcion_es": "Guardalodo / protector de barro carro universal negro\n\n📦 Características:\n• 黑色\n• 通用型\n• 模压设计\n\n💰 Precio: RD$ 200\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    200
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题已经准确且自然，无需修改。",
+      "价格合理，无需调整。",
+      "类目正确，无需修改。",
+      "白底图背景纯白，商品完整且边缘干净。",
+      "原图与白底图对应同一商品。"
+    ],
+    "summary": "该商品符合电商上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:06"
+}

@@ -1,0 +1,32 @@
+{
+  "sku": "VB2CC6DA05",
+  "nombre_zh": "金刚石锯片",
+  "titulo_es": "Disco de corte / hoja diamantada 4.5\" 115mm alta calidad",
+  "precio": 175,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 375，请在审核台确认"
+  ],
+  "descripcion_es": "Disco de corte / hoja diamantada 4.5\" 115mm alta calidad\n\n📦 Características:\n• 4.5英寸\n• 115mm\n• 高性能\n• 干切\n\n💰 Precio: RD$ 375\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    375
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本符合要求，无明显问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

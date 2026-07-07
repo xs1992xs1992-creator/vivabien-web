@@ -1,0 +1,27 @@
+{
+  "sku": "VB767C89AC",
+  "nombre_zh": "酒精喷雾",
+  "titulo_es": "Spray desinfectante / Alcohol al 70% botella portátil",
+  "precio": 70,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 100，请在审核台确认"
+  ],
+  "descripcion_es": "Spray desinfectante / Alcohol 99% botella portátil\n\n📦 Características:\n• 99%\n• 消毒\n• 喷雾瓶\n\n💰 Precio: RD$ 100\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB767C89AC_original.jpg"
+  ],
+  "precio_candidatos": [
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:15",
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-03 21:30",
+  "review_ignored": false
+}

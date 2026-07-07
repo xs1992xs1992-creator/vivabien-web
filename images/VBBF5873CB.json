@@ -1,0 +1,34 @@
+{
+  "sku": "VBBF5873CB",
+  "nombre_zh": "家用延长线",
+  "titulo_es": "Regleta / extensión eléctrica 15 pies blanca con tapa",
+  "precio": 150.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Regleta / extensión eléctrica 15 pies blanca con tapa\n\n📦 Características:\n• 15英尺\n• 白色\n• 极化设计\n• 附安全盖\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "西语标题中 'Regleta' 不适用于该商品，价格标签与系统识别一致但需人工二次检查"
+    ],
+    "suggestions": [
+      "修正西语标题，替换 'Regleta' 为 'Extensión eléctrica'",
+      "建议确认价格标签与系统记录后的上架操作"
+    ],
+    "summary": "商品信息基本符合上架要求，建议优化标题和确认价格标签。",
+    "price_check": "match",
+    "suggested_titulo_es": "Extensión eléctrica 15 pies blanca con tapa",
+    "suggested_precio": 150,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:42"
+}

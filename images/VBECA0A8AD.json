@@ -1,0 +1,28 @@
+{
+  "sku": "VBECA0A8AD",
+  "nombre_zh": "双开电源开关",
+  "titulo_es": "Switch eléctrico doble azul con luz indicadora",
+  "precio": 125.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Switch eléctrico doble azul con luz indicadora\n\n📦 Características:\n• 蓝色外壳\n• 双开设计\n• 带指示灯\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题无问题，但可进一步优化为：'Interruptor eléctrico doble azul con luces indicadoras'，让描述更清晰。"
+    ],
+    "summary": "商品信息准确，类目和描述符合商品特点，图片质量良好。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:06"
+}

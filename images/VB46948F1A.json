@@ -1,0 +1,40 @@
+{
+  "sku": "VB46948F1A",
+  "nombre_zh": "透明仿真玩具",
+  "titulo_es": "Juguete transparente azul 8.11 pulgadas",
+  "precio": 495.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 495，请在审核台确认"
+  ],
+  "descripcion_es": "Juguete transparente azul 8.11 pulgadas\n\n📦 Características:\n• 长度8.11英寸\n• 材质透明蓝色\n\n💰 Precio: RD$ 495\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB46948F1A_original.jpg"
+  ],
+  "precio_candidatos": [
+    495,
+    510
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题自然准确，无需修改。"
+    ],
+    "summary": "商品信息整体准确，图片和类目匹配，价格核实标签一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "其它"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:37"
+}

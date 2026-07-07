@@ -1,0 +1,27 @@
+{
+  "sku": "VB7E821083",
+  "nombre_zh": "眉造型皂",
+  "titulo_es": "Vendo jabón para cejas, fija y da forma fácil",
+  "precio": 45.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['眉部造型']"
+  ],
+  "descripcion_es": "Vendo jabón para cejas, fija y da forma fácil\n\n📦 Características:\n• 眉部造型\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "可考虑将标题更新为：Jabón de cejas moldeador y fijador fácil"
+    ],
+    "summary": "整体审核通过，标题可稍作优化。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:04"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VB12F3B655",
+  "nombre_zh": "指甲装饰亮片",
+  "titulo_es": "Escarcha / glitter / brillo para uñas - Variados colores",
+  "precio": 325.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 325，请在审核台确认"
+  ],
+  "descripcion_es": "Escarcha / glitter / brillo para uñas - Variados colores\n\n📦 Características:\n• 多种颜色\n• 小瓶装\n• 适合美甲装饰\n\n💰 Precio: RD$ 325\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB12F3B655_original.jpg"
+  ],
+  "precio_candidatos": [
+    325
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片质量较高，审核无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:18"
+}

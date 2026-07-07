@@ -1,0 +1,33 @@
+{
+  "sku": "VB00E643E7",
+  "nombre_zh": "金属软管",
+  "titulo_es": "Manguera metálica / tubo flexible para baño 2 metros",
+  "precio": 145.0,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 145，请在审核台确认"
+  ],
+  "descripcion_es": "Manguera metálica / tubo flexible para baño 2 metros\n\n📦 Características:\n• 2米\n• 金属材质\n• 适用于浴室\n\n💰 Precio: RD$ 145\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签清晰，所有信息匹配"
+    ],
+    "suggestions": [
+      "将西语标题优化为更自然的表达"
+    ],
+    "summary": "商品符合要求，推荐上架，标题稍作优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Manguera metálica flexible para baño - 2 metros",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:18"
+}

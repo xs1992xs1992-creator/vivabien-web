@@ -1,0 +1,39 @@
+{
+  "sku": "VB8AAB7DCE",
+  "nombre_zh": "花卉墙贴",
+  "titulo_es": "Decoración adhesiva / pegatinas coloridas para pared 1 set",
+  "precio": 90.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 90，请在审核台确认"
+  ],
+  "descripcion_es": "Decoración adhesiva / pegatinas coloridas para pared 1 set\n\n📦 Características:\n• 一套\n• 彩色\n• 装饰贴纸\n\n💰 Precio: RD$ 90\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8AAB7DCE_original.jpg"
+  ],
+  "precio_candidatos": [
+    90
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格偏低，可能需要商家核实是否有误。"
+    ],
+    "suggestions": [
+      "考虑将商品价格设置为更符合市场平均的范围，例如 RD$100-150。"
+    ],
+    "summary": "商品图片和信息基本符合要求，但价格可能偏低需核实。",
+    "price_check": "match",
+    "suggested_titulo_es": "Decoración adhesiva / Pegatinas de flores coloridas para pared - Juego de 1",
+    "suggested_precio": 100,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:39"
+}

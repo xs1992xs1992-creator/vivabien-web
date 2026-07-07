@@ -1,0 +1,36 @@
+{
+  "sku": "VB16F1B5FA",
+  "nombre_zh": "手机补光灯",
+  "titulo_es": "Aro de luz / lámpara LED rosada 1 unidad con clip",
+  "precio": 215,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 215，请在审核台确认",
+    "价格经二次OCR修正：215 → RD$ 175"
+  ],
+  "descripcion_es": "Aro de luz / lámpara LED rosada 1 unidad con clip\n\n📦 Características:\n• 1个\n• 粉色\n• 多功能\n• 夹式\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB16F1B5FA_original.jpg"
+  ],
+  "precio_candidatos": [
+    215
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本合格，建议直接上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:16"
+}

@@ -1,0 +1,28 @@
+{
+  "sku": "VB3C6019A3",
+  "nombre_zh": "墙壁插座面板",
+  "titulo_es": "Panel de toma corriente multifuncional blanco con tornillos incluidos",
+  "precio": 95.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Panel de toma corriente multifuncional blanco con tornillos incluidos\n\n📦 Características:\n• 白色\n• 多功能插孔\n• 附带螺丝\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以稍微优化更自然，例如：'Panel de toma corriente doble, blanco, tornillos incluidos'。"
+    ],
+    "summary": "商品信息准确，审核通过。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:11"
+}

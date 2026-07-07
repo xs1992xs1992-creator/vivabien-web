@@ -1,0 +1,30 @@
+{
+  "sku": "VBD1C75F6F",
+  "nombre_zh": "洗衣机水管",
+  "titulo_es": "Manguera para lavadora / tubo de agua PVC anti-ruptura",
+  "precio": 160.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认"
+  ],
+  "descripcion_es": "Manguera para lavadora / tubo de agua PVC anti-ruptura\n\n📦 Características:\n• 爆裂防护\n• 防漏\n• 白色\n• PVC材质\n\n💰 Precio: RD$ 160\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品通过审核，价格合理，描述与图片一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:20"
+}

@@ -1,0 +1,35 @@
+{
+  "sku": "VB94807C91",
+  "nombre_zh": "旅行分装瓶",
+  "titulo_es": "Botellitas viaje / envases portátiles tapa azul transparentes",
+  "precio": 140.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 140，请在审核台确认"
+  ],
+  "descripcion_es": "Botellitas viaje / envases portátiles tapa azul transparentes\n\n📦 Características:\n• 透明瓶身\n• 蓝色盖子\n• 便携装\n• 多种瓶型\n\n💰 Precio: RD$ 140\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB94807C91_original.jpg"
+  ],
+  "precio_candidatos": [
+    140
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架标准，仅需注意核实价格无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:22"
+}

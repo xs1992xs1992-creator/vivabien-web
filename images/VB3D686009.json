@@ -1,0 +1,29 @@
+{
+  "sku": "VB3D686009",
+  "nombre_zh": "门锁组件",
+  "titulo_es": "Cerradura / pestillo ANSI ajustable puerta 35-50mm",
+  "precio": 295,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 3，请在审核台确认"
+  ],
+  "descripcion_es": "Cerradura / pestillo ANSI ajustable puerta 35-50mm\n\n📦 Características:\n• 黄黑配色\n• 符合ANSI规格\n• 适配35-50mm厚门\n• 可调节后置60-70mm\n\n💰 Precio: RD$ 3\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品审核通过，标题、价格、类目均符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:43"
+}

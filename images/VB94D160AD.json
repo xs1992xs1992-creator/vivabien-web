@@ -1,0 +1,41 @@
+{
+  "sku": "VB94D160AD",
+  "nombre_zh": "美容工具套装",
+  "titulo_es": "Kit de belleza azul / set de uñas / peine y espejo",
+  "precio": 95.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Kit de belleza azul / set de uñas / peine y espejo\n\n📦 Características:\n• 蓝色\n• 多功能工具\n• 包含镜子、指甲锉、梳子等\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB94D160AD_original.jpg"
+  ],
+  "precio_candidatos": [
+    95
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 8,
+    "issues": [
+      "价格略低于市场平均",
+      "西语标题可优化"
+    ],
+    "suggestions": [
+      "建议检查商品质量以确认其是否符合市场更低价产品标准",
+      "修改标题以更准确地反映功能和特点（例如：Kit completo de belleza azul con herramientas para uñas）"
+    ],
+    "summary": "商品通过审核，整体符合要求，但标题和定价有轻微优化空间。",
+    "price_check": "match",
+    "suggested_titulo_es": "Kit completo de belleza azul con herramientas para uñas",
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:10"
+}

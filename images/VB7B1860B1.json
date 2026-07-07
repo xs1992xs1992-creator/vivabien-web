@@ -1,0 +1,32 @@
+{
+  "sku": "VB7B1860B1",
+  "nombre_zh": "金色喷漆",
+  "titulo_es": "Pintura en spray dorada 400ML / aerosol rápido secado",
+  "precio": 150.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 150，请在审核台确认"
+  ],
+  "descripcion_es": "Pintura en spray dorada 400ML / aerosol rápido secado\n\n📦 Características:\n• 400ML\n• 金色\n• 适用于木材、金属、塑料\n• 高亮\n• 快速干燥\n\n💰 Precio: RD$ 150\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    150
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品完整、分类正确，审核基本通过。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:48"
+}

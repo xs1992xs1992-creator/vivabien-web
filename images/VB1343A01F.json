@@ -1,0 +1,41 @@
+{
+  "sku": "VB1343A01F",
+  "nombre_zh": "银色羽毛摆件",
+  "titulo_es": "Adorno decorativo pluma plateada / metal silver",
+  "precio": 120.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno decorativo pluma plateada / metal silver\n\n📦 Características:\n• 银色\n• 金属材质\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB1343A01F_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签字体检查建议",
+      "白底图上商品边缘稍显模糊"
+    ],
+    "suggestions": [
+      "建议人工再次确认价格标签上的数字是否为 120。",
+      "优化白底图商品边缘，使其更加干净利落，以提升整体视觉质量。"
+    ],
+    "summary": "商品整体质量较好，标题准确自然，类目正确，建议人工确认价格标签并优化白底图边缘。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:47"
+}

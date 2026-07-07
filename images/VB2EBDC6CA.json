@@ -1,0 +1,38 @@
+{
+  "sku": "VB2EBDC6CA",
+  "nombre_zh": "100%丙酮",
+  "titulo_es": "Acetona 100% pura 4oz / quitaesmalte",
+  "precio": 70.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Acetona 100% pura 4oz / quitaesmalte\n\n📦 Características:\n• 4oz\n• 100%纯度\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB2EBDC6CA_original.jpg"
+  ],
+  "precio_candidatos": [
+    70
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-03 22:04",
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息和图片完全符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-04 10:16",
+  "finalized_at": "2026-07-04 10:16"
+}

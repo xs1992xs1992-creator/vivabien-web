@@ -1,0 +1,35 @@
+{
+  "sku": "VB27BD39A0",
+  "nombre_zh": "橙子身体磨砂",
+  "titulo_es": "Exfoliante corporal / scrub de naranja 300ml natural 98%",
+  "precio": 765.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 765，请在审核台确认"
+  ],
+  "descripcion_es": "Exfoliante corporal / scrub de naranja 300ml natural 98%\n\n📦 Características:\n• 300ml\n• 温和去角质\n• 98%天然提取物\n\n💰 Precio: RD$ 765\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB27BD39A0_original.jpg"
+  ],
+  "precio_candidatos": [
+    765
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品审核通过，标题自然准确，价格合理，类目正确，白底图质量优良。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:17"
+}

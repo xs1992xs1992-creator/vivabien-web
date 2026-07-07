@@ -1,0 +1,37 @@
+{
+  "sku": "VB7BC4432A",
+  "nombre_zh": "电热水壶",
+  "titulo_es": "Calentador de agua eléctrico / hervidor 2.0L color verde",
+  "precio": 1400.0,
+  "categoria": "厨房家居",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1400，请在审核台确认"
+  ],
+  "descripcion_es": "Calentador de agua eléctrico / hervidor 2.0L color verde\n\n📦 Características:\n• 2.0L\n• 浅绿色\n• 电加热\n\n💰 Precio: RD$ 1400\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7BC4432A_original.jpg"
+  ],
+  "precio_candidatos": [
+    1400
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:03",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合上架标准，几乎无问题。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:05",
+  "finalized_at": "2026-07-03 21:05"
+}

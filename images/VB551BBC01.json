@@ -1,0 +1,33 @@
+{
+  "sku": "VB551BBC01",
+  "nombre_zh": "卷尺",
+  "titulo_es": "Cinta métrica / wincha 3m azul con soga para colgar",
+  "precio": 70.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Cinta métrica / wincha 3m azul con soga para colgar\n\n📦 Características:\n• 3米长度\n• 蓝色外壳\n• 附带挂绳\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    70
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 4,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品标题准确、价格合理、类目正确，图片整体合规。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 21:22"
+}

@@ -1,0 +1,27 @@
+{
+  "sku": "VB77AFF133",
+  "nombre_zh": "美睫工具套装",
+  "titulo_es": "Kit de pestañas rosado con pinzas y guía",
+  "precio": 80.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.80，卖点:['颜色粉色', '美睫辅助', '含镊子、辅助夹']"
+  ],
+  "descripcion_es": "Kit de pestañas rosado con pinzas y guía\n\n📦 Características:\n• 颜色粉色\n• 美睫辅助\n• 含镊子、辅助夹\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以更加具体，如描述包含美睫工具用途的内容。修改为：'Kit de herramientas para pestañas rosado con pinzas y guía'。"
+    ],
+    "summary": "商品信息基本合规，标题可以优化以更符合购物习惯。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:05"
+}

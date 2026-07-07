@@ -1,0 +1,35 @@
+{
+  "sku": "VBDBCEE30A",
+  "nombre_zh": "音频转换线",
+  "titulo_es": "Adaptador Lightning / 3.5mm digital audio sin pérdida",
+  "precio": 250.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 250，请在审核台确认"
+  ],
+  "descripcion_es": "Adaptador Lightning / 3.5mm digital audio sin pérdida\n\n📦 Características:\n• Lightning转3.5mm\n• 数字音频\n• 无损音质\n\n💰 Precio: RD$ 250\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDBCEE30A_original.jpg"
+  ],
+  "precio_candidatos": [
+    250
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合多米尼加共和国市场定位。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:10"
+}

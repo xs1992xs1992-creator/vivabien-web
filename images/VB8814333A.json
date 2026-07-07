@@ -1,0 +1,35 @@
+{
+  "sku": "VB8814333A",
+  "nombre_zh": "精密刀",
+  "titulo_es": "Cuchilla de precisión / Exacto con mango metálico y repuestos",
+  "precio": 120.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 120，请在审核台确认"
+  ],
+  "descripcion_es": "Cuchilla de precisión / Exacto con mango metálico y repuestos\n\n📦 Características:\n• 金属手柄\n• 附带备用刀片\n• 适用于模型切割、艺术工作、木材、纸板、乙烯基、壁纸\n\n💰 Precio: RD$ 120\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8814333A_original.jpg"
+  ],
+  "precio_candidatos": [
+    120
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合多米尼加市场需求，信息无误。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 22:12"
+}

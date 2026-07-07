@@ -1,0 +1,25 @@
+{
+  "sku": "VBF1F7498A",
+  "nombre_zh": "红色男士套装",
+  "titulo_es": "Set de hombre: perfume y aftershave en caja roja elegante",
+  "precio": 295,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Set de hombre: perfume y aftershave en caja roja elegante\n\n📦 Características:\n• 香水\n• 须后膏\n• 红色包装\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以稍微优化为：'Set de regalo para hombre: perfume y aftershave en caja roja elegante'，以增加吸引力和信息完整性。"
+    ],
+    "summary": "商品信息准确，图片质量高，价格标签与系统一致，建议优化西语标题。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 18:59",
+  "review_ignored": false
+}

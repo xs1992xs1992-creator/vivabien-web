@@ -1,0 +1,39 @@
+{
+  "sku": "VBD4D46BEF",
+  "nombre_zh": "无线按摩器",
+  "titulo_es": "Masajeador inalámbrico / portátil / multifuncional",
+  "precio": 1190.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1190，请在审核台确认"
+  ],
+  "descripcion_es": "Masajeador inalámbrico / portátil / multifuncional\n\n📦 Características:\n• 无线\n• 多功能\n\n💰 Precio: RD$ 1190\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBD4D46BEF_original.jpg"
+  ],
+  "precio_candidatos": [
+    1190
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题无需修改，已自然准确。",
+      "价格标签清晰，价格合理，无需改动。"
+    ],
+    "summary": "商品信息准确、图片合规，整体符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "情趣用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:36"
+}

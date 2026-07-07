@@ -1,0 +1,35 @@
+{
+  "sku": "VBEC4B0B7B",
+  "nombre_zh": "绿苹果摆件",
+  "titulo_es": "Adorno manzana verde vidrio con hoja metálica",
+  "precio": 195.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 195，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno manzana verde vidrio con hoja metálica\n\n📦 Características:\n• 绿色\n• 金属叶片\n• 玻璃材质\n\n💰 Precio: RD$ 195\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBEC4B0B7B_original.jpg"
+  ],
+  "precio_candidatos": [
+    195
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，价格合理，图片表现良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:29"
+}

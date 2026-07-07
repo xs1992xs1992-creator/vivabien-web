@@ -1,0 +1,35 @@
+{
+  "sku": "VB9A551C0B",
+  "nombre_zh": "智能充电器",
+  "titulo_es": "Cargador rápido 3.0 / adaptador 2 en 1 100V-240V",
+  "precio": 190.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 190，请在审核台确认"
+  ],
+  "descripcion_es": "Cargador rápido 3.0 / adaptador 2 en 1 100V-240V\n\n📦 Características:\n• 100V-240V宽电压\n• 2合1设计\n• 快速充电3.0\n\n💰 Precio: RD$ 190\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB9A551C0B_original.jpg"
+  ],
+  "precio_candidatos": [
+    190
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合审核要求，信息准确，图片一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:13"
+}

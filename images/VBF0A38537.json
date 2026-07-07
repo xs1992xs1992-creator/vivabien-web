@@ -1,0 +1,33 @@
+{
+  "sku": "VBF0A38537",
+  "nombre_zh": "美甲用的垫手包（垫在手下面的包）",
+  "titulo_es": "Cojín para uñas / almohadilla de manicure",
+  "precio": 150,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Neceser / estuche de maquillaje rosado portátil\n\n📦 Características:\n• 粉色\n• 几何图案\n• 便携\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF0A38537_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "confirmed_at": "2026-07-03 21:09",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "需要确认原图中的价格是否与系统价格一致"
+    ],
+    "suggestions": [],
+    "summary": "商品信息基本符合要求，图片完整描述准确，建议核实价格标签是否一致。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:25",
+  "finalized_at": "2026-07-03 21:25"
+}

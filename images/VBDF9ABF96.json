@@ -1,0 +1,45 @@
+{
+  "sku": "VBDF9ABF96",
+  "nombre_zh": "RGB环形灯",
+  "titulo_es": "Aro de luz RGB con soporte / anillo LED multicolor",
+  "precio": 1645,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（568.0），已自动修正为 RD$ 5680",
+    "价格由 AI 从图片识别：RD$ 5680，请在审核台确认",
+    "价格经二次OCR修正：568 → RD$ 565"
+  ],
+  "descripcion_es": "Aro de luz RGB con soporte / anillo LED multicolor\n\n📦 Características:\n• RGB灯光\n• 多种色温\n• 夜间核心极限\n• 填充光\n• 带支架\n\n💰 Precio: RD$ 565\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBDF9ABF96_original.jpg"
+  ],
+  "precio_candidatos": [
+    568,
+    1045
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 11:51",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签稍显模糊，但基本可识别",
+      "标题可以更自然，更吸引用户"
+    ],
+    "suggestions": [
+      "将西语标题改为更通俗和适合多米尼加市场的表达，如“Aro de Luz LED RGB con Soporte y Modos Multicolor”"
+    ],
+    "summary": "商品整体信息准确，价格合理，少量改进后可上架。",
+    "price_check": "match",
+    "suggested_titulo_es": "Aro de Luz LED RGB con Soporte y Modos Multicolor",
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:22",
+  "finalized_at": "2026-07-03 13:22"
+}

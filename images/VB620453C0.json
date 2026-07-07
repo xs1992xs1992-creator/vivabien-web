@@ -1,0 +1,28 @@
+{
+  "sku": "VB620453C0",
+  "nombre_zh": "多功能插座",
+  "titulo_es": "Regleta eléctrica blanca con protección infantil y alta calidad",
+  "precio": 90.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 90，请在审核台确认"
+  ],
+  "descripcion_es": "Regleta eléctrica blanca con protección infantil y alta calidad\n\n📦 Características:\n• 儿童锁保护\n• 高品质\n• 白色\n\n💰 Precio: RD$ 90\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "将西语标题改为：Enchufe multifuncional con protección infantil y alta calidad，更加具体且符合市场习惯。"
+    ],
+    "summary": "商品信息准确，图片符合质量标准，价格合理。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:10"
+}

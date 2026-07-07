@@ -1,0 +1,37 @@
+{
+  "sku": "VBF3D01AD4",
+  "nombre_zh": "香薰礼盒",
+  "titulo_es": "Set aromático / velas / difusor de aromas 7 piezas",
+  "precio": 785,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 595，请在审核台确认"
+  ],
+  "descripcion_es": "Set aromático / velas / difusor de aromas 7 piezas\n\n📦 Características:\n• 7件\n• 香薰\n• 蜡烛\n• 香氛扩散器\n\n💰 Precio: RD$ 595\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF3D01AD4_original.jpg"
+  ],
+  "precio_candidatos": [
+    595
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "标题可以保持不变，但可考虑添加更具体的信息，例如主要香味或适用场景，以便更吸引消费者。"
+    ],
+    "summary": "商品整体符合要求，价格匹配，类目选择正确，但标题可稍作丰富。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

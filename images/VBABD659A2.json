@@ -1,0 +1,27 @@
+{
+  "sku": "VBABD659A2",
+  "nombre_zh": "指甲液",
+  "titulo_es": "Líquido Acrílico para Uñas 500ml",
+  "precio": 650,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 630，请在审核台确认"
+  ],
+  "descripcion_es": "Removedor de esmalte / quitaesmalte líquido 500ml\n\n📦 Características:\n• 500ml\n\n💰 Precio: RD$ 630\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBABD659A2_original.jpg"
+  ],
+  "precio_candidatos": [
+    630
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:13",
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-03 21:28",
+  "review_ignored": false
+}

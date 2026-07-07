@@ -1,0 +1,28 @@
+{
+  "sku": "VBDACAC411",
+  "nombre_zh": "菠萝可乐香氛",
+  "titulo_es": "Perfume de piña y cola 88ml con tapa dorada tipo spray",
+  "precio": 190,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Perfume de piña y cola 88ml con tapa dorada tipo spray\n\n📦 Características:\n• 88ml\n• 金色球形瓶盖\n• 香氛喷雾\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题可更符合描述香氛的具体类别"
+    ],
+    "suggestions": [
+      "将西语标题修改为 'Perfume aroma piña colada 88ml con tapa dorada tipo spray'"
+    ],
+    "summary": "商品描述清晰准确，价格合理，图片合规。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:00"
+}

@@ -1,0 +1,28 @@
+{
+  "sku": "VB1C934582",
+  "nombre_zh": "陶瓷灯座",
+  "titulo_es": "Base de lámpara cerámica 114.3mm, fácil de instalar y resistente al fu",
+  "precio": 70.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 70，请在审核台确认"
+  ],
+  "descripcion_es": "Base de lámpara cerámica 114.3mm, fácil de instalar y resistente al fu\n\n📦 Características:\n• 114.3mm直径\n• 易于安装\n• 阻燃外壳\n\n💰 Precio: RD$ 70\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可更改为‘Portalámparas de cerámica 114.3 mm, fácil de instalar y duradero’以更准确说明商品特性。"
+    ],
+    "summary": "商品基本符合审核标准，价格标签与系统一致，白底图背景干净，商品完整。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:08"
+}

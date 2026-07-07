@@ -1,0 +1,28 @@
+{
+  "sku": "VB2660D45F",
+  "nombre_zh": "室内外插座",
+  "titulo_es": "Multitoma doble con USB y Type-C para interior y exterior, resistente",
+  "precio": 195.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 195，请在审核台确认"
+  ],
+  "descripcion_es": "Multitoma doble con USB y Type-C para interior y exterior, resistente\n\n📦 Características:\n• 双插口\n• USB接口\n• Type-C接口\n• 适用于室内外\n• 重型接地\n\n💰 Precio: RD$ 195\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "可以在标题中明确写出插座的具体功能，例如‘Multitoma doble con 2 puertos USB y 1 puerto Type-C’ 更具体。"
+    ],
+    "summary": "商品符合质量要求，建议优化标题描述以明确功能。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:55"
+}

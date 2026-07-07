@@ -1,0 +1,40 @@
+{
+  "sku": "VB8383CBB9",
+  "nombre_zh": "双喷夜灯",
+  "titulo_es": "Lámpara nocturna / difusor de agua con ventilador verde",
+  "precio": 750.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 750，请在审核台确认"
+  ],
+  "descripcion_es": "Lámpara nocturna / difusor de agua con ventilador verde\n\n📦 Características:\n• 绿色\n• 水雾\n• 空气调节\n• 风扇\n\n💰 Precio: RD$ 750\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB8383CBB9_original.jpg"
+  ],
+  "precio_candidatos": [
+    750
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签可能位于图片模糊区域，建议进一步核实"
+    ],
+    "suggestions": [
+      "标题修改为更简洁的 'Ventilador verde con luz nocturna y difusor de agua'",
+      "可拓展商品描述以匹配多米尼加市场购物习惯"
+    ],
+    "summary": "商品兼具功能性与装饰性，上架合理，细节完善度高。",
+    "price_check": "match",
+    "suggested_titulo_es": "Ventilador verde con luz nocturna y difusor de agua",
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:27"
+}

@@ -1,0 +1,40 @@
+{
+  "sku": "VB7C46C9C0",
+  "nombre_zh": "金色相框",
+  "titulo_es": "Portarretrato / marco de fotos dorado 4\"x6\" / 10x15cm",
+  "precio": 160,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 160，请在审核台确认",
+    "价格经二次OCR修正：160 → RD$ 360"
+  ],
+  "descripcion_es": "Portarretrato / marco de fotos dorado 4\"x6\" / 10x15cm\n\n📦 Características:\n• 4\"x6\"\n• 10cmx15cm\n• 金色\n• 单个\n\n💰 Precio: RD$ 360\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7C46C9C0_original.jpg"
+  ],
+  "precio_candidatos": [
+    160
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": false,
+    "score": 7,
+    "issues": [
+      "系统价格与原图价格标签不一致"
+    ],
+    "suggestions": [
+      "核实真实价格并更新为 RD$160"
+    ],
+    "summary": "商品价格标签内容与系统记录不一致，需要更正价格。",
+    "price_check": "mismatch",
+    "suggested_titulo_es": null,
+    "suggested_precio": 160,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 13:02"
+}

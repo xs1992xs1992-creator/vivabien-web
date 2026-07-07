@@ -1,0 +1,38 @@
+{
+  "sku": "VBF8E8579A",
+  "nombre_zh": "无线音箱",
+  "titulo_es": "Bocina inalámbrica / speaker 8 pulgadas 5000mAh",
+  "precio": 3150,
+  "categoria": "数码配件",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 175，请在审核台确认"
+  ],
+  "descripcion_es": "Bocina inalámbrica / speaker 8 pulgadas 5000mAh\n\n📦 Características:\n• 8寸\n• 5000mAh\n• DC 5V\n• 1套\n• 4.1kg\n\n💰 Precio: RD$ 175\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBF8E8579A_original.jpg"
+  ],
+  "precio_candidatos": [
+    175
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "version": 2,
+  "confirmed_at": "2026-07-02 12:17",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息与图片一致，整体合格。",
+    "price_check": "match",
+    "suggested_titulo_es": "Bocina inalámbrica 8 pulgadas con batería de 5000mAh",
+    "suggested_precio": null,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:21",
+  "finalized_at": "2026-07-03 13:21"
+}

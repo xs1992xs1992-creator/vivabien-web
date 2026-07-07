@@ -1,0 +1,40 @@
+{
+  "sku": "VB36C78B3E",
+  "nombre_zh": "胎盘精华面膜",
+  "titulo_es": "Mascarilla facial hidratante / reafirmante / reparadora 33ml",
+  "precio": 40.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（4.0），已自动修正为 RD$ 40",
+    "价格由 AI 从图片识别：RD$ 40，请在审核台确认"
+  ],
+  "descripcion_es": "Mascarilla facial hidratante / reafirmante / reparadora 33ml\n\n📦 Características:\n• 修复\n• 紧致\n• 保湿\n• 容量33ml\n\n💰 Precio: RD$ 40\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB36C78B3E_original.jpg"
+  ],
+  "precio_candidatos": [
+    4.0
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格低于市场平均水平可能影响消费者信任"
+    ],
+    "suggestions": [
+      "建议价格调整为 RD$300-500，以更符合市场链条推荐区间"
+    ],
+    "summary": "商品信息大体准确，定价偏低，标题翻译自然。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": 300,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-29 21:26"
+}

@@ -1,0 +1,29 @@
+{
+  "sku": "VBACF43E20",
+  "nombre_zh": "电压保护器",
+  "titulo_es": "Protector de voltaje con toma corriente y protección contra sobrecarga",
+  "precio": 395.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 395，请在审核台确认"
+  ],
+  "descripcion_es": "Protector de voltaje con toma corriente y protección contra sobrecarga\n\n📦 Características:\n• 电压保护\n• 插座式\n• 漏电保护\n\n💰 Precio: RD$ 395\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "建议西语标题稍加调整为：Protector de voltaje con toma corriente para protección contra sobrecarga eléctrica，显得更自然流畅。",
+      "可以与同类店铺商品比较价格，进一步确认合理性。"
+    ],
+    "summary": "商品信息基本正确，图片清晰一致，标题和价格均无明显问题。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:54"
+}

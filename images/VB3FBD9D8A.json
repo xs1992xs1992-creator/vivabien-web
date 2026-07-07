@@ -1,0 +1,40 @@
+{
+  "sku": "VB3FBD9D8A",
+  "nombre_zh": "遥控跳蛋",
+  "titulo_es": "Huevo vibrador / masajeador 1 unidad silicón azul",
+  "precio": 1530.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1530，请在审核台确认"
+  ],
+  "descripcion_es": "Huevo vibrador / masajeador 1 unidad silicón azul\n\n📦 Características:\n• 1个\n• 蓝色\n• 硅胶材质\n• 遥控功能\n\n💰 Precio: RD$ 1530\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB3FBD9D8A_original.jpg"
+  ],
+  "precio_candidatos": [
+    1530
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "西语标题可以优化为更加符合本地购物习惯的表述"
+    ],
+    "suggestions": [
+      "将西语标题修改为：'Huevo vibrador con control remoto de silicona, color azul'，以更符合本地购物习惯"
+    ],
+    "summary": "商品信息基本准确，图片清晰，建议优化标题以提升本地化水平。",
+    "price_check": "match",
+    "suggested_titulo_es": "Huevo vibrador con control remoto de silicona, color azul",
+    "suggested_precio": null,
+    "suggested_categoria": "情趣用品"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:37"
+}

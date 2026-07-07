@@ -1,0 +1,29 @@
+{
+  "sku": "VBC0FB9B7A",
+  "nombre_zh": "辅助安全锁",
+  "titulo_es": "Traba de seguridad ajustable para puertas / cerraduras dorada",
+  "precio": 840.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 840，请在审核台确认"
+  ],
+  "descripcion_es": "Traba de seguridad ajustable para puertas / cerraduras dorada\n\n📦 Características:\n• 可调节后座\n• 适用于不同门厚度\n• 金色金属材质\n\n💰 Precio: RD$ 840\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品质量良好，信息基本准确无误，可正常上架。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:41"
+}

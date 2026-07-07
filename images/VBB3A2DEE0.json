@@ -1,0 +1,29 @@
+{
+  "sku": "VBB3A2DEE0",
+  "nombre_zh": "门锁把手",
+  "titulo_es": "Manubrio / cerradura de puerta inoxidable fácil de instalar",
+  "precio": 250,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 8，请在审核台确认"
+  ],
+  "descripcion_es": "Manubrio / cerradura de puerta inoxidable fácil de instalar\n\n📦 Características:\n• 不锈钢材质\n• 易于安装\n• 适配2 3/8''或2 3/4''背距\n\n💰 Precio: RD$ 8\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合质量审核标准，仅有标题可优化。",
+    "price_check": "match",
+    "suggested_titulo_es": "Manubrio / Cerradura de puerta de acero inoxidable fácil de instalar",
+    "suggested_precio": null,
+    "suggested_categoria": "工具五金"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:53"
+}

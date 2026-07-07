@@ -1,0 +1,36 @@
+{
+  "sku": "VBEA82ADAC",
+  "nombre_zh": "香薰摆件套装",
+  "titulo_es": "Set de aromaterapia / velas / bandeja / decoración / florero",
+  "precio": 1235.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 1235，请在审核台确认"
+  ],
+  "descripcion_es": "Set de aromaterapia / velas / bandeja / decoración / florero\n\n📦 Características:\n• 一套\n• 香薰\n• 蜡烛\n• 托盘\n• 装饰球\n• 花瓶\n\n💰 Precio: RD$ 1235\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBEA82ADAC_original.jpg"
+  ],
+  "precio_candidatos": [
+    1235,
+    125
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息基本无误，所有审核维度均符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 20:26"
+}

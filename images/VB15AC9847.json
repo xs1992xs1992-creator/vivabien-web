@@ -1,0 +1,17 @@
+{
+  "sku": "VB15AC9847",
+  "nombre_zh": "室内外延长线",
+  "titulo_es": "Extensión / alargador heavy duty 12 pies, 3 líneas, 125V",
+  "precio": 160,
+  "categoria": "工具五金",
+  "estado": "pendiente",
+  "needs_human": true,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 9，请在审核台确认",
+    "⚠️ AI 生图失败，可点「重新生图」重试: HTTPSConnectionPool(host='api.quickrouter.ai', port=443): Read timed out. (read timeout=120)"
+  ],
+  "descripcion_es": "Extensión / alargador heavy duty 12 pies, 3 líneas, 125V\n\n📦 Características:\n• 12英尺\n• 橙色\n• 重型\n• 3线接地\n• 125V\n\n💰 Precio: RD$ 9\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false
+}}

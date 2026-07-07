@@ -1,0 +1,31 @@
+{
+  "sku": "VBAF819623",
+  "nombre_zh": "15尺家用延长线",
+  "titulo_es": "Extensión / regleta polarizada 15 pies blanca con tapa segura",
+  "precio": 150,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 2，请在审核台确认"
+  ],
+  "descripcion_es": "Extensión / regleta polarizada 15 pies blanca con tapa segura\n\n📦 Características:\n• 15英尺长度\n• 白色\n• 极化设计\n• 附安全盖\n\n💰 Precio: RD$ 2\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格系统识别需车确认是否一致"
+    ],
+    "suggestions": [],
+    "summary": "商品信息清晰完整，符合多米尼加市场习惯，价格合理，类目正确，图片质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 22:42"
+}

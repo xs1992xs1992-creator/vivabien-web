@@ -1,0 +1,37 @@
+{
+  "sku": "VB4280CCCC",
+  "nombre_zh": "婴儿洗发水",
+  "titulo_es": "Shampoo para bebé 120ml / no irrita ojos / uso diario",
+  "precio": 105.0,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 105，请在审核台确认"
+  ],
+  "descripcion_es": "Shampoo para bebé 120ml / no irrita ojos / uso diario\n\n📦 Características:\n• 120ml\n• 不刺激眼睛\n• 每日使用\n\n💰 Precio: RD$ 105\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB4280CCCC_original.jpg"
+  ],
+  "precio_candidatos": [
+    105
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:18",
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息正确，图片与商品一致，符合上架要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:31",
+  "finalized_at": "2026-07-03 21:31"
+}

@@ -1,0 +1,41 @@
+{
+  "sku": "VBADEBDD1D",
+  "nombre_zh": "便携收音机",
+  "titulo_es": "Radio portátil AM/FM/SW con USB/TF/MP3 y linterna recargable",
+  "precio": 810.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 810，请在审核台确认"
+  ],
+  "descripcion_es": "Radio portátil AM/FM/SW con USB/TF/MP3 y linterna recargable\n\n📦 Características:\n• USB接口\n• TF卡槽\n• AM/FM/SW三波段\n• MP3播放\n• 充电电池\n• 手电筒功能\n\n💰 Precio: RD$ 810\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBADEBDD1D_original.jpg"
+  ],
+  "precio_candidatos": [
+    810
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-02 11:50",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [
+      "价格标签上数字不清晰"
+    ],
+    "suggestions": [
+      "建议人工确认价格标签上的数字，以确保准确性"
+    ],
+    "summary": "商品图片与信息匹配良好，西语标题自然准确，但需确认价格标签内容以确保一致性。",
+    "price_check": "unclear",
+    "suggested_titulo_es": null,
+    "suggested_precio": 810,
+    "suggested_categoria": "电子数码"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 13:22",
+  "finalized_at": "2026-07-03 13:22"
+}

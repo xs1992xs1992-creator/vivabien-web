@@ -1,0 +1,27 @@
+{
+  "sku": "VBA993A448",
+  "nombre_zh": "MANFEI化妆刷套装",
+  "titulo_es": "Juego de brochas de maquillaje profesional 4 piezas rosadas",
+  "precio": 175.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "品名由豆包识图生成 conf=0.90，卖点:['4支装', '粉色刷头', '白色刷杆', '玫瑰金金属件', '专业品质']"
+  ],
+  "descripcion_es": "Juego de brochas de maquillaje profesional 4 piezas rosadas\n\n📦 Características:\n• 4支装\n• 粉色刷头\n• 白色刷杆\n• 玫瑰金金属件\n• 专业品质\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "categoria_es": "Belleza y Cuidado Personal",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以更简洁一些，例如：‘Juego de Brochas de Maquillaje Profesional 4 Piezas - Rosado’。"
+    ],
+    "summary": "商品描述清晰，价格合理，类目和图片符合要求。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-26 19:03"
+}

@@ -1,0 +1,31 @@
+{
+  "sku": "VB2DF5C60E",
+  "nombre_zh": "即热式热水器",
+  "titulo_es": "Calentador de agua instantáneo 220V / 7000W / 40°C",
+  "precio": 4520,
+  "categoria": "浴室卫浴",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 价格疑似识别有误（599.0），已自动修正为 RD$ 5990",
+    "价格由 AI 从图片识别：RD$ 5990，请在审核台确认"
+  ],
+  "descripcion_es": "Calentador de agua instantáneo 220V / 7000W / 40°C\n\n📦 Características:\n• 即热式\n• 40°C恒温\n• 220V\n• 7000W\n\n💰 Precio: RD$ 5990\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review_status": "done",
+  "version": 2,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品符合多米尼加市场需求，标题和类目准确，图片质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "浴室卫浴"
+  },
+  "review_at": "2026-06-28 20:49"
+}

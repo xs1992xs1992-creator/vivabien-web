@@ -1,0 +1,30 @@
+{
+  "sku": "VB32A1B0D1",
+  "nombre_zh": "男性护理凝胶",
+  "titulo_es": "Gel de cuidado íntimo masculino de 50ml - Hecho en los EE.UU.",
+  "precio": 125.0,
+  "categoria": "情趣用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 125，请在审核台确认"
+  ],
+  "descripcion_es": "Gel íntimo masculino 50ml / cuidado personal / hecho en USA\n\n📦 Características:\n• 50ml\n• 美国制造\n\n💰 Precio: RD$ 125\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB32A1B0D1_original.jpg"
+  ],
+  "precio_candidatos": [
+    125,
+    140,
+    280
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "etiqueta": "especial",
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-01 21:37",
+  "review_ignored": false,
+  "version": 2
+}

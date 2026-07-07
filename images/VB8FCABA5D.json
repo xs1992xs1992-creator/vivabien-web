@@ -1,0 +1,28 @@
+{
+  "sku": "VB8FCABA5D",
+  "nombre_zh": "电压保护器",
+  "titulo_es": "Protector de voltaje 120V con switch para aire, nevera y lavadora",
+  "precio": 550.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 550，请在审核台确认"
+  ],
+  "descripcion_es": "Protector de voltaje 120V con switch para aire, nevera y lavadora\n\n📦 Características:\n• 120V电压\n• 带开关\n• 适用于空调、冰箱、洗衣机等\n\n💰 Precio: RD$ 550\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题可以保持原样，因为其准确、自然，符合当地购物习惯。无需修改。"
+    ],
+    "summary": "商品信息准确，图片合规，无明显问题。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:07"
+}

@@ -1,0 +1,30 @@
+{
+  "sku": "VB215F5FD2",
+  "nombre_zh": "卷闸门锁",
+  "titulo_es": "Candado / cerradura tipo cruz para puerta enrollable",
+  "precio": 200.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "⚠ 图片可能拍反，价格从旋转图中识别",
+    "价格由 AI 从图片识别：RD$ 200，请在审核台确认"
+  ],
+  "descripcion_es": "Candado / cerradura tipo cruz para puerta enrollable\n\n📦 Características:\n• 高门锁\n• 十字型设计\n\n💰 Precio: RD$ 200\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息与图片一致，标题、价格和类目均准确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 23:18"
+}

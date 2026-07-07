@@ -1,0 +1,31 @@
+{
+  "sku": "VB78EE89F4",
+  "nombre_zh": "手握式夹具",
+  "titulo_es": "Pinza / prensa manual plástica azul",
+  "precio": 50,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [],
+  "descripcion_es": "Pinza / prensa manual plástica azul\n\n📦 Características:\n• 蓝色\n• 塑料材质\n• 手持设计\n\n💰 Precio: Consultar precio\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB78EE89F4_original.jpg"
+  ],
+  "precio_candidatos": [],
+  "confirmed_at": "2026-07-03 21:03",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，图片清晰，价格合理，类目正确。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:05",
+  "finalized_at": "2026-07-03 21:05"
+}

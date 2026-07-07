@@ -1,0 +1,27 @@
+{
+  "sku": "VB343D4D49",
+  "nombre_zh": "萌萌兔夜灯",
+  "titulo_es": "Lámpara LED Conejo Rosa o Azul - Luz Nocturna Tierna",
+  "precio": 90,
+  "categoria": "母婴用品",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 90，请在审核台确认",
+    "价格经二次OCR修正：90 → RD$ 490"
+  ],
+  "descripcion_es": "Lámpara LED de conejo rosado/azul 1 unidad\n\n📦 Características:\n• 1个\n• LED\n• 粉色\n• 蓝色\n\n💰 Precio: RD$ 490\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB343D4D49_original.jpg"
+  ],
+  "precio_candidatos": [
+    90
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": null,
+  "review_status": null,
+  "review_at": "2026-07-01 21:15",
+  "review_ignored": false
+}

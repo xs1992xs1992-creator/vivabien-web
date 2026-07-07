@@ -1,0 +1,38 @@
+{
+  "sku": "VBC22D7ED1",
+  "nombre_zh": "脱毛加热器",
+  "titulo_es": "Calentador de cera / depiladora con ventana y envase aluminio",
+  "precio": 375.0,
+  "categoria": "美容个护",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 375，请在审核台确认"
+  ],
+  "descripcion_es": "Calentador de cera / depiladora con ventana y envase aluminio\n\n📦 Características:\n• 透明窗\n• 额外铝制容器\n\n💰 Precio: RD$ 375\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VBC22D7ED1_original.jpg"
+  ],
+  "precio_candidatos": [
+    375,
+    100
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "confirmed_at": "2026-07-03 21:12",
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息审核通过，标题自然、价格合理、类目正确，图片清晰且对应类别一致。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "美容个护"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-03 21:27",
+  "finalized_at": "2026-07-03 21:27"
+}

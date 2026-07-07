@@ -1,0 +1,35 @@
+{
+  "sku": "VB7E9FE394",
+  "nombre_zh": "金属熊摆件",
+  "titulo_es": "Adorno de oso metálico 1 unidad plateado",
+  "precio": 240.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 240，请在审核台确认"
+  ],
+  "descripcion_es": "Adorno de oso metálico 1 unidad plateado\n\n📦 Características:\n• 1个\n• 银色\n• 金属材质\n\n💰 Precio: RD$ 240\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB7E9FE394_original.jpg"
+  ],
+  "precio_candidatos": [
+    240
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品质量符合要求，系统信息准确，图片审核通过。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": "家居装饰"
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 17:41"
+}

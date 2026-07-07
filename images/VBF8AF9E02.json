@@ -1,0 +1,28 @@
+{
+  "sku": "VBF8AF9E02",
+  "nombre_zh": "双插座面板",
+  "titulo_es": "Panel de toma doble blanco con tornillos para pared",
+  "precio": 95.0,
+  "categoria": "工具五金",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 95，请在审核台确认"
+  ],
+  "descripcion_es": "Panel de toma doble blanco con tornillos para pared\n\n📦 Características:\n• 白色\n• 带螺丝\n• 墙壁安装\n\n💰 Precio: RD$ 95\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 9,
+    "issues": [],
+    "suggestions": [
+      "西语标题基本准确，如需更优化可改为：'Panel de enchufe doble blanco con tornillos para montaje en pared'，更符合一般表达习惯。"
+    ],
+    "summary": "商品信息准确，符合类目要求，定价合理，图片合规。",
+    "price_check": "match"
+  },
+  "review_status": "done",
+  "review_at": "2026-06-27 21:06"
+}

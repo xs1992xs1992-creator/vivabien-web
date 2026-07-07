@@ -1,0 +1,36 @@
+{
+  "sku": "VB5508195E",
+  "nombre_zh": "无线鼠标",
+  "titulo_es": "Mouse inalámbrico / ratón Bluetooth RGB recargable 1600dpi",
+  "precio": 290.0,
+  "categoria": "电子数码",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 290，请在审核台确认"
+  ],
+  "descripcion_es": "Mouse inalámbrico / ratón Bluetooth RGB recargable 1600dpi\n\n📦 Características:\n• 2.4GHz\n• 蓝牙5.0\n• 1600dpi\n• 可充电\n• RGB灯效\n\n💰 Precio: RD$ 290\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "source_images": [
+    "VB5508195E_original.jpg"
+  ],
+  "precio_candidatos": [
+    290,
+    215
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "商品信息准确，符合要求。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-07-01 21:15"
+}

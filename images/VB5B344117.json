@@ -1,0 +1,32 @@
+{
+  "sku": "VB5B344117",
+  "nombre_zh": "自粘数字贴",
+  "titulo_es": "Número 7 de metal / adhesivo para identificar / señalización",
+  "precio": 45.0,
+  "categoria": "家居装饰",
+  "estado": "finalizado",
+  "needs_human": false,
+  "notas": [
+    "价格由 AI 从图片识别：RD$ 45，请在审核台确认"
+  ],
+  "descripcion_es": "Número 7 de metal / adhesivo para identificar / señalización\n\n📦 Características:\n• 高度75mm\n• 金属材质\n• 数字7\n\n💰 Precio: RD$ 45\n✨ Estado: Nuevo\n🚚 Disponible para entrega o recogida\n\n🛒 VivaBien — Tu tienda de confianza en República Dominicana",
+  "canal": "Shopify,Facebook Marketplace",
+  "precio_candidatos": [
+    45
+  ],
+  "precio_source": "ai_detectado",
+  "precio_confirmed": false,
+  "review": {
+    "pass": true,
+    "score": 10,
+    "issues": [],
+    "suggestions": [],
+    "summary": "所有审核项符合要求，商品信息准确，图片质量良好。",
+    "price_check": "match",
+    "suggested_titulo_es": null,
+    "suggested_precio": null,
+    "suggested_categoria": null
+  },
+  "review_status": "done",
+  "review_at": "2026-06-28 20:48"
+}
