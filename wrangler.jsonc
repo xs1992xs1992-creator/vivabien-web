@@ -1,0 +1,8 @@
+{
+  // Cloudflare 部署配置：静态网站，资产目录 = build.py 的输出 dist/
+  "name": "vivabien-web",
+  "compatibility_date": "2026-07-06",
+  "assets": {
+    "directory": "./dist"
+  }
+}
