@@ -280,6 +280,17 @@ button{font-family:inherit}
 .btn-add.added{background:#16a34a}
 .crumb{padding:14px 18px 0;font-size:13px;color:#8a93a2}
 .crumb a{color:#2563D9;font-weight:700}
+/* 推荐栏 */
+.recs{max-width:920px;margin:0 auto;padding:6px 18px 110px}
+@media(min-width:760px){.recs{padding-bottom:40px}}
+.recs h2{font-weight:800;font-size:17px;margin-bottom:12px;letter-spacing:-.02em}
+.rec-row{display:flex;gap:11px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:6px}
+.rec-row::-webkit-scrollbar{display:none}
+.rec{flex:none;width:140px;background:#fff;border:1px solid #EDF1F7;border-radius:15px;overflow:hidden}
+.rec img{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}
+.rec .rn{font-weight:700;font-size:11.5px;line-height:1.3;height:30px;overflow:hidden;padding:8px 9px 0}
+.rec .rp{font-weight:800;font-size:13.5px;padding:5px 9px 10px}
+.rec .rp.ask{color:#FF6B4A;font-size:11px;font-weight:700}
 footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 0 34px}
 /* ---- carrito ---- */
 .ct{max-width:640px;margin:0 auto;padding:18px 18px 40px}
@@ -543,6 +554,26 @@ document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
     with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
         f.write(carrito_page())
 
+    # ---- 推荐栏索引 ----
+    import hashlib
+    by_sub, by_group = {}, {}
+    for p in products:
+        by_sub.setdefault((p["group"], p["sub"]), []).append(p)
+        by_group.setdefault(p["group"], []).append(p)
+
+    def recommendations(p, n=8):
+        """同子分类优先，不够用同大组补齐；有价格优先；顺序按 handle 哈希稳定打散"""
+        def rank(c):
+            h = hashlib.md5((p["handle"] + c["handle"]).encode()).hexdigest()
+            return (c["price"] is None, h)
+        same_sub = [c for c in by_sub.get((p["group"], p["sub"]), []) if c["handle"] != p["handle"]]
+        picks = sorted(same_sub, key=rank)[:n]
+        if len(picks) < n:
+            seen = {c["handle"] for c in picks} | {p["handle"]}
+            rest = [c for c in by_group.get(p["group"], []) if c["handle"] not in seen]
+            picks += sorted(rest, key=rank)[:n - len(picks)]
+        return picks
+
     # ---- 详情页 ----
     for p in products:
         # 多图画廊：主图 + 场景图/尺寸图/补充图（按文件是否存在）
@@ -587,6 +618,17 @@ function addCart(b){
 <a class="btn-wa wide" href="{wa_link(p['title'])}" target="_blank"
  onclick="fbq('track','Contact',{{content_ids:['{p["sku"]}']}})">{WA_SVG} Pedir por WhatsApp</a>"""
             add_js = ""
+        recs = recommendations(p)
+        recs_html = ""
+        if recs:
+            cards_r = "".join(
+                f'<a class="rec" href="{c["handle"]}.html">'
+                f'<img src="../images/{esc(c["img"])}" loading="lazy" onerror="this.style.opacity=0">'
+                f'<div class="rn">{esc(c["title"])}</div>'
+                + (f'<div class="rp">{fmt_price(c["price"])}</div>' if c["price"] is not None
+                   else '<div class="rp ask">Consultar</div>')
+                + '</a>' for c in recs)
+            recs_html = f'<div class="recs"><h2>También te puede gustar</h2><div class="rec-row">{cards_r}</div></div>'
         detail = f"""{header("../")}
 <div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['group'])} / {esc(p['sub'])}</div>
 <div class="dt">
@@ -608,6 +650,7 @@ function addCart(b){
 </div>
 </div>
 </div>
+{recs_html}
 {add_js}"""
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
             f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve, desc=p["body"][:150]))
