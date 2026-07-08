@@ -126,10 +126,15 @@ SUB_DEFAULT = {"Belleza": "Accesorios de Belleza", "Hogar y Cocina": "Más del H
                "Bebés y Niños": "Cuidado del Bebé", "Más categorías": "Otros"}
 
 def norm(s):
-    """小写 + 去重音（保留 ñ）"""
+    """小写 + 去重音（保留 ñ）——分类规则用"""
     s = s.lower().replace('ñ', '\x01')
     s = ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
     return s.replace('\x01', 'ñ')
+
+def snorm(s):
+    """小写 + 全部去重音（ñ→n）——搜索匹配用，客人不打重音也能搜到"""
+    s = s.lower()
+    return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
 
 def classify(p):
     """返回 (大组, 子分类)"""
@@ -225,6 +230,12 @@ button{font-family:inherit}
 .hero{margin:16px auto 4px;background:linear-gradient(120deg,#2563D9,#1A47A6);border-radius:22px;padding:28px 24px;color:#fff;position:relative;overflow:hidden}
 .hero h1{font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.02em;max-width:340px}
 .hero .sub{display:flex;align-items:center;gap:7px;margin-top:12px;font-weight:700;font-size:13px;color:#d3e0fb}
+/* search */
+.search{display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #E5EAF2;border-radius:16px;padding:12px 16px;margin-top:16px}
+.search:focus-within{border-color:#2563D9}
+.search svg{flex:none;color:#8a93a2}
+.search input{flex:1;border:0;outline:none;font-size:15px;font-family:inherit;background:transparent;color:#16202E}
+.search .clr{flex:none;border:0;background:#F1F4F9;color:#5a6577;width:24px;height:24px;border-radius:99px;cursor:pointer;font-size:12px;display:none}
 /* category chips */
 .cats{display:flex;gap:8px;overflow-x:auto;padding:18px 0 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
@@ -370,6 +381,7 @@ def header(rel=""):
 <a class="logo" href="{rel}index.html"><span class="ic">{SITE_NAME[0]}</span>{esc(SITE_NAME)}</a>
 <div class="hd-r">
 <a class="hd-wa" href="https://wa.me/{WHATSAPP}" target="_blank" onclick="fbq('track','Contact')">{WA_SVG} WhatsApp</a>
+<a class="hd-cart" href="{rel}index.html?buscar=1" aria-label="Buscar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a>
 <a class="hd-cart" href="{rel}carrito.html" aria-label="Carrito">{BAG_SVG}<span class="cart-n" id="cartN"></span></a>
 </div>
 </div></div>"""
@@ -504,7 +516,7 @@ def build():
     for p in products:
         price_html = (f'<b>{fmt_price(p["price"])}</b>' if p["price"] is not None
                       else '<span class="ask">Consultar</span>')
-        cards.append(f"""<a class="card" data-g="{esc(p['group'])}" data-s="{esc(p['sub'])}" href="producto/{p['handle']}.html">
+        cards.append(f"""<a class="card" data-g="{esc(p['group'])}" data-s="{esc(p['sub'])}" data-q="{esc(snorm(p['title'] + ' ' + p['sub'] + ' ' + p['group']))}" href="producto/{p['handle']}.html">
 <div class="imgbox"><img src="images/{esc(p['img'])}" alt="{esc(p['title'])}" loading="lazy"
  onerror="this.style.display='none'"><span class="badge">{esc(p['sub'])}</span></div>
 <div class="info"><div class="nm">{esc(p['title'])}</div>
@@ -523,18 +535,36 @@ def build():
 <div class="wrap">
 <div class="hero"><h1>Compra fácil, paga seguro</h1>
 <div class="sub">🛡️ Pago contra entrega · Envíos a todo el país</div></div>
+<div class="search">
+<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input id="q" type="search" placeholder="¿Qué buscas hoy?" autocomplete="off">
+<button class="clr" id="qClr" aria-label="Borrar">✕</button>
+</div>
 <div class="cats">{''.join(chips)}</div>
 {''.join(subrows)}
 <div class="count"><span id="n">{len(products)}</span> productos</div>
 <div class="grid" id="grid">{''.join(cards)}</div>
 </div>
 <script>
-var curG='*',curS='*';
+var curG='*',curS='*',curQ='';
+function snorm(s){{return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')}}
 function apply(){{let n=0;
+ const words=snorm(curQ).split(/\\s+/).filter(Boolean);
  document.querySelectorAll('.card').forEach(cd=>{{
-  const ok=(curG==='*'||cd.dataset.g===curG)&&(curS==='*'||cd.dataset.s===curS);
+  const ok=(curG==='*'||cd.dataset.g===curG)&&(curS==='*'||cd.dataset.s===curS)
+   &&words.every(w=>cd.dataset.q.includes(w));
   cd.style.display=ok?'':'none';if(ok)n++;}});
  document.getElementById('n').textContent=n;}}
+var qEl=document.getElementById('q'),qClr=document.getElementById('qClr'),qT=null;
+qEl.addEventListener('input',()=>{{
+ curQ=qEl.value;qClr.style.display=curQ?'block':'none';apply();
+ clearTimeout(qT);
+ if(curQ.trim().length>2)qT=setTimeout(()=>{{try{{fbq('track','Search',{{search_string:curQ.trim()}})}}catch(e){{}}}},1200);
+}});
+qClr.onclick=()=>{{qEl.value='';curQ='';qClr.style.display='none';apply();qEl.focus()}};
+var qp=new URLSearchParams(location.search).get('q');
+if(qp){{qEl.value=qp;curQ=qp;qClr.style.display='block';apply()}}
+if(new URLSearchParams(location.search).has('buscar'))qEl.focus();
 document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{{
  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
  ch.classList.add('on');curG=ch.dataset.g;curS='*';
