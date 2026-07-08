@@ -18,6 +18,12 @@ PORT     = 8765
 CSV_PATH = "data/products.csv"
 IMG_DIR  = "images"
 
+# 上游流水线（只读！绝不写入该目录）
+UPSTREAM_DIR = os.environ.get("VIVABIEN_UPSTREAM",
+                              os.path.expanduser("~/Downloads/VivaBien/output"))
+UPSTREAM_CSV = os.path.join(UPSTREAM_DIR, "products.csv")
+REVIEW_URL   = "https://review.vivabien.xyz"
+
 # ---------- 登录密码 ----------
 # 密码存在 admin_password.txt（已加入 .gitignore，不会上传）。
 # 想换密码：直接编辑那个文件，重启 admin.py，所有已登录设备都要重新登录。
@@ -198,6 +204,122 @@ def photo_add(img, slot, data):
         f.write(data)
     return fname
 
+# ---------- 流水线导入（上游只读） ----------
+def upstream_read():
+    """读上游 CSV，返回 (主行列表, 按Handle分组的多图附加行)；上游不存在返回 None"""
+    if not os.path.isfile(UPSTREAM_CSV):
+        return None
+    with open(UPSTREAM_CSV, encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+    mains, extra = [], {}
+    for r in rows:
+        sku = (r.get("Variant SKU") or "").strip()
+        h = (r.get("Handle") or "").strip()
+        if sku and (r.get("Title") or "").strip():
+            mains.append(r)
+        elif h and (r.get("Image Src") or "").strip():
+            extra.setdefault(h, []).append(r)   # 家具多图附加行
+    return mains, extra
+
+def upstream_estado(sku):
+    p = os.path.join(UPSTREAM_DIR, f"{sku}.json")
+    if not os.path.isfile(p):
+        p = os.path.join(UPSTREAM_DIR, f"{sku.upper()}.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            return (json.load(f).get("estado") or "").strip()
+    except Exception:
+        return ""
+
+def website_skus():
+    out = set()
+    for r in load_rows()[1:]:
+        if IDX.get(len(r)):
+            s = (row_get(r, "sku") or "").strip().upper()
+            if s: out.add(s)
+    return out
+
+def import_candidates():
+    """上游已完成(finalizado/confirmado)且本库没有的商品"""
+    up = upstream_read()
+    if up is None:
+        return None
+    mains, extra = up
+    have = website_skus()
+    out = []
+    for r in mains:
+        sku_raw = r["Variant SKU"].strip()
+        sku = sku_raw.upper()
+        if sku in have:
+            continue                      # 已存在一律跳过，绝不覆盖
+        est = upstream_estado(sku_raw)
+        if est not in ("finalizado", "confirmado"):
+            continue                      # 只要生产完成的
+        img = (r.get("Image Src") or "").strip() or f"{sku}.jpg"
+        warns = []
+        if not (r.get("Variant Price") or "").strip(): warns.append("缺价格")
+        if not (r.get("Type") or "").strip(): warns.append("缺类目")
+        if re.search(r"[一-鿿]", r.get("Body (HTML)") or ""): warns.append("描述含中文")
+        if not os.path.isfile(os.path.join(UPSTREAM_DIR, img)): warns.append("缺主图")
+        out.append(dict(row=r, sku=sku, img=img, estado=est, warns=warns,
+                        extra=extra.get((r.get("Handle") or "").strip(), [])))
+    return out
+
+def do_import(skus):
+    """把选中的上游商品追加进本库。只增不改不删；写入前后双重校验。"""
+    cands = import_candidates() or []
+    bysku = {c["sku"]: c for c in cands}
+    rows = load_rows()
+    header, ncol = rows[0], len(rows[0])
+    if ncol not in IDX:
+        raise ValueError(f"本库表头 {ncol} 列，不在支持范围，中止")
+    name_idx = {n.strip(): i for i, n in enumerate(header)}
+    before = len(rows)
+
+    def mk(rdict):
+        r = [""] * ncol
+        for n, i in name_idx.items():
+            r[i] = (rdict.get(n) or "")
+        return r
+
+    added, extra_rows, copied, skipped = [], 0, 0, []
+    for s in skus:
+        c = bysku.get(s.strip().upper())
+        if not c:
+            skipped.append(s); continue   # 不在候选（已存在/未完成）→ 跳过
+        main = dict(c["row"])
+        if not (main.get("Image Src") or "").strip():
+            main["Image Src"] = c["img"]
+        rows.append(mk(main))
+        for e in c["extra"]:
+            rows.append(mk(e)); extra_rows += 1
+        # 拷图：主图 + _2.._9 + 尺寸/场景图 + 附加行引用的图（上游只读，只复制出来）
+        stem = c["img"][:-4] if c["img"].lower().endswith(".jpg") else c["img"]
+        names = {c["img"]} | {f"{stem}_{i}.jpg" for i in range(2, 10)} \
+                | {stem + "_dim.jpg", stem + "_scene.jpg"} \
+                | {(e.get("Image Src") or "").strip() for e in c["extra"]}
+        for f in names:
+            if not f or "/" in f or ".." in f: continue
+            srcp, dstp = os.path.join(UPSTREAM_DIR, f), os.path.join(IMG_DIR, f)
+            if os.path.isfile(srcp) and not os.path.exists(dstp):
+                shutil.copy2(srcp, dstp); copied += 1
+        added.append(c["sku"])
+
+    # 写入前校验：所有行列数一致
+    for i, r in enumerate(rows[1:], 2):
+        if len(r) != ncol:
+            raise ValueError(f"校验失败：第{i}行 {len(r)} 列 ≠ 表头 {ncol} 列，已放弃写入")
+    save_rows(rows)
+    # 写入后校验：重读，行数与结构
+    chk = load_rows()
+    assert len(chk) == before + len(added) + extra_rows, "写入后行数不符"
+    assert all(len(r) == ncol for r in chk), "写入后列数不符"
+    dup = len(website_skus())  # 重读一遍确保 SKU 集合无异常
+    return (f"✅ 导入 {len(added)} 个商品（另含 {extra_rows} 行多图附加行），拷贝图片 {copied} 张\n"
+            + (f"⏭️ 跳过 {len(skipped)} 个（已存在或不在候选）\n" if skipped else "")
+            + f"校验通过：{before} → {len(chk)} 行，17列结构完整，本库现有 {dup} 个SKU\n"
+            + "商品已入库但还没上线：回主页点「🔄 构建预览」检查 →「🚀 发布上线」")
+
 # ---------- 简易 multipart 解析 ----------
 def parse_multipart(body, boundary):
     parts, fields, files = body.split(b"--" + boundary), {}, {}
@@ -294,6 +416,8 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <b>🛠️ VivaBien 商品管理</b>
 <input id="q" placeholder="搜索商品…" oninput="filt()">
 <button class="btn b-add" onclick="dlg.showModal()">＋ 添加商品</button>
+<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/import">📥 流水线导入</a>
+<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button class="btn b-build" onclick="build(this)">🔄 构建预览</button>
 <button class="btn b-pub" onclick="publish(this)">🚀 发布上线</button>
 <span id="cnt" style="color:#8a93a2;font-size:13px">{len(prods)} 个商品</span>
@@ -494,6 +618,89 @@ async function publish(btn){{
 }}
 </script></body></html>"""
 
+def import_page():
+    cands = import_candidates()
+    if cands is None:
+        body = f"""<div class="imp-empty">⚠️ 找不到流水线目录<br>
+<code>{esc(UPSTREAM_DIR)}</code><br><br>
+请确认流水线在这台电脑上，或设置环境变量 VIVABIEN_UPSTREAM 后重启后台。</div>"""
+    elif not cands:
+        body = """<div class="imp-empty">✅ 没有待导入的新商品<br>
+<span style="font-size:13px;color:#8a93a2">流水线里所有已完成（finalizado/confirmado）的商品都已经在网站库里了。</span></div>"""
+    else:
+        items = []
+        for c in cands:
+            r = c["row"]
+            price = (r.get("Variant Price") or "").strip()
+            price_html = f"RD$ {esc(price)}" if price else '<span class="warn-t">无价格</span>'
+            warns = "".join(f'<span class="wtag">⚠ {esc(w)}</span>' for w in c["warns"])
+            items.append(f"""<label class="imp-it {'has-warn' if c['warns'] else ''}">
+<input type="checkbox" class="ck" value="{esc(c['sku'])}" checked>
+<img src="/upimg/{esc(c['img'])}" loading="lazy" onerror="this.style.opacity=.15">
+<div class="imp-t">
+<div class="imp-nm">{esc(r.get('Title',''))}</div>
+<div class="imp-meta"><b>{price_html}</b> · {esc(r.get('Type') or '无类目')} · {esc(c['sku'])} · {esc(c['estado'])}</div>
+<div>{warns}</div>
+</div></label>""")
+        body = f"""<div class="imp-bar">
+<label style="display:flex;align-items:center;gap:7px;font-weight:700;font-size:13px;cursor:pointer">
+<input type="checkbox" id="ckAll" checked onchange="document.querySelectorAll('.ck').forEach(c=>c.checked=this.checked);cnt()"> 全选
+</label>
+<span id="impCnt" style="color:#8a93a2;font-size:13px"></span>
+<button class="btn b-pub" style="margin-left:auto" onclick="doImport(this)">📥 导入所选</button>
+</div>
+<div class="imp-list">{''.join(items)}</div>"""
+    return f"""<!DOCTYPE html><html lang="zh"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>流水线导入</title>
+<style>
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;color:#16202E;padding-bottom:60px}}
+.top{{position:sticky;top:0;background:#fff;border-bottom:1px solid #EEF1F6;padding:12px 18px;display:flex;gap:10px;align-items:center;z-index:10}}
+.top b{{font-size:17px}}
+.btn{{border:0;border-radius:99px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block}}
+.b-pub{{background:#FF6B4A;color:#fff}}
+.b-gray{{background:#F1F5FB;color:#2563D9}}
+.imp-bar{{display:flex;align-items:center;gap:14px;padding:14px 18px;background:#fff;border-bottom:1px solid #EEF1F6}}
+.imp-list{{display:flex;flex-direction:column;gap:10px;padding:14px 18px;max-width:760px}}
+.imp-it{{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #EDF1F7;border-radius:15px;padding:10px 14px;cursor:pointer}}
+.imp-it.has-warn{{background:#FFFBEB;border-color:#F5E6B8}}
+.imp-it img{{width:62px;height:62px;border-radius:12px;object-fit:cover;background:#F0F3F8;flex:none}}
+.imp-it .ck{{width:18px;height:18px;accent-color:#2563D9;flex:none}}
+.imp-t{{min-width:0}}
+.imp-nm{{font-weight:700;font-size:13.5px;line-height:1.3}}
+.imp-meta{{font-size:12px;color:#5a6577;margin:3px 0}}
+.wtag{{display:inline-block;background:#FDEFC8;color:#8a6d1a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-right:5px}}
+.warn-t{{color:#c0392b}}
+.imp-empty{{text-align:center;padding:70px 20px;color:#5a6577;font-weight:600;font-size:15px;line-height:1.8}}
+code{{background:#EEF1F6;border-radius:6px;padding:2px 8px;font-size:12px}}
+#log{{position:fixed;left:12px;right:12px;bottom:12px;background:#16202E;color:#9fe8c1;font:12px/1.6 ui-monospace,monospace;border-radius:12px;padding:12px 15px;display:none;white-space:pre-wrap;max-height:40vh;overflow:auto;z-index:99}}
+</style></head><body>
+<div class="top">
+<b>📥 流水线导入</b>
+<span style="color:#8a93a2;font-size:12px">上游只读 · 已存在的SKU自动跳过 · 只增不改</span>
+<a class="btn b-gray" style="margin-left:auto" href="/">← 返回商品管理</a>
+</div>
+{body}
+<div id="log"></div>
+<script>
+const log=m=>{{const d=document.getElementById('log');d.style.display='block';d.textContent=m}};
+function cnt(){{const n=document.querySelectorAll('.ck:checked').length;
+ const el=document.getElementById('impCnt');if(el)el.textContent='已选 '+n+' 个';}}
+document.querySelectorAll('.ck').forEach(c=>c.addEventListener('change',cnt));cnt();
+async function doImport(btn){{
+ const skus=[...document.querySelectorAll('.ck:checked')].map(c=>c.value);
+ if(!skus.length){{alert('先勾选要导入的商品');return}}
+ if(!confirm('确认导入 '+skus.length+' 个新商品？\\n\\n导入后不会自动上线，需要回主页构建预览+发布。'))return;
+ btn.disabled=true;btn.textContent='⏳ 导入中…';
+ const r=await fetch('/import_do',{{method:'POST',body:new URLSearchParams({{skus:skus.join(',')}})}});
+ const t=await r.text();
+ log(t);
+ if(r.ok)setTimeout(()=>location.reload(),4000);
+ else{{btn.disabled=false;btn.textContent='📥 导入所选'}}
+}}
+</script></body></html>"""
+
 # ---------- HTTP 服务 ----------
 class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
@@ -521,6 +728,17 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, LOGIN_HTML.replace("__ERR__", ""))
         if p == "/":
             return self.send(200, page_html())
+        if p == "/import":
+            return self.send(200, import_page())
+        if p.startswith("/upimg/"):
+            fn = p[len("/upimg/"):]
+            if not re.fullmatch(r"[A-Za-z0-9_.\-]+\.(jpg|jpeg|png|webp)", fn, re.I):
+                return self.send(404, "not found")
+            fp = os.path.join(UPSTREAM_DIR, fn)
+            if not os.path.isfile(fp):
+                return self.send(404, "not found")
+            with open(fp, "rb") as f:      # 上游只读
+                return self.send(200, f.read(), "image/jpeg")
         if p == "/body":
             pr = find_product(qs.get("handle", [""])[0])
             return self.send(200, pr["body"] if pr else "", "text/plain; charset=utf-8")
@@ -599,6 +817,12 @@ class H(BaseHTTPRequestHandler):
                                 fields.get("type", "").strip(), data, ext,
                                 body=fields.get("body", ""), zh=fields.get("zh", ""))
                 return self.send(200, h)
+            if p == "/import_do":
+                q = parse_qs(body.decode("utf-8"))
+                skus = [s for s in q.get("skus", [""])[0].split(",") if s.strip()]
+                if not skus:
+                    return self.send(400, "没有选择商品")
+                return self.send(200, do_import(skus))
             if p == "/build":
                 r = subprocess.run([sys.executable, "build.py"],
                                    capture_output=True, text=True, timeout=300)
