@@ -133,7 +133,7 @@ def delete_product(handle):
     if n: save_rows(kept)
     return n
 
-def add_product(title, price, ptype, img_bytes, img_ext):
+def add_product(title, price, ptype, img_bytes, img_ext, body="", zh=""):
     sku = "VB" + uuid.uuid4().hex[:8].upper()
     handle = sku.lower()
     fname = f"{sku}{img_ext}"
@@ -143,9 +143,11 @@ def add_product(title, price, ptype, img_bytes, img_ext):
     rows = load_rows()
     ncol = len(rows[0]) if rows and len(rows[0]) in IDX else 17
     r = [""] * ncol
-    for k, v in dict(handle=handle, title=title, body=title, type=ptype,
+    for k, v in dict(handle=handle, title=title, body=(body.strip() or title), type=ptype,
                      published="TRUE", sku=sku, price=price, img=fname).items():
         r[IDX[ncol][k]] = v
+    if ncol == 17 and zh.strip():
+        r[11] = zh.strip()          # nombre_zh 列
     rows.append(r)
     save_rows(rows)
     return handle
@@ -268,10 +270,18 @@ body{{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;colo
 .save.ok{{background:#157A4E}}
 .mini{{background:#F1F5FB;color:#2563D9;border:0;border-radius:9px;padding:9px 8px;font-size:12px;font-weight:700;cursor:pointer}}
 .del{{background:#fff;color:#c0392b;border:1px solid #f0d0cc;border-radius:9px;padding:9px 10px;cursor:pointer}}
-dialog{{border:0;border-radius:18px;padding:22px;width:min(520px,94vw);box-shadow:0 20px 60px rgba(20,40,80,.25)}}
-dialog h3{{margin-bottom:14px;font-size:16px}}
-dialog input,dialog select,dialog textarea{{width:100%;border:1.5px solid #E5EAF2;border-radius:10px;padding:10px;font-size:14px;margin-bottom:10px;font-family:inherit}}
-dialog::backdrop{{background:rgba(20,30,50,.4)}}
+dialog{{border:0;border-radius:20px;padding:24px;width:min(520px,94vw);box-shadow:0 20px 60px rgba(20,40,80,.25);max-height:92vh;overflow-y:auto}}
+dialog h3{{margin-bottom:16px;font-size:17px}}
+dialog input,dialog select,dialog textarea{{width:100%;border:1.5px solid #E5EAF2;border-radius:11px;padding:11px;font-size:14px;margin-bottom:12px;font-family:inherit}}
+dialog input:focus,dialog select:focus,dialog textarea:focus{{outline:none;border-color:#2563D9}}
+dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
+.flb{{display:block;font-weight:700;font-size:12px;color:#5a6577;margin:0 0 5px 2px}}
+.row2{{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
+.ferr{{display:none;background:#FDECEA;color:#c0392b;font-size:13px;font-weight:600;border-radius:10px;padding:9px 12px;margin-bottom:12px}}
+.drop{{border:2px dashed #C9D6EC;border-radius:16px;background:#F7F9FD;text-align:center;padding:0;margin-bottom:14px;cursor:pointer;overflow:hidden;position:relative}}
+.drop.over{{border-color:#2563D9;background:#EAF0FB}}
+.drop-in{{padding:26px 10px}}
+#dropPrev{{display:none;width:100%;max-height:220px;object-fit:contain;background:#fff}}
 .ph-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:14px}}
 .ph{{position:relative;border:1px solid #EDF1F7;border-radius:12px;overflow:hidden}}
 .ph img{{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}}
@@ -291,13 +301,29 @@ dialog::backdrop{{background:rgba(20,30,50,.4)}}
 <div class="grid" id="grid">{''.join(cards)}</div>
 
 <dialog id="dlg">
-<h3>添加新商品</h3>
-<input id="a-t" placeholder="商品标题（西语）">
-<input id="a-p" type="number" step="any" placeholder="价格 RD$（可留空）">
-<select id="a-c">{cat_opts}</select>
-<input id="a-f" type="file" accept="image/*">
-<div class="row">
-<button class="btn b-add" style="flex:1" onclick="add(this)">保存商品</button>
+<h3>＋ 添加新商品</h3>
+<div class="drop" id="drop">
+<input type="file" id="a-f" accept="image/*" hidden>
+<div class="drop-in" id="dropHint">
+<div style="font-size:30px">📷</div>
+<div style="font-weight:700;font-size:14px;margin-top:4px">点击或拖拽上传主图</div>
+<div style="font-size:12px;color:#8a93a2;margin-top:2px">jpg / png，建议白底方图</div>
+</div>
+<img id="dropPrev">
+</div>
+<div class="ferr" id="aErr"></div>
+<label class="flb">商品标题（西语，客户可见）*</label>
+<input id="a-t" placeholder="Ej: Espejo decorativo redondo 50cm">
+<label class="flb">中文名（只在后台和表格里，可选）</label>
+<input id="a-zh" placeholder="例如：圆形装饰镜 50cm">
+<div class="row2">
+<div><label class="flb">价格 RD$</label><input id="a-p" type="number" step="any" placeholder="留空 = Consultar"></div>
+<div><label class="flb">分类</label><select id="a-c">{cat_opts}</select></div>
+</div>
+<label class="flb">详情描述（西语，可选，留空自动用标题）</label>
+<textarea id="a-b" rows="4" placeholder="📦 Características:&#10;• 50cm&#10;• Marco dorado"></textarea>
+<div class="row" style="margin-top:6px">
+<button class="btn b-add" style="flex:1;padding:13px" onclick="add(this)">保存商品</button>
 <button class="btn" onclick="dlg.close()">取消</button>
 </div>
 </dialog>
@@ -338,11 +364,24 @@ function filt(){{
  document.querySelectorAll('.card').forEach(c=>{{const s=c.dataset.t.includes(q);c.style.display=s?'':'none';if(s)n++}});
  document.getElementById('cnt').textContent=n+' 个商品';
 }}
+// 记录初始值，保存时比对出改动
+const orig={{}};
+document.querySelectorAll('.card').forEach(c=>{{
+ orig[c.dataset.h]={{t:c.querySelector('.ti').value,p:c.querySelector('.pr').value,c:c.querySelector('.ca').value}};
+}});
 async function save(btn){{
- const c=btn.closest('.card');
- const fd=new URLSearchParams({{handle:c.dataset.h,title:c.querySelector('.ti').value,price:c.querySelector('.pr').value,type:c.querySelector('.ca').value}});
+ const c=btn.closest('.card'),h=c.dataset.h;
+ const t=c.querySelector('.ti').value,p=c.querySelector('.pr').value,ca=c.querySelector('.ca').value;
+ const o=orig[h]||{{}};
+ const changes=[];
+ if(t!==o.t)changes.push('标题: '+o.t+'\\n  → '+t);
+ if(p!==o.p)changes.push('价格: RD$ '+(o.p||'空')+' → RD$ '+(p||'空'));
+ if(ca!==o.c)changes.push('分类: '+o.c+' → '+ca);
+ if(!changes.length){{log('没有改动，无需保存');return}}
+ if(!confirm('确认保存以下修改？\\n\\n'+changes.join('\\n')))return;
+ const fd=new URLSearchParams({{handle:h,title:t,price:p,type:ca}});
  const r=await fetch('/update',{{method:'POST',body:fd}});
- if(r.ok){{btn.textContent='✓';btn.classList.add('ok');setTimeout(()=>{{btn.textContent='保存';btn.classList.remove('ok')}},1500)}}
+ if(r.ok){{orig[h]={{t:t,p:p,c:ca}};btn.textContent='✓ 已保存';btn.classList.add('ok');setTimeout(()=>{{btn.textContent='保存';btn.classList.remove('ok')}},1500)}}
  else log('保存失败: '+await r.text());
 }}
 async function del_(btn){{
@@ -358,6 +397,7 @@ async function openDesc(btn){{
  dlgDesc.showModal();
 }}
 async function saveDesc(btn){{
+ if(!confirm('确认保存详情描述？客户在商品页会看到新内容。'))return;
  const fd=new URLSearchParams({{handle:curH,body:document.getElementById('d-body').value}});
  const r=await fetch('/update',{{method:'POST',body:fd}});
  if(r.ok){{dlgDesc.close();log('详情已保存')}}else log('保存失败: '+await r.text());
@@ -392,18 +432,49 @@ async function upPhoto(btn){{
  if(r.ok){{document.getElementById('ph-f').value='';refreshPhotos()}}
  else log('上传失败: '+await r.text());
 }}
+// 添加商品：拖拽/点击传图 + 预览
+const drop=document.getElementById('drop'),fInput=document.getElementById('a-f'),
+      prev=document.getElementById('dropPrev'),hint=document.getElementById('dropHint');
+drop.onclick=()=>fInput.click();
+fInput.onchange=()=>showPrev(fInput.files[0]);
+['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{{ev.preventDefault();drop.classList.add('over')}}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{{ev.preventDefault();drop.classList.remove('over')}}));
+drop.addEventListener('drop',ev=>{{
+ const f=ev.dataTransfer.files[0];
+ if(f&&f.type.startsWith('image/')){{
+  const dt=new DataTransfer();dt.items.add(f);fInput.files=dt.files;showPrev(f);}}
+}});
+function showPrev(f){{
+ if(!f)return;
+ const rd=new FileReader();
+ rd.onload=e=>{{prev.src=e.target.result;prev.style.display='block';hint.style.display='none'}};
+ rd.readAsDataURL(f);
+}}
+function aerr(m){{
+ const d=document.getElementById('aErr');
+ if(!m){{d.style.display='none';return}}
+ d.textContent=m;d.style.display='block';d.scrollIntoView({{block:'nearest'}});
+}}
 async function add(btn){{
- const f=document.getElementById('a-f').files[0];
- if(!f){{alert('请选择商品图片');return}}
- if(!document.getElementById('a-t').value.trim()){{alert('请填写标题');return}}
- btn.disabled=true;btn.textContent='上传中…';
+ aerr('');
+ const f=fInput.files[0];
+ const t=document.getElementById('a-t').value.trim();
+ const p=document.getElementById('a-p').value.trim();
+ const c=document.getElementById('a-c').value;
+ if(!f){{aerr('还没有上传主图');return}}
+ if(!t){{aerr('请填写西语标题（客户看到的名字）');return}}
+ if(p&&(isNaN(p)||Number(p)<0)){{aerr('价格格式不对');return}}
+ if(!confirm('确认添加这个商品？\\n\\n'+t+'\\n价格: '+(p?'RD$ '+p:'Consultar（待定价）')+'\\n分类: '+c))return;
+ btn.disabled=true;btn.textContent='⏳ 上传中…';
  const fd=new FormData();
- fd.append('title',document.getElementById('a-t').value);
- fd.append('price',document.getElementById('a-p').value);
- fd.append('type',document.getElementById('a-c').value);
+ fd.append('title',t);
+ fd.append('price',p);
+ fd.append('type',c);
+ fd.append('zh',document.getElementById('a-zh').value);
+ fd.append('body',document.getElementById('a-b').value);
  fd.append('image',f);
  const r=await fetch('/add',{{method:'POST',body:fd}});
- if(r.ok)location.reload();else{{log('添加失败: '+await r.text());btn.disabled=false;btn.textContent='保存商品'}}
+ if(r.ok)location.reload();else{{aerr('添加失败: '+await r.text());btn.disabled=false;btn.textContent='保存商品'}}
 }}
 async function build(btn){{
  btn.disabled=true;btn.textContent='⏳ 构建中…';
@@ -525,7 +596,8 @@ class H(BaseHTTPRequestHandler):
                 ext = os.path.splitext(fn)[1].lower() or ".jpg"
                 if ext not in (".jpg", ".jpeg", ".png", ".webp"): ext = ".jpg"
                 h = add_product(fields.get("title", "").strip(), fields.get("price", "").strip(),
-                                fields.get("type", "").strip(), data, ext)
+                                fields.get("type", "").strip(), data, ext,
+                                body=fields.get("body", ""), zh=fields.get("zh", ""))
                 return self.send(200, h)
             if p == "/build":
                 r = subprocess.run([sys.executable, "build.py"],
