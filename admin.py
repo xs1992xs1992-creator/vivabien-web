@@ -44,8 +44,14 @@ def worker_call(path, method="GET", payload=None):
         return None, "未配置 Worker 密钥（worker_admin_key.txt 为空，且未部署 Worker）"
     url = WORKER_API + "/api/admin/" + path.lstrip("/")
     data = json.dumps(payload).encode() if payload is not None else None
-    req = urllib.request.Request(url, data=data, method=method,
-        headers={"X-Admin-Key": WORKER_KEY, "Content-Type": "application/json"})
+    req = urllib.request.Request(url, data=data, method=method, headers={
+        "X-Admin-Key": WORKER_KEY, "Content-Type": "application/json",
+        # 伪装成浏览器，避开 Cloudflare 机器人防护（否则 Python 请求会被 403 拦下）
+        "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"),
+        "Accept": "application/json,text/plain,*/*",
+        "Accept-Language": "es,en;q=0.9",
+    })
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
             return json.loads(r.read().decode() or "{}"), None
