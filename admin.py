@@ -10,9 +10,10 @@ VivaBien 本地商品管理后台
 """
 import csv, os, io, re, sys, json, html, uuid, shutil, subprocess, threading, webbrowser
 import hmac, hashlib, secrets, time
+import urllib.request, urllib.error
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
-from urllib.parse import parse_qs, unquote
+from urllib.parse import parse_qs, unquote, quote
 
 PORT     = 8765
 CSV_PATH = "data/products.csv"
@@ -23,6 +24,36 @@ UPSTREAM_DIR = os.environ.get("VIVABIEN_UPSTREAM",
                               os.path.expanduser("~/Downloads/VivaBien/output"))
 UPSTREAM_CSV = os.path.join(UPSTREAM_DIR, "products.csv")
 REVIEW_URL   = "https://review.vivabien.xyz"
+
+# ---------- 边缘后端（Worker + D1）：短链 / 埋点 / 优惠券 ----------
+# 后台通过共享密钥调 Worker 的 /api/admin/*。密钥要和 Worker 的 secret ADMIN_KEY 一致。
+# 密钥存 worker_admin_key.txt（已加 .gitignore，不上传）。改密钥=编辑该文件+重启。
+WORKER_API   = os.environ.get("VIVABIEN_WORKER", "https://vivabien.xyz")
+SITE_URL     = "https://vivabien.xyz"
+WKEY_FILE    = "worker_admin_key.txt"
+def _load_worker_key():
+    if os.path.isfile(WKEY_FILE):
+        k = open(WKEY_FILE, encoding="utf-8").read().strip()
+        if k: return k
+    return ""
+WORKER_KEY = _load_worker_key()
+
+def worker_call(path, method="GET", payload=None):
+    """调 Worker /api/admin/<path>。返回 (dict, error_str)。"""
+    if not WORKER_KEY:
+        return None, "未配置 Worker 密钥（worker_admin_key.txt 为空，且未部署 Worker）"
+    url = WORKER_API + "/api/admin/" + path.lstrip("/")
+    data = json.dumps(payload).encode() if payload is not None else None
+    req = urllib.request.Request(url, data=data, method=method,
+        headers={"X-Admin-Key": WORKER_KEY, "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return json.loads(r.read().decode() or "{}"), None
+    except urllib.error.HTTPError as e:
+        try:    return json.loads(e.read().decode()), f"HTTP {e.code}"
+        except Exception: return None, f"HTTP {e.code}"
+    except Exception as e:
+        return None, f"连接后端失败：{e}"
 
 # ---------- 登录密码 ----------
 # 密码存在 admin_password.txt（已加入 .gitignore，不会上传）。
@@ -341,6 +372,203 @@ def parse_multipart(body, boundary):
 # ---------- 页面 ----------
 def esc(s): return html.escape(str(s), quote=True)
 
+# ===== 短链 / 优惠券 / 数据 三页（共用外壳）=====
+SUB_CSS = """
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;color:#16202E}
+.nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #EEF1F6;padding:12px 18px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;z-index:10}
+.nav b{font-size:16px;margin-right:10px}
+.nav a{color:#5a6577;text-decoration:none;font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:99px}
+.nav a.on{background:#2563D9;color:#fff}
+.pg{max-width:920px;margin:0 auto;padding:20px 18px 60px}
+.pg h1{font-size:22px;margin-bottom:16px;letter-spacing:-.02em}
+.pg h1 .sub{font-size:13px;color:#8a93a2;font-weight:600}
+.cardp{background:#fff;border:1px solid #EDF1F7;border-radius:18px;padding:18px;margin-bottom:20px}
+.frm label{display:block;font-weight:700;font-size:12.5px;color:#5a6577;margin:12px 0 6px 2px}
+.frm label:first-child{margin-top:0}
+.frm input,.frm select{width:100%;border:1.5px solid #E5EAF2;border-radius:12px;padding:11px 13px;font-size:14px;font-family:inherit;background:#fff}
+.frm input:focus,.frm select:focus{outline:none;border-color:#2563D9}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg,.seg2{display:flex;gap:10px;align-items:center}
+.seg label{display:flex;align-items:center;gap:6px;font-weight:700;font-size:13.5px;margin:0}
+.seg2 input{flex:1}.seg2 select{width:auto}
+.pri{width:100%;background:#2563D9;color:#fff;border:0;border-radius:13px;padding:13px;font-weight:800;font-size:15px;cursor:pointer;margin-top:16px}
+#mkOut{margin-top:12px;font-size:13.5px;font-weight:700;word-break:break-all}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #EDF1F7;border-radius:14px;overflow:hidden;font-size:13px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #F1F4F9}
+th{background:#F7F9FD;font-size:12px;color:#5a6577}
+td.n{text-align:right;font-weight:800}
+td code{background:#EAF0FB;color:#2563D9;font-weight:800;padding:2px 8px;border-radius:6px}
+td.u a{color:#2563D9;text-decoration:none}
+.cp{background:#F1F5FB;color:#2563D9;border:0;border-radius:8px;padding:5px 10px;font-weight:700;font-size:12px;cursor:pointer;margin-left:6px}
+.empty{text-align:center;color:#9aa3b2;padding:26px}
+.tag{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px}
+.tag.on{background:#E4F6EC;color:#157A4E}.tag.off{background:#F1F4F9;color:#8a93a2}
+.warn{background:#FFF6E5;color:#8a6d1f;border:1px solid #F3E2B5;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:600;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid #EDF1F7;border-radius:16px;padding:18px}
+.stat .v{font-size:28px;font-weight:800;color:#2563D9}
+.stat .l{font-size:12.5px;color:#5a6577;font-weight:600;margin-top:4px}
+.tls{margin-top:14px;display:flex;flex-direction:column;gap:2px}
+.tle{display:flex;align-items:center;gap:8px;font-size:13px;padding:8px 0;border-bottom:1px solid #F1F4F9}
+.tle time{margin-left:auto;color:#9aa3b2;font-size:11.5px}
+.tle code{background:#EAF0FB;color:#2563D9;padding:1px 6px;border-radius:5px;font-size:11.5px}
+.tle i{color:#8a93a2;font-style:normal;font-size:11.5px}
+"""
+
+def nav(active=""):
+    def c(k): return "on" if k == active else ""
+    return (f'<div class="nav"><b>🛠️ VivaBien</b>'
+            f'<a class="{c("prod")}" href="/">商品</a>'
+            f'<a class="{c("links")}" href="/links">🔗 短链</a>'
+            f'<a class="{c("coupons")}" href="/coupons">🎟️ 优惠券</a>'
+            f'<a class="{c("stats")}" href="/stats">📊 数据</a></div>')
+
+def sub_shell(title, active, inner):
+    return (f'<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
+            f'<meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>{esc(title)} — VivaBien</title><style>{SUB_CSS}</style></head><body>'
+            f'{nav(active)}<div class="pg">{inner}</div></body></html>')
+
+_LINKS_JS = """<script>
+function cp(t){navigator.clipboard.writeText(t);}
+function mk(){
+ var tgt=document.getElementById('tgtCustom').value.trim()||document.getElementById('tgt').value;
+ var note=document.getElementById('note').value.trim();
+ var out=document.getElementById('mkOut');out.textContent='生成中…';
+ fetch('/link_create',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({target:tgt||'/',note:note})}).then(function(r){return r.json()}).then(function(d){
+  if(d.url){out.innerHTML='✅ '+d.url+' <button class="cp" onclick="cp(\\''+d.url+'\\')">复制</button>';
+   setTimeout(function(){location.reload()},1000);}
+  else{out.textContent='❌ '+(d.error||'失败');}
+ }).catch(function(){out.textContent='❌ 网络错误';});
+}
+</script>"""
+
+_COUPONS_JS = """<script>
+function kUI(){var k=document.querySelector('input[name=kind]:checked').value;
+ document.getElementById('valLbl').textContent=k==='percent'?'折扣百分比（1–100）':'折扣金额 RD$';}
+function mk(){
+ var kind=document.querySelector('input[name=kind]:checked').value;
+ var val=parseFloat(document.getElementById('val').value);
+ if(!(val>0)){document.getElementById('mkOut').textContent='❌ 请输入有效面值';return;}
+ var days=parseInt(document.getElementById('days').value)||0;
+ var body={kind:kind,value:val,
+  min_order:parseFloat(document.getElementById('minv').value)||0,
+  max_uses:parseInt(document.getElementById('maxu').value)||0,
+  expires_at:days>0?Date.now()+days*86400000:0};
+ var out=document.getElementById('mkOut');out.textContent='生成中…';
+ fetch('/coupon_create',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(d){
+  if(d.code){out.innerHTML='✅ 券码 <b>'+d.code+'</b> <button class="cp" onclick="cp(\\''+d.code+'\\')">复制</button>';
+   setTimeout(function(){location.reload()},1200);}
+  else{out.textContent='❌ '+(d.error||'失败');}
+ }).catch(function(){out.textContent='❌ 网络错误';});
+}
+function cp(t){navigator.clipboard.writeText(t);}
+function tog(code){fetch('/coupon_toggle',{method:'POST',headers:{'Content-Type':'application/json'},
+ body:JSON.stringify({code:code})}).then(function(){location.reload()});}
+</script>"""
+
+_STATS_JS = """<script>
+function look(){
+ var v=document.getElementById('q').value.trim(),t=document.getElementById('qt').value;
+ if(!v)return;var tl=document.getElementById('tl');tl.textContent='查询中…';
+ fetch('/api_timeline?'+t+'='+encodeURIComponent(v)).then(function(r){return r.json()}).then(function(d){
+  if(!d.events||!d.events.length){tl.textContent='无记录';return;}
+  var m={click:'🔗 点击短链',view:'👁️ 浏览',addcart:'🛒 加购',checkout:'✅ 进入结算'};
+  tl.innerHTML='<div class="tls">'+d.events.map(function(e){
+   return '<div class="tle"><span>'+(m[e.type]||e.type)+'</span>'
+    +(e.sku?' <code>'+e.sku+'</code>':'')+(e.code?' <i>'+e.code+'</i>':'')
+    +'<time>'+new Date(e.ts).toLocaleString()+'</time></div>';}).join('')+'</div>';
+ }).catch(function(){tl.textContent='查询失败';});
+}
+</script>"""
+
+def _warn(err):
+    return f'<div class="warn">⚠️ {esc(err)}（部署 Worker 后即可用）</div>' if err else ""
+
+def links_page():
+    data, err = worker_call("links")
+    prods = products()
+    opts = "".join(f'<option value="producto/{esc(p["handle"])}.html">{esc(p["title"][:44])}</option>'
+                   for p in prods)
+    rows = ""
+    for l in (data or {}).get("links", []):
+        url = f'{SITE_URL}/s/{l["code"]}'
+        rows += (f'<tr><td><code>{esc(l["code"])}</code></td>'
+                 f'<td class="u"><a href="{esc(url)}" target="_blank">{esc(url)}</a>'
+                 f'<button class="cp" onclick="cp(\'{esc(url)}\')">复制</button></td>'
+                 f'<td>{esc(l.get("note",""))}</td>'
+                 f'<td class="n">{l.get("clicks",0)}</td>'
+                 f'<td class="n">{l.get("visitors",0)}</td>'
+                 f'<td class="n">{l.get("addcarts",0)}</td></tr>')
+    inner = (f'{_warn(err)}<h1>🔗 短链接</h1>'
+             '<div class="cardp"><div class="frm">'
+             '<label>目标商品</label>'
+             f'<select id="tgt"><option value="/">— 首页 —</option>{opts}</select>'
+             '<label>或自定义目标（相对路径 / 完整 URL）</label>'
+             '<input id="tgtCustom" placeholder="producto/xxx.html 或 https://...">'
+             '<label>备注（发给谁）</label>'
+             '<input id="note" placeholder="例：客户A 微信">'
+             '<button class="pri" onclick="mk()">生成短链</button>'
+             '<div id="mkOut"></div></div></div>'
+             '<table><thead><tr><th>短码</th><th>链接</th><th>备注</th>'
+             '<th>点击</th><th>访客</th><th>加购</th></tr></thead><tbody>'
+             + (rows or '<tr><td colspan="6" class="empty">还没有短链</td></tr>')
+             + '</tbody></table>' + _LINKS_JS)
+    return sub_shell("短链接", "links", inner)
+
+def coupons_page():
+    data, err = worker_call("coupons")
+    rows = ""
+    for c in (data or {}).get("coupons", []):
+        val = f'{c["value"]:g}%' if c["kind"] == "percent" else f'RD$ {c["value"]:,.0f}'
+        act = bool(c.get("active"))
+        rows += (f'<tr><td><code>{esc(c["code"])}</code></td><td>{val}</td>'
+                 f'<td>{"百分比" if c["kind"]=="percent" else "固定金额"}</td>'
+                 f'<td class="n">{c.get("used_count",0)}</td>'
+                 f'<td><span class="tag {"on" if act else "off"}">{"启用" if act else "停用"}</span></td>'
+                 f'<td><button class="cp" onclick="tog(\'{esc(c["code"])}\')">{"停用" if act else "启用"}</button></td></tr>')
+    inner = (f'{_warn(err)}<h1>🎟️ 优惠券</h1>'
+             '<div class="cardp"><div class="frm">'
+             '<label>折扣方式</label>'
+             '<div class="seg"><label><input type="radio" name="kind" value="percent" checked onchange="kUI()"> 百分比 %</label>'
+             '<label><input type="radio" name="kind" value="amount" onchange="kUI()"> 固定金额 RD$</label></div>'
+             '<label id="valLbl">折扣百分比（1–100）</label>'
+             '<input id="val" type="number" step="any" placeholder="例：10">'
+             '<div class="row2">'
+             '<div><label>最低订单额（可选）</label><input id="minv" type="number" step="any" placeholder="0=无门槛"></div>'
+             '<div><label>使用次数上限（可选）</label><input id="maxu" type="number" step="1" placeholder="0=不限"></div></div>'
+             '<label>有效天数（可选，留空=永久）</label>'
+             '<input id="days" type="number" step="1" placeholder="例：30">'
+             '<button class="pri" onclick="mk()">随机生成券码</button>'
+             '<div id="mkOut"></div></div></div>'
+             '<table><thead><tr><th>券码</th><th>面值</th><th>方式</th><th>已用</th><th>状态</th><th></th></tr></thead><tbody>'
+             + (rows or '<tr><td colspan="6" class="empty">还没有优惠券</td></tr>')
+             + '</tbody></table>' + _COUPONS_JS)
+    return sub_shell("优惠券", "coupons", inner)
+
+def stats_page():
+    data, err = worker_call("overview")
+    d = data or {}
+    def card(v, l): return f'<div class="stat"><div class="v">{v}</div><div class="l">{l}</div></div>'
+    inner = (f'{_warn(err)}<h1>📊 访问数据 <span class="sub">近30天</span></h1>'
+             '<div class="stats">'
+             + card(d.get("clicks30", 0), "短链点击")
+             + card(d.get("visitors30", 0), "独立访客")
+             + card(d.get("addcarts30", 0), "加购次数")
+             + card(d.get("links", 0), "短链总数")
+             + card(d.get("active_coupons", 0), "启用中的券")
+             + '</div>'
+             '<div class="cardp"><div class="frm">'
+             '<label>查访客足迹（按短码看这条链接的全部事件，或按访客ID看单人时间线）</label>'
+             '<div class="seg2"><input id="q" placeholder="短码 或 访客ID">'
+             '<select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select>'
+             '<button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div>'
+             '<div id="tl"></div></div></div>' + _STATS_JS)
+    return sub_shell("访问数据", "stats", inner)
+
 def page_html():
     prods = products()
     cats = sorted({p["type"] for p in prods if p["type"].strip()})
@@ -417,6 +645,9 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <input id="q" placeholder="搜索商品…" oninput="filt()">
 <button class="btn b-add" onclick="dlg.showModal()">＋ 添加商品</button>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/import">📥 流水线导入</a>
+<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/links">🔗 短链</a>
+<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/coupons">🎟️ 优惠券</a>
+<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/stats">📊 数据</a>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button class="btn b-build" onclick="build(this)">🔄 构建预览</button>
 <button class="btn b-pub" onclick="publish(this)">🚀 发布上线</button>
@@ -728,6 +959,18 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, LOGIN_HTML.replace("__ERR__", ""))
         if p == "/":
             return self.send(200, page_html())
+        if p == "/links":
+            return self.send(200, links_page())
+        if p == "/coupons":
+            return self.send(200, coupons_page())
+        if p == "/stats":
+            return self.send(200, stats_page())
+        if p == "/api_timeline":
+            code = qs.get("code", [""])[0]
+            vid = qs.get("vid", [""])[0]
+            path = f"timeline?vid={quote(vid)}" if vid else f"timeline?code={quote(code)}"
+            data, err = worker_call(path)
+            return self.send(200, json.dumps(data or {"error": err}), "application/json")
         if p == "/import":
             return self.send(200, import_page())
         if p.startswith("/upimg/"):
@@ -823,6 +1066,18 @@ class H(BaseHTTPRequestHandler):
                 if not skus:
                     return self.send(400, "没有选择商品")
                 return self.send(200, do_import(skus))
+            if p == "/link_create":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("link/create", "POST", payload)
+                return self.send(200, json.dumps(data or {"error": err}), "application/json")
+            if p == "/coupon_create":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("coupon/create", "POST", payload)
+                return self.send(200, json.dumps(data or {"error": err}), "application/json")
+            if p == "/coupon_toggle":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("coupon/toggle", "POST", payload)
+                return self.send(200, json.dumps(data or {"error": err}), "application/json")
             if p == "/build":
                 r = subprocess.run([sys.executable, "build.py"],
                                    capture_output=True, text=True, timeout=300)

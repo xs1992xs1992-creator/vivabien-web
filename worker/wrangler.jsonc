@@ -1,0 +1,27 @@
+{
+  // VivaBien 边缘后端 Worker（短链/埋点/优惠券）——与站点静态 wrangler.jsonc 分开部署
+  // 部署：cd worker && npx wrangler deploy
+  // 首次需先建库并绑定（见 README.md）
+  "name": "vivabien-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-06",
+
+  // D1 数据库绑定（database_id 用 `wrangler d1 create vivabien-data` 生成后填入）
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "vivabien-data",
+      "database_id": "00a9be4e-af9a-4e58-a1cb-4af9b1d1b772"
+    }
+  ],
+
+  // 同域路由：/s/* 短链跳转、/api/* 接口（含 /api/admin/* 受保护接口）交给本 Worker，
+  // 其余路径仍走 Pages 静态资源。zone 需为 vivabien.xyz。
+  "routes": [
+    { "pattern": "vivabien.xyz/s/*",   "zone_name": "vivabien.xyz" },
+    { "pattern": "vivabien.xyz/api/*", "zone_name": "vivabien.xyz" }
+  ]
+
+  // ADMIN_KEY 用密钥注入，勿写进配置：
+  //   cd worker && npx wrangler secret put ADMIN_KEY
+}

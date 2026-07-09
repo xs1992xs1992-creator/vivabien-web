@@ -5,13 +5,14 @@ VivaBien 静态站构建脚本
 读取 data/products.csv → 生成 dist/ 整站（首页 + 商品详情页 + 购物车结算页）
 用法: python3 build.py
 """
-import csv, os, re, html, shutil, unicodedata
+import csv, os, re, html, json, shutil, unicodedata
 
 # ============ 配置区（只需要改这里）============
 WHATSAPP   = "18092811992"          # WhatsApp 号码（国家码+号码，不带+号）
 PIXEL_ID   = "882086747967886"      # Meta Pixel
 SITE_NAME  = "VivaBien"             # 品牌名
 SITE_URL   = "https://vivabien.xyz" # 你的域名
+API_BASE   = "https://vivabien.xyz" # 边缘后端（Worker）同域：/s/* 短链、/api/* 埋点/优惠券
 CSV_PATH   = "data/products.csv"
 IMG_DIR    = "images"               # 商品图片文件夹（VBxxxx.jpg 都放这里）
 OUT_DIR    = "dist"
@@ -341,6 +342,14 @@ footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 0 34px}
 /* totals */
 .tot .ln{display:flex;justify-content:space-between;font-size:13.5px;color:#5a6577;font-weight:600;padding:4px 0}
 .tot .ln b{color:#16202E}
+.tot .ln.disc b{color:#0FA958}
+.cpn{display:flex;gap:8px;margin:2px 0 10px}
+.cpn input{flex:1;border:1.5px solid #E5EAF2;border-radius:12px;padding:11px 13px;font-size:13.5px;font-family:inherit;text-transform:uppercase}
+.cpn input:focus{outline:none;border-color:#2563D9}
+.cpn button{flex:none;background:#EAF0FB;color:#2563D9;font-weight:800;font-size:13.5px;border:0;border-radius:12px;padding:0 16px;cursor:pointer}
+.cpn button:disabled{opacity:.5;cursor:default}
+.cpn-msg{font-size:12px;font-weight:700;margin:-4px 0 8px;min-height:15px}
+.cpn-msg.ok{color:#0FA958}.cpn-msg.err{color:#FF6B4A}
 .tot .gt{display:flex;justify-content:space-between;font-weight:800;font-size:19px;border-top:1px solid #F1F4F9;margin-top:8px;padding-top:12px}
 .btn-conf{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:#FF6B4A;color:#fff;font-weight:800;font-size:16px;height:54px;border-radius:16px;border:0;cursor:pointer;margin-top:6px}
 .btn-conf:disabled{opacity:.5}
@@ -361,7 +370,17 @@ function vbBadge(){var n=vbCart().reduce(function(a,b){return a+b.qty},0);
 document.addEventListener('DOMContentLoaded',vbBadge);
 </script>"""
 
-def page(title, body, pixel_extra="", desc=""):
+# 自有埋点：把访客行为回传边缘后端 D1（vb_vid cookie 由 /s/:code 或本请求种下）
+# vbTrack(type, sku)  type: view | addcart | checkout
+TRACK_JS = ("<script>window.vbTrack=function(t,s,x){try{var b={type:t,sku:s||''};"
+            "if(x)for(var k in x)b[k]=x[k];"
+            "fetch('__API__/api/track',{method:'POST',credentials:'include',keepalive:true,"
+            "headers:{'Content-Type':'application/json'},"
+            "body:JSON.stringify(b)}).catch(function(){})}catch(e){}};</script>"
+            ).replace("__API__", API_BASE)
+
+def page(title, body, pixel_extra="", desc="", track_sku=None):
+    view_js = f"<script>vbTrack('view',{json.dumps(track_sku)})</script>" if track_sku else ""
     return f"""<!DOCTYPE html>
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -371,8 +390,10 @@ def page(title, body, pixel_extra="", desc=""):
 <style>{CSS}</style>
 {pixel(pixel_extra)}
 {CART_JS}
+{TRACK_JS}
 </head><body>
 {body}
+{view_js}
 <footer>© {SITE_NAME} · Envíos en toda República Dominicana · Pago contra entrega</footer>
 </body></html>"""
 
@@ -420,6 +441,9 @@ __BANKS__
 
 <div class="box tot" id="totBox">
 <div class="ln">Subtotal <b id="tSub">RD$ 0</b></div>
+<div class="cpn"><input id="cpnCode" placeholder="Código de descuento" autocapitalize="characters" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon()}"><button id="cpnBtn" type="button" onclick="applyCoupon()">Aplicar</button></div>
+<div class="cpn-msg" id="cpnMsg"></div>
+<div class="ln disc" id="discLn" style="display:none">Descuento (<span id="discCode"></span>) <b id="tDisc">- RD$ 0</b></div>
 <div class="ln">Envío <b>Se confirma por WhatsApp</b></div>
 <div class="gt">Total <span id="tTot">RD$ 0</span></div>
 <button class="btn-conf" id="btnConf" onclick="confirmar()">🛡️ Confirmar pedido</button>
@@ -436,21 +460,58 @@ __BANKS__
 
 <script>
 var WA='__WA__';
+var COUPON=null; // {code,kind,value} —— 已应用的优惠券
 function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
+function subtotal(){return vbCart().reduce(function(a,it){return a+it.price*it.qty},0)}
+function calcDiscount(sub){
+ if(!COUPON)return 0;
+ var d=COUPON.kind==='percent'?sub*COUPON.value/100:COUPON.value;
+ return Math.min(d,sub);
+}
+function paintTotals(){
+ var sub=subtotal(),disc=calcDiscount(sub),tot=sub-disc;
+ document.getElementById('tSub').textContent=money(sub);
+ var dl=document.getElementById('discLn');
+ if(disc>0){dl.style.display='flex';
+  document.getElementById('tDisc').textContent='- '+money(disc);
+  document.getElementById('discCode').textContent=COUPON.code;
+ }else{dl.style.display='none';}
+ document.getElementById('tTot').textContent=money(tot);
+ document.getElementById('btnConf').textContent='🛡️ Confirmar pedido · '+money(tot);
+}
+function applyCoupon(){
+ var code=document.getElementById('cpnCode').value.trim().toUpperCase();
+ var msg=document.getElementById('cpnMsg'),btn=document.getElementById('cpnBtn');
+ if(!code){msg.className='cpn-msg err';msg.textContent='Escribe un código.';return;}
+ btn.disabled=true;btn.textContent='...';
+ fetch('__API__/api/coupon/validate',{method:'POST',credentials:'include',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({code:code,subtotal:subtotal()})})
+ .then(function(r){return r.json()}).then(function(d){
+  btn.disabled=false;btn.textContent='Aplicar';
+  if(d.valid){COUPON={code:d.code,kind:d.kind,value:d.value};
+   msg.className='cpn-msg ok';
+   msg.textContent='✓ Cupón aplicado'+(d.kind==='percent'?' ('+d.value+'% OFF)':' (- '+money(d.value)+')');
+  }else{COUPON=null;
+   var m={min_order:'No alcanza el mínimo para este cupón',expired:'Cupón vencido',
+    used_up:'Cupón agotado',invalid:'Código inválido',empty:'Escribe un código'};
+   msg.className='cpn-msg err';msg.textContent=m[d.reason]||'Código inválido';}
+  paintTotals();
+ }).catch(function(){btn.disabled=false;btn.textContent='Aplicar';
+  msg.className='cpn-msg err';msg.textContent='Error, intenta de nuevo.';});
+}
 function render(){
- var c=vbCart(),box=document.getElementById('items'),sub=0;
+ var c=vbCart(),box=document.getElementById('items');
  if(!c.length){
   document.getElementById('itemsBox').innerHTML='<div class="empty">Tu carrito está vacío.<br><br><a href="index.html">← Ver productos</a></div>';
   ['formBox','payBox','totBox'].forEach(function(i){document.getElementById(i).style.display='none'});
   return;}
- box.innerHTML=c.map(function(it,i){sub+=it.price*it.qty;
+ box.innerHTML=c.map(function(it,i){
   return '<div class="ci"><img src="images/'+it.img+'" onerror="this.style.opacity=0">'
   +'<div class="t"><div class="nm">'+it.title+'</div><div class="pr">'+money(it.price)+'</div>'
   +'<div class="qty"><button onclick="qty('+i+',-1)">−</button><span>'+it.qty+'</span><button onclick="qty('+i+',1)">+</button></div></div>'
   +'<button class="rm" onclick="rm('+i+')">✕</button></div>';}).join('');
- document.getElementById('tSub').textContent=money(sub);
- document.getElementById('tTot').textContent=money(sub);
- document.getElementById('btnConf').textContent='🛡️ Confirmar pedido · '+money(sub);
+ paintTotals();
 }
 function qty(i,d){var c=vbCart();c[i].qty+=d;if(c[i].qty<1)c[i].qty=1;vbSave(c);render()}
 function rm(i){var c=vbCart();c.splice(i,1);vbSave(c);render()}
@@ -471,13 +532,16 @@ function confirmar(){
  var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
  var sub=0,lines=c.map(function(it){sub+=it.price*it.qty;
    return it.qty+'x '+it.title+' ('+it.sku+') — '+money(it.price*it.qty)});
+ var disc=calcDiscount(sub),tot=sub-disc;
  var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
-  +'\\n*Total: '+money(sub)+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+dir
+  +(disc>0?'\\n——\\nSubtotal: '+money(sub)+'\\n🏷️ Cupón '+COUPON.code+': - '+money(disc):'')
+  +'\\n*Total: '+money(tot)+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+dir
   +(nota?'\\n📝 '+nota:'')
   +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
  fbq('track','Contact');
- try{fbq('track','InitiateCheckout',{value:sub,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
+ try{fbq('track','InitiateCheckout',{value:tot,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
+ vbTrack('checkout','',{code:COUPON?COUPON.code:''});
  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
  localStorage.removeItem('vb_cart');vbBadge();
  document.getElementById('okId').textContent=oid;
@@ -487,7 +551,8 @@ function confirmar(){
 }
 render();payUI();
 </script>"""
-    body = body.replace("__BANKS__", banks_html).replace("__WA__", WHATSAPP).replace("__BANKLINES__", bank_lines)
+    body = (body.replace("__BANKS__", banks_html).replace("__WA__", WHATSAPP)
+                .replace("__BANKLINES__", bank_lines).replace("__API__", API_BASE))
     return page(f"Tu compra — {SITE_NAME}", body,
                 pixel_extra="fbq('track','InitiateCheckout');",
                 desc="Carrito de compras VivaBien — pago contra entrega o transferencia.")
@@ -639,6 +704,7 @@ function addCart(b){
  vbSave(c);
  fbq('track','AddToCart',{content_ids:[sku],content_type:'product',
   value:parseFloat(b.dataset.price),currency:'DOP'});
+ vbTrack('addcart',sku);
  b.classList.add('added');b.innerHTML='✓ Agregado — Ver carrito';
  b.onclick=function(){location.href='../carrito.html'};
 }
@@ -683,7 +749,8 @@ function addCart(b){
 {recs_html}
 {add_js}"""
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
-            f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve, desc=p["body"][:150]))
+            f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve,
+                         desc=p["body"][:150], track_sku=p["sku"]))
 
     # ---- 分类统计 ----
     print(f"✅ 构建完成: {len(products)} 个商品 → {OUT_DIR}/")
