@@ -9,7 +9,7 @@ VivaBien 本地商品管理后台
 数据直接读写 data/products.csv，与 build.py 共用同一数据源
 """
 import csv, os, io, re, sys, json, html, uuid, shutil, subprocess, threading, webbrowser
-import hmac, hashlib, secrets, time
+import hmac, hashlib, secrets, time, unicodedata
 import urllib.request, urllib.error
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
@@ -428,7 +428,8 @@ def nav(active=""):
             f'<a class="{c("prod")}" href="/">商品</a>'
             f'<a class="{c("links")}" href="/links">🔗 短链</a>'
             f'<a class="{c("coupons")}" href="/coupons">🎟️ 优惠券</a>'
-            f'<a class="{c("stats")}" href="/stats">📊 数据</a></div>')
+            f'<a class="{c("stats")}" href="/stats">📊 数据</a>'
+            f'<a class="{c("coll")}" href="/colecciones">🪴 专题</a></div>')
 
 def sub_shell(title, active, inner):
     return (f'<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">'
@@ -575,6 +576,120 @@ def stats_page():
              '<div id="tl"></div></div></div>' + _STATS_JS)
     return sub_shell("访问数据", "stats", inner)
 
+# ===== 专题合集管理 =====
+COLLECTIONS_PATH = "data/collections.json"
+
+def _snorm(s):
+    s = unicodedata.normalize("NFD", str(s).lower())
+    return "".join(c for c in s if unicodedata.category(c) != "Mn")
+
+def load_collections():
+    if os.path.isfile(COLLECTIONS_PATH):
+        try:
+            with open(COLLECTIONS_PATH, encoding="utf-8") as f:
+                d = json.load(f)
+            return d if isinstance(d, list) else []
+        except Exception:
+            return []
+    return []
+
+def save_collections(data):
+    os.makedirs(os.path.dirname(COLLECTIONS_PATH), exist_ok=True)
+    with open(COLLECTIONS_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def coll_slugify(s):
+    s = unicodedata.normalize("NFD", str(s)).encode("ascii", "ignore").decode()
+    s = re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
+    return s or "coleccion"
+
+_COLL_JS = """<script>
+var COLLS=__COLLS__, PRODS=__PRODS__, picked={}, editSlug='';
+function esc(s){return (s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}
+function renderPicker(){
+ var q=(document.getElementById('pq').value||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
+ var box=document.getElementById('picker'),n=0,html='';
+ for(var i=0;i<PRODS.length;i++){var p=PRODS[i];
+  if(q&&p.q.indexOf(q)<0)continue; n++; if(n>300){html+='<div class=\"pmore\">…escribe para filtrar más</div>';break;}
+  html+='<label class=\"prow\"><input type=\"checkbox\" '+(picked[p.sku]?'checked':'')+' onchange=\"picked[\\''+p.sku+'\\']=this.checked;cnt()\">'
+   +'<img src=\"/images/'+esc(p.img)+'\" onerror=\"this.style.visibility=\\'hidden\\'\"><span>'+esc(p.t)+'</span></label>';}
+ box.innerHTML=html; cnt();
+}
+function cnt(){var k=Object.keys(picked).filter(function(s){return picked[s]});document.getElementById('pcnt').textContent=k.length;}
+function newColl(){editSlug='';picked={};document.getElementById('cTitle').value='';document.getElementById('cSub').value='';
+ document.getElementById('cActive').checked=true;document.getElementById('cOrder').value=0;
+ document.getElementById('edTitle').textContent='＋ Nuevo tema';renderPicker();window.scrollTo(0,document.body.scrollHeight);}
+function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};
+ (c.skus||[]).forEach(function(s){picked[s]=true});
+ document.getElementById('cTitle').value=c.title||'';document.getElementById('cSub').value=c.subtitle||'';
+ document.getElementById('cActive').checked=c.active!==false;document.getElementById('cOrder').value=c.order||0;
+ document.getElementById('edTitle').textContent='✏️ Editar: '+(c.title||'');renderPicker();window.scrollTo(0,document.body.scrollHeight);}
+function save(){var skus=Object.keys(picked).filter(function(s){return picked[s]});
+ var title=document.getElementById('cTitle').value.trim();
+ if(!title){alert('Pon un nombre al tema');return;}
+ if(!skus.length){alert('Elige al menos un producto');return;}
+ var body={slug:editSlug,title:title,subtitle:document.getElementById('cSub').value.trim(),
+  active:document.getElementById('cActive').checked,order:parseInt(document.getElementById('cOrder').value)||0,skus:skus};
+ fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(function(r){return r.json()}).then(function(d){if(d.ok)location.reload();else alert(d.error||'Error')});
+}
+function toggle(slug){fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},
+ body:JSON.stringify({slug:slug,toggle:true})}).then(function(){location.reload()})}
+function del_(slug){if(!confirm('¿Borrar este tema? (no borra los productos)'))return;
+ fetch('/coleccion_del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug})}).then(function(){location.reload()})}
+renderPicker();
+</script>"""
+
+def colecciones_page():
+    colls = load_collections()
+    prods = products()
+    rows = ""
+    for c in colls:
+        nskus = len(c.get("skus", []))
+        act = c.get("active") is not False
+        rows += (f'<tr><td><b>{esc(c.get("title",""))}</b><div class="slug">/coleccion/{esc(c.get("slug",""))}</div></td>'
+                 f'<td class="n">{nskus}</td><td class="n">{c.get("order",0)}</td>'
+                 f'<td><span class="tag {"on" if act else "off"}">{"上架" if act else "下架"}</span></td>'
+                 f'<td class="acts"><button class="cp" onclick="edit(\'{esc(c.get("slug",""))}\')">编辑</button>'
+                 f'<button class="cp" onclick="toggle(\'{esc(c.get("slug",""))}\')">{"下架" if act else "上架"}</button>'
+                 f'<button class="cp del" onclick="del_(\'{esc(c.get("slug",""))}\')">删除</button></td></tr>')
+    prods_json = json.dumps([
+        {"sku": p["sku"], "t": p["title"], "img": p["img"],
+         "q": _snorm(p["title"] + " " + p.get("type", ""))} for p in prods if p["sku"]],
+        ensure_ascii=False)
+    colls_json = json.dumps(colls, ensure_ascii=False)
+    inner = (
+        '<h1>🪴 专题合集 <span class="sub">首页突出入口 + 专属专题页</span></h1>'
+        '<div style="margin-bottom:14px"><button class="pri" style="width:auto;margin:0" onclick="newColl()">＋ 新建专题</button></div>'
+        '<table><thead><tr><th>专题</th><th>商品数</th><th>排序</th><th>状态</th><th></th></tr></thead><tbody>'
+        + (rows or '<tr><td colspan="5" class="empty">还没有专题，点「新建专题」开始</td></tr>')
+        + '</tbody></table>'
+        '<div class="cardp" style="margin-top:20px"><div class="frm">'
+        '<div id="edTitle" style="font-weight:800;font-size:15px;margin-bottom:12px">＋ Nuevo tema</div>'
+        '<label>专题名字（客户可见，西语）</label>'
+        '<input id="cTitle" placeholder="Ej: 🪴 Plantas para tu hogar">'
+        '<label>副标题（可选）</label>'
+        '<input id="cSub" placeholder="Ej: Nuestra selección de esta semana">'
+        '<div class="row2"><div><label>排序（小的在前）</label><input id="cOrder" type="number" value="0"></div>'
+        '<div><label>状态</label><label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-top:8px">'
+        '<input id="cActive" type="checkbox" checked style="width:18px;height:18px"> 上架显示</label></div></div>'
+        '<label>选商品（勾选要放进这个专题的商品）<span id="pcnt" class="pcnt">0</span> 已选</label>'
+        '<input id="pq" placeholder="搜索商品名…" oninput="renderPicker()">'
+        '<div id="picker" class="picker"></div>'
+        '<button class="pri" onclick="save()">保存专题</button>'
+        '</div></div>'
+        + _COLL_JS.replace("__COLLS__", colls_json).replace("__PRODS__", prods_json))
+    extra_css = (
+        '<style>.slug{font-size:11px;color:#8a93a2;font-weight:600;margin-top:2px}'
+        '.acts{white-space:nowrap}.cp.del{color:#c0392b}'
+        '.pcnt{background:#2563D9;color:#fff;border-radius:99px;padding:1px 9px;font-weight:800;margin-left:4px}'
+        '.picker{max-height:340px;overflow-y:auto;border:1px solid #EDF1F7;border-radius:12px;margin-bottom:14px}'
+        '.prow{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid #F4F6FB;font-size:13px;cursor:pointer}'
+        '.prow img{width:34px;height:34px;border-radius:8px;object-fit:cover;background:#F0F3F8}'
+        '.prow input{width:17px;height:17px;flex:none}.prow span{flex:1}'
+        '.pmore{padding:10px;text-align:center;color:#9aa3b2;font-size:12px}</style>')
+    return sub_shell("专题合集", "coll", extra_css + inner)
+
 def page_html():
     prods = products()
     cats = sorted({p["type"] for p in prods if p["type"].strip()})
@@ -654,6 +769,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/links">🔗 短链</a>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/coupons">🎟️ 优惠券</a>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/stats">📊 数据</a>
+<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/colecciones">🪴 专题</a>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button class="btn b-build" onclick="build(this)">🔄 构建预览</button>
 <button class="btn b-pub" onclick="publish(this)">🚀 发布上线</button>
@@ -971,6 +1087,8 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, coupons_page())
         if p == "/stats":
             return self.send(200, stats_page())
+        if p == "/colecciones":
+            return self.send(200, colecciones_page())
         if p == "/api_timeline":
             code = qs.get("code", [""])[0]
             vid = qs.get("vid", [""])[0]
@@ -1084,6 +1202,39 @@ class H(BaseHTTPRequestHandler):
                 payload = json.loads(body.decode("utf-8") or "{}")
                 data, err = worker_call("coupon/toggle", "POST", payload)
                 return self.send(200, json.dumps(data or {"error": err}), "application/json")
+            if p == "/coleccion_save":
+                b = json.loads(body.decode("utf-8") or "{}")
+                colls = load_collections()
+                slug = b.get("slug", "")
+                if b.get("toggle"):
+                    for c in colls:
+                        if c.get("slug") == slug:
+                            c["active"] = not (c.get("active") is not False)
+                    save_collections(colls); return self.send(200, json.dumps({"ok": True}), "application/json")
+                title = (b.get("title") or "").strip()
+                if not title or not b.get("skus"):
+                    return self.send(200, json.dumps({"ok": False, "error": "需要名字和至少一个商品"}), "application/json")
+                item = {"title": title, "subtitle": (b.get("subtitle") or "").strip(),
+                        "active": bool(b.get("active", True)), "order": int(b.get("order") or 0),
+                        "skus": [s for s in b.get("skus", []) if s]}
+                existing = next((c for c in colls if c.get("slug") == slug), None) if slug else None
+                if existing:
+                    item["slug"] = slug
+                    colls[colls.index(existing)] = item
+                else:
+                    base = coll_slugify(title); s = base; i = 2
+                    used = {c.get("slug") for c in colls}
+                    while s in used:
+                        s = f"{base}-{i}"; i += 1
+                    item["slug"] = s
+                    colls.append(item)
+                save_collections(colls)
+                return self.send(200, json.dumps({"ok": True, "slug": item["slug"]}), "application/json")
+            if p == "/coleccion_del":
+                b = json.loads(body.decode("utf-8") or "{}")
+                colls = [c for c in load_collections() if c.get("slug") != b.get("slug")]
+                save_collections(colls)
+                return self.send(200, json.dumps({"ok": True}), "application/json")
             if p == "/build":
                 r = subprocess.run([sys.executable, "build.py"],
                                    capture_output=True, text=True, timeout=300)

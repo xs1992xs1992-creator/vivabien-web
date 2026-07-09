@@ -68,6 +68,7 @@ export default {
       if (path.startsWith("/s/")) return handleShort(req, env, url);
       if (path === "/api/track") return handleTrack(req, env);
       if (path === "/api/coupon/validate") return handleCouponValidate(req, env);
+      if (path === "/api/coupon/redeem") return handleCouponRedeem(req, env);
       if (path.startsWith("/api/admin/")) return handleAdmin(req, env, url);
       return json({ error: "not_found" }, 404);
     } catch (e) {
@@ -136,6 +137,31 @@ async function handleCouponValidate(req, env) {
     discount,
     total: Math.round((subtotal - discount) * 100) / 100,
   });
+}
+
+// POST /api/coupon/redeem  { code, order_id?, vid? }  —— 下单时核销：used_count+1
+async function handleCouponRedeem(req, env) {
+  const body = await req.json().catch(() => ({}));
+  const code = (body.code || "").trim();
+  if (!code) return json({ ok: false, reason: "empty" });
+
+  // 原子递增：仅当启用/未过期/未达上限时才 +1
+  const upd = await env.DB.prepare(
+    `UPDATE coupons SET used_count = used_count + 1
+     WHERE code=? AND active=1
+       AND (expires_at=0 OR expires_at>?)
+       AND (max_uses=0 OR used_count<max_uses)`
+  ).bind(code, now()).run();
+
+  const changed = (upd.meta && (upd.meta.changes ?? upd.meta.rows_written)) || 0;
+  if (!changed) return json({ ok: false, reason: "not_redeemable" });
+
+  const vid = body.vid || getCookie(req, VID_COOKIE) || "";
+  await env.DB.prepare(
+    "INSERT INTO coupon_uses (code, order_id, vid, ts) VALUES (?,?,?,?)"
+  ).bind(code, body.order_id || "", vid, now()).run();
+
+  return json({ ok: true });
 }
 
 // ---------- 后台接口（X-Admin-Key）----------

@@ -237,6 +237,21 @@ button{font-family:inherit}
 .search svg{flex:none;color:#8a93a2}
 .search input{flex:1;border:0;outline:none;font-size:15px;font-family:inherit;background:transparent;color:#16202E}
 .search .clr{flex:none;border:0;background:#F1F4F9;color:#5a6577;width:24px;height:24px;border-radius:99px;cursor:pointer;font-size:12px;display:none}
+/* featured collections */
+.feats{display:flex;flex-direction:column;gap:11px;margin:16px 0 2px}
+@media(min-width:640px){.feats{flex-direction:row;flex-wrap:wrap}.feats .feat{flex:1;min-width:280px}}
+.feat{border-radius:18px;padding:16px;color:#fff;text-decoration:none;display:block;position:relative;overflow:hidden}
+.feat .kick{font-size:10.5px;font-weight:800;letter-spacing:.06em;opacity:.85;text-transform:uppercase}
+.feat h3{font-size:19px;font-weight:800;margin:4px 0 2px;letter-spacing:-.01em}
+.feat p{font-size:12px;opacity:.92;font-weight:600}
+.feat .thumbs{display:flex;gap:7px;margin:12px 0 13px}
+.feat .thumbs img{flex:1;width:0;aspect-ratio:1;object-fit:cover;border-radius:10px;background:rgba(255,255,255,.18)}
+.feat .go{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#16202E;font-weight:800;font-size:13px;padding:8px 15px;border-radius:99px}
+/* theme (colección) page */
+.tbanner{color:#fff;padding:22px 18px}
+.tbanner .bk{font-size:12px;opacity:.9;font-weight:700;margin-bottom:9px;color:#fff;text-decoration:none;display:inline-block}
+.tbanner h2{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.tbanner p{font-size:12.5px;opacity:.92;font-weight:600;margin-top:5px;max-width:520px;line-height:1.5}
 /* category chips */
 .cats{display:flex;gap:8px;overflow-x:auto;padding:18px 0 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
@@ -564,6 +579,9 @@ function confirmar(){
  fbq('track','Contact');
  try{fbq('track','InitiateCheckout',{value:tot,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
  vbTrack('checkout','',{code:COUPON?COUPON.code:''});
+ if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({code:COUPON.code,order_id:oid})}).catch(function(){})}catch(e){}}
  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
  localStorage.removeItem('vb_cart');vbBadge();
  document.getElementById('okId').textContent=oid;
@@ -578,6 +596,77 @@ render();payUI();
     return page(f"Tu compra — {SITE_NAME}", body,
                 pixel_extra="fbq('track','InitiateCheckout');",
                 desc="Carrito de compras VivaBien — pago contra entrega o transferencia.")
+
+# ---------- 专题合集 ----------
+import json as _json, hashlib as _hashlib
+COLLECTIONS_PATH = "data/collections.json"
+COLL_GRADIENTS = [("#0F6E56", "#1D9E75"), ("#7a4b12", "#b9791f"), ("#185FA5", "#378ADD"),
+                  ("#534AB7", "#7F77DD"), ("#993C1D", "#D85A30"), ("#0C447C", "#2563D9")]
+
+def load_collections():
+    if os.path.isfile(COLLECTIONS_PATH):
+        try:
+            with open(COLLECTIONS_PATH, encoding="utf-8") as f:
+                data = _json.load(f)
+            return data if isinstance(data, list) else []
+        except Exception as e:
+            print(f"⚠️  collections.json 解析失败: {e}")
+    return []
+
+def slugify(s):
+    s = unicodedata.normalize("NFD", str(s)).encode("ascii", "ignore").decode()
+    s = re.sub(r"[^a-zA-Z0-9]+", "-", s).strip("-").lower()
+    return s or "coleccion"
+
+def coll_grad(slug):
+    i = int(_hashlib.md5(slug.encode()).hexdigest(), 16) % len(COLL_GRADIENTS)
+    return COLL_GRADIENTS[i]
+
+def product_card(p, rel=""):
+    price_html = (f'<b>{fmt_price(p["price"])}</b>' if p["price"] is not None
+                  else '<span class="ask">Consultar</span>')
+    return (f'<a class="card" data-g="{esc(p["group"])}" data-s="{esc(p["sub"])}" '
+            f'data-q="{esc(snorm(p["title"] + " " + p["sub"] + " " + p["group"]))}" '
+            f'href="{rel}producto/{p["handle"]}.html">'
+            f'<div class="imgbox"><img src="{rel}images/{esc(p["img"])}" alt="{esc(p["title"])}" '
+            f'loading="lazy" onerror="this.style.display=\'none\'">'
+            f'<span class="badge">{esc(p["sub"])}</span></div>'
+            f'<div class="info"><div class="nm">{esc(p["title"])}</div>'
+            f'<div class="pr">{price_html}</div></div></a>')
+
+def coleccion_page(c, prods):
+    c0, c1 = coll_grad(c["slug"])
+    cards = "".join(product_card(p, rel="../") for p in prods)
+    body = f"""{header("../")}
+<div class="tbanner" style="background:linear-gradient(120deg,{c0},{c1})">
+<a class="bk" href="../index.html">← Volver a la tienda</a>
+<h2>{esc(c["title"])}</h2>
+{f'<p>{esc(c.get("subtitle",""))}</p>' if c.get("subtitle") else ""}
+</div>
+<div class="wrap">
+<div class="count"><span>{len(prods)}</span> productos</div>
+<div class="grid">{cards}</div>
+</div>"""
+    return page(f"{c['title']} — {SITE_NAME}", body, desc=(c.get("subtitle") or c["title"])[:150])
+
+def featured_html(collections, by_sku):
+    """首页顶部专题入口卡片"""
+    cards = ""
+    for c in collections:
+        prods = [by_sku[s] for s in c.get("skus", []) if s in by_sku]
+        if not prods:
+            continue
+        c0, c1 = coll_grad(c["slug"])
+        thumbs = "".join(
+            f'<img src="images/{esc(pp["img"])}" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
+            for pp in prods[:4])
+        sub = f'<p>{esc(c.get("subtitle",""))}</p>' if c.get("subtitle") else ""
+        cards += (f'<a class="feat" style="background:linear-gradient(120deg,{c0},{c1})" '
+                  f'href="coleccion/{esc(c["slug"])}.html">'
+                  f'<div class="kick">★ Destacado</div><h3>{esc(c["title"])}</h3>{sub}'
+                  f'<div class="thumbs">{thumbs}</div>'
+                  f'<span class="go">Ver colección →</span></a>')
+    return f'<div class="feats">{cards}</div>' if cards else ""
 
 def build():
     products = load_products()
@@ -599,15 +688,15 @@ def build():
     groups = [g for g in GROUP_ORDER if g in subs_of]
 
     # ---- 商品卡 ----
-    cards = []
-    for p in products:
-        price_html = (f'<b>{fmt_price(p["price"])}</b>' if p["price"] is not None
-                      else '<span class="ask">Consultar</span>')
-        cards.append(f"""<a class="card" data-g="{esc(p['group'])}" data-s="{esc(p['sub'])}" data-q="{esc(snorm(p['title'] + ' ' + p['sub'] + ' ' + p['group']))}" href="producto/{p['handle']}.html">
-<div class="imgbox"><img src="images/{esc(p['img'])}" alt="{esc(p['title'])}" loading="lazy"
- onerror="this.style.display='none'"><span class="badge">{esc(p['sub'])}</span></div>
-<div class="info"><div class="nm">{esc(p['title'])}</div>
-<div class="pr">{price_html}</div></div></a>""")
+    cards = [product_card(p) for p in products]
+
+    # ---- 专题合集 ----
+    by_sku = {p["sku"]: p for p in products}
+    collections = [c for c in load_collections() if c.get("active")]
+    collections.sort(key=lambda c: c.get("order", 0))
+    for c in collections:
+        c["slug"] = slugify(c.get("slug") or c.get("title", ""))
+    feats = featured_html(collections, by_sku)
 
     chips = ['<div class="chip on" data-g="*">Todos</div>'] + [
         f'<div class="chip" data-g="{esc(g)}">{GROUP_ICONS.get(g, "🛍️")} {esc(g)}</div>' for g in groups]
@@ -627,6 +716,7 @@ def build():
 <input id="q" type="search" placeholder="¿Qué buscas hoy?" autocomplete="off">
 <button class="clr" id="qClr" aria-label="Borrar">✕</button>
 </div>
+{feats}
 <div class="cats">{''.join(chips)}</div>
 {''.join(subrows)}
 <div class="count"><span id="n">{len(products)}</span> productos</div>
@@ -670,6 +760,20 @@ document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
     # ---- 购物车页 ----
     with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
         f.write(carrito_page())
+
+    # ---- 专题合集页 ----
+    n_coll = 0
+    if collections:
+        os.makedirs(f"{OUT_DIR}/coleccion", exist_ok=True)
+        for c in collections:
+            prods = [by_sku[s] for s in c.get("skus", []) if s in by_sku]
+            if not prods:
+                continue
+            with open(f"{OUT_DIR}/coleccion/{c['slug']}.html", "w", encoding="utf-8") as f:
+                f.write(coleccion_page(c, prods))
+            n_coll += 1
+        if n_coll:
+            print(f"✅ 专题合集: {n_coll} 个 → {OUT_DIR}/coleccion/")
 
     # ---- 推荐栏索引 ----
     import hashlib
