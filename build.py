@@ -324,8 +324,9 @@ footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 0 34px}
 /* form */
 .fld{margin-bottom:10px}
 .fld label{display:block;font-weight:700;font-size:12px;color:#5a6577;margin-bottom:5px}
-.fld input,.fld textarea{width:100%;border:1.5px solid #E5EAF2;border-radius:13px;padding:12px 14px;font-size:14px;font-family:inherit;background:#fff}
-.fld input:focus,.fld textarea:focus{outline:none;border-color:#2563D9}
+.fld input,.fld textarea,.fld select{width:100%;border:1.5px solid #E5EAF2;border-radius:13px;padding:12px 14px;font-size:14px;font-family:inherit;background:#fff;color:#16202E}
+.fld input:focus,.fld textarea:focus,.fld select:focus{outline:none;border-color:#2563D9}
+.fld select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6577' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
 /* pago radios */
 .pay{display:flex;flex-direction:column;gap:9px}
 .pay label{display:flex;align-items:center;gap:11px;border:1.5px solid #E5EAF2;border-radius:15px;padding:14px;cursor:pointer;font-weight:700;font-size:14px;background:#fff}
@@ -339,6 +340,8 @@ footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 0 34px}
 .bank .bo{font-size:11px;color:#8a93a2;font-weight:600}
 .bank .ba{font-weight:800;font-size:14px;letter-spacing:.02em}
 .bank .note{font-size:11.5px;color:#5a6577;margin-top:9px;line-height:1.5}
+.bank .remind{display:block;background:#FFF5E9;border:1px solid #F6DDB4;border-radius:11px;padding:10px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#8a5a12;line-height:1.5}
+.bank .remind b{color:#16202E}
 /* totals */
 .tot .ln{display:flex;justify-content:space-between;font-size:13.5px;color:#5a6577;font-weight:600;padding:4px 0}
 .tot .ln b{color:#16202E}
@@ -423,7 +426,10 @@ def carrito_page():
 <div class="bt">🚚 Datos de entrega</div>
 <div class="fld"><label>Nombre completo *</label><input id="fNom" placeholder="Tu nombre"></div>
 <div class="fld"><label>Teléfono / WhatsApp *</label><input id="fTel" inputmode="tel" placeholder="809 000 0000"></div>
-<div class="fld"><label>Dirección *</label><textarea id="fDir" rows="2" placeholder="Calle, sector, ciudad"></textarea></div>
+<div class="fld"><label>Provincia *</label><select id="fProv" onchange="provUI()"></select></div>
+<div class="fld" id="sectorFld"><label>Sector / Zona *</label><select id="fSector"></select></div>
+<div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" placeholder="Ej: Santiago, Moca..."></div>
+<div class="fld"><label>Dirección (calle y número) *</label><textarea id="fDir" rows="2" placeholder="Calle, No., referencia"></textarea></div>
 <div class="fld"><label>Nota (opcional)</label><input id="fNota" placeholder="Referencia, horario..."></div>
 </div>
 
@@ -435,7 +441,7 @@ def carrito_page():
 </div>
 <div class="bank" id="bankPanel">
 __BANKS__
-<div class="note">Realiza la transferencia y envíanos el comprobante por WhatsApp. Tu pedido se despacha al confirmar el pago.</div>
+<div class="remind">📸 Por favor envía el comprobante de transferencia por WhatsApp al <b>+1 (809) 281-1992</b>. Tu pedido se despacha al confirmar el pago.</div>
 </div>
 </div>
 
@@ -521,13 +527,29 @@ function payUI(){
  document.getElementById('lTra').classList.toggle('on',t==='transfer');
  document.getElementById('bankPanel').classList.toggle('show',t==='transfer');
 }
+var PROVS=["Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
+var SECTORES=["Santo Domingo Este","Santo Domingo Norte","Santo Domingo Oeste","Distrito Nacional (centro)","Naco","Piantini","Bella Vista","Gazcue","Los Prados","Arroyo Hondo","Los Ríos","El Millón","Evaristo Morales","Villa Mella","Herrera","Los Alcarrizos","Boca Chica","Villa Consuelo","Cristo Rey","Otro sector..."];
+function fillSel(id,arr){var s=document.getElementById(id);
+ arr.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;s.appendChild(o)});}
+function provUI(){
+ var isSD=document.getElementById('fProv').value.indexOf('Distrito Nacional')===0;
+ document.getElementById('sectorFld').style.display=isSD?'block':'none';
+ document.getElementById('cityFld').style.display=isSD?'none':'block';
+}
+fillSel('fProv',PROVS);fillSel('fSector',SECTORES);provUI();
 function confirmar(){
  var c=vbCart();if(!c.length)return;
  var nom=document.getElementById('fNom').value.trim(),
      tel=document.getElementById('fTel').value.trim(),
      dir=document.getElementById('fDir').value.trim(),
      nota=document.getElementById('fNota').value.trim();
- if(!nom||!tel||!dir){alert('Por favor completa nombre, teléfono y dirección.');return;}
+ var prov=document.getElementById('fProv').value;
+ var isSD=prov.indexOf('Distrito Nacional')===0;
+ var zona=isSD?document.getElementById('fSector').value
+              :document.getElementById('fCity').value.trim();
+ if(!nom||!tel||!prov||!zona||!dir){
+  alert('Por favor completa nombre, teléfono, provincia, sector/ciudad y dirección.');return;}
+ var loc=prov+' · '+zona;
  var pay=document.querySelector('input[name=pay]:checked').value;
  var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
  var sub=0,lines=c.map(function(it){sub+=it.price*it.qty;
@@ -535,7 +557,7 @@ function confirmar(){
  var disc=calcDiscount(sub),tot=sub-disc;
  var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
   +(disc>0?'\\n——\\nSubtotal: '+money(sub)+'\\n🏷️ Cupón '+COUPON.code+': - '+money(disc):'')
-  +'\\n*Total: '+money(tot)+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+dir
+  +'\\n*Total: '+money(tot)+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
   +(nota?'\\n📝 '+nota:'')
   +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');

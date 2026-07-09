@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VivaBien · 结算页改版效果图</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',-apple-system,'PingFang SC',sans-serif;background:#EEF2F9;color:#16202E;padding:24px 12px;display:flex;justify-content:center}
+.phone{width:400px;max-width:100%;background:#F7F9FD;border:1px solid #E1E7F2;border-radius:26px;overflow:hidden;box-shadow:0 12px 40px rgba(20,40,80,.12)}
+.hd{background:#fff;border-bottom:1px solid #EEF1F6;height:56px;display:flex;align-items:center;padding:0 16px;gap:9px}
+.ic{width:31px;height:31px;border-radius:9px;background:#2563D9;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+.brand{font-weight:800;font-size:17px;letter-spacing:-.02em}
+.wrap{padding:16px}
+h1{font-weight:800;font-size:21px;margin:2px 0 14px}
+.box{background:#fff;border:1px solid #EDF1F7;border-radius:16px;padding:15px;margin-bottom:12px}
+.bt{font-weight:800;font-size:14px;margin-bottom:12px}
+label{display:block;font-weight:700;font-size:12px;color:#5a6577;margin:0 0 5px 2px}
+input,select,textarea{width:100%;border:1.5px solid #E5EAF2;border-radius:12px;padding:11px 13px;font-size:14px;font-family:inherit;background:#fff;margin-bottom:11px;color:#16202E}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#2563D9}
+select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6577' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 13px center}
+.new{border-color:#2563D9;box-shadow:0 0 0 3px #EAF0FB}
+.tagnew{display:inline-block;background:#2563D9;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:2px}
+.pay label{display:flex;align-items:center;gap:11px;border:1.5px solid #E5EAF2;border-radius:14px;padding:13px;cursor:pointer;font-weight:700;font-size:14px;margin-bottom:9px;color:#16202E}
+.pay label.on{border-color:#2563D9;box-shadow:0 0 0 1px #2563D9}
+.pay input{width:18px;height:18px;margin:0;accent-color:#2563D9}
+.bank{background:#F7F9FD;border:1px solid #EDF1F7;border-radius:13px;padding:12px;margin-top:4px}
+.bk{display:flex;justify-content:space-between;align-items:center;padding:7px 0}
+.bk+.bk{border-top:1px solid #E9EDF4}
+.bn{font-weight:800;font-size:12.5px}.bo{font-size:11px;color:#8a93a2;font-weight:600}
+.ba{font-weight:800;font-size:13.5px}
+.remind{display:flex;gap:9px;background:#FFF5E9;border:1px solid #F6DDB4;border-radius:13px;padding:11px 12px;margin-top:10px}
+.remind .em{font-size:16px;line-height:1.3}
+.remind .tx{font-size:12.5px;font-weight:700;color:#8a5a12;line-height:1.5}
+.remind .tx b{color:#16202E}
+.tot .ln{display:flex;justify-content:space-between;font-size:13.5px;color:#5a6577;font-weight:600;padding:4px 0}
+.tot .gt{display:flex;justify-content:space-between;font-weight:800;font-size:19px;border-top:1px solid #F1F4F9;margin-top:8px;padding-top:12px}
+.btn{width:100%;background:#FF6B4A;color:#fff;font-weight:800;font-size:16px;height:52px;border-radius:15px;border:0;margin-top:8px;cursor:pointer}
+.hint{font-size:11px;color:#9aa3b2;text-align:center;margin-top:9px}
+.cap{max-width:400px;margin:14px auto 0;font-size:12px;color:#5a6577;line-height:1.7;text-align:center}
+</style></head><body>
+<div>
+<div class="phone">
+  <div class="hd"><div class="ic">V</div><div class="brand">VivaBien</div></div>
+  <div class="wrap">
+    <h1>Tu compra</h1>
+
+    <div class="box">
+      <div class="bt">🚚 Datos de entrega</div>
+
+      <label>Nombre completo *</label>
+      <input placeholder="Tu nombre">
+
+      <label>Teléfono / WhatsApp *</label>
+      <input placeholder="809 000 0000">
+
+      <label>Provincia *<span class="tagnew">NUEVO</span></label>
+      <select id="prov" class="new" onchange="provChange()"></select>
+
+      <div id="sectorWrap">
+        <label>Sector / Zona *<span class="tagnew">NUEVO</span></label>
+        <select id="sector" class="new"></select>
+      </div>
+
+      <div id="cityWrap" style="display:none">
+        <label>Municipio / Ciudad *</label>
+        <input placeholder="Ej: Santiago, Moca...">
+      </div>
+
+      <label>Dirección (calle y número) *</label>
+      <input placeholder="Calle, No., referencia">
+
+      <label>Nota (opcional)</label>
+      <input placeholder="Punto de referencia, horario...">
+    </div>
+
+    <div class="box">
+      <div class="bt">💳 ¿Cómo pagas?</div>
+      <div class="pay">
+        <label id="lCod" class="on"><input type="radio" name="pay" checked onchange="payUI('cod')"> 🤝 Contra entrega (efectivo)</label>
+        <label id="lTra"><input type="radio" name="pay" onchange="payUI('tra')"> 🏦 Transferencia bancaria</label>
+      </div>
+      <div id="bankPanel" style="display:none">
+        <div class="bank">
+          <div class="bk"><div><div class="bn">Banco Popular</div><div class="bo">Corner Store</div></div><div class="ba">820011674</div></div>
+          <div class="bk"><div><div class="bn">BHD</div><div class="bo">Wenwen Shi</div></div><div class="ba">39058710013</div></div>
+          <div class="bk"><div><div class="bn">Banreservas</div><div class="bo">Weixiong Chen</div></div><div class="ba">9607180504</div></div>
+        </div>
+        <div class="remind">
+          <div class="em">📸</div>
+          <div class="tx">Por favor envía el comprobante de transferencia por WhatsApp al <b>+1 (809) 281-1992</b>. Tu pedido se despacha al confirmar el pago.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box tot">
+      <div class="ln">Subtotal <b style="color:#16202E">RD$ 1,880</b></div>
+      <div class="ln">Envío <b style="color:#16202E">Se confirma por WhatsApp</b></div>
+      <div class="gt">Total <span>RD$ 1,880</span></div>
+      <button class="btn">🛡️ Confirmar pedido · RD$ 1,880</button>
+      <div class="hint">Al confirmar se abre WhatsApp con tu pedido listo para enviar.</div>
+    </div>
+  </div>
+</div>
+<div class="cap">效果图（可点）：省份默认「Distrito Nacional（首都圣多明各）」，下面自动展开「Sector / Zona」区/板块下拉；选其他省份则收起、换成「Municipio / Ciudad」城市输入。把付款切到「Transferencia」看新加的凭证提醒。</div>
+</div>
+
+<script>
+var PROVS=["Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
+var SECTORES=["Santo Domingo Este","Santo Domingo Norte","Santo Domingo Oeste","Distrito Nacional (centro)","Naco","Piantini","Bella Vista","Gazcue","Los Prados","Arroyo Hondo","Los Ríos","El Millón","Evaristo Morales","Villa Mella","Herrera","Los Alcarrizos","Boca Chica","Villa Consuelo","Cristo Rey","Otro sector..."];
+var p=document.getElementById('prov');
+PROVS.forEach(function(x){var o=document.createElement('option');o.textContent=x;p.appendChild(o)});
+var s=document.getElementById('sector');
+SECTORES.forEach(function(x){var o=document.createElement('option');o.textContent=x;s.appendChild(o)});
+function provChange(){
+  var isSD=p.value.indexOf('Distrito Nacional')===0;
+  document.getElementById('sectorWrap').style.display=isSD?'block':'none';
+  document.getElementById('cityWrap').style.display=isSD?'none':'block';
+}
+function payUI(t){
+  document.getElementById('lCod').classList.toggle('on',t==='cod');
+  document.getElementById('lTra').classList.toggle('on',t==='tra');
+  document.getElementById('bankPanel').style.display=t==='tra'?'block':'none';
+}
+</script>
+</body></html>
