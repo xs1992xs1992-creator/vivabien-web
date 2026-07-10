@@ -155,9 +155,52 @@ def parse_row(r):
                 published=r.get("Published", ""), sku=r.get("Variant SKU", ""),
                 price=r.get("Variant Price", ""), img=r.get("Image Src", ""))
 
+# ---------- 图片类型体系（方案B，与上游 vivabien.py TIPO_ORDER 一致） ----------
+# 展示顺序（用户定）：场景效果图 → 白底图 → 正面 → 背面 → 细节 → 补充 → 尺寸图
+TIPO_ORDER = ["scene", "white", "front", "back", "detail", "extra", "dim", "3d"]
+
+def img_tipo(fname, tag=""):
+    """图片类型：CSV 附加行 Tags 显式标签优先，否则按文件名后缀猜（老数据兜底）。"""
+    if tag in TIPO_ORDER:
+        return tag
+    s = fname.lower()
+    if s.endswith("_scene.jpg"): return "scene"
+    if s.endswith("_dim.jpg"):   return "dim"
+    if re.search(r"_[2-9]\.jpg$", s): return "extra"
+    return "white"
+
+def product_gallery(p):
+    """商品完整画廊（有序文件名列表）：
+    显式清单（CSV 附加行，Tags=类型）∪ 传统命名兜底（老数据没有附加行），
+    去重后按 TIPO_ORDER 排序。卡片图 = 第一张。"""
+    sku = p["sku"].strip()
+    seen, typed = set(), []
+    def add(f, tipo):
+        if f and f not in seen and os.path.isfile(os.path.join(IMG_DIR, f)):
+            seen.add(f); typed.append((f, tipo))
+    if p["img"]:
+        add(p["img"], img_tipo(p["img"]))
+    for f, tag in p.get("extras", []):
+        add(f, img_tipo(f, tag))
+    if sku:   # 命名约定兜底
+        add(f"{sku}_scene.jpg", "scene")
+        add(f"{sku}.jpg", "white")
+        for i in range(2, 10):
+            add(f"{sku}_{i}.jpg", "extra")
+        add(f"{sku}_dim.jpg", "dim")
+    typed.sort(key=lambda x: TIPO_ORDER.index(x[1]) if x[1] in TIPO_ORDER else 98)
+    return [f for f, _ in typed]
+
 def load_products():
     with open(CSV_PATH, encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
+    # 多图附加行：无标题、有 Handle+Image Src；Tags 列 = 图片类型（方案B）
+    extras = {}
+    for r in rows:
+        h   = (r.get("Handle") or "").strip()
+        img = (r.get("Image Src") or "").strip()
+        if h and img and not (r.get("Title") or "").strip():
+            extras.setdefault(h, []).append((img, (r.get("Tags") or "").strip()))
     seen, products = set(), []
     for r in rows:
         p = parse_row(r)
@@ -172,13 +215,11 @@ def load_products():
         p["type"]  = p["type"].strip() or "Otros"
         p["price"] = float(p["price"]) if p["price"].strip() else None
         p["img"]   = p["img"].strip()
-        # 卡片图优先级：场景效果图 > CSV 主图 > 白底图（用户规则：有场景图先展示场景图）
-        _sku = p["sku"].strip()
-        _scene = f"{_sku}_scene.jpg"
-        if _sku and os.path.isfile(os.path.join(IMG_DIR, _scene)):
-            p["img"] = _scene
-        elif not p["img"] and _sku and os.path.isfile(os.path.join(IMG_DIR, f"{_sku}.jpg")):
-            p["img"] = f"{_sku}.jpg"
+        p["extras"] = extras.get(p["handle"], [])
+        # 卡片图 = 画廊第一张（有场景图先场景图，用户规则）
+        gal = product_gallery(p)
+        if gal:
+            p["img"] = gal[0]
         p["group"], p["sub"] = classify(p)
         products.append(p)
     products.sort(key=lambda p: (p["price"] is None, p["group"], p["sub"]))
@@ -682,7 +723,8 @@ def build():
     os.makedirs(f"{OUT_DIR}/producto", exist_ok=True)
     if os.path.isdir(IMG_DIR):
         shutil.copytree(IMG_DIR, f"{OUT_DIR}/images",
-                        ignore=shutil.ignore_patterns("*_original*", "*_price_crop*", ".*"))
+                        ignore=shutil.ignore_patterns("*_original*", "*_price_crop*", ".*",
+                                                      "*.json", "*.tmp"))  # JSON 含内部数据，不上线
     else:
         os.makedirs(f"{OUT_DIR}/images", exist_ok=True)
         print(f"⚠️  未找到 {IMG_DIR}/ 文件夹，图片将显示为占位背景")
@@ -804,17 +846,8 @@ document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
 
     # ---- 详情页 ----
     for p in products:
-        # 多图画廊：按 SKU 组图（旧版用主图文件名当词干，主图是 _scene.jpg 时
-        # 词干错误导致白底图/尺寸图漏显示）。
-        # 顺序：场景效果图 → 白底图 → 补充图(_2.._9) → 尺寸图（缺哪类跳过）
-        sku = p["sku"].strip()
-        cand = ([f"{sku}_scene.jpg", f"{sku}.jpg"]
-                + [f"{sku}_{i}.jpg" for i in range(2, 10)]
-                + [f"{sku}_dim.jpg"])
-        gal = [f for f in cand if os.path.isfile(os.path.join(IMG_DIR, f))]
-        # 主图文件名不在常规命名里（手动改过名等），放到画廊最前
-        if p["img"] and p["img"] not in gal and os.path.isfile(os.path.join(IMG_DIR, p["img"])):
-            gal.insert(0, p["img"])
+        # 多图画廊：显式类型清单 + 命名兜底，统一按类型顺序（见 product_gallery）
+        gal = product_gallery(p)
         main_img = f'<img class="main" id="mainImg" src="../images/{esc(gal[0] if gal else "")}" alt="{esc(p["title"])}" onerror="this.style.opacity=0">'
         thumbs = ""
         if len(gal) > 1:

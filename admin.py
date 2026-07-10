@@ -330,10 +330,11 @@ def do_import(skus):
         rows.append(mk(main))
         for e in c["extra"]:
             rows.append(mk(e)); extra_rows += 1
-        # 拷图：主图 + _2.._9 + 尺寸/场景图 + 附加行引用的图（上游只读，只复制出来）
-        stem = c["img"][:-4] if c["img"].lower().endswith(".jpg") else c["img"]
-        names = {c["img"]} | {f"{stem}_{i}.jpg" for i in range(2, 10)} \
-                | {stem + "_dim.jpg", stem + "_scene.jpg"} \
+        # 拷图：按 SKU 组全套图 + 附加行引用的图（上游只读，只复制出来）。
+        # 旧版用主图文件名当词干：主图是 _scene.jpg 时词干错误，白底图/尺寸图漏拷。
+        sku_f = c["sku"]   # 上游文件名用大写 SKU
+        names = {c["img"], f"{sku_f}.jpg", f"{sku_f}_scene.jpg", f"{sku_f}_dim.jpg"} \
+                | {f"{sku_f}_{i}.jpg" for i in range(2, 10)} \
                 | {(e.get("Image Src") or "").strip() for e in c["extra"]}
         for f in names:
             if not f or "/" in f or ".." in f: continue
