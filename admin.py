@@ -198,6 +198,7 @@ def add_product(title, price, ptype, img_bytes, img_ext, body="", zh=""):
 # ---------- 商品图片管理 ----------
 SLOT_SUFFIX = {"dim": "_dim", "scene": "_scene"}
 SLOT_LABEL  = {"main": "主图", "dim": "尺寸图", "scene": "场景图"}
+PHOTO_LIMIT = 10
 
 def sku_photos_by_img(img):
     """按主图文件名列出该商品全部图片文件"""
@@ -208,9 +209,10 @@ def sku_photos_by_img(img):
     for suf in ("_scene.jpg", "_dim.jpg"):
         f = stem + suf
         if os.path.isfile(os.path.join(IMG_DIR, f)): out.append(f)
-    for i in range(2, 10):
-        f = f"{stem}_{i}.jpg"
-        if os.path.isfile(os.path.join(IMG_DIR, f)): out.append(f)
+    # 兼容旧的 _2..._9 命名，也允许后台以后使用到第 10 张。
+    for f in sorted(os.listdir(IMG_DIR) if os.path.isdir(IMG_DIR) else []):
+        if re.fullmatch(re.escape(stem) + r"_\d+\.jpg", f, re.I):
+            if f not in out: out.append(f)
     return out
 
 def photo_label(img, fname):
@@ -232,11 +234,15 @@ def photo_add(img, slot, data):
         fname = stem + SLOT_SUFFIX[slot] + ".jpg"
     else:  # extra: 找空槽位
         fname = None
-        for i in range(2, 10):
+        if len(sku_photos_by_img(img)) >= PHOTO_LIMIT:
+            raise ValueError(f"每个商品最多 {PHOTO_LIMIT} 张图片")
+        for i in range(2, PHOTO_LIMIT + 1):
             c = f"{stem}_{i}.jpg"
             if not os.path.isfile(os.path.join(IMG_DIR, c)):
                 fname = c; break
-        if not fname: raise ValueError("补充图最多 8 张")
+        if not fname: raise ValueError(f"每个商品最多 {PHOTO_LIMIT} 张图片")
+    if len(data) > 15 * 1024 * 1024:
+        raise ValueError("图片文件太大，请压缩后再上传（最大 15 MB）")
     with open(os.path.join(IMG_DIR, fname), "wb") as f:
         f.write(data)
     return fname
@@ -605,27 +611,32 @@ def coll_slugify(s):
     return s or "coleccion"
 
 _COLL_JS = """<script>
-var COLLS=__COLLS__, PRODS=__PRODS__, picked={}, editSlug='';
+var COLLS=__COLLS__, PRODS=__PRODS__, picked={}, order=[], editSlug='';
+var INITIAL_EDIT='__EDIT__', INITIAL_FOCUS='__FOCUS__';
 function esc(s){return (s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}
 function renderPicker(){
  var q=(document.getElementById('pq').value||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
  var box=document.getElementById('picker'),n=0,html='';
  for(var i=0;i<PRODS.length;i++){var p=PRODS[i];
   if(q&&p.q.indexOf(q)<0)continue; n++; if(n>300){html+='<div class=\"pmore\">…escribe para filtrar más</div>';break;}
-  html+='<label class=\"prow\"><input type=\"checkbox\" '+(picked[p.sku]?'checked':'')+' onchange=\"picked[\\''+p.sku+'\\']=this.checked;cnt()\">'
-   +'<img src=\"/images/'+esc(p.img)+'\" onerror=\"this.style.visibility=\\'hidden\\'\"><span>'+esc(p.t)+'</span></label>';}
+  html+='<label class=\"prow\" data-sku=\"'+esc(p.sku)+'\"><input type=\"checkbox\" '+(picked[p.sku]?'checked':'')+' onchange=\"toggleSku(\\''+p.sku+'\\',this.checked)\">'
+   +'<img src=\"/images/'+esc(p.img)+'\" onerror=\"this.style.visibility=\\'hidden\\'\"><span>'+esc(p.t)+'</span>'
+   +(picked[p.sku]?'<button class=\"move-prod\" onclick=\"event.preventDefault();event.stopPropagation();moveSku(\\''+p.sku+'\\',-1)\">↑</button><button class=\"move-prod\" onclick=\"event.preventDefault();event.stopPropagation();moveSku(\\''+p.sku+'\\',1)\">↓</button>':'')
+   +'<a class=\"edit-prod\" href=\"/?focus='+encodeURIComponent(p.h)+'\" onclick=\"event.stopPropagation()\">编辑商品</a></label>';}
  box.innerHTML=html; cnt();
 }
 function cnt(){var k=Object.keys(picked).filter(function(s){return picked[s]});document.getElementById('pcnt').textContent=k.length;}
-function newColl(){editSlug='';picked={};document.getElementById('cTitle').value='';document.getElementById('cSub').value='';
+function toggleSku(s,on){picked[s]=on;if(on&&!order.includes(s))order.push(s);if(!on)order=order.filter(function(x){return x!==s});cnt();renderPicker();}
+function moveSku(s,delta){var i=order.indexOf(s),j=i+delta;if(i<0||j<0||j>=order.length)return;var x=order[i];order[i]=order[j];order[j]=x;renderPicker();}
+function newColl(){editSlug='';picked={};order=[];document.getElementById('cTitle').value='';document.getElementById('cSub').value='';
  document.getElementById('cActive').checked=true;document.getElementById('cOrder').value=0;
  document.getElementById('edTitle').textContent='＋ Nuevo tema';renderPicker();window.scrollTo(0,document.body.scrollHeight);}
-function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};
+function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};order=(c.skus||[]).slice();
  (c.skus||[]).forEach(function(s){picked[s]=true});
  document.getElementById('cTitle').value=c.title||'';document.getElementById('cSub').value=c.subtitle||'';
  document.getElementById('cActive').checked=c.active!==false;document.getElementById('cOrder').value=c.order||0;
  document.getElementById('edTitle').textContent='✏️ Editar: '+(c.title||'');renderPicker();window.scrollTo(0,document.body.scrollHeight);}
-function save(){var skus=Object.keys(picked).filter(function(s){return picked[s]});
+function save(){var skus=order.filter(function(s){return picked[s]});Object.keys(picked).forEach(function(s){if(picked[s]&&!skus.includes(s))skus.push(s)});
  var title=document.getElementById('cTitle').value.trim();
  if(!title){alert('Pon un nombre al tema');return;}
  if(!skus.length){alert('Elige al menos un producto');return;}
@@ -639,9 +650,10 @@ function toggle(slug){fetch('/coleccion_save',{method:'POST',headers:{'Content-T
 function del_(slug){if(!confirm('¿Borrar este tema? (no borra los productos)'))return;
  fetch('/coleccion_del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug})}).then(function(){location.reload()})}
 renderPicker();
+if(INITIAL_EDIT){edit(INITIAL_EDIT);setTimeout(function(){var el=document.querySelector('.prow[data-sku=\"'+INITIAL_FOCUS+'\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('focus-prod')}},80)}
 </script>"""
 
-def colecciones_page():
+def colecciones_page(edit_slug="", focus_sku=""):
     colls = load_collections()
     prods = products()
     rows = ""
@@ -655,7 +667,7 @@ def colecciones_page():
                  f'<button class="cp" onclick="toggle(\'{esc(c.get("slug",""))}\')">{"下架" if act else "上架"}</button>'
                  f'<button class="cp del" onclick="del_(\'{esc(c.get("slug",""))}\')">删除</button></td></tr>')
     prods_json = json.dumps([
-        {"sku": p["sku"], "t": p["title"], "img": p["img"],
+        {"sku": p["sku"], "h": p["handle"], "t": p["title"], "img": p["img"],
          "q": _snorm(p["title"] + " " + p.get("type", ""))} for p in prods if p["sku"]],
         ensure_ascii=False)
     colls_json = json.dumps(colls, ensure_ascii=False)
@@ -679,7 +691,8 @@ def colecciones_page():
         '<div id="picker" class="picker"></div>'
         '<button class="pri" onclick="save()">保存专题</button>'
         '</div></div>'
-        + _COLL_JS.replace("__COLLS__", colls_json).replace("__PRODS__", prods_json))
+        + _COLL_JS.replace("__COLLS__", colls_json).replace("__PRODS__", prods_json)
+                    .replace("__EDIT__", esc(edit_slug)).replace("__FOCUS__", esc(focus_sku)))
     extra_css = (
         '<style>.slug{font-size:11px;color:#8a93a2;font-weight:600;margin-top:2px}'
         '.acts{white-space:nowrap}.cp.del{color:#c0392b}'
@@ -688,16 +701,51 @@ def colecciones_page():
         '.prow{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid #F4F6FB;font-size:13px;cursor:pointer}'
         '.prow img{width:34px;height:34px;border-radius:8px;object-fit:cover;background:#F0F3F8}'
         '.prow input{width:17px;height:17px;flex:none}.prow span{flex:1}'
+        '.edit-prod{color:#2563D9;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap}'
+        '.move-prod{border:0;background:#EAF0FB;color:#2563D9;border-radius:6px;width:22px;height:22px;font-weight:800;cursor:pointer}'
+        '.prow.focus-prod{background:#EAF0FB;outline:2px solid #2563D9}'
         '.pmore{padding:10px;text-align:center;color:#9aa3b2;font-size:12px}</style>')
     return sub_shell("专题合集", "coll", extra_css + inner)
+
+def product_preview_page(p):
+    photos = sku_photos_by_img(p.get("img", "")) if p.get("img") else []
+    gallery = "".join(f'<img src="/images/{esc(f)}" alt="" loading="lazy">' for f in photos)
+    body = esc(p.get("body", "") or p.get("title", "")).replace("\n", "<br>")
+    price = esc(p.get("price", ""))
+    price_html = f"RD$ {price}" if price else "Consultar precio por WhatsApp"
+    online = f'{SITE_URL}/producto/{quote(p["handle"])}.html'
+    return f'''<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Vista previa — {esc(p["title"])}</title>
+<style>*{{box-sizing:border-box}}body{{margin:0;background:#f7f9fd;color:#16202e;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}}
+.bar{{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #e9edf3;padding:12px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}}
+.bar strong{{font-size:14px}}.bar a{{background:#eef4ff;color:#2563d9;text-decoration:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700}}
+.wrap{{max-width:1060px;margin:0 auto;padding:28px 18px 60px}}.crumb{{color:#7b8798;font-size:13px;margin-bottom:18px}}
+.detail{{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:34px;background:#fff;border:1px solid #edf1f7;border-radius:18px;padding:22px}}
+.main{{width:100%;aspect-ratio:1;object-fit:contain;background:#f2f4f8;border-radius:12px}}.gallery{{display:flex;gap:8px;overflow:auto;margin-top:10px}}
+.gallery img{{width:68px;height:68px;object-fit:cover;border-radius:8px;border:1px solid #e4eaf2}}h1{{font-size:28px;line-height:1.2;margin:18px 0 12px}}.price{{font-size:25px;font-weight:800;color:#176b50;margin-bottom:26px}}
+.label{{font-size:12px;color:#718096;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}}.desc{{font-size:15px;line-height:1.65;color:#435064;white-space:normal}}
+@media(max-width:720px){{.detail{{grid-template-columns:1fr;padding:14px;gap:8px}}h1{{font-size:23px}}}}
+</style></head><body><div class="bar"><strong>即时详情预览</strong><span style="font-size:12px;color:#7b8798">使用当前已保存的数据，不需要构建</span><a href="{online}" target="_blank">打开线上页面</a></div>
+<main class="wrap"><div class="crumb">VivaBien / {esc(p.get("type", ""))}</div><div class="detail"><div>
+<img class="main" src="/images/{esc(photos[0] if photos else p.get("img", ""))}" alt="{esc(p["title"])}">
+<div class="gallery">{gallery}</div></div><div><h1>{esc(p["title"])}</h1><div class="price">{price_html}</div><div class="label">Descripción</div><div class="desc">{body}</div></div></div></main></body></html>'''
 
 def page_html():
     prods = products()
     cats = sorted({p["type"] for p in prods if p["type"].strip()})
     cat_opts = "".join(f'<option value="{esc(c)}">{esc(c)}</option>' for c in cats)
+    coll_by_sku = {}
+    for coll in load_collections():
+        for sku in coll.get("skus", []):
+            coll_by_sku.setdefault(sku, []).append({"slug": coll.get("slug", ""), "title": coll.get("title", "")})
     cards = []
     for p in prods:
         nimg = len(sku_photos_by_img(p["img"])) if p["img"] else 0
+        topics = coll_by_sku.get(p["sku"], [])
+        topic_data = esc(json.dumps(topics, ensure_ascii=False))
+        topic_markup = (f'<div class="topics"><button class="topic-btn" data-colls="{topic_data}" '
+                        f'onclick="openColls(this);event.stopPropagation()">🪴 所属专题（{len(topics)}）</button></div>'
+                        if topics else '<div class="topics empty-topic">尚未加入专题</div>')
         cards.append(f"""<div class="card" data-t="{esc(p['title'].lower())}" data-h="{esc(p['handle'])}" data-img="{esc(p['img'])}">
 <div class="imgw"><img src="/images/{esc(p['img'])}" loading="lazy" onerror="this.style.opacity=.15">
 <span class="nimg">📸 {nimg}</span></div>
@@ -707,10 +755,12 @@ def page_html():
 <span class="cur">RD$</span><input class="pr" type="number" step="any" value="{esc(p['price'])}" placeholder="价格">
 </div>
 <select class="ca">{''.join(f'<option {"selected" if c==p["type"] else ""} value="{esc(c)}">{esc(c)}</option>' for c in cats)}</select>
+{topic_markup}
 <div class="row">
 <button class="save" onclick="save(this)">保存</button>
 <button class="mini" onclick="openDesc(this)">✏️ 详情</button>
 <button class="mini" onclick="openPhotos(this)">📷 图片</button>
+<a class="mini preview-link" href="/preview-product?handle={quote(p['handle'])}" target="_blank">👁 预览</a>
 <button class="del" onclick="del_(this)">✕</button>
 </div>
 </div></div>""")
@@ -729,6 +779,7 @@ body{{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;colo
 .b-pub{{background:#FF6B4A;color:#fff}}
 .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;padding:16px 18px}}
 .card{{background:#fff;border:1px solid #EDF1F7;border-radius:16px;overflow:hidden}}
+.card.focus-card{{border-color:#2563D9;box-shadow:0 0 0 4px rgba(37,99,217,.16)}}
 .imgw{{position:relative}}
 .card img{{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}}
 .nimg{{position:absolute;bottom:8px;right:8px;background:rgba(22,32,46,.75);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px}}
@@ -738,6 +789,11 @@ body{{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;colo
 .cur{{font-weight:700;font-size:13px;color:#8a93a2}}
 .pr{{flex:1;border:1px solid #E5EAF2;border-radius:9px;padding:7px;font-size:14px;font-weight:700;width:100%}}
 .ca{{border:1px solid #E5EAF2;border-radius:9px;padding:7px;font-size:12px;background:#fff}}
+.topics{{min-height:24px;font-size:11px;color:#8a93a2}}
+.topic-btn{{border:0;background:#EEF4FF;color:#2563D9;border-radius:8px;padding:5px 8px;font-size:11px;font-weight:700;cursor:pointer}}
+.empty-topic{{padding:3px 2px}}
+.preview-link{{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}}
+.coll-choice{{display:block;text-decoration:none;color:#2563D9;background:#F1F5FB;border-radius:10px;padding:12px;margin:8px 0;font-weight:700;font-size:13px}}
 .save{{flex:1;background:#2563D9;color:#fff;border:0;border-radius:9px;padding:9px;font-weight:700;cursor:pointer}}
 .save.ok{{background:#157A4E}}
 .mini{{background:#F1F5FB;color:#2563D9;border:0;border-radius:9px;padding:9px 8px;font-size:12px;font-weight:700;cursor:pointer}}
@@ -760,6 +816,9 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 .ph .lb{{position:absolute;top:6px;left:6px;background:rgba(37,99,217,.9);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}}
 .ph .rm{{position:absolute;top:6px;right:6px;background:rgba(192,57,43,.9);color:#fff;border:0;width:22px;height:22px;border-radius:99px;font-size:12px;cursor:pointer;line-height:1}}
 .uprow{{display:flex;gap:8px;align-items:center;flex-wrap:wrap}}
+.paste-box{{border:2px dashed #C9D6EC;border-radius:14px;background:#F7F9FD;min-height:92px;margin:0 0 12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;cursor:pointer;color:#68758a;font-size:12px}}
+.paste-box:focus,.paste-box.active{{border-color:#2563D9;background:#EAF0FB;outline:none}}
+#pastePrev{{display:none;max-width:100%;max-height:180px;object-fit:contain;background:#fff;border-radius:8px}}
 #log{{position:fixed;left:12px;right:12px;bottom:12px;background:#16202E;color:#9fe8c1;font:12px/1.5 ui-monospace,monospace;border-radius:12px;padding:10px 14px;display:none;white-space:pre-wrap;max-height:35vh;overflow:auto;z-index:99}}
 </style></head><body>
 <div class="top">
@@ -777,6 +836,12 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <span id="cnt" style="color:#8a93a2;font-size:13px">{len(prods)} 个商品</span>
 </div>
 <div class="grid" id="grid">{''.join(cards)}</div>
+
+<dialog id="dlgColl">
+<h3>🪴 选择专题</h3>
+<div id="collChoices"></div>
+<div class="row" style="margin-top:14px"><button class="btn" onclick="dlgColl.close()">取消</button></div>
+</dialog>
 
 <dialog id="dlg">
 <h3>＋ 添加新商品</h3>
@@ -818,6 +883,11 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <dialog id="dlgPh">
 <h3>📷 商品图片</h3>
 <div class="ph-grid" id="phGrid"></div>
+<div class="paste-box" id="pasteBox" tabindex="0">
+<div id="pasteHint">点击这里后按 ⌘V 粘贴图片，或使用下面的文件选择</div>
+<img id="pastePrev">
+</div>
+<div class="ferr" id="phErr"></div>
 <div class="uprow">
 <select id="ph-slot" style="flex:1;margin:0">
 <option value="extra">＋ 补充图</option>
@@ -826,8 +896,9 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <option value="main">↻ 替换主图</option>
 </select>
 <input id="ph-f" type="file" accept="image/*" style="flex:2;margin:0">
-<button class="btn b-add" onclick="upPhoto(this)">上传</button>
+<button class="btn b-add" onclick="stageFromFile()">预览</button>
 </div>
+<div class="row" style="margin-top:12px"><button class="btn b-add" style="flex:1" onclick="upPhoto(this)">确认上传</button></div>
 <div class="row" style="margin-top:12px">
 <button class="btn" onclick="dlgPh.close()">关闭</button>
 </div>
@@ -835,7 +906,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <div id="log"></div>
 
 <script>
-let curH='', curImg='';
+let curH='', curImg='', pendingPhoto=null;
 const log = m => {{const d=document.getElementById('log');d.style.display='block';d.textContent=m;setTimeout(()=>d.style.display='none',8000)}};
 function filt(){{
  const q=document.getElementById('q').value.toLowerCase();let n=0;
@@ -882,6 +953,7 @@ async function saveDesc(btn){{
 }}
 async function openPhotos(btn){{
  const c=btn.closest('.card');curH=c.dataset.h;curImg=c.dataset.img;
+ pendingPhoto=null;clearPhotoPreview();document.getElementById('phErr').style.display='none';
  await refreshPhotos();
  dlgPh.showModal();
 }}
@@ -890,7 +962,7 @@ async function refreshPhotos(){{
  const ps=await r.json();
  document.getElementById('phGrid').innerHTML=ps.map(p=>
   '<div class="ph"><img src="/images/'+p.file+'?v='+Date.now()+'"><span class="lb">'+p.label+'</span>'
-  +(p.label!=='主图'?'<button class="rm" onclick="delPhoto(\\''+p.file+'\\')">✕</button>':'')+'</div>').join('');
+  +'<button class="rm" onclick="delPhoto(\\''+p.file+'\\')">✕</button></div>').join('');
 }}
 async function delPhoto(f){{
  if(!confirm('删除这张图片？'))return;
@@ -898,17 +970,43 @@ async function delPhoto(f){{
  if(r.ok)refreshPhotos();else log('删除失败: '+await r.text());
 }}
 async function upPhoto(btn){{
- const f=document.getElementById('ph-f').files[0];
- if(!f){{alert('请选择图片');return}}
+ if(!pendingPhoto){{showPhotoError('请先选择或粘贴图片，并预览后再确认上传');return}}
  btn.disabled=true;btn.textContent='上传中…';
  const fd=new FormData();
  fd.append('handle',curH);
  fd.append('slot',document.getElementById('ph-slot').value);
- fd.append('image',f);
+ fd.append('image',pendingPhoto,'pasted-photo.jpg');
  const r=await fetch('/photo_add',{{method:'POST',body:fd}});
  btn.disabled=false;btn.textContent='上传';
- if(r.ok){{document.getElementById('ph-f').value='';refreshPhotos()}}
- else log('上传失败: '+await r.text());
+ if(r.ok){{document.getElementById('ph-f').value='';pendingPhoto=null;clearPhotoPreview();await refreshPhotos();log('图片已保存')}}
+ else showPhotoError('上传失败：'+await r.text());
+}}
+function showPhotoError(m){{const d=document.getElementById('phErr');d.textContent=m;d.style.display='block'}}
+function clearPhotoPreview(){{const im=document.getElementById('pastePrev');im.removeAttribute('src');im.style.display='none';document.getElementById('pasteHint').style.display='block'}}
+function stageFromFile(){{const f=document.getElementById('ph-f').files[0];if(f)stagePhoto(f);else showPhotoError('请先选择图片')}}
+function stagePhoto(file){{
+ if(!file||!file.type.startsWith('image/')){{showPhotoError('剪贴板或文件中没有可用的图片');return}}
+ if(file.size>20*1024*1024){{showPhotoError('图片原文件超过 20 MB，请先压缩后再试');return}}
+ const im=new Image(),rd=new FileReader();
+ rd.onload=e=>{{im.onload=()=>{{
+   const max=2400,scale=Math.min(1,max/Math.max(im.naturalWidth,im.naturalHeight));
+   const cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(im.naturalWidth*scale));cv.height=Math.max(1,Math.round(im.naturalHeight*scale));
+   cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+   cv.toBlob(blob=>{{if(!blob){{showPhotoError('图片无法处理，请换一张图片');return}}
+     pendingPhoto=blob;document.getElementById('pastePrev').src=URL.createObjectURL(blob);document.getElementById('pastePrev').style.display='block';
+     document.getElementById('pasteHint').style.display='none';document.getElementById('phErr').style.display='none';
+   }},'image/jpeg',.88);
+ }};im.onerror=()=>showPhotoError('图片无法读取，请换一种图片格式');im.src=e.target.result}};
+ rd.readAsDataURL(file);
+}}
+const pasteBox=document.getElementById('pasteBox');
+pasteBox.onclick=()=>pasteBox.focus();
+pasteBox.addEventListener('paste',ev=>{{const items=[...(ev.clipboardData||{{}}).items||[]];const it=items.find(x=>x.type.startsWith('image/'));if(!it){{showPhotoError('剪贴板中没有图片');return}}ev.preventDefault();stagePhoto(it.getAsFile())}});
+document.getElementById('ph-f').onchange=stageFromFile;
+function openColls(btn){{
+ const cs=JSON.parse(btn.dataset.colls||'[]');
+ document.getElementById('collChoices').innerHTML=cs.map(c=>'<a class="coll-choice" href="/colecciones?edit='+encodeURIComponent(c.slug)+'&focus='+encodeURIComponent(btn.closest('.card').dataset.h)+'">🪴 '+esc(c.title)+'</a>').join('');
+ dlgColl.showModal();
 }}
 // 添加商品：拖拽/点击传图 + 预览
 const drop=document.getElementById('drop'),fInput=document.getElementById('a-f'),
@@ -970,6 +1068,10 @@ async function publish(btn){{
  btn.disabled=false;btn.textContent='🚀 发布上线';
  log(t+'\\n\\n（Cloudflare 构建约需 2-3 分钟生效）');
 }}
+const focusH=new URLSearchParams(location.search).get('focus');
+if(focusH){{const card=document.querySelector('.card[data-h="'+CSS.escape(focusH)+'"]');if(card){{
+ card.scrollIntoView({{behavior:'smooth',block:'center'}});card.classList.add('focus-card');setTimeout(()=>card.classList.remove('focus-card'),3500);
+}}}}
 </script></body></html>"""
 
 def import_page():
@@ -1089,7 +1191,10 @@ class H(BaseHTTPRequestHandler):
         if p == "/stats":
             return self.send(200, stats_page())
         if p == "/colecciones":
-            return self.send(200, colecciones_page())
+            return self.send(200, colecciones_page(qs.get("edit", [""])[0], qs.get("focus", [""])[0]))
+        if p == "/preview-product":
+            pr = find_product(qs.get("handle", [""])[0])
+            return self.send(200, product_preview_page(pr) if pr else "商品不存在")
         if p == "/api_timeline":
             code = qs.get("code", [""])[0]
             vid = qs.get("vid", [""])[0]
@@ -1161,9 +1266,20 @@ class H(BaseHTTPRequestHandler):
                 q = parse_qs(body.decode("utf-8"))
                 pr = find_product(q["handle"][0])
                 f = q.get("file", [""])[0]
-                if not pr or not safe_photo_name(pr["img"], f) or f == pr["img"]:
+                if not pr or not safe_photo_name(pr["img"], f):
                     return self.send(400, "无效文件")
-                os.remove(os.path.join(IMG_DIR, f))
+                if f == pr["img"]:
+                    photos = sku_photos_by_img(pr["img"])
+                    if len(photos) <= 1:
+                        return self.send(400, "商品至少需要保留一张图片")
+                    # 主图不能让商品变成无图状态：把下一张提升为主图，再删除原主图。
+                    promote = next(x for x in photos if x != f)
+                    tmp = os.path.join(IMG_DIR, f + ".promote")
+                    os.replace(os.path.join(IMG_DIR, promote), tmp)
+                    os.remove(os.path.join(IMG_DIR, f))
+                    os.replace(tmp, os.path.join(IMG_DIR, f))
+                else:
+                    os.remove(os.path.join(IMG_DIR, f))
                 return self.send(200, "ok")
             if p == "/photo_add":
                 ct = self.headers.get("Content-Type", "")
