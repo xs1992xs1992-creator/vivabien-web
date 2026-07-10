@@ -279,12 +279,29 @@ button{font-family:inherit}
 .hero{margin:16px auto 4px;background:linear-gradient(120deg,#2563D9,#1A47A6);border-radius:22px;padding:28px 24px;color:#fff;position:relative;overflow:hidden}
 .hero h1{font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.02em;max-width:340px}
 .hero .sub{display:flex;align-items:center;gap:7px;margin-top:12px;font-weight:700;font-size:13px;color:#d3e0fb}
-/* search */
-.search{display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #E5EAF2;border-radius:16px;padding:12px 16px;margin-top:16px}
-.search:focus-within{border-color:#2563D9}
-.search svg{flex:none;color:#8a93a2}
+/* search（强化版：蓝边+阴影，一进页面就能看到） */
+.search{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #2563D9;border-radius:18px;padding:14px 16px;margin-top:16px;box-shadow:0 4px 16px rgba(37,99,217,.10)}
+.search svg{flex:none;color:#2563D9}
 .search input{flex:1;border:0;outline:none;font-size:15px;font-family:inherit;background:transparent;color:#16202E}
 .search .clr{flex:none;border:0;background:#F1F4F9;color:#5a6577;width:24px;height:24px;border-radius:99px;cursor:pointer;font-size:12px;display:none}
+/* 最近搜索（用户自己的历史，存 localStorage） */
+.recent{display:none;gap:7px;overflow-x:auto;margin-top:10px;scrollbar-width:none;align-items:center}
+.recent.show{display:flex}
+.recent::-webkit-scrollbar{display:none}
+.recent .rlb{flex:none;font-size:11.5px;color:#9aa3b2;font-weight:600}
+.recent .rch{flex:none;background:#EEF4FF;color:#2563D9;font-weight:600;font-size:12px;padding:6px 12px;border-radius:99px;cursor:pointer}
+.recent .rclr{flex:none;border:0;background:none;color:#c3cad6;font-size:13px;cursor:pointer;padding:4px}
+/* 分类图标网格 */
+.cat-hd{display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 12px}
+.cat-hd b{font-weight:800;font-size:17px}
+.cat-clear{color:#2563D9;font-weight:700;font-size:12.5px;cursor:pointer;display:none}
+.cattiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(min-width:640px){.cattiles{grid-template-columns:repeat(6,1fr)}}
+.tile{background:#fff;border:1.5px solid #EDF1F7;border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .12s}
+.tile:hover{transform:translateY(-2px)}
+.tile.on{border-color:#2563D9;box-shadow:0 0 0 1px #2563D9}
+.tico{width:46px;height:46px;margin:0 auto 8px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.tile .tnm{font-size:12px;font-weight:700;line-height:1.2}
 /* featured collections */
 .feats{display:flex;flex-direction:column;gap:11px;margin:16px 0 2px}
 @media(min-width:640px){.feats{flex-direction:row;flex-wrap:wrap}.feats .feat{flex:1;min-width:280px}}
@@ -331,22 +348,35 @@ button{font-family:inherit}
 .dt .pic{background:#F0F3F8}
 @media(min-width:760px){.dt .pic{border-radius:22px;overflow:hidden;position:sticky;top:80px}}
 .dt .pic img.main{width:100%;aspect-ratio:1;object-fit:cover}
-.thumbs{display:flex;gap:8px;padding:10px;background:#fff}
-.thumbs img{width:58px;height:58px;border-radius:12px;object-fit:cover;border:2px solid transparent;cursor:pointer;background:#F0F3F8}
-.thumbs img.on{border-color:#2563D9}
+/* 大图画廊：整宽滑动 + 圆点指示器 */
+.galwrap{position:relative}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.gal::-webkit-scrollbar{display:none}
+.gal .gs{flex:none;width:100%;scroll-snap-align:center}
+.gal .gs img{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:background .15s}
+.dots span.on{background:#fff}
+.thumbs{display:flex;gap:9px;padding:12px;background:#fff;overflow-x:auto;scrollbar-width:none}
+.thumbs::-webkit-scrollbar{display:none}
+.thumbs img{width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid transparent;cursor:pointer;background:#F0F3F8;opacity:.6;flex:none}
+.thumbs img.on{border-color:#2563D9;opacity:1}
 .panel{background:#fff;border-radius:24px 24px 0 0;margin-top:-22px;position:relative;padding:22px 20px 16px}
 @media(min-width:760px){.panel{border-radius:22px;margin-top:0;border:1px solid #EDF1F7}}
 .panel h1{font-weight:800;font-size:21px;line-height:1.25;margin-bottom:12px;letter-spacing:-.02em}
 .price{font-weight:800;font-size:30px;letter-spacing:-.02em;margin-bottom:16px}
 .price.ask{font-size:22px;color:#FF6B4A}
-.trust{display:flex;justify-content:space-between;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:18px;padding:16px 8px;margin-bottom:20px}
-.trust>div{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;font-size:11px;font-weight:700;text-align:center}
+.trust{display:flex;justify-content:space-between;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:18px;padding:16px 6px;margin-bottom:20px}
+.trust>div{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;font-size:10.5px;font-weight:700;text-align:center}
 .trust>div+div{border-left:1px solid #E5EAF2}
-.trust .em{font-size:20px}
+.trust .em{width:38px;height:38px;border-radius:50%;background:#EAF0FB;display:flex;align-items:center;justify-content:center;font-size:18px}
 .sec{font-weight:800;font-size:15px;margin-bottom:8px}
 .desc{font-size:13px;color:#3a4250;line-height:1.65;margin-bottom:18px}
-/* action bar */
-.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EEF1F6;padding:12px 16px calc(14px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:60}
+/* action bar（含加购信任微标） */
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EEF1F6;padding:12px 16px calc(8px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;z-index:60}
+.bar-btns{display:flex;gap:10px}
+.microtrust{display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:600;color:#5a6577;padding:0 2px}
+.microtrust span{display:flex;align-items:center;gap:6px}
 @media(min-width:760px){.bar{position:static;border:0;padding:0;background:transparent}}
 .btn-wa{flex:none;width:54px;height:52px;display:flex;align-items:center;justify-content:center;background:#25D366;color:#fff;border-radius:16px;cursor:pointer}
 .btn-wa.wide{flex:1;gap:9px;font-weight:800;font-size:16px}
@@ -366,7 +396,20 @@ button{font-family:inherit}
 .rec .rn{font-weight:700;font-size:11.5px;line-height:1.3;height:30px;overflow:hidden;padding:8px 9px 0}
 .rec .rp{font-weight:800;font-size:13.5px;padding:5px 9px 10px}
 .rec .rp.ask{color:#FF6B4A;font-size:11px;font-weight:700}
-footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 0 34px}
+footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 18px 34px;line-height:1.9}
+footer .rnc{font-size:11px;color:#b3bac6}
+/* 悬浮 WhatsApp（呼吸灯 + 30秒提示气泡） */
+.wa-float{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,.45);z-index:70;animation:wapulse 2.4s infinite}
+@keyframes wapulse{0%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.45)}70%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,0)}}
+.wa-tip{position:fixed;right:82px;bottom:calc(30px + env(safe-area-inset-bottom));background:#16202E;color:#fff;font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:13px;z-index:70;display:none;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.wa-tip:after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);border:6px solid transparent;border-left-color:#16202E;border-right:0}
+/* 表单小提示 */
+.hint{font-size:11.5px;color:#8a93a2;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:5px}
+/* 转账三步图 */
+.steps{display:flex;gap:6px;margin-bottom:11px}
+.steps>div{flex:1;background:#fff;border:1px solid #E9EDF4;border-radius:12px;padding:10px 7px;text-align:center}
+.steps .sn{width:22px;height:22px;border-radius:50%;background:#2563D9;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+.steps .st{font-size:10.5px;font-weight:700;line-height:1.35;color:#3a4250}
 /* ---- carrito ---- */
 .ct{max-width:640px;margin:0 auto;padding:18px 18px 40px}
 .ct h1{font-weight:800;font-size:24px;margin:8px 0 16px;letter-spacing:-.02em}
@@ -445,7 +488,18 @@ TRACK_JS = ("<script>window.vbTrack=function(t,s,x){try{var b={type:t,sku:s||''}
             "body:JSON.stringify(b)}).catch(function(){})}catch(e){}};</script>"
             ).replace("__API__", API_BASE)
 
-def page(title, body, pixel_extra="", desc="", track_sku=None):
+WA_FLOAT = f"""<a class="wa-float" href="https://wa.me/{WHATSAPP}" target="_blank" aria-label="WhatsApp"
+ onclick="fbq('track','Contact')">{WA_SVG}</a>
+<div class="wa-tip" id="waTip">¿Dudas? Escríbenos 👋</div>
+<script>
+setTimeout(function(){{
+ try{{if(sessionStorage.getItem('vb_watip'))return;sessionStorage.setItem('vb_watip','1');}}catch(e){{}}
+ var t=document.getElementById('waTip');if(!t)return;t.style.display='block';
+ setTimeout(function(){{t.style.display='none'}},6000);
+}},30000);
+</script>"""
+
+def page(title, body, pixel_extra="", desc="", track_sku=None, wa_float=False):
     view_js = f"<script>vbTrack('view',{json.dumps(track_sku)})</script>" if track_sku else ""
     return f"""<!DOCTYPE html>
 <html lang="es"><head>
@@ -460,7 +514,9 @@ def page(title, body, pixel_extra="", desc="", track_sku=None):
 </head><body>
 {body}
 {view_js}
-<footer>© {SITE_NAME} · Envíos en toda República Dominicana · Pago contra entrega</footer>
+{WA_FLOAT if wa_float else ""}
+<footer>© {SITE_NAME} · Envíos en toda República Dominicana · Pago contra entrega
+<div class="rnc">RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro</div></footer>
 </body></html>"""
 
 def header(rel=""):
@@ -488,7 +544,8 @@ def carrito_page():
 <div class="box" id="formBox">
 <div class="bt">🚚 Datos de entrega</div>
 <div class="fld"><label>Nombre completo *</label><input id="fNom" placeholder="Tu nombre"></div>
-<div class="fld"><label>Teléfono / WhatsApp *</label><input id="fTel" inputmode="tel" placeholder="809 000 0000"></div>
+<div class="fld"><label>Teléfono / WhatsApp *</label><input id="fTel" inputmode="tel" placeholder="809 000 0000">
+<div class="hint">📞 Te llamaremos a este número cuando tu pedido esté llegando</div></div>
 <div class="fld"><label>Provincia *</label><select id="fProv" onchange="provUI()"></select></div>
 <div class="fld" id="sectorFld"><label>Sector / Zona *</label><select id="fSector"></select></div>
 <div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" placeholder="Ej: Santiago, Moca..."></div>
@@ -503,6 +560,11 @@ def carrito_page():
 <label id="lTra"><input type="radio" name="pay" value="transfer" onchange="payUI()"> 🏦 Transferencia bancaria</label>
 </div>
 <div class="bank" id="bankPanel">
+<div class="steps">
+<div><div class="sn">1</div><div class="st">Confirma<br>tu pedido</div></div>
+<div><div class="sn">2</div><div class="st">Transfiere a<br>una cuenta</div></div>
+<div><div class="sn">3</div><div class="st">Envía el comprobante<br>por WhatsApp</div></div>
+</div>
 __BANKS__
 <div class="remind">📸 Por favor envía el comprobante de transferencia por WhatsApp al <b>+1 (809) 281-1992</b>. Tu pedido se despacha al confirmar el pago.</div>
 </div>
@@ -695,7 +757,8 @@ def coleccion_page(c, prods):
 <div class="count"><span>{len(prods)}</span> productos</div>
 <div class="grid">{cards}</div>
 </div>"""
-    return page(f"{c['title']} — {SITE_NAME}", body, desc=(c.get("subtitle") or c["title"])[:150])
+    return page(f"{c['title']} — {SITE_NAME}", body, wa_float=True,
+                desc=(c.get("subtitle") or c["title"])[:150])
 
 def featured_html(collections, by_sku):
     """首页顶部专题入口卡片"""
@@ -747,8 +810,11 @@ def build():
         c["slug"] = slugify(c.get("slug") or c.get("title", ""))
     feats = featured_html(collections, by_sku)
 
-    chips = ['<div class="chip on" data-g="*">Todos</div>'] + [
-        f'<div class="chip" data-g="{esc(g)}">{GROUP_ICONS.get(g, "🛍️")} {esc(g)}</div>' for g in groups]
+    TILE_BG = {"Belleza": "#FCEFF4", "Hogar y Cocina": "#EAF6EF", "Herramientas": "#FFF3EA",
+               "Electrónica": "#EAF0FB", "Bebés y Niños": "#FDF3E7", "Más categorías": "#F1F3F6"}
+    tiles = "".join(
+        f'<div class="tile" data-g="{esc(g)}"><div class="tico" style="background:{TILE_BG.get(g, "#F1F3F6")}">'
+        f'{GROUP_ICONS.get(g, "🛍️")}</div><div class="tnm">{esc(g)}</div></div>' for g in groups)
     subrows = []
     for g in groups:
         schips = ['<div class="schip on" data-s="*">Todo</div>'] + [
@@ -758,15 +824,17 @@ def build():
 
     home_body = f"""{header()}
 <div class="wrap">
-<div class="hero"><h1>Compra fácil, paga seguro</h1>
-<div class="sub">🛡️ Pago contra entrega · Envíos a todo el país</div></div>
 <div class="search">
-<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-<input id="q" type="search" placeholder="¿Qué buscas hoy?" autocomplete="off">
+<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input id="q" type="search" placeholder="¿Qué buscas hoy? Ej: audífonos, espejo…" autocomplete="off">
 <button class="clr" id="qClr" aria-label="Borrar">✕</button>
 </div>
+<div class="recent" id="recentRow"></div>
+<div class="hero"><h1>Compra fácil, paga seguro</h1>
+<div class="sub">🚚 Envíos a todo el país · 🤝 Contra entrega en Sto. Dgo.</div></div>
 {feats}
-<div class="cats">{''.join(chips)}</div>
+<div class="cat-hd"><b id="catHdT">Categorías</b><span class="cat-clear" id="catClear">Quitar filtro ✕</span></div>
+<div class="cattiles" id="cattiles">{tiles}</div>
 {''.join(subrows)}
 <div class="count"><span id="n">{len(products)}</span> productos</div>
 <div class="grid" id="grid">{''.join(cards)}</div>
@@ -782,28 +850,56 @@ function apply(){{let n=0;
   cd.style.display=ok?'':'none';if(ok)n++;}});
  document.getElementById('n').textContent=n;}}
 var qEl=document.getElementById('q'),qClr=document.getElementById('qClr'),qT=null;
+// 最近搜索（只存用户自己的搜索词，最多6个）
+function recGet(){{try{{return JSON.parse(localStorage.getItem('vb_recent')||'[]')}}catch(e){{return[]}}}}
+function recAdd(w){{var r=recGet().filter(x=>x!==w);r.unshift(w);r=r.slice(0,6);
+ try{{localStorage.setItem('vb_recent',JSON.stringify(r))}}catch(e){{}}recPaint();}}
+function recPaint(){{
+ var r=recGet(),row=document.getElementById('recentRow');
+ if(!r.length){{row.classList.remove('show');return}}
+ row.innerHTML='<span class="rlb">Recientes:</span>'+r.map(w=>'<span class="rch">'+w.replace(/[<>&"]/g,'')+'</span>').join('')
+  +'<button class="rclr" title="Borrar historial">✕</button>';
+ row.classList.add('show');
+ row.querySelectorAll('.rch').forEach(ch=>ch.onclick=()=>{{qEl.value=ch.textContent;qEl.dispatchEvent(new Event('input'))}});
+ row.querySelector('.rclr').onclick=()=>{{try{{localStorage.removeItem('vb_recent')}}catch(e){{}}recPaint()}};
+}}
+recPaint();
 qEl.addEventListener('input',()=>{{
  curQ=qEl.value;qClr.style.display=curQ?'block':'none';apply();
  clearTimeout(qT);
- if(curQ.trim().length>2)qT=setTimeout(()=>{{try{{fbq('track','Search',{{search_string:curQ.trim()}})}}catch(e){{}}}},1200);
+ if(curQ.trim().length>2)qT=setTimeout(()=>{{
+  try{{fbq('track','Search',{{search_string:curQ.trim()}})}}catch(e){{}}
+  recAdd(curQ.trim().toLowerCase());
+ }},1200);
 }});
 qClr.onclick=()=>{{qEl.value='';curQ='';qClr.style.display='none';apply();qEl.focus()}};
 var qp=new URLSearchParams(location.search).get('q');
 if(qp){{qEl.value=qp;curQ=qp;qClr.style.display='block';apply()}}
 if(new URLSearchParams(location.search).has('buscar'))qEl.focus();
-document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{{
- document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
- ch.classList.add('on');curG=ch.dataset.g;curS='*';
+// 分类图标网格：点瓦片=选中该大类并展开子分类；再点或“Quitar filtro”=清除
+var catHdT=document.getElementById('catHdT'),catClear=document.getElementById('catClear');
+function setGroup(g,icon){{
+ curG=g;curS='*';
+ document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('on',t.dataset.g===g));
  document.querySelectorAll('.subcats').forEach(r=>{{
-  r.classList.toggle('show',r.dataset.g===curG);
+  r.classList.toggle('show',r.dataset.g===g);
   r.querySelectorAll('.schip').forEach((s,i)=>s.classList.toggle('on',i===0));}});
- apply();}});
+ catHdT.textContent=g==='*'?'Categorías':icon+' '+g;
+ catClear.style.display=g==='*'?'none':'inline';
+ apply();
+}}
+document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>{{
+ var icon=t.querySelector('.tico').textContent;
+ setGroup(t.classList.contains('on')?'*':t.dataset.g,icon);
+ if(curG!=='*')t.scrollIntoView({{block:'nearest'}});
+}});
+catClear.onclick=()=>setGroup('*','');
 document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
  sc.parentElement.querySelectorAll('.schip').forEach(s=>s.classList.remove('on'));
  sc.classList.add('on');curS=sc.dataset.s;apply();}});
 </script>"""
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
-        f.write(page(f"{SITE_NAME} — Tienda online RD", home_body,
+        f.write(page(f"{SITE_NAME} — Tienda online RD", home_body, wa_float=True,
                      desc="Hogar, belleza, herramientas, electrónica y más. Pago contra entrega en República Dominicana."))
 
     # ---- 购物车页 ----
@@ -846,16 +942,35 @@ document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
 
     # ---- 详情页 ----
     for p in products:
-        # 多图画廊：显式类型清单 + 命名兜底，统一按类型顺序（见 product_gallery）
+        # 多图画廊：整宽滑动 + 圆点指示器 + 缩略图（单图退化为普通大图）
         gal = product_gallery(p)
-        main_img = f'<img class="main" id="mainImg" src="../images/{esc(gal[0] if gal else "")}" alt="{esc(p["title"])}" onerror="this.style.opacity=0">'
-        thumbs = ""
         if len(gal) > 1:
-            thumbs = '<div class="thumbs">' + "".join(
-                f'<img src="../images/{esc(g)}" class="{"on" if i==0 else ""}" '
-                f'onclick="document.getElementById(\'mainImg\').src=this.src;'
-                f'this.parentElement.querySelectorAll(\'img\').forEach(t=>t.classList.remove(\'on\'));'
-                f'this.classList.add(\'on\')">' for i, g in enumerate(gal)) + '</div>'
+            lazy = "loading='lazy' "
+            slides = "".join(
+                f'<div class="gs"><img src="../images/{esc(g)}" alt="{esc(p["title"])}" '
+                f'{lazy if i else ""}onerror="this.style.opacity=0"></div>'
+                for i, g in enumerate(gal))
+            dots = "".join(f'<span class="{"on" if i == 0 else ""}"></span>' for i in range(len(gal)))
+            gallery_html = (f'<div class="galwrap"><div class="gal" id="gal">{slides}</div>'
+                            f'<div class="dots" id="dots">{dots}</div></div>')
+            thumbs = '<div class="thumbs" id="galThumbs">' + "".join(
+                f'<img src="../images/{esc(g)}" class="{"on" if i==0 else ""}" data-i="{i}">'
+                for i, g in enumerate(gal)) + '</div>'
+            gal_js = """<script>
+(function(){
+ var gal=document.getElementById('gal'),dots=document.getElementById('dots').children,
+     ths=document.getElementById('galThumbs').children,n=gal.children.length,cur=0;
+ function setOn(i){if(i===cur)return;cur=i;
+  for(var k=0;k<n;k++){dots[k].classList.toggle('on',k===i);ths[k].classList.toggle('on',k===i)}}
+ gal.addEventListener('scroll',function(){setOn(Math.round(gal.scrollLeft/gal.clientWidth))},{passive:true});
+ for(var k=0;k<n;k++)(function(i){ths[i].onclick=function(){gal.scrollTo({left:i*gal.clientWidth,behavior:'smooth'})}})(k);
+})();
+</script>"""
+        else:
+            gallery_html = (f'<img class="main" src="../images/{esc(gal[0] if gal else "")}" '
+                            f'alt="{esc(p["title"])}" onerror="this.style.opacity=0">')
+            thumbs = ""
+            gal_js = ""
         price_html = (f'<div class="price">{fmt_price(p["price"])}</div>' if p["price"] is not None
                       else '<div class="price ask">Consultar precio por WhatsApp</div>')
         desc_html = body_html(p["body"]) if len(p["body"].strip()) > 10 else esc(p["title"])
@@ -900,25 +1015,32 @@ function addCart(b){
         detail = f"""{header("../")}
 <div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['group'])} / {esc(p['sub'])}</div>
 <div class="dt">
-<div class="pic">{main_img}{thumbs}</div>
+<div class="pic">{gallery_html}{thumbs}</div>
 <div>
 <div class="panel">
 <h1>{esc(p['title'])}</h1>
 {price_html}
 <div class="trust">
 <div><span class="em">🚚</span>Envío a<br>todo el país</div>
-<div><span class="em">🤝</span>Pago contra<br>entrega</div>
+<div><span class="em">🤝</span>Contra entrega<br>en Sto. Dgo.</div>
 <div><span class="em">✅</span>Producto<br>verificado</div>
 </div>
 <div class="sec">Descripción</div>
 <div class="desc">{desc_html}</div>
 <div class="bar">
+<div class="bar-btns">
 {actions}
+</div>
+<div class="microtrust">
+<span>🛡️ Pago 100% seguro</span>
+<span>👀 Puedes verificar tu producto antes de pagar</span>
+</div>
 </div>
 </div>
 </div>
 </div>
 {recs_html}
+{gal_js}
 {add_js}"""
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
             f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve,
