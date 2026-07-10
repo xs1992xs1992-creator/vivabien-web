@@ -247,6 +247,16 @@ def photo_add(img, slot, data):
         f.write(data)
     return fname
 
+def photo_replace(img, fname, data):
+    """用新图片覆盖商品当前画廊中的指定图片。"""
+    if not safe_photo_name(img, fname):
+        raise ValueError("无效图片")
+    if len(data) > 15 * 1024 * 1024:
+        raise ValueError("图片文件太大，请压缩后再上传（最大 15 MB）")
+    with open(os.path.join(IMG_DIR, fname), "wb") as f:
+        f.write(data)
+    return fname
+
 # ---------- 流水线导入（上游只读） ----------
 def upstream_read():
     """读上游 CSV，返回 (主行列表, 按Handle分组的多图附加行)；上游不存在返回 None"""
@@ -611,46 +621,98 @@ def coll_slugify(s):
     return s or "coleccion"
 
 _COLL_JS = """<script>
-var COLLS=__COLLS__, PRODS=__PRODS__, picked={}, order=[], editSlug='';
-var INITIAL_EDIT='__EDIT__', INITIAL_FOCUS='__FOCUS__';
-function esc(s){return (s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}
+var COLLS=__COLLS__, PRODS=__PRODS__, TYPES=__TYPES__, picked={}, order=[], editSlug='';
+var INITIAL_EDIT='__EDIT__', INITIAL_FOCUS='__FOCUS__', currentProduct='', pendingPhoto=null, photoTargetFile='';
+function esc(s){return (s==null?'':String(s)).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}
+function product(s){return PRODS.find(function(p){return p.sku===s})}
+function count(){document.getElementById('pcnt').textContent=order.filter(function(s){return picked[s]}).length}
+function renderBoard(){
+ var box=document.getElementById('collectionBoard'),html='',n=0;
+ order.forEach(function(s){
+  if(!picked[s])return;var p=product(s);if(!p)return;n++;
+  var opts=TYPES.map(function(t){return '<option '+(t===p.c?'selected':'')+' value=\"'+esc(t)+'\">'+esc(t)+'</option>'}).join('');
+  html+='<article class=\"collection-product\" data-sku=\"'+esc(p.sku)+'\" data-h=\"'+esc(p.h)+'\" data-img=\"'+esc(p.img)+'\">'
+   +'<div class=\"cp-num\">'+String(n).padStart(2,'0')+'</div><button class=\"cp-photo-button\" onclick=\"openProductPhotos(\\''+p.sku+'\\')\"><img class=\"cp-img\" src=\"/images/'+esc(p.img)+'\" onerror=\"this.style.opacity=.2\"><span>编辑图片</span></button>'
+   +'<div class=\"cp-fields\"><input class=\"cp-title\" value=\"'+esc(p.t)+'\"><div class=\"cp-line\"><span>RD$</span><input class=\"cp-price\" type=\"number\" step=\"any\" value=\"'+esc(p.p)+'\" placeholder=\"价格\"><select class=\"cp-type\">'+opts+'</select></div>'
+   +'<div class=\"cp-actions\"><button class=\"save-prod\" onclick=\"saveProduct(this)\">保存商品</button><button class=\"edit-prod\" onclick=\"openProductEdit(\\''+p.sku+'\\')\">编辑详情</button><button class=\"photo-prod\" onclick=\"openProductPhotos(\\''+p.sku+'\\')\">图片</button><button class=\"remove-prod\" onclick=\"removeSku(\\''+p.sku+'\\')\">移出专题</button><button class=\"move-prod\" onclick=\"moveSku(\\''+p.sku+'\\',-1)\">↑</button><button class=\"move-prod\" onclick=\"moveSku(\\''+p.sku+'\\',1)\">↓</button><a class=\"preview-prod\" href=\"/preview-product?handle='+encodeURIComponent(p.h)+'\" target=\"_blank\">预览</a></div></div></article>';
+ });
+ box.innerHTML=html||'<div class=\"board-empty\">这个专题还没有商品。点击“添加商品”开始。</div>';count();
+ if(INITIAL_FOCUS){var el=document.querySelector('.collection-product[data-sku=\"'+INITIAL_FOCUS+'\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('focus-prod')}}
+}
 function renderPicker(){
  var q=(document.getElementById('pq').value||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
- var box=document.getElementById('picker'),n=0,html='';
- for(var i=0;i<PRODS.length;i++){var p=PRODS[i];
-  if(q&&p.q.indexOf(q)<0)continue; n++; if(n>300){html+='<div class=\"pmore\">…escribe para filtrar más</div>';break;}
-  html+='<label class=\"prow\" data-sku=\"'+esc(p.sku)+'\"><input type=\"checkbox\" '+(picked[p.sku]?'checked':'')+' onchange=\"toggleSku(\\''+p.sku+'\\',this.checked)\">'
-   +'<img src=\"/images/'+esc(p.img)+'\" onerror=\"this.style.visibility=\\'hidden\\'\"><span>'+esc(p.t)+'</span>'
-   +(picked[p.sku]?'<button class=\"move-prod\" onclick=\"event.preventDefault();event.stopPropagation();moveSku(\\''+p.sku+'\\',-1)\">↑</button><button class=\"move-prod\" onclick=\"event.preventDefault();event.stopPropagation();moveSku(\\''+p.sku+'\\',1)\">↓</button>':'')
-   +'<a class=\"edit-prod\" href=\"/?focus='+encodeURIComponent(p.h)+'\" onclick=\"event.stopPropagation()\">编辑商品</a></label>';}
- box.innerHTML=html; cnt();
+ var box=document.getElementById('picker'),html='';
+ PRODS.forEach(function(p){if(q&&p.q.indexOf(q)<0)return;
+  html+='<label class=\"add-row\"><input type=\"checkbox\" '+(picked[p.sku]?'checked':'')+' onchange=\"toggleSku(\\''+p.sku+'\\',this.checked)\"><img src=\"/images/'+esc(p.img)+'\"><span>'+esc(p.t)+'</span></label>';});
+ box.innerHTML=html||'<div class=\"board-empty\">没有匹配商品</div>';
 }
-function cnt(){var k=Object.keys(picked).filter(function(s){return picked[s]});document.getElementById('pcnt').textContent=k.length;}
-function toggleSku(s,on){picked[s]=on;if(on&&!order.includes(s))order.push(s);if(!on)order=order.filter(function(x){return x!==s});cnt();renderPicker();}
-function moveSku(s,delta){var i=order.indexOf(s),j=i+delta;if(i<0||j<0||j>=order.length)return;var x=order[i];order[i]=order[j];order[j]=x;renderPicker();}
-function newColl(){editSlug='';picked={};order=[];document.getElementById('cTitle').value='';document.getElementById('cSub').value='';
- document.getElementById('cActive').checked=true;document.getElementById('cOrder').value=0;
- document.getElementById('edTitle').textContent='＋ Nuevo tema';renderPicker();window.scrollTo(0,document.body.scrollHeight);}
-function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};order=(c.skus||[]).slice();
- (c.skus||[]).forEach(function(s){picked[s]=true});
- document.getElementById('cTitle').value=c.title||'';document.getElementById('cSub').value=c.subtitle||'';
- document.getElementById('cActive').checked=c.active!==false;document.getElementById('cOrder').value=c.order||0;
- document.getElementById('edTitle').textContent='✏️ Editar: '+(c.title||'');renderPicker();window.scrollTo(0,document.body.scrollHeight);}
-function save(){var skus=order.filter(function(s){return picked[s]});Object.keys(picked).forEach(function(s){if(picked[s]&&!skus.includes(s))skus.push(s)});
- var title=document.getElementById('cTitle').value.trim();
- if(!title){alert('Pon un nombre al tema');return;}
- if(!skus.length){alert('Elige al menos un producto');return;}
- var body={slug:editSlug,title:title,subtitle:document.getElementById('cSub').value.trim(),
-  active:document.getElementById('cActive').checked,order:parseInt(document.getElementById('cOrder').value)||0,skus:skus};
- fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
-  .then(function(r){return r.json()}).then(function(d){if(d.ok)location.reload();else alert(d.error||'Error')});
+function toggleSku(s,on){picked[s]=on;if(on&&!order.includes(s))order.push(s);if(!on)order=order.filter(function(x){return x!==s});renderBoard();renderPicker()}
+function removeSku(s){if(!confirm('只从这个专题中移出商品？'))return;toggleSku(s,false)}
+function moveSku(s,d){var i=order.indexOf(s),j=i+d;if(i<0||j<0||j>=order.length)return;var x=order[i];order[i]=order[j];order[j]=x;renderBoard()}
+async function saveProduct(btn){
+ var row=btn.closest('.collection-product'),p=product(row.dataset.sku);
+ var fd=new URLSearchParams({handle:row.dataset.h,title:row.querySelector('.cp-title').value,price:row.querySelector('.cp-price').value,type:row.querySelector('.cp-type').value});
+ btn.disabled=true;var r=await fetch('/update',{method:'POST',body:fd});btn.disabled=false;
+ if(r.ok){p.t=row.querySelector('.cp-title').value;p.p=row.querySelector('.cp-price').value;p.c=row.querySelector('.cp-type').value;btn.textContent='已保存';setTimeout(function(){btn.textContent='保存商品'},1300)}
+ else alert('商品保存失败：'+await r.text());
 }
-function toggle(slug){fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},
- body:JSON.stringify({slug:slug,toggle:true})}).then(function(){location.reload()})}
-function del_(slug){if(!confirm('¿Borrar este tema? (no borra los productos)'))return;
- fetch('/coleccion_del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug})}).then(function(){location.reload()})}
-renderPicker();
-if(INITIAL_EDIT){edit(INITIAL_EDIT);setTimeout(function(){var el=document.querySelector('.prow[data-sku=\"'+INITIAL_FOCUS+'\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('focus-prod')}},80)}
+async function openProductEdit(s){
+ var p=product(s);if(!p)return;window.currentProduct=s;
+ document.getElementById('editTitle').value=p.t||'';document.getElementById('editPrice').value=p.p||'';
+ document.getElementById('editType').innerHTML=TYPES.map(function(t){return '<option '+(t===p.c?'selected':'')+' value=\"'+esc(t)+'\">'+esc(t)+'</option>'}).join('');
+ var r=await fetch('/body?handle='+encodeURIComponent(p.h));document.getElementById('editBody').value=await r.text();productEditDlg.showModal();
+}
+async function saveProductEdit(btn){
+ var p=product(window.currentProduct);if(!p)return;
+ var fd=new URLSearchParams({handle:p.h,title:document.getElementById('editTitle').value,price:document.getElementById('editPrice').value,type:document.getElementById('editType').value,body:document.getElementById('editBody').value});
+ btn.disabled=true;var r=await fetch('/update',{method:'POST',body:fd});btn.disabled=false;
+ if(!r.ok){alert('详情保存失败：'+await r.text());return}
+ p.t=fd.get('title');p.p=fd.get('price');p.c=fd.get('type');p.b=fd.get('body');productEditDlg.close();renderBoard();
+}
+async function openProductPhotos(s){
+ var p=product(s);if(!p)return;window.currentProduct=s;pendingPhoto=null;photoTargetFile='';clearPhotoPreview();setPhotoMode('');
+ var r=await fetch('/photos?handle='+encodeURIComponent(p.h));var ps=await r.json();
+ document.getElementById('photoGrid').innerHTML=ps.map(function(x){return '<div class=\"photo-cell\"><img src=\"/images/'+esc(x.file)+'?v='+Date.now()+'\"><span>'+esc(x.label)+'</span><div><button class=\"replace-photo\" onclick=\"selectPhotoTarget(\\''+x.file+'\\',\\''+esc(x.label)+'\\')\">替换</button><button class=\"delete-photo\" onclick=\"deleteProductPhoto(\\''+x.file+'\\')\">删除</button></div></div>'}).join('');
+ photoDlg.showModal();
+}
+function setPhotoMode(label){
+ var m=document.getElementById('photoMode'),slot=document.getElementById('photoSlot');
+ if(label){m.textContent='正在替换：'+label;slot.disabled=true}else{m.textContent='新增图片';slot.disabled=false}
+}
+function selectPhotoTarget(file,label){photoTargetFile=file;pendingPhoto=null;clearPhotoPreview();setPhotoMode(label);document.getElementById('photoPaste').focus()}
+function addPhotoMode(){photoTargetFile='';pendingPhoto=null;clearPhotoPreview();setPhotoMode('')}
+async function deleteProductPhoto(f){
+ if(!confirm('确认删除这张图片？'))return;var p=product(window.currentProduct);
+ var r=await fetch('/photo_del',{method:'POST',body:new URLSearchParams({handle:p.h,file:f})});
+ if(r.ok)openProductPhotos(window.currentProduct);else alert('删除失败：'+await r.text());
+}
+function showPhotoError(m){var d=document.getElementById('photoError');d.textContent=m;d.style.display='block'}
+function clearPhotoPreview(){var im=document.getElementById('photoPrev');im.removeAttribute('src');im.style.display='none';document.getElementById('photoHint').style.display='block'}
+function stagePhoto(file){
+ if(!file||!file.type.startsWith('image/'))return showPhotoError('请选择有效图片');
+ if(file.size>20*1024*1024)return showPhotoError('图片超过 20 MB，请先压缩');
+ var im=new Image(),rd=new FileReader();rd.onload=function(e){im.onload=function(){
+  var max=2400,scale=Math.min(1,max/Math.max(im.naturalWidth,im.naturalHeight)),cv=document.createElement('canvas');cv.width=Math.round(im.naturalWidth*scale);cv.height=Math.round(im.naturalHeight*scale);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+  cv.toBlob(function(blob){if(!blob)return showPhotoError('图片无法处理');pendingPhoto=blob;document.getElementById('photoPrev').src=URL.createObjectURL(blob);document.getElementById('photoPrev').style.display='block';document.getElementById('photoHint').style.display='none';document.getElementById('photoError').style.display='none'},'image/jpeg',.88)
+ };im.onerror=function(){showPhotoError('图片无法读取')};im.src=e.target.result};rd.readAsDataURL(file)
+}
+function previewPhotoFile(){var f=document.getElementById('photoFile').files[0];if(f)stagePhoto(f);else showPhotoError('请先选择图片')}
+async function uploadProductPhoto(btn){
+ if(!pendingPhoto)return showPhotoError('请先选择或粘贴图片并预览');
+ var p=product(window.currentProduct),fd=new FormData();fd.append('handle',p.h);fd.append('slot',document.getElementById('photoSlot').value);fd.append('image',pendingPhoto,'pasted-photo.jpg');
+ if(photoTargetFile)fd.append('file',photoTargetFile);
+ btn.disabled=true;var r=await fetch(photoTargetFile?'/photo_replace':'/photo_add',{method:'POST',body:fd});btn.disabled=false;
+ if(r.ok){pendingPhoto=null;clearPhotoPreview();openProductPhotos(window.currentProduct)}else showPhotoError('上传失败：'+await r.text())
+}
+function newColl(){editSlug='';picked={};order=[];document.getElementById('cTitle').value='';document.getElementById('cSub').value='';document.getElementById('cActive').checked=true;document.getElementById('cOrder').value=0;document.getElementById('edTitle').textContent='＋ 新建专题';renderBoard()}
+function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};order=(c.skus||[]).slice();order.forEach(function(s){picked[s]=true});document.getElementById('cTitle').value=c.title||'';document.getElementById('cSub').value=c.subtitle||'';document.getElementById('cActive').checked=c.active!==false;document.getElementById('cOrder').value=c.order||0;document.getElementById('edTitle').textContent='✏️ 编辑：'+(c.title||'');renderBoard()}
+function save(){var skus=order.filter(function(s){return picked[s]}),title=document.getElementById('cTitle').value.trim();if(!title){alert('请填写专题名称');return}if(!skus.length){alert('专题至少需要一个商品');return}var body={slug:editSlug,title:title,subtitle:document.getElementById('cSub').value.trim(),active:document.getElementById('cActive').checked,order:parseInt(document.getElementById('cOrder').value)||0,skus:skus};fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(d){if(d.ok)location.reload();else alert(d.error||'保存失败')})}
+function toggle(slug){fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug,toggle:true})}).then(function(){location.reload()})}
+function del_(slug){if(!confirm('删除专题？（不会删除商品）'))return;fetch('/coleccion_del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug})}).then(function(){location.reload()})}
+var photoPaste=document.getElementById('photoPaste');
+photoPaste.onclick=function(){photoPaste.focus()};
+photoPaste.addEventListener('paste',function(ev){var items=[...(ev.clipboardData||{}).items||[]],it=items.find(function(x){return x.type.startsWith('image/')});if(!it)return showPhotoError('剪贴板中没有图片');ev.preventDefault();stagePhoto(it.getAsFile())});
+renderPicker();if(INITIAL_EDIT)edit(INITIAL_EDIT);else renderBoard();
 </script>"""
 
 def colecciones_page(edit_slug="", focus_sku=""):
@@ -668,8 +730,10 @@ def colecciones_page(edit_slug="", focus_sku=""):
                  f'<button class="cp del" onclick="del_(\'{esc(c.get("slug",""))}\')">删除</button></td></tr>')
     prods_json = json.dumps([
         {"sku": p["sku"], "h": p["handle"], "t": p["title"], "img": p["img"],
+         "p": p["price"], "c": p["type"], "b": p.get("body", ""),
          "q": _snorm(p["title"] + " " + p.get("type", ""))} for p in prods if p["sku"]],
         ensure_ascii=False)
+    types_json = json.dumps(sorted({p.get("type", "") for p in prods if p.get("type", "")}), ensure_ascii=False)
     colls_json = json.dumps(colls, ensure_ascii=False)
     inner = (
         '<h1>🪴 专题合集 <span class="sub">首页突出入口 + 专属专题页</span></h1>'
@@ -686,25 +750,35 @@ def colecciones_page(edit_slug="", focus_sku=""):
         '<div class="row2"><div><label>排序（小的在前）</label><input id="cOrder" type="number" value="0"></div>'
         '<div><label>状态</label><label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-top:8px">'
         '<input id="cActive" type="checkbox" checked style="width:18px;height:18px"> 上架显示</label></div></div>'
-        '<label>选商品（勾选要放进这个专题的商品）<span id="pcnt" class="pcnt">0</span> 已选</label>'
-        '<input id="pq" placeholder="搜索商品名…" oninput="renderPicker()">'
-        '<div id="picker" class="picker"></div>'
+        '<div class="board-head"><div><b>专题商品</b><span class="pcnt" id="pcnt">0</span><span class="board-hint">可直接修改商品信息，鼠标滚轮浏览</span></div>'
+        '<button class="pri add-btn" onclick="addDlg.showModal();renderPicker()">＋ 添加商品</button></div>'
+        '<div id="collectionBoard" class="collection-board"></div>'
         '<button class="pri" onclick="save()">保存专题</button>'
         '</div></div>'
-        + _COLL_JS.replace("__COLLS__", colls_json).replace("__PRODS__", prods_json)
+        '<dialog id="addDlg"><h3>添加商品到专题</h3><input id="pq" placeholder="搜索商品名…" oninput="renderPicker()"><div id="picker" class="picker"></div><div class="row" style="margin-top:12px"><button class="btn" onclick="addDlg.close()">完成</button></div></dialog>'
+        '<dialog id="productEditDlg"><h3>编辑商品</h3><label>商品标题</label><input id="editTitle"><label>价格 RD$</label><input id="editPrice" type="number" step="any"><label>分类</label><select id="editType"></select><label>详情描述</label><textarea id="editBody" rows="10"></textarea><div class="row"><button class="btn b-add" style="flex:1" onclick="saveProductEdit(this)">保存商品</button><button class="btn" onclick="productEditDlg.close()">取消</button></div></dialog>'
+        '<dialog id="photoDlg"><h3>编辑商品图片</h3><div class="photo-help">点击某张图片下方的“替换”，然后粘贴或选择新图片；“新增图片”会保留原图。</div><div id="photoGrid" class="photo-grid"></div><div class="photo-mode"><b id="photoMode">新增图片</b><button class="btn" onclick="addPhotoMode()">＋ 新增图片</button></div><div class="paste-box" id="photoPaste" tabindex="0"><span id="photoHint">点击这里后按 ⌘V 粘贴图片</span><img id="photoPrev"></div><div class="ferr" id="photoError"></div><div class="photo-upload"><select id="photoSlot"><option value="extra">＋ 补充图</option><option value="dim">＋ 尺寸图</option><option value="scene">＋ 场景图</option></select><input id="photoFile" type="file" accept="image/*" onchange="previewPhotoFile()"><button class="btn b-add" onclick="previewPhotoFile()">预览</button><button class="btn b-add" onclick="uploadProductPhoto(this)">确认保存</button></div><button class="btn" onclick="photoDlg.close()">关闭</button></dialog>'
+        + _COLL_JS.replace("__COLLS__", colls_json).replace("__PRODS__", prods_json).replace("__TYPES__", types_json)
                     .replace("__EDIT__", esc(edit_slug)).replace("__FOCUS__", esc(focus_sku)))
     extra_css = (
         '<style>.slug{font-size:11px;color:#8a93a2;font-weight:600;margin-top:2px}'
         '.acts{white-space:nowrap}.cp.del{color:#c0392b}'
-        '.pcnt{background:#2563D9;color:#fff;border-radius:99px;padding:1px 9px;font-weight:800;margin-left:4px}'
-        '.picker{max-height:340px;overflow-y:auto;border:1px solid #EDF1F7;border-radius:12px;margin-bottom:14px}'
-        '.prow{display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid #F4F6FB;font-size:13px;cursor:pointer}'
-        '.prow img{width:34px;height:34px;border-radius:8px;object-fit:cover;background:#F0F3F8}'
-        '.prow input{width:17px;height:17px;flex:none}.prow span{flex:1}'
-        '.edit-prod{color:#2563D9;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap}'
-        '.move-prod{border:0;background:#EAF0FB;color:#2563D9;border-radius:6px;width:22px;height:22px;font-weight:800;cursor:pointer}'
-        '.prow.focus-prod{background:#EAF0FB;outline:2px solid #2563D9}'
-        '.pmore{padding:10px;text-align:center;color:#9aa3b2;font-size:12px}</style>')
+        '.board-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}'
+        '.board-head b{font-size:16px}.board-hint{font-size:12px;color:#8a93a2;margin-left:9px}'
+        '.pcnt{display:inline-block;background:#2563D9;color:#fff;border-radius:99px;padding:2px 8px;font-weight:800;margin-left:7px;font-size:12px}'
+        '.add-btn{width:auto;margin:0;padding:9px 13px;font-size:13px}'
+        '.collection-board{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}'
+        '.collection-product{display:grid;grid-template-columns:34px 86px minmax(0,1fr);gap:12px;align-items:center;background:#fff;border:1px solid #E7ECF4;border-radius:13px;padding:9px 11px}'
+        '.collection-product.focus-prod{border-color:#2563D9;box-shadow:0 0 0 3px rgba(37,99,217,.13)}'
+        '.cp-num{font-weight:800;color:#9aa3b2;text-align:center}.cp-photo-button{position:relative;padding:0;border:0;border-radius:10px;background:#F0F3F8;cursor:pointer;overflow:hidden}.cp-photo-button span{position:absolute;left:0;right:0;bottom:0;background:rgba(22,32,46,.78);color:#fff;font-size:11px;font-weight:800;padding:5px}.cp-img{display:block;width:86px;height:86px;object-fit:cover;background:#F0F3F8}'
+        '.cp-fields{min-width:0}.cp-title{width:100%;border:1px solid #E5EAF2;border-radius:8px;padding:8px 9px;font:600 14px inherit}.cp-line{display:flex;gap:7px;margin-top:7px}.cp-line span{align-self:center;color:#8a93a2;font-weight:700;font-size:12px}.cp-price,.cp-type{border:1px solid #E5EAF2;border-radius:8px;padding:7px;font:13px inherit}.cp-price{width:130px}.cp-type{min-width:190px;flex:1}.cp-actions{display:flex;gap:6px;align-items:center;margin-top:8px}.cp-actions button,.preview-prod{border:0;border-radius:7px;padding:7px 9px;font-size:11px;font-weight:800;cursor:pointer;text-decoration:none}.save-prod{background:#2563D9;color:#fff}.remove-prod{background:#FFF0EE;color:#C0392B}.move-prod{background:#EEF4FF;color:#2563D9;width:28px}.preview-prod{background:#F1F5FB;color:#2563D9}.board-empty{text-align:center;background:#F7F9FD;border:1px dashed #C9D6EC;border-radius:12px;padding:28px;color:#8a93a2;font-size:13px}'
+        '#productEditDlg label{display:block;font-size:12px;font-weight:700;color:#5a6577;margin:10px 0 5px}#productEditDlg input,#productEditDlg select,#productEditDlg textarea{width:100%;border:1px solid #E5EAF2;border-radius:9px;padding:9px;font:14px inherit;margin-bottom:4px}'
+        '.photo-help{font-size:12px;color:#68758a;line-height:1.5;margin:-5px 0 12px}.photo-grid{display:grid;grid-template-columns:repeat(4,minmax(80px,1fr));gap:8px;margin-bottom:14px}.photo-cell{border:1px solid #E7ECF4;border-radius:9px;overflow:hidden}.photo-cell img{display:block;width:100%;aspect-ratio:1;object-fit:cover}.photo-cell span{display:block;padding:5px 6px;font-size:10px;font-weight:700}.photo-cell div{display:flex;gap:4px;padding:0 5px 6px}.photo-cell button{flex:1;border:0;border-radius:5px;padding:5px 3px;font-size:10px;font-weight:800;cursor:pointer}.replace-photo{background:#EEF4FF;color:#2563D9}.delete-photo{background:#FFF0EE;color:#C0392B}.photo-mode{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px;font-size:12px}.photo-mode .btn{padding:6px 9px;font-size:11px}'
+        '.paste-box{border:2px dashed #C9D6EC;border-radius:12px;min-height:80px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;color:#7b8798;font-size:12px;margin-bottom:10px}.paste-box:focus{outline:none;border-color:#2563D9}.paste-box img{display:none;max-width:100%;max-height:160px}.photo-upload{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.photo-upload select{flex:1;min-width:120px;border:1px solid #E5EAF2;border-radius:8px;padding:8px}.photo-upload input{max-width:180px}'
+        '.picker{max-height:60vh;overflow-y:auto;border:1px solid #EDF1F7;border-radius:12px;margin-top:12px}'
+        '.add-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-bottom:1px solid #F4F6FB;font-size:13px;cursor:pointer}.add-row img{width:46px;height:46px;border-radius:8px;object-fit:cover;background:#F0F3F8}.add-row input{width:17px;height:17px;flex:none}.add-row span{flex:1}.pmore{padding:10px;text-align:center;color:#9aa3b2;font-size:12px}'
+        '@media(max-width:640px){.collection-product{grid-template-columns:26px 64px minmax(0,1fr);gap:8px}.cp-img{width:64px;height:64px}.cp-line{flex-wrap:wrap}.cp-price{width:110px}.cp-type{min-width:130px}.board-hint{display:none}.cp-actions{flex-wrap:wrap}}'
+        '</style>')
     return sub_shell("专题合集", "coll", extra_css + inner)
 
 def product_preview_page(p):
@@ -729,6 +803,21 @@ def product_preview_page(p):
 <main class="wrap"><div class="crumb">VivaBien / {esc(p.get("type", ""))}</div><div class="detail"><div>
 <img class="main" src="/images/{esc(photos[0] if photos else p.get("img", ""))}" alt="{esc(p["title"])}">
 <div class="gallery">{gallery}</div></div><div><h1>{esc(p["title"])}</h1><div class="price">{price_html}</div><div class="label">Descripción</div><div class="desc">{body}</div></div></div></main></body></html>'''
+
+def restart_admin():
+    """后台自重启：等待旧进程释放端口后，再启动新的后台进程。"""
+    script = os.path.abspath(sys.argv[0])
+    cwd = os.getcwd()
+    helper = (
+        "import os,subprocess,sys,time; "
+        "time.sleep(1.2); "
+        "env=os.environ.copy(); env['VIVABIEN_NO_BROWSER']='1'; "
+        "subprocess.Popen([sys.executable, sys.argv[1]], cwd=sys.argv[2], "
+        "env=env, start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)"
+    )
+    subprocess.Popen([sys.executable, "-c", helper, script, cwd],
+                     cwd=cwd, start_new_session=True,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 def page_html():
     prods = products()
@@ -831,6 +920,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/stats">📊 数据</a>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/colecciones">🪴 专题</a>
 <a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
+<button class="btn" style="background:#FFF6E5;color:#8a6d1f" onclick="restartAdmin(this)">🔄 重启后台</button>
 <button class="btn b-build" onclick="build(this)">🔄 构建预览</button>
 <button class="btn b-pub" onclick="publish(this)">🚀 发布上线</button>
 <span id="cnt" style="color:#8a93a2;font-size:13px">{len(prods)} 个商品</span>
@@ -1068,6 +1158,12 @@ async function publish(btn){{
  btn.disabled=false;btn.textContent='🚀 发布上线';
  log(t+'\\n\\n（Cloudflare 构建约需 2-3 分钟生效）');
 }}
+async function restartAdmin(btn){{
+ if(!confirm('确认重启后台？当前页面会短暂断开，然后自动重新加载。'))return;
+ btn.disabled=true;btn.textContent='⏳ 重启中…';
+ try{{await fetch('/restart',{{method:'POST'}})}}catch(e){{}}
+ setTimeout(()=>location.reload(),2200);
+}}
 const focusH=new URLSearchParams(location.search).get('focus');
 if(focusH){{const card=document.querySelector('.card[data-h="'+CSS.escape(focusH)+'"]');if(card){{
  card.scrollIntoView({{behavior:'smooth',block:'center'}});card.classList.add('focus-card');setTimeout(()=>card.classList.remove('focus-card'),3500);
@@ -1290,6 +1386,16 @@ class H(BaseHTTPRequestHandler):
                 fn, data = files["image"]
                 fname = photo_add(pr["img"], fields.get("slot", "extra"), data)
                 return self.send(200, fname)
+            if p == "/photo_replace":
+                ct = self.headers.get("Content-Type", "")
+                m = re.search(r"boundary=(.+)", ct)
+                fields, files = parse_multipart(body, m.group(1).encode())
+                pr = find_product(fields.get("handle", ""))
+                if not pr or not pr["img"]:
+                    return self.send(400, "商品不存在")
+                fn, data = files["image"]
+                fname = photo_replace(pr["img"], fields.get("file", ""), data)
+                return self.send(200, fname)
             if p == "/add":
                 ct = self.headers.get("Content-Type", "")
                 m = re.search(r"boundary=(.+)", ct)
@@ -1352,6 +1458,11 @@ class H(BaseHTTPRequestHandler):
                 colls = [c for c in load_collections() if c.get("slug") != b.get("slug")]
                 save_collections(colls)
                 return self.send(200, json.dumps({"ok": True}), "application/json")
+            if p == "/restart":
+                self.send(200, "后台正在重启，请稍候…")
+                threading.Timer(0.25, restart_admin).start()
+                threading.Timer(0.55, lambda: os._exit(0)).start()
+                return
             if p == "/build":
                 r = subprocess.run([sys.executable, "build.py"],
                                    capture_output=True, text=True, timeout=300)
@@ -1382,5 +1493,6 @@ if __name__ == "__main__":
         print(f"❌ 找不到 {CSV_PATH}，请在 vivabien-web 目录里运行"); sys.exit(1)
     print(f"🛠️  商品管理后台已启动: http://localhost:{PORT}")
     print("   按 Ctrl+C 停止")
-    threading.Timer(0.8, lambda: webbrowser.open(f"http://localhost:{PORT}")).start()
+    if os.environ.get("VIVABIEN_NO_BROWSER") != "1":
+        threading.Timer(0.8, lambda: webbrowser.open(f"http://localhost:{PORT}")).start()
     ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()
