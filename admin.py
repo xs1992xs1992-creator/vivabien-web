@@ -637,7 +637,7 @@ function renderBoard(){
    +'<div class=\"cp-actions\"><button class=\"save-prod\" onclick=\"saveProduct(this)\">保存商品</button><button class=\"edit-prod\" onclick=\"openProductEdit(\\''+p.sku+'\\')\">编辑详情</button><button class=\"photo-prod\" onclick=\"openProductPhotos(\\''+p.sku+'\\')\">图片</button><button class=\"remove-prod\" onclick=\"removeSku(\\''+p.sku+'\\')\">移出专题</button><button class=\"move-prod\" onclick=\"moveSku(\\''+p.sku+'\\',-1)\">↑</button><button class=\"move-prod\" onclick=\"moveSku(\\''+p.sku+'\\',1)\">↓</button><a class=\"preview-prod\" href=\"/preview-product?handle='+encodeURIComponent(p.h)+'\" target=\"_blank\">预览</a></div></div></article>';
  });
  box.innerHTML=html||'<div class=\"board-empty\">这个专题还没有商品。点击“添加商品”开始。</div>';count();
- if(INITIAL_FOCUS){var el=document.querySelector('.collection-product[data-sku=\"'+INITIAL_FOCUS+'\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('focus-prod')}}
+ if(INITIAL_FOCUS){var el=document.querySelector('.collection-product[data-sku=\"'+INITIAL_FOCUS+'\"],.collection-product[data-h=\"'+INITIAL_FOCUS+'\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('focus-prod')}}
 }
 function renderPicker(){
  var q=(document.getElementById('pq').value||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');
