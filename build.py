@@ -172,6 +172,13 @@ def load_products():
         p["type"]  = p["type"].strip() or "Otros"
         p["price"] = float(p["price"]) if p["price"].strip() else None
         p["img"]   = p["img"].strip()
+        # 卡片图优先级：场景效果图 > CSV 主图 > 白底图（用户规则：有场景图先展示场景图）
+        _sku = p["sku"].strip()
+        _scene = f"{_sku}_scene.jpg"
+        if _sku and os.path.isfile(os.path.join(IMG_DIR, _scene)):
+            p["img"] = _scene
+        elif not p["img"] and _sku and os.path.isfile(os.path.join(IMG_DIR, f"{_sku}.jpg")):
+            p["img"] = f"{_sku}.jpg"
         p["group"], p["sub"] = classify(p)
         products.append(p)
     products.sort(key=lambda p: (p["price"] is None, p["group"], p["sub"]))
@@ -797,11 +804,17 @@ document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
 
     # ---- 详情页 ----
     for p in products:
-        # 多图画廊：主图 + 场景图/尺寸图/补充图（按文件是否存在）
-        gal = [p["img"]] if p["img"] else []
-        stem = p["img"][:-4] if p["img"].lower().endswith(".jpg") else p["img"]
-        extra = [f"{stem}_scene.jpg", f"{stem}_dim.jpg"] + [f"{stem}_{i}.jpg" for i in range(2, 10)]
-        gal += [f for f in extra if os.path.isfile(os.path.join(IMG_DIR, f))]
+        # 多图画廊：按 SKU 组图（旧版用主图文件名当词干，主图是 _scene.jpg 时
+        # 词干错误导致白底图/尺寸图漏显示）。
+        # 顺序：场景效果图 → 白底图 → 补充图(_2.._9) → 尺寸图（缺哪类跳过）
+        sku = p["sku"].strip()
+        cand = ([f"{sku}_scene.jpg", f"{sku}.jpg"]
+                + [f"{sku}_{i}.jpg" for i in range(2, 10)]
+                + [f"{sku}_dim.jpg"])
+        gal = [f for f in cand if os.path.isfile(os.path.join(IMG_DIR, f))]
+        # 主图文件名不在常规命名里（手动改过名等），放到画廊最前
+        if p["img"] and p["img"] not in gal and os.path.isfile(os.path.join(IMG_DIR, p["img"])):
+            gal.insert(0, p["img"])
         main_img = f'<img class="main" id="mainImg" src="../images/{esc(gal[0] if gal else "")}" alt="{esc(p["title"])}" onerror="this.style.opacity=0">'
         thumbs = ""
         if len(gal) > 1:
