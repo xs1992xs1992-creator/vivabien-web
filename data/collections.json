@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "title": "Estilo Botánico",
+    "subtitle": "",
+    "active": true,
+    "order": 0,
+    "skus": [
+      "VB6F3904C8",
+      "VBAA70EB67",
+      "VB66584DE6",
+      "VB3FF5DCB3",
+      "VB05E6A99D",
+      "VB550ABE0B",
+      "VBD04DD7C8",
+      "VBBAC3A84F",
+      "VB848D1F9A",
+      "VB9DD09991",
+      "VB9B2E42BF",
+      "VB90B0EDF3",
+      "VB750F588A",
+      "VB2F699645",
+      "VB2A7E1E01"
+    ],
+    "slug": "estilo-botanico"
+  }
+]
