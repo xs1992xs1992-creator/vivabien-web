@@ -344,16 +344,21 @@ button{font-family:inherit}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;padding-bottom:60px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:920px){.grid{grid-template-columns:repeat(4,1fr)}}
-.card{background:#fff;border:1px solid #EDF1F7;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(20,40,80,.05);transition:transform .15s}
+.card{position:relative;background:#fff;border:1px solid #EDF1F7;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(20,40,80,.05);transition:transform .15s}
 .card:hover{transform:translateY(-3px)}
+.card-link{display:block}
 .card .imgbox{position:relative;aspect-ratio:1;background:#F0F3F8}
 .card img{width:100%;height:100%;object-fit:cover}
 .badge{position:absolute;top:9px;left:9px;background:#EAF0FB;color:#2563D9;font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px}
-.card .info{padding:11px 12px 13px}
+.card .info{padding:11px 54px 13px 12px}
 .card .nm{font-weight:700;font-size:12.5px;line-height:1.3;height:33px;overflow:hidden}
 .card .pr{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
 .card .pr b{font-weight:800;font-size:16px}
 .card .pr .ask{font-weight:700;font-size:12px;color:#FF6B4A}
+.card-add{position:absolute;right:11px;bottom:11px;width:38px;height:38px;border:0;border-radius:12px;background:#2563D9;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,217,.28);transition:background .15s,transform .15s}
+.card-add:active{transform:scale(.92)}
+.card-add.added{background:#157A4E}
+.card-add svg{width:19px;height:19px}
 /* detail */
 .dt{max-width:920px;margin:0 auto;padding:0 0 100px}
 @media(min-width:760px){.dt{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:26px 18px 40px;align-items:start}}
@@ -488,6 +493,21 @@ function vbCart(){try{return JSON.parse(localStorage.getItem('vb_cart')||'[]')}c
 function vbSave(c){localStorage.setItem('vb_cart',JSON.stringify(c));vbBadge()}
 function vbBadge(){var n=vbCart().reduce(function(a,b){return a+b.qty},0);
  var el=document.getElementById('cartN');if(el){el.textContent=n>99?'99+':n;el.style.display=n?'flex':'none'}}
+function vbAddProduct(b){
+ var c=vbCart(),sku=b.dataset.sku,f=c.find(function(x){return x.sku===sku});
+ if(f){f.qty++}else{c.push({sku:sku,handle:b.dataset.handle,title:b.dataset.title,
+  price:parseFloat(b.dataset.price),img:b.dataset.img,qty:1})}
+ vbSave(c);
+ try{fbq('track','AddToCart',{content_ids:[sku],content_type:'product',
+  value:parseFloat(b.dataset.price),currency:'DOP'})}catch(e){}
+ try{vbTrack('addcart',sku)}catch(e){}
+}
+function vbCardAdd(e,b){
+ if(e){e.preventDefault();e.stopPropagation()}
+ vbAddProduct(b);b.classList.add('added');b.setAttribute('aria-label','Agregado al carrito');
+ var old=b.innerHTML;b.innerHTML='✓';setTimeout(function(){b.classList.remove('added');b.innerHTML=old;
+  b.setAttribute('aria-label','Agregar al carrito')},900);
+}
 document.addEventListener('DOMContentLoaded',vbBadge);
 </script>"""
 
@@ -747,14 +767,19 @@ def coll_grad(slug):
 def product_card(p, rel=""):
     price_html = (f'<b>{fmt_price(p["price"])}</b>' if p["price"] is not None
                   else '<span class="ask">Consultar</span>')
-    return (f'<a class="card" data-g="{esc(p["group"])}" data-s="{esc(p["sub"])}" '
+    add_button = (f'<button class="card-add" type="button" aria-label="Agregar al carrito" '
+                  f'data-sku="{esc(p["sku"])}" data-handle="{esc(p["handle"])}" '
+                  f'data-title="{esc(p["title"])}" data-price="{p["price"]}" data-img="{esc(p["img"])}" '
+                  f'onclick="vbCardAdd(event,this)">{BAG_SVG}</button>'
+                  if p["price"] is not None else "")
+    return (f'<article class="card" data-g="{esc(p["group"])}" data-s="{esc(p["sub"])}" '
             f'data-q="{esc(snorm(p["title"] + " " + p["sub"] + " " + p["group"]))}" '
-            f'href="{rel}producto/{p["handle"]}.html">'
+            f'><a class="card-link" href="{rel}producto/{p["handle"]}.html">'
             f'<div class="imgbox"><img src="{rel}images/{esc(p["img"])}" alt="{esc(p["title"])}" '
             f'loading="lazy" onerror="this.style.display=\'none\'">'
             f'<span class="badge">{esc(p["sub"])}</span></div>'
             f'<div class="info"><div class="nm">{esc(p["title"])}</div>'
-            f'<div class="pr">{price_html}</div></div></a>')
+            f'<div class="pr">{price_html}</div></div></a>{add_button}</article>')
 
 def coleccion_page(c, prods):
     """专题落地页：Hero(可配图/CTA) + 信任条 + 快速筛选 + 商品网格 + 底部WhatsApp CTA"""
