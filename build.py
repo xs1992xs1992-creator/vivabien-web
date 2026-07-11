@@ -27,65 +27,90 @@ BANKS = [
 
 # ---------- 多级分类：大组 ----------
 GROUPS = {
-    "Belleza y Cuidado Personal": "Belleza",
-    "Cocina y Hogar":             "Hogar y Cocina",
-    "Decoración del Hogar":       "Hogar y Cocina",
-    "Baño y Sanitarios":          "Hogar y Cocina",
-    "Electrónicos y Tecnología":  "Electrónica",
-    "Herramientas y Ferretería":  "Herramientas",
+    "Belleza y Cuidado Personal": "Belleza y Salud",
+    "Cocina y Hogar":             "Cocina y Electrohogar",
+    "Decoración del Hogar":       "Hogar",
+    "Baño y Sanitarios":          "Hogar",
+    "Electrónicos y Tecnología":  "Tecnología",
+    "Herramientas y Ferretería":  "Ferretería",
     "Bebés y Maternidad":         "Bebés y Niños",
     "Juguetes y Juegos":          "Bebés y Niños",
     "Papelería y Oficina":        "Más categorías",
     "Artículos para Adultos":     "Más categorías",
     "Otros":                      "Más categorías",
 }
-GROUP_ORDER = ["Belleza", "Hogar y Cocina", "Herramientas",
-               "Electrónica", "Bebés y Niños", "Más categorías"]
-GROUP_ICONS = {"Belleza": "✨", "Hogar y Cocina": "🏠", "Herramientas": "🔧",
-               "Electrónica": "📱", "Bebés y Niños": "🍼", "Más categorías": "🛍️"}
+GROUP_ORDER = ["Belleza y Salud", "Hogar", "Cocina y Electrohogar", "Ferretería",
+               "Tecnología", "Bebés y Niños", "Más categorías"]
+GROUP_ICONS = {"Belleza y Salud": "✨", "Hogar": "🏠", "Cocina y Electrohogar": "🍳",
+               "Ferretería": "🔧", "Tecnología": "📱",
+               "Bebés y Niños": "🍼", "Más categorías": "🛍️"}
 
 # ---------- 多级分类：子分类关键词规则（按标题匹配，顺序优先） ----------
 SUBRULES = {
-    "Belleza": [
+    "Belleza y Salud": [
         ("Pestañas y Cejas",      ['pestañ', 'ceja']),
         ("Uñas",                  ['uña', 'manicura', 'esmalte', 'nail', 'acrilic', 'sticker', 'calcomania']),
         ("Cuidado de Pies",       ['pies', 'pomez', 'callo', 'pedicur', 'talon']),
-        ("Cabello",               ['cabello', 'pelo', 'peluca', 'rizador', 'trenza', 'peine',
-                                   'diadema', 'moño', 'turbante', 'secador', 'lazo', 'scrunchie']),
+        ("Cuidado del Cabello",   ['cabello', 'pelo', 'peluca', 'rizador', 'trenza', 'peine',
+                                   'diadema', 'moño', 'turbante', 'secador', 'lazo', 'scrunchie',
+                                   'shampoo', 'champu', 'acondicionador']),
         ("Maquillaje",            ['maquillaje', 'labial', 'brocha', 'sombra', 'delineador', 'paleta',
                                    'rubor', 'corrector', 'cosmetiquera', 'gloss', 'esponja de maquillaje']),
-        ("Cuidado de la Piel",    ['mascarilla', 'facial', 'crema', 'serum', 'colageno',
-                                   'exfoliante', 'limpiador', 'acne', 'hidratante', 'protector solar', 'parche']),
-        ("Perfumes",              ['perfume', 'colonia', 'fragancia', 'aromatic', 'spray aromatico']),
-        ("Higiene Personal",      ['diente', 'dental', 'jabon', 'desodorante', 'afeita', 'rasurad', 'rastrillo',
-                                   'depila', 'cera', 'hisopo', 'algodon', 'toallitas', 'oido', 'cortauña',
-                                   'masaje', 'talco', 'alcohol', 'antibacterial', 'antimicrobiano', 'depresor']),
+        ("Cuidado Facial",        ['mascarilla facial', 'facial', 'rostro', 'cara', 'serum', 'acne',
+                                   'agua micelar', 'desmaquillante', 'protector solar', 'parche de ojos',
+                                   'contorno de ojos', 'crema blanqueadora']),
+        ("Cuidado Corporal",      ['crema corporal', 'locion', 'body lotion', 'manteca corporal', 'exfoliante',
+                                   'hidratante corporal', 'aceite corporal', 'colageno', 'masaje']),
+        ("Depilación y Afeitado", ['afeita', 'rasurad', 'rastrillo', 'depila', 'cera depilatoria']),
+        ("Perfumes y Fragancias", ['perfume', 'colonia', 'fragancia', 'body mist']),
+        ("Higiene Personal",      ['diente', 'dental', 'jabon', 'desodorante', 'hisopo', 'algodon',
+                                   'toallitas', 'oido', 'cortauña', 'talco', 'alcohol', 'antibacterial',
+                                   'antimicrobiano', 'depresor', 'enjuague bucal']),
+        ("Cuidado de la Piel",    ['mascarilla', 'crema', 'hidratante', 'limpiador', 'parche']),
     ],
-    "Hogar y Cocina": [
-        ("Cocina",                ['cocina', 'olla', 'sarten', 'cuchillo', 'tabla de picar', 'rallador',
-                                   'colador', 'exprimidor', 'abrelatas', 'molde', 'batidor', 'espatula',
-                                   'taza', 'vaso', 'plato', 'cubierto', 'cuchara', 'tenedor', 'termo',
-                                   'botella', 'jarra', 'picador', 'pelador', 'recipiente', 'hermetico',
-                                   'dispensador', 'especias', 'huevo']),
-        ("Electrodomésticos",     ['waflera', 'waffle', 'sanduchera', 'sandwich', 'freidora', 'estufa',
-                                   'hornilla', 'parrilla', 'calentador', 'humidificador', 'cafetera',
-                                   'licuadora', 'hervidor', 'maquina de', 'maquina para', 'donut', 'dona',
-                                   'barquillo', 'electrica', 'electrico', 'bomba de agua']),
+    "Hogar": [
+        ("Plantas y Flores",      ['planta', 'flor artificial', 'rama decorativa', 'macetero', 'jardinera']),
+        ("Espejos, Marcos y Cuadros", ['espejo', 'cuadro', 'marco', 'portarretrato', 'foto']),
+        ("Aromas para el Hogar",  ['vela', 'difusor', 'aceite esencial', 'esencia', 'ambientador', 'aromatic']),
+        ("Iluminación Decorativa", ['lampara decorativa', 'luz decorativa', 'guirnalda de luz', 'luces decorativas']),
+        ("Figuras y Esculturas",  ['figura decorativa', 'estatua', 'escultura', 'oso decorativo', 'osito decorativo',
+                                   'elefante decorativo', 'piña decorativa', 'pera decorativa', 'mariposa decorativa']),
+        ("Bandejas y Centros de Mesa", ['bandeja', 'charola', 'centro de mesa', 'plato decorativo']),
+        ("Letreros y Adhesivos",  ['letrero', 'cartel', 'numero adhesivo', 'numeros adhesivos', 'letra adhesiva',
+                                   'letras autoadhesivas', 'pegatina de pared', 'calcomania de pared']),
+        ("Libros y Revistas Decorativas", ['libro decorativo', 'libros decorativos', 'revista decorativa']),
         ("Baño",                  ['baño', 'ducha', 'jabonera', 'inodoro', 'toalla', 'banera',
-                                   'destapador', 'papel higienico', 'desague', 'trampa']),
+                                   'destapador', 'papel higienico', 'desague', 'trampa', 'lavamanos']),
         ("Organización",          ['organizador', 'estante', 'repisa', 'gancho', 'colgador', 'cesta',
                                    'perchero', 'zapatero', 'armario', 'closet', 'almacenamiento', 'caja']),
         ("Limpieza",              ['trapeador', 'escoba', 'limpieza', 'limpiador', 'guante',
                                    'zafacon', 'basura', 'plumero', 'cepillo', 'abrillantador']),
-        ("Textiles",              ['sabana', 'almohada', 'cobija', 'manta', 'edredon', 'cojin', 'funda',
+        ("Cama y Textiles",       ['sabana', 'almohada', 'cobija', 'manta', 'edredon', 'cojin', 'funda',
                                    'mosquitero', 'tul', 'pabellon']),
-        ("Decoración",            ['espejo', 'cuadro', 'florero', 'planta', 'vela', 'adorno', 'tapete',
-                                   'alfombra', 'cortina', 'reloj de pared', 'decorativ', 'decoracion', 'luces',
-                                   'guirnalda', 'marco', 'jarron', 'lampara', 'portalampara', 'difusor',
-                                   'aceite esencial', 'esencia', 'ambientador', 'aromatic', 'bandeja', 'charola',
-                                   'numero', 'letra', 'letrero', 'sticker', 'autoadhesiv', 'adhesiv', 'madera']),
+        ("Cortinas y Alfombras",  ['tapete', 'alfombra', 'cortina']),
+        ("Relojes de Pared",      ['reloj de pared']),
+        ("Adornos Decorativos",   ['florero', 'adorno', 'decorativ', 'decoracion', 'guirnalda', 'jarron',
+                                   'bandeja decorativa', 'charola decorativa', 'numero', 'letra', 'letrero']),
     ],
-    "Herramientas": [
+    "Cocina y Electrohogar": [
+        ("Estufas y Hornillas",    ['estufa', 'fogón', 'fogon', 'hornilla']),
+        ("Ollas, Sartenes y Calderos", ['olla', 'sarten', 'caldero', 'cazo']),
+        ("Utensilios de Cocina",  ['cuchillo', 'tabla de picar', 'rallador', 'colador', 'exprimidor',
+                                   'abrelatas', 'molde', 'batidor', 'espatula', 'cucharon', 'pelador',
+                                   'picador', 'majador', 'pinza de cocina']),
+        ("Vajilla y Cubiertos",   ['plato', 'cubierto', 'cuchara', 'tenedor', 'vajilla']),
+        ("Vasos, Tazas y Botellas", ['taza', 'vaso', 'termo', 'botella', 'jarra', 'greca']),
+        ("Organización de Cocina", ['recipiente', 'hermetico', 'dispensador', 'especias', 'huevo',
+                                    'organizador de cocina', 'porta']),
+        ("Dispensadores de Agua",  ['bomba de agua usb', 'bomba manual para agua', 'botellon', 'botellón']),
+        ("Básculas de Cocina",     ['bascula', 'báscula', 'pesa alimentos', 'pesa electronica']),
+        ("Pequeños Electrodomésticos", ['waflera', 'waffle', 'sanduchera', 'sandwichera', 'freidora',
+                                   'hornilla', 'parrilla electrica', 'cafetera', 'licuadora', 'hervidor',
+                                   'procesador de alimentos', 'batidora', 'tostadora', 'maquina de',
+                                   'maquina para', 'donut', 'dona', 'barquillo']),
+        ("Climatización",         ['ventilador', 'abanico', 'humidificador', 'calentador']),
+    ],
+    "Ferretería": [
         ("Herramientas Eléctricas", ['taladro', 'pulidora', 'amoladora', 'soldador', 'soldadura',
                                      'pistola de calor', 'esmeril', 'rotomartillo', 'sierra electrica',
                                      'bomba de agua', 'motobomba', 'tester', 'probador']),
@@ -98,32 +123,49 @@ SUBRULES = {
         ("Tornillos y Herrajes",    ['tornillo', 'screw', 'perno', 'varilla roscada', 'arandela', 'clavo',
                                      'abrazadera', 'tirrap', 'zip tie', 'tiras plasticas', 'bisagra', 'gozne',
                                      'charnela', 'gancho', 'separadores']),
-        ("Pintura y Sellado",       ['pintura', 'spray', 'aerosol', 'silicon', 'sellador', 'impermeabiliz',
-                                     'terebentina', 'aguarras', 'pega ', 'pegamento', 'teflon', 'cinta', 'adhesiv']),
-        ("Seguridad",               ['candado', 'cerradura', 'cadena de seguridad', 'pestillo', 'cerrojo',
+        ("Pintura",                 ['pintura', 'spray', 'aerosol', 'terebentina', 'aguarras', 'brocha', 'rolo']),
+        ("Pegamentos y Selladores", ['silicon', 'sellador', 'impermeabiliz', 'pega ', 'pegamento',
+                                     'teflon', 'cinta adhesiva', 'cinta doble cara', 'tape doble cara', 'adhesiv']),
+        ("Cerraduras y Seguridad",  ['candado', 'cerradura', 'cadena de seguridad', 'pestillo', 'cerrojo',
                                      'tranca', 'cono', 'señal']),
+        ("Jardinería",              ['jardin', 'rastrillo', 'pala', 'manguera de jardin', 'tijera de podar']),
+        ("Protección Personal",     ['guante de trabajo', 'lente de seguridad', 'casco', 'mascarilla de proteccion']),
+        ("Cuchillas y Corte",       ['cuchilla', 'exacto', 'cortador', 'raspador']),
+        ("Accesorios para Vehículos", ['carro', 'vehiculo', 'vehículo', 'limpiaparabrisas', 'guardalodo',
+                                      'matricula', 'matrícula', 'parqueo', 'inflador portátil']),
         ("Herramientas Manuales",   ['destornillador', 'martillo', 'alicate', 'llave inglesa', 'llave de tubo',
                                      'cinta metrica', 'nivel', 'sierra', 'lima', 'juego de herramientas',
                                      'navaja', 'multiherramienta', 'remachadora', 'allen', 'broca', 'tijera',
-                                     'espatula', 'rasqueta', 'disco de corte', 'hoja diamantada', 'guante',
-                                     'rastrillo', 'kit de herramientas']),
+                                     'espatula', 'rasqueta', 'disco de corte', 'hoja diamantada',
+                                     'kit de herramientas']),
     ],
-    "Electrónica": [
+    "Tecnología": [
         ("Audio",                   ['audifono', 'bocina', 'speaker', 'microfono', 'radio', 'karaoke']),
-        ("Celulares y Accesorios",  ['celular', 'cargador', 'usb', 'tipo c', 'forro', 'protector de pantalla',
-                                     'soporte de celular', 'power bank', 'bateria portatil', 'manos libres']),
-        ("Relojes",                 ['reloj', 'smartwatch']),
-        ("Electrodomésticos",       ['ventilador', 'licuadora', 'hervidor', 'plancha', 'aspiradora',
-                                     'cafetera', 'freidora', 'sandwichera']),
+        ("Cables y Cargadores",      ['cargador', 'cable usb', 'tipo c', 'type-c', 'lightning', 'adaptador usb',
+                                      'carga rapida']),
+        ("Cables de Audio y Video", ['cable de audio', 'cable auxiliar', 'hdmi', 'vga']),
+        ("Computación y Periféricos", ['mouse', 'raton', 'ratón', 'teclado', 'mousepad', 'memoria usb']),
+        ("Accesorios para Celulares", ['celular', 'forro', 'protector de pantalla', 'manos libres']),
+        ("Soportes para Celulares",  ['soporte de celular', 'soporte para celular', 'tripode', 'selfie']),
+        ("Energía y Protección",    ['power bank', 'bateria portatil', 'bateria recargable', 'pila', 'ups',
+                                     'protector de voltaje', 'regleta', 'tomacorriente', 'toma corriente']),
+        ("Adaptadores y Controles", ['adaptador', 'control remoto']),
+        ("Relojes y Smartwatch",     ['reloj', 'smartwatch']),
         ("Iluminación",             ['led', 'lampara', 'luz', 'tira de luces', 'proyector']),
     ],
     "Bebés y Niños": [
         ("Juguetes",                ['juguete', 'juego', 'peluche', 'muñec', 'rompecabezas', 'bloques']),
         ("Alimentación del Bebé",   ['biberon', 'tetera', 'chupon', 'comida de bebe', 'procesador', 'babero']),
+        ("Pañales y Cambio",        ['pañal', 'cambiador', 'toallitas para bebe']),
+        ("Baño y Cuidado del Bebé", ['shampoo para bebe', 'champu para bebe', 'jabon para bebe',
+                                      'aceite para bebe', 'talco para bebe', 'crema para bebe', 'baño de bebe',
+                                      'bebe', 'bebé', 'infantil']),
+        ("Dormitorio y Seguridad",  ['cuna', 'mosquitero para bebe', 'protector', 'luz nocturna', 'lampara infantil']),
     ],
 }
-SUB_DEFAULT = {"Belleza": "Accesorios de Belleza", "Hogar y Cocina": "Más del Hogar",
-               "Herramientas": "Más de Ferretería", "Electrónica": "Más de Electrónica",
+SUB_DEFAULT = {"Belleza y Salud": "Accesorios de Belleza", "Hogar": "Otros para el Hogar",
+               "Cocina y Electrohogar": "Otros de Cocina", "Ferretería": "Otros de Ferretería",
+               "Tecnología": "Otros de Tecnología",
                "Bebés y Niños": "Cuidado del Bebé", "Más categorías": "Otros"}
 
 def norm(s):
@@ -139,10 +181,20 @@ def snorm(s):
 
 def classify(p):
     """返回 (大组, 子分类)"""
+    t = norm(p["title"])
     group = GROUPS.get(p["type"], "Más categorías")
+    # Corrige errores fuertes del tipo fuente usando la intención de compra.
+    if any(k in t for k in ("reloj de pared", "cuadro decorativo", "espejo decorativo")):
+        group = "Hogar"
+    elif any(k in t for k in ("grifo", "llave de agua", "llave de fregadero", "regulador de gas")):
+        group = "Ferretería"
     if group == "Más categorías":
         return group, (p["type"] if p["type"] in GROUPS else "Otros")
-    t = norm(p["title"])
+    # 当上游类型过宽时，按消费者用途修正到更符合本地零售习惯的大类。
+    if group == "Tecnología" and any(k in t for k in (
+            "ventilador", "abanico", "licuadora", "hervidor", "cafetera", "freidora",
+            "sandwichera", "waflera", "batidora", "aspiradora", "plancha electrica")):
+        group = "Cocina y Electrohogar"
     for sub, kws in SUBRULES.get(group, []):
         for kw in kws:
             if kw in t:
@@ -886,8 +938,10 @@ def build():
         c["slug"] = slugify(c.get("slug") or c.get("title", ""))
     feats = featured_html(collections, by_sku)
 
-    TILE_BG = {"Belleza": "#FCEFF4", "Hogar y Cocina": "#EAF6EF", "Herramientas": "#FFF3EA",
-               "Electrónica": "#EAF0FB", "Bebés y Niños": "#FDF3E7", "Más categorías": "#F1F3F6"}
+    TILE_BG = {"Belleza y Salud": "#FCEFF4", "Hogar": "#EAF6EF",
+               "Cocina y Electrohogar": "#FFF3E5", "Ferretería": "#EEF2F7",
+               "Tecnología": "#EAF0FB", "Bebés y Niños": "#FFF0E8",
+               "Más categorías": "#F4F0FA"}
     tiles = "".join(
         f'<div class="tile" data-g="{esc(g)}"><div class="tico" style="background:{TILE_BG.get(g, "#F1F3F6")}">'
         f'{GROUP_ICONS.get(g, "🛍️")}</div><div class="tnm">{esc(g)}</div></div>' for g in groups)
