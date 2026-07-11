@@ -313,10 +313,22 @@ button{font-family:inherit}
 .feat .thumbs img{flex:1;width:0;aspect-ratio:1;object-fit:cover;border-radius:10px;background:rgba(255,255,255,.18)}
 .feat .go{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#16202E;font-weight:800;font-size:13px;padding:8px 15px;border-radius:99px}
 /* theme (colección) page */
-.tbanner{color:#fff;padding:22px 18px}
+.tbanner{color:#fff;padding:26px 18px 24px}
 .tbanner .bk{font-size:12px;opacity:.9;font-weight:700;margin-bottom:9px;color:#fff;text-decoration:none;display:inline-block}
-.tbanner h2{font-size:24px;font-weight:800;letter-spacing:-.02em}
-.tbanner p{font-size:12.5px;opacity:.92;font-weight:600;margin-top:5px;max-width:520px;line-height:1.5}
+.tbanner h2{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.tbanner p{font-size:12.5px;opacity:.92;font-weight:600;margin-top:6px;max-width:520px;line-height:1.55}
+.tcta{display:inline-flex;align-items:center;gap:7px;background:#fff;color:#16202E;font-weight:800;font-size:13.5px;padding:11px 20px;border-radius:99px;margin-top:14px}
+.valstrip{display:flex;justify-content:space-between;gap:6px;background:#fff;border:1px solid #EDF1F7;border-radius:16px;padding:13px 8px;margin-top:14px}
+.valstrip>div{flex:1;text-align:center;font-size:11px;font-weight:700;color:#3a4250;line-height:1.4}
+.valstrip>div+div{border-left:1px solid #EDF1F7}
+.cchips{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;scrollbar-width:none}
+.cchips::-webkit-scrollbar{display:none}
+.cchip{flex:none;background:#EAF0FB;color:#2563D9;font-weight:700;font-size:12px;padding:8px 14px;border-radius:99px;cursor:pointer;white-space:nowrap}
+.cchip.on{background:#16202E;color:#fff}
+.cta-final{text-align:center;background:#fff;border:1px solid #EDF1F7;border-radius:20px;padding:26px 18px;margin:6px 0 30px}
+.cta-final b{font-size:16px;font-weight:800}
+.cta-final p{font-size:12.5px;color:#8a93a2;font-weight:600;margin:6px 0 14px}
+.cta-final a{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-weight:800;font-size:14px;padding:12px 22px;border-radius:99px}
 /* category chips */
 .cats{display:flex;gap:8px;overflow-x:auto;padding:18px 0 6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
@@ -745,18 +757,57 @@ def product_card(p, rel=""):
             f'<div class="pr">{price_html}</div></div></a>')
 
 def coleccion_page(c, prods):
+    """专题落地页：Hero(可配图/CTA) + 信任条 + 快速筛选 + 商品网格 + 底部WhatsApp CTA"""
     c0, c1 = coll_grad(c["slug"])
     cards = "".join(product_card(p, rel="../") for p in prods)
+    # 专题内子分类快速筛选
+    subs = {}
+    for p in prods:
+        subs[p["sub"]] = subs.get(p["sub"], 0) + 1
+    chips_html = ""
+    if len(subs) > 1:
+        chips = [f'<span class="cchip on" data-s="*">Todos ({len(prods)})</span>'] + [
+            f'<span class="cchip" data-s="{esc(s)}">{esc(s)} · {n}</span>'
+            for s, n in sorted(subs.items(), key=lambda kv: -kv[1])]
+        chips_html = f'<div class="cchips">{"".join(chips)}</div>'
+    # Hero：可选背景图（collections.json 的 image 字段=images/里的文件名）
+    img = (c.get("image") or "").strip()
+    if img:
+        hero_style = (f"background:linear-gradient(120deg,{c0}D9,{c1}D9),"
+                      f"url('../images/{esc(img)}') center/cover")
+    else:
+        hero_style = f"background:linear-gradient(120deg,{c0},{c1})"
+    cta = esc((c.get("cta") or "").strip() or f"Ver los {len(prods)} productos")
     body = f"""{header("../")}
-<div class="tbanner" style="background:linear-gradient(120deg,{c0},{c1})">
+<div class="tbanner" style="{hero_style}">
 <a class="bk" href="../index.html">← Volver a la tienda</a>
 <h2>{esc(c["title"])}</h2>
 {f'<p>{esc(c.get("subtitle",""))}</p>' if c.get("subtitle") else ""}
+<a class="tcta" href="#cgrid">{cta} →</a>
 </div>
 <div class="wrap">
-<div class="count"><span>{len(prods)}</span> productos</div>
-<div class="grid">{cards}</div>
-</div>"""
+<div class="valstrip">
+<div>🚚 Envíos a<br>todo el país</div>
+<div>🤝 Contra entrega<br>en Sto. Dgo.</div>
+<div>✅ Producto<br>verificado</div>
+</div>
+{chips_html}
+<div class="count"><span id="cN">{len(prods)}</span> productos</div>
+<div class="grid" id="cgrid">{cards}</div>
+<div class="cta-final">
+<b>¿No encuentras lo que buscas?</b>
+<p>Escríbenos y te ayudamos a encontrarlo</p>
+<a href="https://wa.me/{WHATSAPP}" target="_blank" onclick="fbq('track','Contact')">{WA_SVG} Escríbenos por WhatsApp</a>
+</div>
+</div>
+<script>
+document.querySelectorAll('.cchip').forEach(function(ch){{ch.onclick=function(){{
+ document.querySelectorAll('.cchip').forEach(function(x){{x.classList.remove('on')}});
+ ch.classList.add('on');var s=ch.dataset.s,n=0;
+ document.querySelectorAll('#cgrid .card').forEach(function(cd){{
+  var ok=s==='*'||cd.dataset.s===s;cd.style.display=ok?'':'none';if(ok)n++;}});
+ document.getElementById('cN').textContent=n;}};}});
+</script>"""
     return page(f"{c['title']} — {SITE_NAME}", body, wa_float=True,
                 desc=(c.get("subtitle") or c["title"])[:150])
 

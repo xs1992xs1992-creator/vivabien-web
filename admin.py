@@ -98,14 +98,16 @@ LOGIN_HTML = """<!DOCTYPE html><html lang="zh"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VivaBien 后台登录</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;display:flex;align-items:center;justify-content:center;min-height:100vh}
-.box{background:#fff;border:1px solid #EDF1F7;border-radius:20px;padding:34px 28px;width:min(360px,92vw);text-align:center;box-shadow:0 10px 40px rgba(20,40,80,.08)}
+body{font-family:-apple-system,'PingFang SC',sans-serif;background:linear-gradient(150deg,#2563D9,#1A47A6 55%,#12336F);display:flex;align-items:center;justify-content:center;min-height:100vh}
+.box{background:#fff;border-radius:22px;padding:34px 28px;width:min(360px,92vw);text-align:center;box-shadow:0 24px 70px rgba(10,25,60,.45)}
+.badge{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#2563D9,#3b82f6);color:#fff;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .box h2{font-size:19px;margin-bottom:6px}.box p{font-size:13px;color:#8a93a2;margin-bottom:18px}
 input{width:100%;border:1.5px solid #E5EAF2;border-radius:12px;padding:13px;font-size:15px;margin-bottom:12px;text-align:center}
 button{width:100%;background:#2563D9;color:#fff;border:0;border-radius:12px;padding:13px;font-weight:700;font-size:15px;cursor:pointer}
 .err{color:#c0392b;font-size:13px;margin-bottom:10px;font-weight:600}</style></head><body>
 <form class="box" method="POST" action="/login">
-<h2>🛠️ VivaBien 商品管理</h2><p>请输入后台密码</p>
+<div class="badge">V</div>
+<h2>VivaBien 商品管理</h2><p>请输入后台密码</p>
 __ERR__
 <input type="password" name="pw" id="pw" autofocus autocomplete="current-password">
 <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#5a6577;margin-bottom:12px;justify-content:center;cursor:pointer">
@@ -537,6 +539,10 @@ def links_page():
              '<input id="note" placeholder="例：客户A 微信">'
              '<button class="pri" onclick="mk()">生成短链</button>'
              '<div id="mkOut"></div></div></div>'
+             '<input placeholder="搜索短码 / 备注…" style="width:100%;border:1.5px solid #E5EAF2;border-radius:99px;'
+             'padding:10px 16px;font-size:13px;font-family:inherit;outline:none;margin-bottom:10px" '
+             'oninput="var q=this.value.toLowerCase();document.querySelectorAll(\'tbody tr\').forEach('
+             'function(r){r.style.display=r.textContent.toLowerCase().includes(q)?\'\':\'none\'})">'
              '<table><thead><tr><th>短码</th><th>链接</th><th>备注</th>'
              '<th>点击</th><th>访客</th><th>加购</th></tr></thead><tbody>'
              + (rows or '<tr><td colspan="6" class="empty">还没有短链</td></tr>')
@@ -568,6 +574,10 @@ def coupons_page():
              '<input id="days" type="number" step="1" placeholder="例：30">'
              '<button class="pri" onclick="mk()">随机生成券码</button>'
              '<div id="mkOut"></div></div></div>'
+             '<input placeholder="搜索券码，或输入 启用 / 停用 筛选…" style="width:100%;border:1.5px solid #E5EAF2;border-radius:99px;'
+             'padding:10px 16px;font-size:13px;font-family:inherit;outline:none;margin-bottom:10px" '
+             'oninput="var q=this.value.toLowerCase();document.querySelectorAll(\'tbody tr\').forEach('
+             'function(r){r.style.display=r.textContent.toLowerCase().includes(q)?\'\':\'none\'})">'
              '<table><thead><tr><th>券码</th><th>面值</th><th>方式</th><th>已用</th><th>状态</th><th></th></tr></thead><tbody>'
              + (rows or '<tr><td colspan="6" class="empty">还没有优惠券</td></tr>')
              + '</tbody></table>' + _COUPONS_JS)
@@ -704,9 +714,9 @@ async function uploadProductPhoto(btn){
  btn.disabled=true;var r=await fetch(photoTargetFile?'/photo_replace':'/photo_add',{method:'POST',body:fd});btn.disabled=false;
  if(r.ok){pendingPhoto=null;clearPhotoPreview();openProductPhotos(window.currentProduct)}else showPhotoError('上传失败：'+await r.text())
 }
-function newColl(){editSlug='';picked={};order=[];document.getElementById('cTitle').value='';document.getElementById('cSub').value='';document.getElementById('cActive').checked=true;document.getElementById('cOrder').value=0;document.getElementById('edTitle').textContent='＋ 新建专题';renderBoard()}
-function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};order=(c.skus||[]).slice();order.forEach(function(s){picked[s]=true});document.getElementById('cTitle').value=c.title||'';document.getElementById('cSub').value=c.subtitle||'';document.getElementById('cActive').checked=c.active!==false;document.getElementById('cOrder').value=c.order||0;document.getElementById('edTitle').textContent='✏️ 编辑：'+(c.title||'');renderBoard()}
-function save(){var skus=order.filter(function(s){return picked[s]}),title=document.getElementById('cTitle').value.trim();if(!title){alert('请填写专题名称');return}if(!skus.length){alert('专题至少需要一个商品');return}var body={slug:editSlug,title:title,subtitle:document.getElementById('cSub').value.trim(),active:document.getElementById('cActive').checked,order:parseInt(document.getElementById('cOrder').value)||0,skus:skus};fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(d){if(d.ok)location.reload();else alert(d.error||'保存失败')})}
+function newColl(){editSlug='';picked={};order=[];document.getElementById('cTitle').value='';document.getElementById('cSub').value='';document.getElementById('cCta').value='';document.getElementById('cImg').value='';document.getElementById('cActive').checked=true;document.getElementById('cOrder').value=0;document.getElementById('edTitle').textContent='＋ 新建专题';renderBoard()}
+function edit(slug){var c=COLLS.find(function(x){return x.slug===slug});if(!c)return;editSlug=slug;picked={};order=(c.skus||[]).slice();order.forEach(function(s){picked[s]=true});document.getElementById('cTitle').value=c.title||'';document.getElementById('cSub').value=c.subtitle||'';document.getElementById('cCta').value=c.cta||'';document.getElementById('cImg').value=c.image||'';document.getElementById('cActive').checked=c.active!==false;document.getElementById('cOrder').value=c.order||0;document.getElementById('edTitle').textContent='✏️ 编辑：'+(c.title||'');renderBoard();document.getElementById('cTitle').scrollIntoView({behavior:'smooth',block:'center'})}
+function save(){var skus=order.filter(function(s){return picked[s]}),title=document.getElementById('cTitle').value.trim();if(!title){alert('请填写专题名称');return}if(!skus.length){alert('专题至少需要一个商品');return}var body={slug:editSlug,title:title,subtitle:document.getElementById('cSub').value.trim(),cta:document.getElementById('cCta').value.trim(),image:document.getElementById('cImg').value.trim(),active:document.getElementById('cActive').checked,order:parseInt(document.getElementById('cOrder').value)||0,skus:skus};fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(d){if(d.ok)location.reload();else alert(d.error||'保存失败')})}
 function toggle(slug){fetch('/coleccion_save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug,toggle:true})}).then(function(){location.reload()})}
 function del_(slug){if(!confirm('删除专题？（不会删除商品）'))return;fetch('/coleccion_del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:slug})}).then(function(){location.reload()})}
 var photoPaste=document.getElementById('photoPaste');
@@ -722,12 +732,15 @@ def colecciones_page(edit_slug="", focus_sku=""):
     for c in colls:
         nskus = len(c.get("skus", []))
         act = c.get("active") is not False
-        rows += (f'<tr><td><b>{esc(c.get("title",""))}</b><div class="slug">/coleccion/{esc(c.get("slug",""))}</div></td>'
-                 f'<td class="n">{nskus}</td><td class="n">{c.get("order",0)}</td>'
-                 f'<td><span class="tag {"on" if act else "off"}">{"上架" if act else "下架"}</span></td>'
-                 f'<td class="acts"><button class="cp" onclick="edit(\'{esc(c.get("slug",""))}\')">编辑</button>'
-                 f'<button class="cp" onclick="toggle(\'{esc(c.get("slug",""))}\')">{"下架" if act else "上架"}</button>'
-                 f'<button class="cp del" onclick="del_(\'{esc(c.get("slug",""))}\')">删除</button></td></tr>')
+        slug = esc(c.get("slug", ""))
+        rows += (f'<div class="ccard" data-t="{esc((c.get("title") or "").lower())}">'
+                 f'<div class="cc-top"><b>{esc(c.get("title",""))}</b>'
+                 f'<span class="tag {"on" if act else "off"}">{"上架" if act else "下架"}</span></div>'
+                 f'<div class="slug">/coleccion/{slug} · {nskus} 个商品 · 排序 {c.get("order",0)}</div>'
+                 f'<div class="cc-acts"><button class="cp" onclick="edit(\'{slug}\')">✏️ 编辑</button>'
+                 f'<button class="cp" onclick="toggle(\'{slug}\')">{"下架" if act else "上架"}</button>'
+                 f'<a class="cp" href="{SITE_URL}/coleccion/{slug}.html" target="_blank">👁 线上</a>'
+                 f'<button class="cp del" onclick="del_(\'{slug}\')">删除</button></div></div>')
     prods_json = json.dumps([
         {"sku": p["sku"], "h": p["handle"], "t": p["title"], "img": p["img"],
          "p": p["price"], "c": p["type"], "b": p.get("body", ""),
@@ -737,16 +750,23 @@ def colecciones_page(edit_slug="", focus_sku=""):
     colls_json = json.dumps(colls, ensure_ascii=False)
     inner = (
         '<h1>🪴 专题合集 <span class="sub">首页突出入口 + 专属专题页</span></h1>'
-        '<div style="margin-bottom:14px"><button class="pri" style="width:auto;margin:0" onclick="newColl()">＋ 新建专题</button></div>'
-        '<table><thead><tr><th>专题</th><th>商品数</th><th>排序</th><th>状态</th><th></th></tr></thead><tbody>'
-        + (rows or '<tr><td colspan="5" class="empty">还没有专题，点「新建专题」开始</td></tr>')
-        + '</tbody></table>'
+        '<div style="display:flex;gap:10px;margin-bottom:14px;align-items:center">'
+        '<button class="pri" style="width:auto;margin:0" onclick="newColl()">＋ 新建专题</button>'
+        '<input id="cq" placeholder="搜索专题…" style="flex:1;border:1.5px solid #E5EAF2;border-radius:99px;padding:10px 16px;font-size:13px;font-family:inherit;outline:none" '
+        'oninput="var q=this.value.toLowerCase();document.querySelectorAll(\'.ccard\').forEach(function(c){c.style.display=c.dataset.t.includes(q)?\'\':\'none\'})"></div>'
+        '<div class="ccards">'
+        + (rows or '<div class="empty">还没有专题，点「新建专题」开始</div>')
+        + '</div>'
         '<div class="cardp" style="margin-top:20px"><div class="frm">'
         '<div id="edTitle" style="font-weight:800;font-size:15px;margin-bottom:12px">＋ Nuevo tema</div>'
         '<label>专题名字（客户可见，西语）</label>'
         '<input id="cTitle" placeholder="Ej: 🪴 Plantas para tu hogar">'
         '<label>副标题（可选）</label>'
         '<input id="cSub" placeholder="Ej: Nuestra selección de esta semana">'
+        '<label>按钮文字 CTA（可选，默认"Ver los N productos"）</label>'
+        '<input id="cCta" placeholder="Ej: Ver toda la colección">'
+        '<label>Hero 背景图（可选，填 images/ 里的文件名，如 VB123ABC.jpg 或某商品的 _scene 图）</label>'
+        '<input id="cImg" placeholder="Ej: VB6F3904C8_scene.jpg">'
         '<div class="row2"><div><label>排序（小的在前）</label><input id="cOrder" type="number" value="0"></div>'
         '<div><label>状态</label><label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-top:8px">'
         '<input id="cActive" type="checkbox" checked style="width:18px;height:18px"> 上架显示</label></div></div>'
@@ -762,6 +782,12 @@ def colecciones_page(edit_slug="", focus_sku=""):
                     .replace("__EDIT__", esc(edit_slug)).replace("__FOCUS__", esc(focus_sku)))
     extra_css = (
         '<style>.slug{font-size:11px;color:#8a93a2;font-weight:600;margin-top:2px}'
+        '.ccards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:6px}'
+        '.ccard{background:#fff;border:1px solid #EDF1F7;border-radius:15px;padding:14px}'
+        '.cc-top{display:flex;align-items:center;justify-content:space-between;gap:8px}'
+        '.cc-top b{font-size:14.5px}'
+        '.cc-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}'
+        '.cc-acts .cp{margin-left:0;text-decoration:none}'
         '.acts{white-space:nowrap}.cp.del{color:#c0392b}'
         '.board-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 12px}'
         '.board-head b{font-size:16px}.board-hint{font-size:12px;color:#8a93a2;margin-left:9px}'
@@ -827,32 +853,12 @@ def page_html():
     for coll in load_collections():
         for sku in coll.get("skus", []):
             coll_by_sku.setdefault(sku, []).append({"slug": coll.get("slug", ""), "title": coll.get("title", "")})
-    cards = []
-    for p in prods:
-        nimg = len(sku_photos_by_img(p["img"])) if p["img"] else 0
-        topics = coll_by_sku.get(p["sku"], [])
-        topic_data = esc(json.dumps(topics, ensure_ascii=False))
-        topic_markup = (f'<div class="topics"><button class="topic-btn" data-colls="{topic_data}" '
-                        f'onclick="openColls(this);event.stopPropagation()">🪴 所属专题（{len(topics)}）</button></div>'
-                        if topics else '<div class="topics empty-topic">尚未加入专题</div>')
-        cards.append(f"""<div class="card" data-t="{esc(p['title'].lower())}" data-h="{esc(p['handle'])}" data-img="{esc(p['img'])}">
-<div class="imgw"><img src="/images/{esc(p['img'])}" loading="lazy" onerror="this.style.opacity=.15">
-<span class="nimg">📸 {nimg}</span></div>
-<div class="body">
-<textarea class="ti" rows="2">{esc(p['title'])}</textarea>
-<div class="row">
-<span class="cur">RD$</span><input class="pr" type="number" step="any" value="{esc(p['price'])}" placeholder="价格">
-</div>
-<select class="ca">{''.join(f'<option {"selected" if c==p["type"] else ""} value="{esc(c)}">{esc(c)}</option>' for c in cats)}</select>
-{topic_markup}
-<div class="row">
-<button class="save" onclick="save(this)">保存</button>
-<button class="mini" onclick="openDesc(this)">✏️ 详情</button>
-<button class="mini" onclick="openPhotos(this)">📷 图片</button>
-<a class="mini preview-link" href="/preview-product?handle={quote(p['handle'])}" target="_blank">👁 预览</a>
-<button class="del" onclick="del_(this)">✕</button>
-</div>
-</div></div>""")
+    # 商品数据整体下发给浏览器，前端先挂载60个、滚动懒加载（1000+商品不再卡顿）
+    prods_json = json.dumps([
+        {"h": p["handle"], "t": p["title"], "p": p["price"], "c": p["type"],
+         "img": p["img"], "n": len(sku_photos_by_img(p["img"])) if p["img"] else 0,
+         "tp": coll_by_sku.get(p["sku"], [])} for p in prods], ensure_ascii=False)
+    cats_json = json.dumps(cats, ensure_ascii=False)
     return f"""<!DOCTYPE html><html lang="zh"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VivaBien 商品管理</title>
@@ -866,6 +872,13 @@ body{{font-family:-apple-system,'PingFang SC',sans-serif;background:#F7F9FD;colo
 .b-add{{background:#2563D9;color:#fff}}
 .b-build{{background:#64748b;color:#fff}}
 .b-pub{{background:#FF6B4A;color:#fff}}
+#catSel{{border:1.5px solid #E5EAF2;border-radius:99px;padding:9px 13px;font-size:13px;font-family:inherit;background:#fff;max-width:150px}}
+.more{{position:relative}}
+.b-more{{background:#F1F5FB;color:#2563D9;font-size:16px;padding:10px 15px}}
+.more-menu{{display:none;position:absolute;right:0;top:44px;background:#fff;border:1px solid #E5EAF2;border-radius:15px;box-shadow:0 14px 40px rgba(20,40,80,.16);padding:7px;min-width:170px;z-index:30}}
+.more-menu.show{{display:block}}
+.more-menu a,.more-menu button{{display:block;width:100%;text-align:left;padding:11px 13px;border:0;background:none;color:#16202E;font-weight:700;font-size:13.5px;border-radius:10px;cursor:pointer;text-decoration:none;font-family:inherit}}
+.more-menu a:hover,.more-menu button:hover{{background:#F1F5FB}}
 .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;padding:16px 18px}}
 .card{{background:#fff;border:1px solid #EDF1F7;border-radius:16px;overflow:hidden}}
 .card.focus-card{{border-color:#2563D9;box-shadow:0 0 0 4px rgba(37,99,217,.16)}}
@@ -908,24 +921,33 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 .paste-box{{border:2px dashed #C9D6EC;border-radius:14px;background:#F7F9FD;min-height:92px;margin:0 0 12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;cursor:pointer;color:#68758a;font-size:12px}}
 .paste-box:focus,.paste-box.active{{border-color:#2563D9;background:#EAF0FB;outline:none}}
 #pastePrev{{display:none;max-width:100%;max-height:180px;object-fit:contain;background:#fff;border-radius:8px}}
-#log{{position:fixed;left:12px;right:12px;bottom:12px;background:#16202E;color:#9fe8c1;font:12px/1.5 ui-monospace,monospace;border-radius:12px;padding:10px 14px;display:none;white-space:pre-wrap;max-height:35vh;overflow:auto;z-index:99}}
+#log{{position:fixed;left:12px;right:12px;bottom:12px;background:#16202E;color:#9fe8c1;border-radius:14px;display:none;z-index:99;box-shadow:0 14px 40px rgba(0,0,0,.3)}}
+#logTxt{{font:12px/1.6 ui-monospace,monospace;padding:12px 40px 12px 15px;white-space:pre-wrap;max-height:40vh;overflow:auto}}
+#logX{{position:absolute;top:8px;right:9px;border:0;background:rgba(255,255,255,.12);color:#fff;width:24px;height:24px;border-radius:99px;cursor:pointer;font-size:12px}}
 </style></head><body>
 <div class="top">
-<b>🛠️ VivaBien 商品管理</b>
+<b>🛠️ VivaBien</b>
 <input id="q" placeholder="搜索商品…" oninput="filt()">
-<button class="btn b-add" onclick="dlg.showModal()">＋ 添加商品</button>
-<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/import">📥 流水线导入</a>
-<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/links">🔗 短链</a>
-<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/coupons">🎟️ 优惠券</a>
-<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/stats">📊 数据</a>
-<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="/colecciones">🪴 专题</a>
-<a class="btn" style="background:#F1F5FB;color:#2563D9;text-decoration:none" href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
-<button class="btn" style="background:#FFF6E5;color:#8a6d1f" onclick="restartAdmin(this)">🔄 重启后台</button>
-<button class="btn b-build" onclick="build(this)">🔄 构建预览</button>
-<button class="btn b-pub" onclick="publish(this)">🚀 发布上线</button>
+<select id="catSel" onchange="filt()"><option value="*">全部分类</option>{cat_opts}</select>
+<button class="btn b-add" onclick="dlg.showModal()">＋ 添加</button>
+<button class="btn b-build" onclick="build(this)">🔄 预览</button>
+<button class="btn b-pub" onclick="publish(this)">🚀 发布</button>
+<div class="more">
+<button class="btn b-more" id="moreBtn" onclick="moreMenu.classList.toggle('show');event.stopPropagation()">⋯</button>
+<div class="more-menu" id="moreMenu">
+<a href="/import">📥 流水线导入</a>
+<a href="/colecciones">🪴 专题合集</a>
+<a href="/links">🔗 短链</a>
+<a href="/coupons">🎟️ 优惠券</a>
+<a href="/stats">📊 数据</a>
+<a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
+<button onclick="restartAdmin(this)">🔄 重启后台</button>
+</div>
+</div>
 <span id="cnt" style="color:#8a93a2;font-size:13px">{len(prods)} 个商品</span>
 </div>
-<div class="grid" id="grid">{''.join(cards)}</div>
+<div class="grid" id="grid"></div>
+<div id="sentinel" style="height:60px"></div>
 
 <dialog id="dlgColl">
 <h3>🪴 选择专题</h3>
@@ -993,21 +1015,56 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <button class="btn" onclick="dlgPh.close()">关闭</button>
 </div>
 </dialog>
-<div id="log"></div>
+<div id="log"><button id="logX" onclick="document.getElementById('log').style.display='none'">✕</button><div id="logTxt"></div></div>
 
 <script>
-let curH='', curImg='', pendingPhoto=null;
-const log = m => {{const d=document.getElementById('log');d.style.display='block';d.textContent=m;setTimeout(()=>d.style.display='none',8000)}};
-function filt(){{
- const q=document.getElementById('q').value.toLowerCase();let n=0;
- document.querySelectorAll('.card').forEach(c=>{{const s=c.dataset.t.includes(q);c.style.display=s?'':'none';if(s)n++}});
- document.getElementById('cnt').textContent=n+' 个商品';
-}}
-// 记录初始值，保存时比对出改动
+let curH='', curImg='', pendingPhoto=null, logT=null;
+const PRODS={prods_json}, CATS={cats_json};
+// 日志面板：短消息自动消失，长日志（构建/发布）保留到手动关闭
+const log = m => {{
+ const d=document.getElementById('log');d.style.display='block';
+ document.getElementById('logTxt').textContent=m;
+ clearTimeout(logT);
+ if((m||'').length<80)logT=setTimeout(()=>d.style.display='none',6000);
+}};
+document.addEventListener('click',()=>moreMenu.classList.remove('show'));
+function eh(s){{return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]))}}
 const orig={{}};
-document.querySelectorAll('.card').forEach(c=>{{
- orig[c.dataset.h]={{t:c.querySelector('.ti').value,p:c.querySelector('.pr').value,c:c.querySelector('.ca').value}};
-}});
+// 前端渲染商品卡：先挂载60个，滚动到底自动加载下一批
+function cardHTML(p){{
+ const opts=CATS.map(c=>'<option '+(c===p.c?'selected':'')+' value="'+eh(c)+'">'+eh(c)+'</option>').join('');
+ const tp=(p.tp&&p.tp.length)
+  ?'<div class="topics"><button class="topic-btn" data-colls="'+eh(JSON.stringify(p.tp))+'" onclick="openColls(this);event.stopPropagation()">🪴 所属专题（'+p.tp.length+'）</button></div>'
+  :'<div class="topics empty-topic">尚未加入专题</div>';
+ return '<div class="card" data-t="'+eh((p.t||'').toLowerCase())+'" data-h="'+eh(p.h)+'" data-img="'+eh(p.img)+'">'
+  +'<div class="imgw"><img src="/images/'+encodeURIComponent(p.img)+'" loading="lazy" onerror="this.style.opacity=.15">'
+  +'<span class="nimg">📸 '+p.n+'</span></div>'
+  +'<div class="body"><textarea class="ti" rows="2">'+eh(p.t)+'</textarea>'
+  +'<div class="row"><span class="cur">RD$</span><input class="pr" type="number" step="any" value="'+eh(p.p)+'" placeholder="价格"></div>'
+  +'<select class="ca">'+opts+'</select>'+tp
+  +'<div class="row"><button class="save" onclick="save(this)">保存</button>'
+  +'<button class="mini" onclick="openDesc(this)">✏️ 详情</button>'
+  +'<button class="mini" onclick="openPhotos(this)">📷 图片</button>'
+  +'<a class="mini preview-link" href="/preview-product?handle='+encodeURIComponent(p.h)+'" target="_blank">👁 预览</a>'
+  +'<button class="del" onclick="del_(this)">✕</button></div></div></div>';
+}}
+let flist=PRODS, shown=0;
+const grid=document.getElementById('grid');
+function more(){{
+ const end=Math.min(shown+60,flist.length);let html='';
+ for(let i=shown;i<end;i++){{const p=flist[i];html+=cardHTML(p);orig[p.h]={{t:p.t,p:String(p.p||''),c:p.c}};}}
+ grid.insertAdjacentHTML('beforeend',html);shown=end;
+}}
+function filt(){{
+ const q=(document.getElementById('q').value||'').toLowerCase();
+ const cat=document.getElementById('catSel').value;
+ flist=PRODS.filter(p=>(!q||(p.t||'').toLowerCase().includes(q))&&(cat==='*'||p.c===cat));
+ grid.innerHTML='';shown=0;more();
+ document.getElementById('cnt').textContent=flist.length+' 个商品';
+}}
+new IntersectionObserver(es=>{{if(es[0].isIntersecting&&shown<flist.length)more()}},{{rootMargin:'600px'}})
+ .observe(document.getElementById('sentinel'));
+filt();
 async function save(btn){{
  const c=btn.closest('.card'),h=c.dataset.h;
  const t=c.querySelector('.ti').value,p=c.querySelector('.pr').value,ca=c.querySelector('.ca').value;
@@ -1020,14 +1077,17 @@ async function save(btn){{
  if(!confirm('确认保存以下修改？\\n\\n'+changes.join('\\n')))return;
  const fd=new URLSearchParams({{handle:h,title:t,price:p,type:ca}});
  const r=await fetch('/update',{{method:'POST',body:fd}});
- if(r.ok){{orig[h]={{t:t,p:p,c:ca}};btn.textContent='✓ 已保存';btn.classList.add('ok');setTimeout(()=>{{btn.textContent='保存';btn.classList.remove('ok')}},1500)}}
+ if(r.ok){{orig[h]={{t:t,p:p,c:ca}};
+  const pe=PRODS.find(x=>x.h===h);if(pe){{pe.t=t;pe.p=p;pe.c=ca}}
+  btn.textContent='✓ 已保存';btn.classList.add('ok');setTimeout(()=>{{btn.textContent='保存';btn.classList.remove('ok')}},1500)}}
  else log('保存失败: '+await r.text());
 }}
 async function del_(btn){{
  if(!confirm('确定删除这个商品？图片也会一起删除。'))return;
- const c=btn.closest('.card');
- const r=await fetch('/delete',{{method:'POST',body:new URLSearchParams({{handle:c.dataset.h}})}});
- if(r.ok)c.remove();else log('删除失败');
+ const c=btn.closest('.card'),h=c.dataset.h;
+ const r=await fetch('/delete',{{method:'POST',body:new URLSearchParams({{handle:h}})}});
+ if(r.ok){{c.remove();const i=PRODS.findIndex(x=>x.h===h);if(i>=0)PRODS.splice(i,1);}}
+ else log('删除失败');
 }}
 async function openDesc(btn){{
  const c=btn.closest('.card');curH=c.dataset.h;
@@ -1165,9 +1225,13 @@ async function restartAdmin(btn){{
  setTimeout(()=>location.reload(),2200);
 }}
 const focusH=new URLSearchParams(location.search).get('focus');
-if(focusH){{const card=document.querySelector('.card[data-h="'+CSS.escape(focusH)+'"]');if(card){{
- card.scrollIntoView({{behavior:'smooth',block:'center'}});card.classList.add('focus-card');setTimeout(()=>card.classList.remove('focus-card'),3500);
-}}}}
+if(focusH){{
+ const idx=flist.findIndex(p=>p.h===focusH);
+ if(idx>=0){{while(shown<=idx)more();  // 懒加载模式下先把目标批次渲染出来
+  const card=document.querySelector('.card[data-h="'+CSS.escape(focusH)+'"]');
+  if(card){{card.scrollIntoView({{behavior:'smooth',block:'center'}});
+   card.classList.add('focus-card');setTimeout(()=>card.classList.remove('focus-card'),3500);}}}}
+}}
 </script></body></html>"""
 
 def import_page():
@@ -1438,6 +1502,8 @@ class H(BaseHTTPRequestHandler):
                 if not title or not b.get("skus"):
                     return self.send(200, json.dumps({"ok": False, "error": "需要名字和至少一个商品"}), "application/json")
                 item = {"title": title, "subtitle": (b.get("subtitle") or "").strip(),
+                        "cta": (b.get("cta") or "").strip(),
+                        "image": (b.get("image") or "").strip(),
                         "active": bool(b.get("active", True)), "order": int(b.get("order") or 0),
                         "skus": [s for s in b.get("skus", []) if s]}
                 existing = next((c for c in colls if c.get("slug") == slug), None) if slug else None
