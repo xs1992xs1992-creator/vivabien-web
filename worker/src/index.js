@@ -8,6 +8,7 @@
 
 const SITE = "https://vivabien.xyz";
 const VID_COOKIE = "vb_vid";
+const LINK_COOKIE = "vb_link";
 const CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz"; // 去掉易混字符
 
 // ---------- 工具 ----------
@@ -47,13 +48,35 @@ function vidCookieHeader(vid) {
   return `${VID_COOKIE}=${vid}; Domain=.vivabien.xyz; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
 }
 
+function linkCookieHeader(code) {
+  return LINK_COOKIE + "=" + encodeURIComponent(code) + "; Domain=.vivabien.xyz; Path=/; Max-Age=2592000; SameSite=Lax; Secure";
+}
+
+function maskIp(ip) {
+  if (!ip) return "";
+  if (ip.includes(":")) return ip.split(":").slice(0, 4).join(":") + "::";
+  const p = ip.split(".");
+  return p.length === 4 ? p[0] + "." + p[1] + "." + p[2] + ".x" : "";
+}
+
+async function hashIp(ip, salt) {
+  if (!ip) return "";
+  const bytes = new TextEncoder().encode((salt || "") + ":" + ip);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 async function logEvent(env, { vid, code = "", type, sku = "", req }) {
   const country = req?.cf?.country || "";
   const ua = req?.headers.get("User-Agent") || "";
   const ref = req?.headers.get("Referer") || "";
+  const ip = req?.headers.get("CF-Connecting-IP") || "";
+  const ipMasked = maskIp(ip);
+  const ipHash = await hashIp(ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
   await env.DB.prepare(
-    "INSERT INTO events (vid, code, type, sku, ts, country, ua, ref) VALUES (?,?,?,?,?,?,?,?)"
-  ).bind(vid, code, type, sku, now(), country, ua.slice(0, 300), ref.slice(0, 300)).run();
+    "INSERT INTO events (vid, code, type, sku, ts, country, ua, ref, ip_masked, ip_hash) VALUES (?,?,?,?,?,?,?,?,?,?)"
+  ).bind(vid, code, type, sku, now(), country, ua.slice(0, 300), ref.slice(0, 300),
+         ipMasked, ipHash).run();
 }
 
 // ---------- 路由 ----------
@@ -91,8 +114,9 @@ async function handleShort(req, env, url) {
   await logEvent(env, { vid, code, type: "click", req });
 
   const target = /^https?:\/\//.test(row.target) ? row.target : SITE + "/" + row.target.replace(/^\//, "");
-  const headers = { Location: target };
-  if (fresh) headers["Set-Cookie"] = vidCookieHeader(vid);
+  const headers = new Headers({ Location: target });
+  if (fresh) headers.append("Set-Cookie", vidCookieHeader(vid));
+  headers.append("Set-Cookie", linkCookieHeader(code));
   return new Response(null, { status: 302, headers });
 }
 
@@ -106,7 +130,8 @@ async function handleTrack(req, env) {
   const fresh = !vid;
   if (!vid) vid = crypto.randomUUID();
 
-  await logEvent(env, { vid, code: body.code || "", type, sku: body.sku || "", req });
+  const linkCode = body.code || getCookie(req, LINK_COOKIE) || "";
+  await logEvent(env, { vid, code: linkCode, type, sku: body.sku || "", req });
   const headers = fresh ? { "Set-Cookie": vidCookieHeader(vid) } : {};
   return json({ ok: true }, 200, headers);
 }
@@ -192,7 +217,9 @@ async function handleAdmin(req, env, url) {
     const rows = await env.DB.prepare(
       `SELECT l.code, l.target, l.note, l.created_at, l.clicks,
               (SELECT COUNT(DISTINCT vid) FROM events e WHERE e.code=l.code) AS visitors,
-              (SELECT COUNT(*) FROM events e WHERE e.code=l.code AND e.type='addcart') AS addcarts
+              (SELECT COUNT(*) FROM events e WHERE e.code=l.code AND e.type='view') AS views,
+              (SELECT COUNT(*) FROM events e WHERE e.code=l.code AND e.type='addcart') AS addcarts,
+              (SELECT COUNT(*) FROM events e WHERE e.code=l.code AND e.type='checkout') AS checkouts
        FROM links l ORDER BY l.created_at DESC`
     ).all();
     return json({ ok: true, links: rows.results || [] });
@@ -252,8 +279,10 @@ async function handleAdmin(req, env, url) {
          (SELECT COUNT(*) FROM events WHERE type='click' AND ts>?) AS clicks30,
          (SELECT COUNT(DISTINCT vid) FROM events WHERE ts>?) AS visitors30,
          (SELECT COUNT(*) FROM events WHERE type='addcart' AND ts>?) AS addcarts30,
+         (SELECT COUNT(*) FROM events WHERE type='checkout' AND ts>?) AS checkouts30,
+         (SELECT COUNT(*) FROM coupon_uses WHERE ts>?) AS coupon_uses30,
          (SELECT COUNT(*) FROM coupons WHERE active=1) AS active_coupons`
-    ).bind(since, since, since).first();
+    ).bind(since, since, since, since, since).first();
     return json({ ok: true, ...totals });
   }
 

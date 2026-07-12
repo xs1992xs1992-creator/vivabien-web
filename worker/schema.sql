@@ -21,11 +21,14 @@ CREATE TABLE IF NOT EXISTS events (
   ts      INTEGER NOT NULL,           -- 毫秒时间戳
   country TEXT DEFAULT '',
   ua      TEXT DEFAULT '',
-  ref     TEXT DEFAULT ''
+  ref     TEXT DEFAULT '',
+  ip_masked TEXT DEFAULT '',          -- 仅显示网段，如 190.80.12.x
+  ip_hash   TEXT DEFAULT ''           -- 加盐哈希，用于重复访问分析，不保存完整IP
 );
 CREATE INDEX IF NOT EXISTS idx_events_vid  ON events(vid);
 CREATE INDEX IF NOT EXISTS idx_events_code ON events(code);
 CREATE INDEX IF NOT EXISTS idx_events_ts   ON events(ts);
+CREATE INDEX IF NOT EXISTS idx_events_ip_hash ON events(ip_hash);
 
 -- 优惠券
 CREATE TABLE IF NOT EXISTS coupons (

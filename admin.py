@@ -445,8 +445,7 @@ def nav(active=""):
     def c(k): return "on" if k == active else ""
     return (f'<div class="nav"><b>🛠️ VivaBien</b>'
             f'<a class="{c("prod")}" href="/">商品</a>'
-            f'<a class="{c("links")}" href="/links">🔗 短链</a>'
-            f'<a class="{c("coupons")}" href="/coupons">🎟️ 优惠券</a>'
+            f'<a class="{c("marketing")}" href="/marketing">📣 营销留存</a>'
             f'<a class="{c("stats")}" href="/stats">📊 数据</a>'
             f'<a class="{c("coll")}" href="/colecciones">🪴 专题</a></div>')
 
@@ -506,6 +505,7 @@ function look(){
   tl.innerHTML='<div class="tls">'+d.events.map(function(e){
    return '<div class="tle"><span>'+(m[e.type]||e.type)+'</span>'
     +(e.sku?' <code>'+e.sku+'</code>':'')+(e.code?' <i>'+e.code+'</i>':'')
+    +(e.country?' <i>🌎 '+e.country+'</i>':'')+(e.ip_masked?' <i>IP '+e.ip_masked+'</i>':'')
     +'<time>'+new Date(e.ts).toLocaleString()+'</time></div>';}).join('')+'</div>';
  }).catch(function(){tl.textContent='查询失败';});
 }
@@ -583,15 +583,150 @@ def coupons_page():
              + '</tbody></table>' + _COUPONS_JS)
     return sub_shell("优惠券", "coupons", inner)
 
+_MARKETING_JS = """<script>
+var LAST_CAMPAIGN=null;
+function money(v){return 'RD$ '+Number(v||0).toLocaleString('es-DO',{maximumFractionDigits:0})}
+function discountLabel(d){return d.kind==='percent'?Number(d.value)+'% de descuento':money(d.value)+' de descuento'}
+function copyFor(d){
+ var offer=discountLabel(d),limit=d.max_uses>0?(' Disponible para '+d.max_uses+(d.max_uses===1?' uso.':' usos.')):'',
+     expiry=d.days>0?(' Válido por '+d.days+' días.'):'',min=d.min_order>0?(' Compra mínima: '+money(d.min_order)+'.'):'',
+     how='Abre tu enlace exclusivo, agrega tus productos al carrito y el código '+d.coupon+' se aplicará al finalizar.';
+ if(d.template==='welcome')return '¡Bienvenido/a a VivaBien! 🎉 Tenemos un regalo para tu primera compra: '+offer+'. '+how+' '+d.url+'.'+expiry+min+limit;
+ if(d.template==='winback')return '¡Te extrañamos! 💙 Vuelve a VivaBien y disfruta '+offer+' con tu código exclusivo '+d.coupon+'. Compra aquí: '+d.url+'.'+expiry+min+limit;
+ if(d.template==='vip')return '✨ Oferta privada para ti: disfruta '+offer+' en VivaBien. Tu código exclusivo es '+d.coupon+'. Entra aquí: '+d.url+'.'+expiry+min+limit;
+ return '¡Gracias por comprar en VivaBien! 🎁 Como agradecimiento, recibe '+offer+' en tu próxima compra. '+how+' '+d.url+'.'+expiry+min+limit;
+}
+function payloadPreview(){
+ return {template:document.getElementById('tpl').value,kind:document.querySelector('input[name=mkKind]:checked').value,
+  value:parseFloat(document.getElementById('mkValue').value)||0,min_order:parseFloat(document.getElementById('mkMin').value)||0,
+  max_uses:parseInt(document.getElementById('mkUses').value)||0,days:parseInt(document.getElementById('mkDays').value)||0,
+  coupon:'TU-CÓDIGO',url:'TU-ENLACE-EXCLUSIVO'};
+}
+function previewCopy(){document.getElementById('copyOut').value=copyFor(LAST_CAMPAIGN||payloadPreview())}
+function kindUI(){document.getElementById('mkValueLabel').textContent=document.querySelector('input[name=mkKind]:checked').value==='percent'?'折扣百分比（%）':'折扣金额（RD$）';previewCopy()}
+async function createCampaign(btn){
+ var value=parseFloat(document.getElementById('mkValue').value);
+ if(!(value>0)){alert('请填写有效优惠金额');return}
+ var target=document.getElementById('mkTargetCustom').value.trim()||document.getElementById('mkTarget').value;
+ var body={template:document.getElementById('tpl').value,audience:document.getElementById('mkAudience').value.trim(),
+  target:target||'/',kind:document.querySelector('input[name=mkKind]:checked').value,value:value,
+  min_order:parseFloat(document.getElementById('mkMin').value)||0,max_uses:parseInt(document.getElementById('mkUses').value)||0,
+  days:parseInt(document.getElementById('mkDays').value)||0};
+ btn.disabled=true;btn.textContent='生成中…';
+ try{var r=await fetch('/campaign_create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json();
+  if(!r.ok||!d.url){throw new Error(d.error||'创建失败')}
+  LAST_CAMPAIGN=Object.assign(body,{coupon:d.coupon,url:d.url});
+  document.getElementById('campaignResult').style.display='block';
+  document.getElementById('resultCodes').innerHTML='<b>优惠码 '+d.coupon+'</b><a href=\"'+d.url+'\" target=\"_blank\">'+d.url+'</a>';
+  previewCopy();btn.textContent='✓ 已生成';
+ }catch(e){alert(e.message);btn.textContent='一键生成营销活动'}finally{btn.disabled=false}
+}
+function copyText(){var t=document.getElementById('copyOut');t.select();navigator.clipboard.writeText(t.value)}
+function shareWA(){var t=document.getElementById('copyOut').value;if(t)window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')}
+function rowCopy(b){LAST_CAMPAIGN={template:b.dataset.template,kind:b.dataset.kind,value:Number(b.dataset.value),min_order:Number(b.dataset.min),max_uses:Number(b.dataset.uses),days:Number(b.dataset.days),coupon:b.dataset.coupon,url:b.dataset.url};previewCopy();copyText();document.getElementById('campaignResult').style.display='block';document.getElementById('campaignResult').scrollIntoView({behavior:'smooth',block:'center'})}
+document.querySelectorAll('#campaignForm input,#campaignForm select').forEach(function(x){x.addEventListener('input',previewCopy)});previewCopy();
+</script>"""
+
+def _campaign_note(note):
+    vals = {}
+    for k, v in re.findall(r"(coupon|template|days|audience)=([^|]*)", note or ""):
+        vals[k] = v
+    return vals
+
+def marketing_page():
+    links_data, links_err = worker_call("links")
+    coupons_data, coupons_err = worker_call("coupons")
+    overview_data, overview_err = worker_call("overview")
+    prods = products()
+    opts = "".join(f'<option value="producto/{esc(p["handle"])}.html">{esc(p["title"][:52])}</option>'
+                   for p in prods)
+    coupons = {c.get("code"): c for c in (coupons_data or {}).get("coupons", [])}
+    rows = ""
+    for l in (links_data or {}).get("links", []):
+        meta = _campaign_note(l.get("note", ""))
+        coupon_code = meta.get("coupon", "")
+        c = coupons.get(coupon_code, {})
+        url = f'{SITE_URL}/s/{l.get("code", "")}'
+        clicks = int(l.get("clicks", 0) or 0)
+        visitors = int(l.get("visitors", 0) or 0)
+        addcarts = int(l.get("addcarts", 0) or 0)
+        checkouts = int(l.get("checkouts", 0) or 0)
+        uses = int(c.get("used_count", 0) or 0)
+        rate = f"{(addcarts / clicks * 100):.1f}%" if clicks else "—"
+        value = c.get("value", 0) or 0
+        kind = c.get("kind", "percent")
+        days = meta.get("days", "0")
+        template = meta.get("template", "postpurchase")
+        rows += (f'<tr><td><b>{esc(meta.get("audience") or l.get("note", ""))}</b><br><code>{esc(l.get("code",""))}</code></td>'
+                 f'<td><code>{esc(coupon_code or "—")}</code></td><td class="n">{clicks}</td><td class="n">{visitors}</td>'
+                 f'<td class="n">{addcarts}</td><td class="n">{checkouts}</td><td class="n">{uses}</td><td class="n">{rate}</td>'
+                 f'<td><button class="cp row-copy" data-template="{esc(template)}" data-kind="{esc(kind)}" '
+                 f'data-value="{value}" data-min="{c.get("min_order",0) or 0}" data-uses="{c.get("max_uses",0) or 0}" '
+                 f'data-days="{esc(days)}" data-coupon="{esc(coupon_code)}" data-url="{esc(url)}" onclick="rowCopy(this)">复制文案</button></td></tr>')
+    ov = overview_data or {}
+    def stat(v, label):
+        return f'<div class="stat"><div class="v">{v}</div><div class="l">{label}</div></div>'
+    warn = _warn(links_err or coupons_err or overview_err)
+    inner = (f'{warn}<style>'
+             '.mk-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;align-items:start}'
+             '.mk-result{display:none;background:#F4FBF7;border:1px solid #CFE9DA;border-radius:14px;padding:14px;margin-top:14px}'
+             '.mk-result textarea{width:100%;min-height:180px;border:1px solid #D7E7DE;border-radius:10px;padding:12px;font:13px/1.6 inherit;margin:10px 0;resize:vertical}'
+             '.result-codes{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.result-codes a{color:#2563D9;font-size:12px;font-weight:700;word-break:break-all}'
+             '.copy-actions{display:flex;gap:8px}.copy-actions button{flex:1;border:0;border-radius:10px;padding:10px;font-weight:800;cursor:pointer}.copy-btn{background:#2563D9;color:#fff}.wa-btn{background:#25D366;color:#fff}'
+             '.funnel-note{font-size:12px;color:#68758a;line-height:1.55;margin-top:8px}.campaign-table{overflow-x:auto}.campaign-table table{min-width:940px}'
+             '@media(max-width:760px){.mk-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}'
+             '</style><h1>📣 营销留存 <span class="sub">优惠券 + 专属链接 + 西语文案</span></h1>'
+             '<div class="stats">'
+             + stat(ov.get("clicks30", 0), "近30天专属链接点击")
+             + stat(ov.get("visitors30", 0), "独立访客")
+             + stat(ov.get("addcarts30", 0), "加购")
+             + stat(ov.get("checkouts30", 0), "开始结账")
+             + stat(ov.get("coupon_uses30", 0), "优惠券核销")
+             + '</div><div class="mk-grid"><div class="cardp"><div class="frm" id="campaignForm">'
+             '<label>客户留存模板</label><select id="tpl"><option value="postpurchase">购买后感谢 + 下次优惠</option>'
+             '<option value="welcome">新客户欢迎 + 首单优惠</option><option value="winback">沉睡客户召回</option>'
+             '<option value="vip">VIP 专属优惠</option></select>'
+             '<label>客户 / 分组备注</label><input id="mkAudience" placeholder="例：客户 María / 7月已购客户">'
+             '<label>专属链接目标</label><select id="mkTarget"><option value="/">网站首页</option><option value="carrito.html">购物车</option>'
+             + opts + '</select><input id="mkTargetCustom" style="margin-top:8px" placeholder="或粘贴自定义链接">'
+             '<label>优惠方式</label><div class="seg"><label><input type="radio" name="mkKind" value="percent" checked onchange="kindUI()"> 百分比</label>'
+             '<label><input type="radio" name="mkKind" value="amount" onchange="kindUI()"> 固定金额</label></div>'
+             '<label id="mkValueLabel">折扣百分比（%）</label><input id="mkValue" type="number" value="10" min="1" step="any">'
+             '<div class="row2"><div><label>最低订单额 RD$</label><input id="mkMin" type="number" value="0"></div>'
+             '<div><label>可使用次数</label><input id="mkUses" type="number" value="1" min="0"></div></div>'
+             '<label>有效天数</label><input id="mkDays" type="number" value="30" min="0">'
+             '<button class="pri" onclick="createCampaign(this)">一键生成营销活动</button>'
+             '<div class="funnel-note">一次生成：优惠码、带优惠券的专属短链接、西班牙语营销文案。链接会跟踪点击、访客、浏览、加购和结账。</div>'
+             '</div></div><div><div class="cardp"><b>西班牙语文案预览</b>'
+             '<div class="mk-result" id="campaignResult"><div id="resultCodes" class="result-codes"></div></div>'
+             '<textarea id="copyOut" style="width:100%;min-height:240px;border:1.5px solid #E5EAF2;border-radius:12px;padding:13px;font:13px/1.65 inherit;margin-top:12px"></textarea>'
+             '<div class="copy-actions"><button class="copy-btn" onclick="copyText()">复制文案</button>'
+             '<button class="wa-btn" onclick="shareWA()">WhatsApp 发送</button></div></div></div></div>'
+             '<h1 style="margin-top:26px">营销活动表现</h1><div class="campaign-table"><table><thead><tr>'
+             '<th>客户/活动</th><th>优惠码</th><th>点击</th><th>访客</th><th>加购</th><th>结账</th><th>核销</th><th>点击→加购</th><th></th>'
+             '</tr></thead><tbody>' + (rows or '<tr><td colspan="9" class="empty">还没有营销活动</td></tr>')
+             + '</tbody></table></div>' + _MARKETING_JS)
+    return sub_shell("营销留存", "marketing", inner)
+
 def stats_page():
     data, err = worker_call("overview")
     d = data or {}
     def card(v, l): return f'<div class="stat"><div class="v">{v}</div><div class="l">{l}</div></div>'
-    inner = (f'{_warn(err)}<h1>📊 访问数据 <span class="sub">近30天</span></h1>'
+    clicks = int(d.get("clicks30", 0) or 0)
+    addcarts = int(d.get("addcarts30", 0) or 0)
+    checkouts = int(d.get("checkouts30", 0) or 0)
+    uses = int(d.get("coupon_uses30", 0) or 0)
+    add_rate = f"{addcarts / clicks * 100:.1f}%" if clicks else "—"
+    checkout_rate = f"{checkouts / clicks * 100:.1f}%" if clicks else "—"
+    inner = (f'{_warn(err)}<h1>📊 营销数据 <span class="sub">近30天</span></h1>'
              '<div class="stats">'
-             + card(d.get("clicks30", 0), "短链点击")
+             + card(clicks, "专属链接点击")
              + card(d.get("visitors30", 0), "独立访客")
-             + card(d.get("addcarts30", 0), "加购次数")
+             + card(addcarts, "加购次数")
+             + card(checkouts, "开始结账")
+             + card(uses, "优惠券核销")
+             + card(add_rate, "点击→加购")
+             + card(checkout_rate, "点击→结账")
              + card(d.get("links", 0), "短链总数")
              + card(d.get("active_coupons", 0), "启用中的券")
              + '</div>'
@@ -937,8 +1072,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <div class="more-menu" id="moreMenu">
 <a href="/import">📥 流水线导入</a>
 <a href="/colecciones">🪴 专题合集</a>
-<a href="/links">🔗 短链</a>
-<a href="/coupons">🎟️ 优惠券</a>
+<a href="/marketing">📣 营销留存</a>
 <a href="/stats">📊 数据</a>
 <a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button onclick="restartAdmin(this)">🔄 重启后台</button>
@@ -1344,10 +1478,8 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, LOGIN_HTML.replace("__ERR__", ""))
         if p == "/":
             return self.send(200, page_html())
-        if p == "/links":
-            return self.send(200, links_page())
-        if p == "/coupons":
-            return self.send(200, coupons_page())
+        if p in ("/marketing", "/links", "/coupons"):
+            return self.send(200, marketing_page())
         if p == "/stats":
             return self.send(200, stats_page())
         if p == "/colecciones":
@@ -1489,6 +1621,35 @@ class H(BaseHTTPRequestHandler):
                 payload = json.loads(body.decode("utf-8") or "{}")
                 data, err = worker_call("coupon/toggle", "POST", payload)
                 return self.send(200, json.dumps(data or {"error": err}), "application/json")
+            if p == "/campaign_create":
+                b = json.loads(body.decode("utf-8") or "{}")
+                value = float(b.get("value") or 0)
+                if value <= 0:
+                    return self.send(400, json.dumps({"error": "请填写有效优惠金额"}), "application/json")
+                days = max(0, int(b.get("days") or 0))
+                coupon_payload = {
+                    "kind": "amount" if b.get("kind") == "amount" else "percent",
+                    "value": value,
+                    "min_order": float(b.get("min_order") or 0),
+                    "max_uses": max(0, int(b.get("max_uses") or 0)),
+                    "expires_at": int(time.time() * 1000) + days * 86400000 if days else 0,
+                    "scope": "all",
+                }
+                coupon, coupon_err = worker_call("coupon/create", "POST", coupon_payload)
+                if not coupon or not coupon.get("code"):
+                    return self.send(502, json.dumps({"error": coupon_err or (coupon or {}).get("error", "优惠券创建失败")}), "application/json")
+                coupon_code = coupon["code"]
+                target = (b.get("target") or "/").strip()
+                joiner = "&" if "?" in target else "?"
+                target = f"{target}{joiner}coupon={quote(coupon_code)}"
+                note = (f'campaign|coupon={coupon_code}|template={b.get("template","postpurchase")}'
+                        f'|days={days}|audience={str(b.get("audience") or "").replace("|", " ")}')
+                link, link_err = worker_call("link/create", "POST", {"target": target, "note": note})
+                if not link or not link.get("url"):
+                    return self.send(502, json.dumps({"error": link_err or (link or {}).get("error", "专属链接创建失败"),
+                                                      "coupon": coupon_code}), "application/json")
+                return self.send(200, json.dumps({"ok": True, "coupon": coupon_code,
+                                                  "url": link["url"], "short_code": link.get("code", "")}), "application/json")
             if p == "/coleccion_save":
                 b = json.loads(body.decode("utf-8") or "{}")
                 colls = load_collections()

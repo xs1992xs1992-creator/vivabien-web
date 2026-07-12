@@ -560,6 +560,8 @@ function vbCardAdd(e,b){
  var old=b.innerHTML;b.innerHTML='✓';setTimeout(function(){b.classList.remove('added');b.innerHTML=old;
   b.setAttribute('aria-label','Agregar al carrito')},900);
 }
+try{var vbCampaignCoupon=new URLSearchParams(location.search).get('coupon');
+ if(vbCampaignCoupon)localStorage.setItem('vb_campaign_coupon',vbCampaignCoupon.toUpperCase())}catch(e){}
 document.addEventListener('DOMContentLoaded',vbBadge);
 </script>"""
 
@@ -772,18 +774,20 @@ function confirmar(){
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
  fbq('track','Contact');
  try{fbq('track','InitiateCheckout',{value:tot,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
- vbTrack('checkout','',{code:COUPON?COUPON.code:''});
+    vbTrack('checkout','',{coupon:COUPON?COUPON.code:''});
  if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify({code:COUPON.code,order_id:oid})}).catch(function(){})}catch(e){}}
  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
- localStorage.removeItem('vb_cart');vbBadge();
+ localStorage.removeItem('vb_cart');localStorage.removeItem('vb_campaign_coupon');vbBadge();
  document.getElementById('okId').textContent=oid;
  document.getElementById('main').style.display='none';
  document.getElementById('okScreen').style.display='block';
  window.scrollTo(0,0);
 }
 render();payUI();
+try{var autoCoupon=new URLSearchParams(location.search).get('coupon')||localStorage.getItem('vb_campaign_coupon');
+ if(autoCoupon){document.getElementById('cpnCode').value=autoCoupon.toUpperCase();setTimeout(applyCoupon,80)}}catch(e){}
 </script>"""
     body = (body.replace("__BANKS__", banks_html).replace("__WA__", WHATSAPP)
                 .replace("__BANKLINES__", bank_lines).replace("__API__", API_BASE))
