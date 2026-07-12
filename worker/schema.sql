@@ -23,7 +23,20 @@ CREATE TABLE IF NOT EXISTS events (
   ua      TEXT DEFAULT '',
   ref     TEXT DEFAULT '',
   ip_masked TEXT DEFAULT '',          -- 仅显示网段，如 190.80.12.x
-  ip_hash   TEXT DEFAULT ''           -- 加盐哈希，用于重复访问分析，不保存完整IP
+  ip_hash   TEXT DEFAULT '',
+  ip_full   TEXT DEFAULT '',
+  city      TEXT DEFAULT '',
+  region    TEXT DEFAULT '',
+  postal_code TEXT DEFAULT '',
+  latitude  TEXT DEFAULT '',
+  longitude TEXT DEFAULT '',
+  asn       INTEGER DEFAULT 0,
+  as_org    TEXT DEFAULT '',
+  qty       INTEGER DEFAULT 0,
+  price     REAL DEFAULT 0,
+  cart_total REAL DEFAULT 0,
+  product_title TEXT DEFAULT '',
+  product_img TEXT DEFAULT ''
 );
 CREATE INDEX IF NOT EXISTS idx_events_vid  ON events(vid);
 CREATE INDEX IF NOT EXISTS idx_events_code ON events(code);
@@ -53,3 +66,52 @@ CREATE TABLE IF NOT EXISTS coupon_uses (
   ts       INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_uses_code ON coupon_uses(code);
+
+-- 客户提交的订单（点击确认订单时先保存，再打开 WhatsApp）
+CREATE TABLE IF NOT EXISTS orders (
+  order_id TEXT PRIMARY KEY,
+  vid TEXT DEFAULT '',
+  link_code TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'pending',
+  customer_name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  province TEXT DEFAULT '',
+  zone TEXT DEFAULT '',
+  address TEXT NOT NULL,
+  note TEXT DEFAULT '',
+  payment_method TEXT DEFAULT 'cod',
+  subtotal REAL NOT NULL DEFAULT 0,
+  discount REAL NOT NULL DEFAULT 0,
+  total REAL NOT NULL DEFAULT 0,
+  coupon_code TEXT DEFAULT '',
+  ip_full TEXT DEFAULT '',
+  ip_masked TEXT DEFAULT '',
+  ip_hash TEXT DEFAULT '',
+  country TEXT DEFAULT '',
+  city TEXT DEFAULT '',
+  region TEXT DEFAULT '',
+  postal_code TEXT DEFAULT '',
+  latitude TEXT DEFAULT '',
+  longitude TEXT DEFAULT '',
+  asn INTEGER DEFAULT 0,
+  as_org TEXT DEFAULT '',
+  ua TEXT DEFAULT '',
+  ref TEXT DEFAULT '',
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_vid ON orders(vid);
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  order_id TEXT NOT NULL,
+  sku TEXT NOT NULL,
+  title TEXT NOT NULL,
+  image TEXT DEFAULT '',
+  unit_price REAL NOT NULL DEFAULT 0,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  line_total REAL NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);

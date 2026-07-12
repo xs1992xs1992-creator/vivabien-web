@@ -550,9 +550,12 @@ function vbAddProduct(b){
  if(f){f.qty++}else{c.push({sku:sku,handle:b.dataset.handle,title:b.dataset.title,
   price:parseFloat(b.dataset.price),img:b.dataset.img,qty:1})}
  vbSave(c);
+ var item=c.find(function(x){return x.sku===sku});
  try{fbq('track','AddToCart',{content_ids:[sku],content_type:'product',
   value:parseFloat(b.dataset.price),currency:'DOP'})}catch(e){}
- try{vbTrack('addcart',sku)}catch(e){}
+ try{vbTrack('addcart',sku,{qty:item.qty,price:item.price,
+  cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),
+  product_title:item.title,product_img:item.img})}catch(e){}
 }
 function vbCardAdd(e,b){
  if(e){e.preventDefault();e.stopPropagation()}
@@ -730,7 +733,9 @@ function render(){
   +'<button class="rm" onclick="rm('+i+')">✕</button></div>';}).join('');
  paintTotals();
 }
-function qty(i,d){var c=vbCart();c[i].qty+=d;if(c[i].qty<1)c[i].qty=1;vbSave(c);render()}
+function qty(i,d){var c=vbCart();c[i].qty+=d;if(c[i].qty<1)c[i].qty=1;vbSave(c);render();
+ if(d>0){var it=c[i];try{vbTrack('addcart',it.sku,{qty:it.qty,price:it.price,
+  cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),product_title:it.title,product_img:it.img})}catch(e){}}}
 function rm(i){var c=vbCart();c.splice(i,1);vbSave(c);render()}
 function payUI(){
  var t=document.querySelector('input[name=pay]:checked').value;
@@ -748,7 +753,7 @@ function provUI(){
  document.getElementById('cityFld').style.display=isSD?'none':'block';
 }
 fillSel('fProv',PROVS);fillSel('fSector',SECTORES);provUI();
-function confirmar(){
+async function confirmar(){
  var c=vbCart();if(!c.length)return;
  var nom=document.getElementById('fNom').value.trim(),
      tel=document.getElementById('fTel').value.trim(),
@@ -772,13 +777,27 @@ function confirmar(){
   +(nota?'\\n📝 '+nota:'')
   +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
+ var btn=document.getElementById('btnConf'),waWin=window.open('about:blank','_blank');
+ btn.disabled=true;btn.textContent='Guardando pedido...';
+ try{
+  var orderRes=await fetch('__API__/api/order',{method:'POST',credentials:'include',
+   headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:oid,
+    customer_name:nom,phone:tel,province:prov,zone:zona,address:dir,note:nota,
+    payment_method:pay,subtotal:sub,discount:disc,total:tot,
+    coupon_code:COUPON?COUPON.code:'',items:c.map(function(it){return {
+     sku:it.sku,title:it.title,image:it.img,unit_price:it.price,quantity:it.qty}})})});
+  var orderData=await orderRes.json();
+  if(!orderRes.ok||!orderData.ok)throw new Error(orderData.error||'No se pudo guardar el pedido');
+ }catch(e){if(waWin)waWin.close();btn.disabled=false;paintTotals();
+  alert('No pudimos guardar tu pedido. Revisa tu conexión e intenta de nuevo.');return;}
  fbq('track','Contact');
  try{fbq('track','InitiateCheckout',{value:tot,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
     vbTrack('checkout','',{coupon:COUPON?COUPON.code:''});
  if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify({code:COUPON.code,order_id:oid})}).catch(function(){})}catch(e){}}
- window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+ if(waWin)waWin.location='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+ else window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
  localStorage.removeItem('vb_cart');localStorage.removeItem('vb_campaign_coupon');vbBadge();
  document.getElementById('okId').textContent=oid;
  document.getElementById('main').style.display='none';

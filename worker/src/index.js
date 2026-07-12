@@ -66,17 +66,29 @@ async function hashIp(ip, salt) {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function logEvent(env, { vid, code = "", type, sku = "", req }) {
-  const country = req?.cf?.country || "";
-  const ua = req?.headers.get("User-Agent") || "";
-  const ref = req?.headers.get("Referer") || "";
+function requestMeta(req) {
+  const cf = req?.cf || {};
   const ip = req?.headers.get("CF-Connecting-IP") || "";
-  const ipMasked = maskIp(ip);
-  const ipHash = await hashIp(ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
+  return {
+    ip, ipMasked: maskIp(ip), country: cf.country || "", city: cf.city || "",
+    region: cf.region || "", postalCode: cf.postalCode || "", latitude: cf.latitude || "",
+    longitude: cf.longitude || "", asn: Number(cf.asn) || 0, asOrg: cf.asOrganization || "",
+    ua: req?.headers.get("User-Agent") || "", ref: req?.headers.get("Referer") || "",
+  };
+}
+
+async function logEvent(env, { vid, code = "", type, sku = "", req, details = {} }) {
+  const m = requestMeta(req);
+  const ipHash = await hashIp(m.ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
   await env.DB.prepare(
-    "INSERT INTO events (vid, code, type, sku, ts, country, ua, ref, ip_masked, ip_hash) VALUES (?,?,?,?,?,?,?,?,?,?)"
-  ).bind(vid, code, type, sku, now(), country, ua.slice(0, 300), ref.slice(0, 300),
-         ipMasked, ipHash).run();
+    `INSERT INTO events (vid,code,type,sku,ts,country,ua,ref,ip_masked,ip_hash,ip_full,
+     city,region,postal_code,latitude,longitude,asn,as_org,qty,price,cart_total,product_title,product_img)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  ).bind(vid, code, type, sku, now(), m.country, m.ua.slice(0, 300), m.ref.slice(0, 300),
+         m.ipMasked, ipHash, m.ip, m.city, m.region, m.postalCode, m.latitude, m.longitude,
+         m.asn, m.asOrg.slice(0, 160), Math.max(0, Number(details.qty) || 0),
+         Math.max(0, Number(details.price) || 0), Math.max(0, Number(details.cart_total) || 0),
+         String(details.product_title || "").slice(0, 240), String(details.product_img || "").slice(0, 240)).run();
 }
 
 // ---------- 路由 ----------
@@ -90,6 +102,7 @@ export default {
     try {
       if (path.startsWith("/s/")) return handleShort(req, env, url);
       if (path === "/api/track") return handleTrack(req, env);
+      if (path === "/api/order") return handleOrder(req, env);
       if (path === "/api/coupon/validate") return handleCouponValidate(req, env);
       if (path === "/api/coupon/redeem") return handleCouponRedeem(req, env);
       if (path.startsWith("/api/admin/")) return handleAdmin(req, env, url);
@@ -131,9 +144,68 @@ async function handleTrack(req, env) {
   if (!vid) vid = crypto.randomUUID();
 
   const linkCode = body.code || getCookie(req, LINK_COOKIE) || "";
-  await logEvent(env, { vid, code: linkCode, type, sku: body.sku || "", req });
+  await logEvent(env, { vid, code: linkCode, type, sku: body.sku || "", req, details: body });
   const headers = fresh ? { "Set-Cookie": vidCookieHeader(vid) } : {};
   return json({ ok: true }, 200, headers);
+}
+
+// POST /api/order —— 客户确认购物车后保存完整订单，再由前端打开 WhatsApp
+async function handleOrder(req, env) {
+  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+  const b = await req.json().catch(() => ({}));
+  const items = Array.isArray(b.items) ? b.items.slice(0, 50) : [];
+  if (!b.customer_name || !b.phone || !b.address || !items.length)
+    return json({ error: "missing_order_fields" }, 400);
+
+  const orderId = String(b.order_id || ("VB-" + randCode(8).toUpperCase())).slice(0, 32);
+  const exists = await env.DB.prepare("SELECT order_id FROM orders WHERE order_id=?").bind(orderId).first();
+  if (exists) return json({ ok: true, order_id: orderId, duplicate: true });
+
+  const vid = getCookie(req, VID_COOKIE) || crypto.randomUUID();
+  const linkCode = getCookie(req, LINK_COOKIE) || "";
+  const m = requestMeta(req);
+  const ipHash = await hashIp(m.ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
+  const cleanItems = items.map((raw) => {
+    const quantity = Math.max(1, Math.min(99, Number(raw.quantity) || 1));
+    const unitPrice = Math.max(0, Number(raw.unit_price) || 0);
+    return { sku: String(raw.sku || "").slice(0, 100), title: String(raw.title || "Producto").slice(0, 240),
+      image: String(raw.image || "").slice(0, 240), quantity, unitPrice,
+      lineTotal: Math.round(unitPrice * quantity * 100) / 100 };
+  });
+  const subtotal = Math.round(cleanItems.reduce((sum, item) => sum + item.lineTotal, 0) * 100) / 100;
+  const couponCode = String(b.coupon_code || "").trim();
+  let discount = 0;
+  if (couponCode) {
+    const coupon = await env.DB.prepare("SELECT * FROM coupons WHERE code=?").bind(couponCode).first();
+    if (coupon && coupon.active && (!coupon.expires_at || coupon.expires_at > now()) &&
+        (!coupon.max_uses || coupon.used_count < coupon.max_uses) && subtotal >= (coupon.min_order || 0)) {
+      discount = coupon.kind === "percent" ? subtotal * coupon.value / 100 : coupon.value;
+      discount = Math.round(Math.min(subtotal, discount) * 100) / 100;
+    }
+  }
+  const total = Math.max(0, subtotal - discount);
+  const created = now();
+  const statements = [env.DB.prepare(
+    `INSERT INTO orders (order_id,vid,link_code,status,customer_name,phone,province,zone,address,note,
+     payment_method,subtotal,discount,total,coupon_code,ip_full,ip_masked,ip_hash,country,city,region,
+     postal_code,latitude,longitude,asn,as_org,ua,ref,created_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  ).bind(orderId, vid, linkCode, "pending", String(b.customer_name).slice(0,160),
+    String(b.phone).slice(0,80), String(b.province || "").slice(0,120), String(b.zone || "").slice(0,120),
+    String(b.address).slice(0,500), String(b.note || "").slice(0,500),
+    b.payment_method === "transfer" ? "transfer" : "cod", subtotal, discount, total,
+    couponCode.slice(0,80), m.ip, m.ipMasked, ipHash, m.country, m.city, m.region,
+    m.postalCode, m.latitude, m.longitude, m.asn, m.asOrg.slice(0,160), m.ua.slice(0,300),
+    m.ref.slice(0,300), created, created)];
+  for (const item of cleanItems) {
+    statements.push(env.DB.prepare(
+      `INSERT INTO order_items (order_id,sku,title,image,unit_price,quantity,line_total)
+       VALUES (?,?,?,?,?,?,?)`
+    ).bind(orderId, item.sku, item.title, item.image, item.unitPrice, item.quantity, item.lineTotal));
+  }
+  await env.DB.batch(statements);
+  await logEvent(env, { vid, code: linkCode, type: "order", req, details: { cart_total: total } });
+  return json({ ok: true, order_id: orderId }, 201, { "Set-Cookie": vidCookieHeader(vid) });
 }
 
 // POST /api/coupon/validate  { code, subtotal }
@@ -237,6 +309,39 @@ async function handleAdmin(req, env, url) {
     return json({ ok: true, events: rows.results || [] });
   }
 
+  if (sub === "orders" && req.method === "GET") {
+    const status = url.searchParams.get("status") || "";
+    const base = `SELECT * FROM orders ${status ? "WHERE status=?" : ""} ORDER BY created_at DESC LIMIT 300`;
+    const orderRows = status ? await env.DB.prepare(base).bind(status).all() : await env.DB.prepare(base).all();
+    const orders = orderRows.results || [];
+    if (orders.length) {
+      const itemRows = await env.DB.prepare(
+        `SELECT * FROM order_items WHERE order_id IN (${orders.map(() => "?").join(",")}) ORDER BY id ASC`
+      ).bind(...orders.map((o) => o.order_id)).all();
+      const grouped = {};
+      for (const item of itemRows.results || []) (grouped[item.order_id] ||= []).push(item);
+      for (const order of orders) order.items = grouped[order.order_id] || [];
+    }
+    return json({ ok: true, orders });
+  }
+
+  if (sub === "order/status" && req.method === "POST") {
+    const b = await req.json().catch(() => ({}));
+    const allowed = ["pending", "confirmed", "shipping", "completed", "cancelled"];
+    if (!b.order_id || !allowed.includes(b.status)) return json({ error: "invalid_status" }, 400);
+    await env.DB.prepare("UPDATE orders SET status=?,updated_at=? WHERE order_id=?")
+      .bind(b.status, now(), b.order_id).run();
+    return json({ ok: true });
+  }
+
+  if (sub === "cart-visitors" && req.method === "GET") {
+    const since = Number(url.searchParams.get("since")) || now() - 30 * 864e5;
+    const rows = await env.DB.prepare(
+      `SELECT * FROM events WHERE type='addcart' AND ts>=? ORDER BY ts DESC LIMIT 500`
+    ).bind(since).all();
+    return json({ ok: true, events: rows.results || [] });
+  }
+
   // 优惠券
   if (sub === "coupon/create" && req.method === "POST") {
     const b = await req.json().catch(() => ({}));
@@ -281,8 +386,10 @@ async function handleAdmin(req, env, url) {
          (SELECT COUNT(*) FROM events WHERE type='addcart' AND ts>?) AS addcarts30,
          (SELECT COUNT(*) FROM events WHERE type='checkout' AND ts>?) AS checkouts30,
          (SELECT COUNT(*) FROM coupon_uses WHERE ts>?) AS coupon_uses30,
+         (SELECT COUNT(*) FROM orders WHERE created_at>?) AS orders30,
+         (SELECT COUNT(*) FROM orders WHERE status='pending') AS pending_orders,
          (SELECT COUNT(*) FROM coupons WHERE active=1) AS active_coupons`
-    ).bind(since, since, since, since, since).first();
+    ).bind(since, since, since, since, since, since).first();
     return json({ ok: true, ...totals });
   }
 

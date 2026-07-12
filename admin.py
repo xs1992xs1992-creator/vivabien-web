@@ -445,6 +445,8 @@ def nav(active=""):
     def c(k): return "on" if k == active else ""
     return (f'<div class="nav"><b>🛠️ VivaBien</b>'
             f'<a class="{c("prod")}" href="/">商品</a>'
+            f'<a class="{c("orders")}" href="/orders">订单</a>'
+            f'<a class="{c("carts")}" href="/cart-visitors">加购访客</a>'
             f'<a class="{c("marketing")}" href="/marketing">📣 营销留存</a>'
             f'<a class="{c("stats")}" href="/stats">📊 数据</a>'
             f'<a class="{c("coll")}" href="/colecciones">🪴 专题</a></div>')
@@ -501,7 +503,7 @@ function look(){
  if(!v)return;var tl=document.getElementById('tl');tl.textContent='查询中…';
  fetch('/api_timeline?'+t+'='+encodeURIComponent(v)).then(function(r){return r.json()}).then(function(d){
   if(!d.events||!d.events.length){tl.textContent='无记录';return;}
-  var m={click:'🔗 点击短链',view:'👁️ 浏览',addcart:'🛒 加购',checkout:'✅ 进入结算'};
+  var m={click:'🔗 点击短链',view:'👁️ 浏览',addcart:'🛒 加购',checkout:'✅ 进入结算',order:'📦 提交订单'};
   tl.innerHTML='<div class="tls">'+d.events.map(function(e){
    return '<div class="tle"><span>'+(m[e.type]||e.type)+'</span>'
     +(e.sku?' <code>'+e.sku+'</code>':'')+(e.code?' <i>'+e.code+'</i>':'')
@@ -737,6 +739,96 @@ def stats_page():
              '<button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div>'
              '<div id="tl"></div></div></div>' + _STATS_JS)
     return sub_shell("访问数据", "stats", inner)
+
+_ORDER_JS = """<script>
+var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',completed:'已完成',cancelled:'已取消'};
+async function orderStatus(sel){var id=sel.dataset.id,old=sel.dataset.old;sel.disabled=true;
+ try{var r=await fetch('/order_status',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({order_id:id,status:sel.value})});if(!r.ok)throw new Error(await r.text());
+  sel.dataset.old=sel.value;sel.closest('.order-card').dataset.status=sel.value;
+ }catch(e){sel.value=old;alert('状态更新失败：'+e.message)}finally{sel.disabled=false}}
+function orderFilter(){var q=document.getElementById('orderQ').value.toLowerCase(),s=document.getElementById('orderS').value;
+ document.querySelectorAll('.order-card').forEach(function(x){x.style.display=(!s||x.dataset.status===s)&&(!q||x.textContent.toLowerCase().includes(q))?'':'none'})}
+</script>"""
+
+def orders_page():
+    data, err = worker_call("orders")
+    orders = (data or {}).get("orders", [])
+    status_names = {"pending":"待确认", "confirmed":"已确认", "shipping":"配送中",
+                    "completed":"已完成", "cancelled":"已取消"}
+    cards = ""
+    counts = {k: 0 for k in status_names}
+    for o in orders:
+        status = o.get("status", "pending")
+        counts[status] = counts.get(status, 0) + 1
+        items = ""
+        for it in o.get("items", []):
+            img = os.path.basename(it.get("image", ""))
+            src = f'/images/{quote(img)}' if img else ""
+            img_html = f'<img src="{src}" alt="">' if src else '<div class="item-noimg">无图</div>'
+            items += (f'<div class="order-item">'
+                      f'{img_html}'
+                      f'<div class="item-main"><b>{esc(it.get("title",""))}</b><small>{esc(it.get("sku",""))}</small></div>'
+                      f'<div class="item-qty">× {int(it.get("quantity",1) or 1)}</div>'
+                      f'<div class="item-money">RD$ {float(it.get("line_total",0) or 0):,.0f}</div></div>')
+        opts = "".join(f'<option value="{k}" {"selected" if k == status else ""}>{v}</option>'
+                       for k, v in status_names.items())
+        phone = re.sub(r"\D", "", str(o.get("phone", "")))
+        created = time.strftime("%Y-%m-%d %H:%M", time.localtime((o.get("created_at",0) or 0) / 1000))
+        location = " · ".join(x for x in (o.get("province",""), o.get("zone","")) if x)
+        geo = " · ".join(x for x in (o.get("city",""), o.get("region",""), o.get("postal_code","")) if x)
+        note_html = f'<div class="order-note">备注：{esc(o.get("note",""))}</div>' if o.get("note") else ""
+        cards += (f'<article class="order-card" data-status="{esc(status)}">'
+                  f'<header><div><b class="order-id">{esc(o.get("order_id",""))}</b><time>{created}</time></div>'
+                  f'<select data-id="{esc(o.get("order_id",""))}" data-old="{esc(status)}" onchange="orderStatus(this)">{opts}</select></header>'
+                  f'<div class="order-customer"><div><strong>{esc(o.get("customer_name",""))}</strong>'
+                  f'<a href="https://wa.me/{phone}" target="_blank">WhatsApp {esc(o.get("phone",""))}</a></div>'
+                  f'<div><span>{esc(location)}</span><small>{esc(o.get("address",""))}</small></div>'
+                  f'<div><span>IP {esc(o.get("ip_full") or o.get("ip_masked",""))}</span><small>{esc(geo)}</small></div></div>'
+                  f'<div class="order-items">{items}</div><footer>'
+                  f'<span>{"转账" if o.get("payment_method") == "transfer" else "货到付款"}'
+                  f'{(" · 优惠码 "+esc(o.get("coupon_code"))) if o.get("coupon_code") else ""}</span>'
+                  f'<div>小计 RD$ {float(o.get("subtotal",0) or 0):,.0f}'
+                  f'{(" · 优惠 -RD$ "+format(float(o.get("discount",0) or 0), ",.0f")) if o.get("discount") else ""}'
+                  f' <b>总计 RD$ {float(o.get("total",0) or 0):,.0f}</b></div></footer>'
+                  f'{note_html}</article>')
+    stat_html = "".join(f'<div class="stat"><div class="v">{counts.get(k,0)}</div><div class="l">{v}</div></div>'
+                        for k, v in status_names.items())
+    order_cards_html = cards or '<div class="empty-orders">还没有客户提交订单</div>'
+    inner = (f'{_warn(err)}<style>'
+             '.order-tools{display:flex;gap:10px;margin-bottom:16px}.order-tools input,.order-tools select{border:1.5px solid #E5EAF2;border-radius:10px;padding:10px 12px;background:#fff}.order-tools input{flex:1}'
+             '.order-list{display:flex;flex-direction:column;gap:14px}.order-card{background:#fff;border:1px solid #E3E9F2;border-radius:14px;overflow:hidden}.order-card>header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#F8FAFD}.order-id{font-size:16px}.order-card time{font-size:11px;color:#8792a4;margin-left:10px}.order-card select{border:1px solid #DCE4EF;border-radius:9px;padding:8px;background:#fff;font-weight:700}'
+             '.order-customer{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px;padding:13px 16px;border-bottom:1px solid #EEF2F7}.order-customer div{display:flex;flex-direction:column;gap:4px}.order-customer a{color:#138a4b;font-size:12px;font-weight:700;text-decoration:none}.order-customer span{font-size:13px;font-weight:700}.order-customer small{color:#7d8999;line-height:1.35}'
+             '.order-items{padding:4px 16px}.order-item{display:grid;grid-template-columns:54px minmax(0,1fr) 52px 90px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F7}.order-item img,.item-noimg{width:54px;height:54px;border-radius:7px;object-fit:cover;background:#F1F4F8}.item-noimg{display:grid;place-items:center;font-size:10px;color:#9aa3b2}.item-main{display:flex;flex-direction:column;gap:4px}.item-main b{font-size:13px}.item-main small{color:#8b96a6}.item-qty{font-weight:800}.item-money{text-align:right;font-weight:800}'
+             '.order-card>footer{display:flex;justify-content:space-between;gap:12px;padding:13px 16px}.order-card>footer span{font-size:12px;color:#68758a}.order-card>footer b{margin-left:12px;font-size:16px}.order-note{padding:0 16px 13px;color:#68758a;font-size:12px}.empty-orders{padding:50px;text-align:center;color:#8d98a8}'
+             '@media(max-width:720px){.order-customer{grid-template-columns:1fr}.order-card>footer{flex-direction:column}.order-item{grid-template-columns:48px minmax(0,1fr) 34px 76px}.order-item img,.item-noimg{width:48px;height:48px}}'
+             '</style><h1>订单 <span class="sub">客户确认购物车后自动进入这里</span></h1>'
+             f'<div class="stats">{stat_html}</div><div class="order-tools"><input id="orderQ" placeholder="搜索订单、客户、电话、IP、商品" oninput="orderFilter()">'
+             '<select id="orderS" onchange="orderFilter()"><option value="">全部状态</option>'
+             + "".join(f'<option value="{k}">{v}</option>' for k,v in status_names.items()) + '</select></div>'
+             f'<div class="order-list">{order_cards_html}</div>' + _ORDER_JS)
+    return sub_shell("订单", "orders", inner)
+
+def cart_visitors_page():
+    data, err = worker_call("cart-visitors")
+    product_by_sku = {p.get("sku"): p for p in products()}
+    rows = ""
+    for e in (data or {}).get("events", []):
+        p = product_by_sku.get(e.get("sku"), {})
+        img = os.path.basename(e.get("product_img") or p.get("img", ""))
+        title = e.get("product_title") or p.get("title") or e.get("sku", "")
+        img_html = f'<img src="/images/{quote(img)}">' if img else ""
+        ts = time.strftime("%m-%d %H:%M", time.localtime((e.get("ts",0) or 0) / 1000))
+        geo = " · ".join(x for x in (e.get("city",""), e.get("region",""), e.get("postal_code","")) if x)
+        rows += (f'<tr><td>{ts}</td><td><b>{esc(e.get("ip_full") or e.get("ip_masked",""))}</b><br><small>{esc(geo)}</small></td>'
+                 f'<td><div class="cart-product">{img_html}<div><b>{esc(title)}</b><small>{esc(e.get("sku",""))}</small></div></div></td>'
+                 f'<td class="n">{int(e.get("qty",0) or 0)}</td><td class="n">RD$ {float(e.get("cart_total",0) or 0):,.0f}</td>'
+                 f'<td><code>{esc(e.get("code") or "直接访问")}</code></td></tr>')
+    empty_row = '<tr><td colspan="6" class="empty">暂无新格式的加购记录</td></tr>'
+    inner = (f'{_warn(err)}<style>.cart-table{{overflow:auto}}.cart-table table{{min-width:850px}}.cart-product{{display:flex;align-items:center;gap:9px;min-width:260px}}.cart-product img{{width:48px;height:48px;border-radius:7px;object-fit:cover}}.cart-product div{{display:flex;flex-direction:column;gap:4px}}small{{color:#8994a4}}'
+             f'</style><h1>加购访客 <span class="sub">最近30天，查看哪个IP加购了什么</span></h1>'
+             f'<div class="cart-table"><table><thead><tr><th>时间</th><th>IP / 位置</th><th>商品</th><th>数量</th><th>购物车金额</th><th>来源短链</th></tr></thead><tbody>{rows if rows else empty_row}</tbody></table></div>')
+    return sub_shell("加购访客", "carts", inner)
 
 # ===== 专题合集管理 =====
 COLLECTIONS_PATH = "data/collections.json"
@@ -1070,6 +1162,8 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <div class="more">
 <button class="btn b-more" id="moreBtn" onclick="moreMenu.classList.toggle('show');event.stopPropagation()">⋯</button>
 <div class="more-menu" id="moreMenu">
+<a href="/orders">订单</a>
+<a href="/cart-visitors">加购访客</a>
 <a href="/import">📥 流水线导入</a>
 <a href="/colecciones">🪴 专题合集</a>
 <a href="/marketing">📣 营销留存</a>
@@ -1482,6 +1576,10 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, marketing_page())
         if p == "/stats":
             return self.send(200, stats_page())
+        if p == "/orders":
+            return self.send(200, orders_page())
+        if p == "/cart-visitors":
+            return self.send(200, cart_visitors_page())
         if p == "/colecciones":
             return self.send(200, colecciones_page(qs.get("edit", [""])[0], qs.get("focus", [""])[0]))
         if p == "/preview-product":
@@ -1650,6 +1748,11 @@ class H(BaseHTTPRequestHandler):
                                                       "coupon": coupon_code}), "application/json")
                 return self.send(200, json.dumps({"ok": True, "coupon": coupon_code,
                                                   "url": link["url"], "short_code": link.get("code", "")}), "application/json")
+            if p == "/order_status":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("order/status", "POST", payload)
+                code = 200 if data and data.get("ok") else 502
+                return self.send(code, json.dumps(data or {"error": err}), "application/json")
             if p == "/coleccion_save":
                 b = json.loads(body.decode("utf-8") or "{}")
                 colls = load_collections()
