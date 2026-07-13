@@ -503,7 +503,7 @@ function look(){
  if(!v)return;var tl=document.getElementById('tl');tl.textContent='查询中…';
  fetch('/api_timeline?'+t+'='+encodeURIComponent(v)).then(function(r){return r.json()}).then(function(d){
   if(!d.events||!d.events.length){tl.textContent='无记录';return;}
-  var m={click:'🔗 点击短链',view:'👁️ 浏览',addcart:'🛒 加购',checkout:'✅ 进入结算',order:'📦 提交订单'};
+  var m={click:'🔗 点击短链',view:'👁️ 浏览',addcart:'🛒 加购',checkout:'✅ 进入结算',order:'📦 提交订单',whatsapp:'WhatsApp 点击',engagement:'有效停留',scroll:'滚动深度'};
   tl.innerHTML='<div class="tls">'+d.events.map(function(e){
    return '<div class="tle"><span>'+(m[e.type]||e.type)+'</span>'
     +(e.sku?' <code>'+e.sku+'</code>':'')+(e.code?' <i>'+e.code+'</i>':'')
@@ -710,35 +710,68 @@ def marketing_page():
              + '</tbody></table></div>' + _MARKETING_JS)
     return sub_shell("营销留存", "marketing", inner)
 
+_ANALYTICS_JS = """<script>
+async function saveCost(){var b={day:document.getElementById('costDay').value,campaign:document.getElementById('costCampaign').value.trim(),source:document.getElementById('costSource').value.trim(),spend:Number(document.getElementById('costSpend').value)||0,impressions:Number(document.getElementById('costImp').value)||0,ad_clicks:Number(document.getElementById('costClicks').value)||0};
+ if(!b.day||!b.campaign){alert('请填写日期和活动名称');return}var r=await fetch('/campaign_cost',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});if(r.ok)location.reload();else alert('保存失败：'+await r.text())}
+</script>"""
+
 def stats_page():
-    data, err = worker_call("overview")
+    data, err = worker_call("analytics?days=30")
     d = data or {}
-    def card(v, l): return f'<div class="stat"><div class="v">{v}</div><div class="l">{l}</div></div>'
-    clicks = int(d.get("clicks30", 0) or 0)
-    addcarts = int(d.get("addcarts30", 0) or 0)
-    checkouts = int(d.get("checkouts30", 0) or 0)
-    uses = int(d.get("coupon_uses30", 0) or 0)
-    add_rate = f"{addcarts / clicks * 100:.1f}%" if clicks else "—"
-    checkout_rate = f"{checkouts / clicks * 100:.1f}%" if clicks else "—"
-    inner = (f'{_warn(err)}<h1>📊 营销数据 <span class="sub">近30天</span></h1>'
-             '<div class="stats">'
-             + card(clicks, "专属链接点击")
-             + card(d.get("visitors30", 0), "独立访客")
-             + card(addcarts, "加购次数")
-             + card(checkouts, "开始结账")
-             + card(uses, "优惠券核销")
-             + card(add_rate, "点击→加购")
-             + card(checkout_rate, "点击→结账")
-             + card(d.get("links", 0), "短链总数")
-             + card(d.get("active_coupons", 0), "启用中的券")
-             + '</div>'
-             '<div class="cardp"><div class="frm">'
-             '<label>查访客足迹（按短码看这条链接的全部事件，或按访客ID看单人时间线）</label>'
-             '<div class="seg2"><input id="q" placeholder="短码 或 访客ID">'
-             '<select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select>'
-             '<button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div>'
-             '<div id="tl"></div></div></div>' + _STATS_JS)
-    return sub_shell("访问数据", "stats", inner)
+    funnel = d.get("funnel") or {}
+    def pct(a, b): return f"{a / b * 100:.1f}%" if b else "—"
+    steps = [("短链点击", int(funnel.get("clicks",0) or 0)),
+             ("页面到达", int(funnel.get("arrivals",0) or 0)),
+             ("商品浏览", int(funnel.get("product_views",0) or 0)),
+             ("加购", int(funnel.get("addcarts",0) or 0)),
+             ("打开购物车", int(funnel.get("checkouts",0) or 0)),
+             ("WhatsApp", int(funnel.get("whatsapps",0) or 0)),
+             ("提交订单", int(funnel.get("orders",0) or 0))]
+    drops = [((steps[i-1][1]-v)/steps[i-1][1] if steps[i-1][1] else 0) for i,(_,v) in enumerate(steps) if i]
+    worst = (drops.index(max(drops))+1) if drops and max(drops)>0 else -1
+    funnel_html = ""
+    for i,(label,value) in enumerate(steps):
+        rate = pct(value, steps[i-1][1]) if i else "起点"
+        drop = pct(max(0,steps[i-1][1]-value),steps[i-1][1]) if i else ""
+        funnel_html += (f'<div class="fstep {"worst" if i==worst else ""}"><span>{label}</span><b>{value}</b>'
+                        f'<small>{rate}{(" · 流失 "+drop) if i else ""}</small></div>')
+    channel_rows = ""
+    for x in d.get("channels",[]):
+        n=int(x.get("sessions",0) or 0); wa=int(x.get("whatsapps",0) or 0); orders=int(x.get("orders",0) or 0)
+        sample = '<span class="sample">样本少</span>' if n < 20 else ""
+        channel_rows += (f'<tr><td><b>{esc(x.get("channel",""))}</b>{sample}</td><td class="n">{n}</td>'
+                         f'<td class="n">{pct(int(x.get("bounces",0) or 0),n)}</td><td class="n">{pct(wa,n)}</td>'
+                         f'<td class="n">{orders}</td><td class="n">{float(x.get("avg_seconds",0) or 0):.0f}s</td>'
+                         f'<td class="n">RD$ {float(x.get("spend",0) or 0):,.0f}</td>'
+                         f'<td class="n">{("RD$ "+format(float(x.get("cost_per_order",0)),",.0f")) if orders and x.get("spend") else "—"}</td></tr>')
+    device_rows = "".join(f'<tr><td><b>{esc(x.get("device",""))}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
+                          f'<td class="n">{pct(int(x.get("whatsapps",0) or 0),int(x.get("sessions",0) or 0))}</td>'
+                          f'<td class="n">{int(x.get("orders",0) or 0)}</td><td class="n">{float(x.get("avg_seconds",0) or 0):.0f}s</td></tr>'
+                          for x in d.get("devices",[]))
+    behavior_rows = "".join(f'<tr><td><b>{esc(x.get("segment",""))}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
+                            f'<td class="n">{float(x.get("avg_seconds",0) or 0):.0f}s</td><td class="n">{float(x.get("avg_pages",0) or 0):.1f}</td>'
+                            f'<td class="n">{float(x.get("avg_scroll",0) or 0):.0f}%</td></tr>' for x in d.get("behavior",[]))
+    product_map={p.get("sku"):p for p in products()}
+    product_rows=""
+    for x in d.get("products",[]):
+        p=product_map.get(x.get("sku"),{}); views=int(x.get("viewers",0) or 0); wa=int(x.get("whatsapps",0) or 0)
+        rate=wa/views*100 if views else 0; title=x.get("title") or p.get("title") or x.get("sku",""); img=x.get("image") or p.get("img","")
+        signal = "高浏览低咨询" if views>=10 and rate<5 else ("高转化可加曝光" if views>=10 and rate>=20 else "观察")
+        product_img = f'<img src="/images/{quote(os.path.basename(img))}">' if img else ""
+        product_rows += (f'<tr><td><div class="pmini">{product_img}<div><b>{esc(title)}</b><small>{esc(x.get("sku",""))}</small></div></div></td>'
+                         f'<td class="n">{views}</td><td class="n">{int(x.get("carts",0) or 0)}</td><td class="n">{wa}</td><td class="n">{rate:.1f}%</td><td>{signal}{" · 样本少" if views<10 else ""}</td></tr>')
+    quality=d.get("quality") or {}; total=int(quality.get("total_events",0) or 0); bots=int(quality.get("bot_events",0) or 0); legacy=int(quality.get("legacy_events",0) or 0)
+    table_empty='<tr><td colspan="8" class="empty">等待新版追踪数据积累</td></tr>'
+    inner=(f'{_warn(err)}<style>.funnel{{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:22px}}.fstep{{background:#fff;border:1px solid #E5EAF2;padding:14px 10px;border-radius:8px;display:flex;flex-direction:column;gap:5px}}.fstep span{{font-size:11px;color:#66758a;font-weight:700}}.fstep b{{font-size:23px}}.fstep small{{font-size:10px;color:#8b96a6}}.fstep.worst{{border:2px solid #E44D4D;background:#FFF5F5}}.section-title{{font-size:17px;margin:24px 0 10px}}.table-wrap{{overflow:auto}}.table-wrap table{{min-width:720px}}.sample{{font-size:9px;background:#FFF1CC;color:#8A6815;padding:2px 5px;border-radius:4px;margin-left:5px}}.pmini{{display:flex;align-items:center;gap:8px;min-width:280px}}.pmini img{{width:44px;height:44px;object-fit:cover;border-radius:6px}}.pmini div{{display:flex;flex-direction:column;gap:3px}}.quality{{font-size:12px;color:#68758a;margin:10px 0 20px}}.cost-grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}}@media(max-width:760px){{.funnel{{grid-template-columns:repeat(2,1fr)}}.cost-grid{{grid-template-columns:1fr}}}}'
+           f'</style><h1>📊 数据分析 <span class="sub">近30天 · 默认排除机器人</span></h1><div class="quality">数据质量：共 {total} 个事件，排除机器人 {bots} 个，历史旧格式 {legacy} 个。小样本指标仅供观察。</div>'
+           f'<h2 class="section-title">推广漏斗</h2><div class="funnel">{funnel_html}</div>'
+           f'<h2 class="section-title">渠道对比</h2><div class="table-wrap"><table><thead><tr><th>渠道/活动</th><th>会话</th><th>未互动跳出</th><th>WhatsApp率</th><th>订单</th><th>平均停留</th><th>花费</th><th>每单成本</th></tr></thead><tbody>{channel_rows or table_empty}</tbody></table></div>'
+           f'<h2 class="section-title">设备分段</h2><div class="table-wrap"><table><thead><tr><th>设备</th><th>会话</th><th>WhatsApp率</th><th>订单</th><th>平均停留</th></tr></thead><tbody>{device_rows or table_empty}</tbody></table></div>'
+           f'<h2 class="section-title">行为对比</h2><div class="table-wrap"><table><thead><tr><th>访客分组</th><th>会话</th><th>平均停留</th><th>浏览页数</th><th>滚动深度</th></tr></thead><tbody>{behavior_rows or table_empty}</tbody></table></div>'
+           f'<h2 class="section-title">商品机会榜</h2><div class="table-wrap"><table><thead><tr><th>商品</th><th>浏览访客</th><th>加购</th><th>WhatsApp</th><th>咨询率</th><th>判断</th></tr></thead><tbody>{product_rows or table_empty}</tbody></table></div>'
+           '<h2 class="section-title">录入广告成本</h2><div class="cardp frm"><div class="cost-grid"><div><label>日期</label><input id="costDay" type="date"></div><div><label>活动名称（必须和UTM campaign一致）</label><input id="costCampaign"></div><div><label>来源</label><input id="costSource" placeholder="facebook"></div><div><label>花费 RD$</label><input id="costSpend" type="number"></div><div><label>展示量</label><input id="costImp" type="number"></div><div><label>广告点击</label><input id="costClicks" type="number"></div></div><button class="pri" onclick="saveCost()">保存广告成本</button></div>'
+           '<div class="cardp"><div class="frm"><label>查访客足迹</label><div class="seg2"><input id="q" placeholder="短码 或 访客ID"><select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select><button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div><div id="tl"></div></div></div>' + _STATS_JS + _ANALYTICS_JS)
+    return sub_shell("数据分析", "stats", inner)
 
 _ORDER_JS = """<script>
 var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',completed:'已完成',cancelled:'已取消'};
@@ -1751,6 +1784,11 @@ class H(BaseHTTPRequestHandler):
             if p == "/order_status":
                 payload = json.loads(body.decode("utf-8") or "{}")
                 data, err = worker_call("order/status", "POST", payload)
+                code = 200 if data and data.get("ok") else 502
+                return self.send(code, json.dumps(data or {"error": err}), "application/json")
+            if p == "/campaign_cost":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("campaign-cost", "POST", payload)
                 code = 200 if data and data.get("ok") else 502
                 return self.send(code, json.dumps(data or {"error": err}), "application/json")
             if p == "/coleccion_save":

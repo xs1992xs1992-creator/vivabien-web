@@ -36,12 +36,33 @@ CREATE TABLE IF NOT EXISTS events (
   price     REAL DEFAULT 0,
   cart_total REAL DEFAULT 0,
   product_title TEXT DEFAULT '',
-  product_img TEXT DEFAULT ''
+  product_img TEXT DEFAULT '',
+  event_id TEXT DEFAULT '',
+  session_id TEXT DEFAULT '',
+  path TEXT DEFAULT '',
+  category TEXT DEFAULT '',
+  duration_ms INTEGER DEFAULT 0,
+  scroll_depth INTEGER DEFAULT 0,
+  device_type TEXT DEFAULT '',
+  screen_width INTEGER DEFAULT 0,
+  utm_source TEXT DEFAULT '',
+  utm_medium TEXT DEFAULT '',
+  utm_campaign TEXT DEFAULT '',
+  utm_content TEXT DEFAULT '',
+  utm_term TEXT DEFAULT '',
+  fbclid TEXT DEFAULT '',
+  gclid TEXT DEFAULT '',
+  whatsapp_location TEXT DEFAULT '',
+  is_bot INTEGER DEFAULT 0,
+  bot_reason TEXT DEFAULT ''
 );
 CREATE INDEX IF NOT EXISTS idx_events_vid  ON events(vid);
 CREATE INDEX IF NOT EXISTS idx_events_code ON events(code);
 CREATE INDEX IF NOT EXISTS idx_events_ts   ON events(ts);
 CREATE INDEX IF NOT EXISTS idx_events_ip_hash ON events(ip_hash);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_events_event_id ON events(event_id) WHERE event_id<>'';
+CREATE INDEX IF NOT EXISTS idx_events_session ON events(session_id);
+CREATE INDEX IF NOT EXISTS idx_events_type_ts ON events(type,ts);
 
 -- 优惠券
 CREATE TABLE IF NOT EXISTS coupons (
@@ -115,3 +136,41 @@ CREATE TABLE IF NOT EXISTS order_items (
   line_total REAL NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  session_id TEXT PRIMARY KEY,
+  vid TEXT NOT NULL,
+  link_code TEXT DEFAULT '',
+  started_at INTEGER NOT NULL,
+  last_seen_at INTEGER NOT NULL,
+  landing_path TEXT DEFAULT '',
+  last_path TEXT DEFAULT '',
+  page_views INTEGER DEFAULT 0,
+  engaged_ms INTEGER DEFAULT 0,
+  max_scroll INTEGER DEFAULT 0,
+  device_type TEXT DEFAULT '',
+  screen_width INTEGER DEFAULT 0,
+  utm_source TEXT DEFAULT '',
+  utm_medium TEXT DEFAULT '',
+  utm_campaign TEXT DEFAULT '',
+  utm_content TEXT DEFAULT '',
+  utm_term TEXT DEFAULT '',
+  fbclid TEXT DEFAULT '',
+  gclid TEXT DEFAULT '',
+  is_bot INTEGER DEFAULT 0,
+  converted_cart INTEGER DEFAULT 0,
+  converted_whatsapp INTEGER DEFAULT 0,
+  converted_order INTEGER DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_sessions_started ON sessions(started_at);
+CREATE INDEX IF NOT EXISTS idx_sessions_campaign ON sessions(utm_campaign);
+
+CREATE TABLE IF NOT EXISTS campaign_costs (
+  day TEXT NOT NULL,
+  campaign TEXT NOT NULL,
+  source TEXT DEFAULT '',
+  spend REAL DEFAULT 0,
+  impressions INTEGER DEFAULT 0,
+  ad_clicks INTEGER DEFAULT 0,
+  PRIMARY KEY(day,campaign,source)
+);

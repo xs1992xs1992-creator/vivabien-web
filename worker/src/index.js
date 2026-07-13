@@ -77,18 +77,61 @@ function requestMeta(req) {
   };
 }
 
+function botReason(meta) {
+  const ua = (meta.ua || "").toLowerCase();
+  if (!ua) return "empty_user_agent";
+  const hit = ua.match(/bot|crawler|spider|facebookexternalhit|facebot|preview|slurp|bingpreview/);
+  return hit ? hit[0] : "";
+}
+
 async function logEvent(env, { vid, code = "", type, sku = "", req, details = {} }) {
   const m = requestMeta(req);
   const ipHash = await hashIp(m.ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
-  await env.DB.prepare(
-    `INSERT INTO events (vid,code,type,sku,ts,country,ua,ref,ip_masked,ip_hash,ip_full,
-     city,region,postal_code,latitude,longitude,asn,as_org,qty,price,cart_total,product_title,product_img)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  const reason = botReason(m);
+  const eventId = String(details.event_id || "").slice(0, 80);
+  const sessionId = String(details.session_id || "").slice(0, 80);
+  const inserted = await env.DB.prepare(
+    `INSERT OR IGNORE INTO events (vid,code,type,sku,ts,country,ua,ref,ip_masked,ip_hash,ip_full,
+     city,region,postal_code,latitude,longitude,asn,as_org,qty,price,cart_total,product_title,product_img,
+     event_id,session_id,path,category,duration_ms,scroll_depth,device_type,screen_width,utm_source,
+     utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid,whatsapp_location,is_bot,bot_reason)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(vid, code, type, sku, now(), m.country, m.ua.slice(0, 300), m.ref.slice(0, 300),
          m.ipMasked, ipHash, m.ip, m.city, m.region, m.postalCode, m.latitude, m.longitude,
          m.asn, m.asOrg.slice(0, 160), Math.max(0, Number(details.qty) || 0),
          Math.max(0, Number(details.price) || 0), Math.max(0, Number(details.cart_total) || 0),
-         String(details.product_title || "").slice(0, 240), String(details.product_img || "").slice(0, 240)).run();
+         String(details.product_title || "").slice(0, 240), String(details.product_img || "").slice(0, 240),
+         eventId, sessionId, String(details.path || "").slice(0, 300), String(details.category || "").slice(0, 160),
+         Math.max(0, Number(details.duration_ms) || 0), Math.max(0, Math.min(100, Number(details.scroll_depth) || 0)),
+         String(details.device_type || "").slice(0, 20), Math.max(0, Number(details.screen_width) || 0),
+         String(details.utm_source || "").slice(0, 120), String(details.utm_medium || "").slice(0, 120),
+         String(details.utm_campaign || "").slice(0, 180), String(details.utm_content || "").slice(0, 180),
+         String(details.utm_term || "").slice(0, 180), String(details.fbclid || "").slice(0, 300),
+         String(details.gclid || "").slice(0, 300), String(details.whatsapp_location || "").slice(0, 80),
+         reason ? 1 : 0, reason).run();
+  const changed = (inserted.meta && (inserted.meta.changes ?? inserted.meta.rows_written)) || 0;
+  if (!changed || !sessionId) return;
+  const t = now(), isView = type === "view" ? 1 : 0, isCart = type === "addcart" ? 1 : 0;
+  const isWhatsApp = type === "whatsapp" ? 1 : 0, isOrder = type === "order" ? 1 : 0;
+  await env.DB.prepare(
+    `INSERT INTO sessions (session_id,vid,link_code,started_at,last_seen_at,landing_path,last_path,page_views,
+     engaged_ms,max_scroll,device_type,screen_width,utm_source,utm_medium,utm_campaign,utm_content,utm_term,
+     fbclid,gclid,is_bot,converted_cart,converted_whatsapp,converted_order)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+     ON CONFLICT(session_id) DO UPDATE SET last_seen_at=excluded.last_seen_at,last_path=excluded.last_path,
+     page_views=sessions.page_views+excluded.page_views,engaged_ms=sessions.engaged_ms+excluded.engaged_ms,
+     max_scroll=MAX(sessions.max_scroll,excluded.max_scroll),is_bot=MAX(sessions.is_bot,excluded.is_bot),
+     converted_cart=MAX(sessions.converted_cart,excluded.converted_cart),
+     converted_whatsapp=MAX(sessions.converted_whatsapp,excluded.converted_whatsapp),
+     converted_order=MAX(sessions.converted_order,excluded.converted_order)`
+  ).bind(sessionId, vid, code, t, t, String(details.path || "").slice(0, 300),
+    String(details.path || "").slice(0, 300), isView, Math.max(0, Number(details.duration_ms) || 0),
+    Math.max(0, Math.min(100, Number(details.scroll_depth) || 0)), String(details.device_type || "").slice(0,20),
+    Math.max(0, Number(details.screen_width) || 0), String(details.utm_source || "").slice(0,120),
+    String(details.utm_medium || "").slice(0,120), String(details.utm_campaign || "").slice(0,180),
+    String(details.utm_content || "").slice(0,180), String(details.utm_term || "").slice(0,180),
+    String(details.fbclid || "").slice(0,300), String(details.gclid || "").slice(0,300),
+    reason ? 1 : 0, isCart, isWhatsApp, isOrder).run();
 }
 
 // ---------- 路由 ----------
@@ -137,7 +180,8 @@ async function handleShort(req, env, url) {
 async function handleTrack(req, env) {
   const body = await req.json().catch(() => ({}));
   const type = body.type;
-  if (!["view", "addcart", "checkout"].includes(type)) return json({ ok: false }, 400);
+  if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll"].includes(type))
+    return json({ ok: false }, 400);
 
   let vid = getCookie(req, VID_COOKIE);
   const fresh = !vid;
@@ -204,7 +248,8 @@ async function handleOrder(req, env) {
     ).bind(orderId, item.sku, item.title, item.image, item.unitPrice, item.quantity, item.lineTotal));
   }
   await env.DB.batch(statements);
-  await logEvent(env, { vid, code: linkCode, type: "order", req, details: { cart_total: total } });
+  await logEvent(env, { vid, code: linkCode, type: "order", req,
+    details: { ...(b.tracking || {}), cart_total: total } });
   return json({ ok: true, order_id: orderId }, 201, { "Set-Cookie": vidCookieHeader(vid) });
 }
 
@@ -340,6 +385,77 @@ async function handleAdmin(req, env, url) {
       `SELECT * FROM events WHERE type='addcart' AND ts>=? ORDER BY ts DESC LIMIT 500`
     ).bind(since).all();
     return json({ ok: true, events: rows.results || [] });
+  }
+
+  if (sub === "analytics" && req.method === "GET") {
+    const days = Math.max(1, Math.min(365, Number(url.searchParams.get("days")) || 30));
+    const since = now() - days * 864e5;
+    const funnel = await env.DB.prepare(
+      `SELECT
+       COUNT(DISTINCT CASE WHEN type='click' THEN vid END) clicks,
+       COUNT(DISTINCT CASE WHEN type='view' AND code<>'' THEN COALESCE(NULLIF(session_id,''),vid) END) arrivals,
+       COUNT(DISTINCT CASE WHEN type='view' AND sku<>'' AND code<>'' THEN COALESCE(NULLIF(session_id,''),vid) END) product_views,
+       COUNT(DISTINCT CASE WHEN type='addcart' AND code<>'' THEN COALESCE(NULLIF(session_id,''),vid) END) addcarts,
+       COUNT(DISTINCT CASE WHEN type='checkout' AND code<>'' THEN COALESCE(NULLIF(session_id,''),vid) END) checkouts,
+       COUNT(DISTINCT CASE WHEN type='whatsapp' AND code<>'' THEN COALESCE(NULLIF(session_id,''),vid) END) whatsapps,
+       COUNT(DISTINCT CASE WHEN type='order' AND code<>'' THEN COALESCE(NULLIF(session_id,''),vid) END) orders
+       FROM events WHERE ts>=? AND is_bot=0`
+    ).bind(since).first();
+    const channels = await env.DB.prepare(
+      `SELECT COALESCE(NULLIF(utm_campaign,''),NULLIF(link_code,''),'直接访问') channel,
+       COUNT(*) sessions,SUM(page_views=1 AND engaged_ms<10000 AND converted_cart=0 AND converted_whatsapp=0) bounces,
+       SUM(converted_cart) carts,SUM(converted_whatsapp) whatsapps,SUM(converted_order) orders,
+       ROUND(AVG(engaged_ms)/1000.0,1) avg_seconds
+       FROM sessions WHERE started_at>=? AND is_bot=0 GROUP BY channel ORDER BY sessions DESC LIMIT 30`
+    ).bind(since).all();
+    const devices = await env.DB.prepare(
+      `SELECT COALESCE(NULLIF(device_type,''),'未知') device,COUNT(*) sessions,
+       SUM(converted_whatsapp) whatsapps,SUM(converted_order) orders,
+       ROUND(AVG(engaged_ms)/1000.0,1) avg_seconds
+       FROM sessions WHERE started_at>=? AND is_bot=0 GROUP BY device ORDER BY sessions DESC`
+    ).bind(since).all();
+    const behavior = await env.DB.prepare(
+      `SELECT CASE WHEN converted_whatsapp=1 THEN '点击WhatsApp' ELSE '未点击WhatsApp' END segment,
+       COUNT(*) sessions,ROUND(AVG(engaged_ms)/1000.0,1) avg_seconds,
+       ROUND(AVG(page_views),1) avg_pages,ROUND(AVG(max_scroll),1) avg_scroll
+       FROM sessions WHERE started_at>=? AND is_bot=0 GROUP BY converted_whatsapp ORDER BY converted_whatsapp DESC`
+    ).bind(since).all();
+    const products = await env.DB.prepare(
+      `SELECT sku,MAX(product_title) title,MAX(product_img) image,
+       COUNT(DISTINCT CASE WHEN type='view' THEN COALESCE(NULLIF(session_id,''),vid) END) viewers,
+       COUNT(DISTINCT CASE WHEN type='addcart' THEN COALESCE(NULLIF(session_id,''),vid) END) carts,
+       COUNT(DISTINCT CASE WHEN type='whatsapp' THEN COALESCE(NULLIF(session_id,''),vid) END) whatsapps
+       FROM events WHERE ts>=? AND is_bot=0 AND sku<>'' GROUP BY sku
+       HAVING viewers>0 OR carts>0 OR whatsapps>0 ORDER BY viewers DESC LIMIT 50`
+    ).bind(since).all();
+    const quality = await env.DB.prepare(
+      `SELECT COUNT(*) total_events,SUM(is_bot) bot_events,
+       SUM(session_id='') legacy_events FROM events WHERE ts>=?`
+    ).bind(since).first();
+    const costs = await env.DB.prepare(
+      `SELECT campaign,SUM(spend) spend,SUM(impressions) impressions,SUM(ad_clicks) ad_clicks
+       FROM campaign_costs WHERE day>=date(?/1000,'unixepoch') GROUP BY campaign`
+    ).bind(since).all();
+    const costMap = Object.fromEntries((costs.results||[]).map((x) => [x.campaign,x]));
+    for (const row of channels.results||[]) {
+      const c = costMap[row.channel] || {};
+      row.spend = Number(c.spend)||0; row.impressions = Number(c.impressions)||0;
+      row.ad_clicks = Number(c.ad_clicks)||0; row.cost_per_order = row.orders ? row.spend/row.orders : 0;
+    }
+    return json({ ok:true, days, funnel, channels:channels.results||[], devices:devices.results||[],
+      behavior:behavior.results||[], products:products.results||[], quality });
+  }
+
+  if (sub === "campaign-cost" && req.method === "POST") {
+    const b = await req.json().catch(() => ({}));
+    if (!b.day || !b.campaign) return json({ error:"day_and_campaign_required" },400);
+    await env.DB.prepare(
+      `INSERT INTO campaign_costs(day,campaign,source,spend,impressions,ad_clicks) VALUES(?,?,?,?,?,?)
+       ON CONFLICT(day,campaign,source) DO UPDATE SET spend=excluded.spend,
+       impressions=excluded.impressions,ad_clicks=excluded.ad_clicks`
+    ).bind(String(b.day).slice(0,10),String(b.campaign).slice(0,180),String(b.source||"").slice(0,120),
+      Math.max(0,Number(b.spend)||0),Math.max(0,Number(b.impressions)||0),Math.max(0,Number(b.ad_clicks)||0)).run();
+    return json({ok:true});
   }
 
   // 优惠券

@@ -568,14 +568,25 @@ try{var vbCampaignCoupon=new URLSearchParams(location.search).get('coupon');
 document.addEventListener('DOMContentLoaded',vbBadge);
 </script>"""
 
-# 自有埋点：把访客行为回传边缘后端 D1（vb_vid cookie 由 /s/:code 或本请求种下）
-# vbTrack(type, sku)  type: view | addcart | checkout
-TRACK_JS = ("<script>window.vbTrack=function(t,s,x){try{var b={type:t,sku:s||''};"
-            "if(x)for(var k in x)b[k]=x[k];"
-            "fetch('__API__/api/track',{method:'POST',credentials:'include',keepalive:true,"
-            "headers:{'Content-Type':'application/json'},"
-            "body:JSON.stringify(b)}).catch(function(){})}catch(e){}};</script>"
-            ).replace("__API__", API_BASE)
+# 自有埋点：会话、UTM、WhatsApp、停留、滚动和设备（普通事件 fetch，离页 sendBeacon）
+TRACK_JS = """<script>
+(function(){
+ var API='__API__/api/track',now=Date.now(),q=new URLSearchParams(location.search),keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid'];
+ function get(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')||d}catch(e){return d}}
+ function put(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+ var a=get('vb_attr',{}),has=false;keys.forEach(function(k){if(q.get(k)){a[k]=q.get(k);has=true}});if(has)put('vb_attr',a);
+ var ss=get('vb_session',{});if(!ss.id||now-(ss.last||0)>1800000)ss={id:'s-'+(crypto.randomUUID?crypto.randomUUID():now+'-'+Math.random()),last:now};ss.last=now;put('vb_session',ss);
+ var dev=/Mobi|Android|iPhone/i.test(navigator.userAgent)?'mobile':(/iPad|Tablet/i.test(navigator.userAgent)?'tablet':'desktop'),last=Date.now(),sent={};
+ function id(){return crypto.randomUUID?crypto.randomUUID():'e-'+Date.now()+'-'+Math.random()}
+ function ctx(){var p=window.VB_PAGE||{},b={event_id:id(),session_id:ss.id,path:location.pathname,device_type:dev,screen_width:screen.width,category:p.category||'',product_title:p.title||'',product_img:p.img||''};keys.forEach(function(k){b[k]=a[k]||''});return b}
+ function send(t,s,x,beacon){try{var b=ctx();b.type=t;b.sku=s||((window.VB_PAGE||{}).sku||'');if(x)for(var k in x)b[k]=x[k];var raw=JSON.stringify(b);if(beacon&&navigator.sendBeacon)navigator.sendBeacon(API,new Blob([raw],{type:'application/json'}));else fetch(API,{method:'POST',credentials:'include',keepalive:true,headers:{'Content-Type':'application/json'},body:raw}).catch(function(){})}catch(e){}}
+ window.vbTrack=send;window.vbContext=ctx;
+ document.addEventListener('click',function(e){var x=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(!x)return;var loc=x.classList.contains('wa-float')?'floating':x.classList.contains('hd-wa')?'header':x.classList.contains('btn-wa')?'product':'other';send('whatsapp','',{whatsapp_location:loc})},true);
+ document.addEventListener('scroll',function(){var h=document.documentElement,den=h.scrollHeight-innerHeight;if(den<=0)return;var d=Math.min(100,Math.round(scrollY/den*100));[25,50,75,100].forEach(function(n){if(d>=n&&!sent[n]){sent[n]=1;send('scroll','',{scroll_depth:n})}})},{passive:true});
+ setInterval(function(){if(document.visibilityState==='visible'){send('engagement','',{duration_ms:30000});last=Date.now();ss.last=last;put('vb_session',ss)}},30000);
+ addEventListener('pagehide',function(){var d=Math.max(0,Math.min(30000,Date.now()-last));if(d>1000)send('engagement','',{duration_ms:d},true)});
+})();
+</script>""".replace("__API__", API_BASE)
 
 WA_FLOAT = f"""<a class="wa-float" href="https://wa.me/{WHATSAPP}" target="_blank" aria-label="WhatsApp"
  onclick="fbq('track','Contact')">{WA_SVG}</a>
@@ -588,8 +599,11 @@ setTimeout(function(){{
 }},30000);
 </script>"""
 
-def page(title, body, pixel_extra="", desc="", track_sku=None, wa_float=False):
-    view_js = f"<script>vbTrack('view',{json.dumps(track_sku)})</script>" if track_sku else ""
+def page(title, body, pixel_extra="", desc="", track_sku=None, track_category="",
+         track_title="", track_img="", wa_float=False):
+    page_ctx = json.dumps({"sku": track_sku or "", "category": track_category or "",
+                           "title": track_title or "", "img": track_img or ""}, ensure_ascii=False)
+    view_js = f"<script>vbTrack('view',{json.dumps(track_sku or '')})</script>"
     return f"""<!DOCTYPE html>
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -599,6 +613,7 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, wa_float=False):
 <style>{CSS}</style>
 {pixel(pixel_extra)}
 {CART_JS}
+<script>window.VB_PAGE={page_ctx};</script>
 {TRACK_JS}
 </head><body>
 {body}
@@ -784,7 +799,7 @@ async function confirmar(){
    headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:oid,
     customer_name:nom,phone:tel,province:prov,zone:zona,address:dir,note:nota,
     payment_method:pay,subtotal:sub,discount:disc,total:tot,
-    coupon_code:COUPON?COUPON.code:'',items:c.map(function(it){return {
+    coupon_code:COUPON?COUPON.code:'',tracking:vbContext(),items:c.map(function(it){return {
      sku:it.sku,title:it.title,image:it.img,unit_price:it.price,quantity:it.qty}})})});
   var orderData=await orderRes.json();
   if(!orderRes.ok||!orderData.ok)throw new Error(orderData.error||'No se pudo guardar el pedido');
@@ -1144,7 +1159,8 @@ function addCart(b){
  vbSave(c);
  fbq('track','AddToCart',{content_ids:[sku],content_type:'product',
   value:parseFloat(b.dataset.price),currency:'DOP'});
- vbTrack('addcart',sku);
+ var it=c.find(function(x){return x.sku===sku});
+ vbTrack('addcart',sku,{qty:it.qty,price:it.price,cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),product_title:it.title,product_img:it.img});
  b.classList.add('added');b.innerHTML='✓ Agregado — Ver carrito';
  b.onclick=function(){location.href='../carrito.html'};
 }
@@ -1197,7 +1213,8 @@ function addCart(b){
 {add_js}"""
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
             f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve,
-                         desc=p["body"][:150], track_sku=p["sku"]))
+                         desc=p["body"][:150], track_sku=p["sku"], track_category=p["sub"],
+                         track_title=p["title"], track_img=p["img"]))
 
     # ---- 分类统计 ----
     print(f"✅ 构建完成: {len(products)} 个商品 → {OUT_DIR}/")
