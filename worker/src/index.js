@@ -11,6 +11,10 @@ const VID_COOKIE = "vb_vid";
 const LINK_COOKIE = "vb_link";
 const CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz"; // 去掉易混字符
 
+const SHIPPING_REMOTE = new Set(["Pedernales", "Independencia", "Elías Piña", "Dajabón", "Monte Cristi"]);
+const SHIPPING_MAJOR = new Set(["Santiago", "La Altagracia", "La Vega", "Puerto Plata", "Duarte", "Espaillat", "Monseñor Nouel"]);
+const SHIPPING_NEAR = new Set(["San Cristóbal", "Monte Plata", "San Pedro de Macorís", "La Romana", "Peravia"]);
+
 // ---------- 工具 ----------
 const now = () => Date.now();
 
@@ -84,6 +88,23 @@ function botReason(meta) {
   return hit ? hit[0] : "";
 }
 
+function shippingQuote(province = "", zone = "") {
+  const p = String(province).trim(), z = String(zone).trim();
+  const metro = p.startsWith("Distrito Nacional") ||
+    (p.startsWith("Santo Domingo (provincia)") && ["Santo Domingo Este", "Santo Domingo Norte", "Santo Domingo Oeste"].includes(z));
+  if (metro) return { ok:true, ready:true, zone:"gran_santo_domingo", label:"Gran Santo Domingo",
+    fee:0, fee_min:150, fee_max:600, delivery:"1-2 días laborables", cod_allowed:true };
+  if (p.startsWith("Santo Domingo (provincia)") || SHIPPING_NEAR.has(p))
+    return { ok:true, ready:true, zone:"cercana", label:"Zona cercana", fee:250, fee_min:250, fee_max:250,
+      delivery:"1-3 días laborables", cod_allowed:false };
+  if (SHIPPING_MAJOR.has(p)) return { ok:true, ready:true, zone:"ciudades_principales", label:"Ciudades principales", fee:300, fee_min:300, fee_max:300,
+    delivery:"2-4 días laborables", cod_allowed:false };
+  if (SHIPPING_REMOTE.has(p)) return { ok:true, ready:true, zone:"remota", label:"Zona remota", fee:450, fee_min:450, fee_max:450,
+    delivery:"4-7 días laborables", cod_allowed:false };
+  return { ok:true, ready:true, zone:"nacional", label:"Resto del país", fee:350, fee_min:350, fee_max:350,
+    delivery:"3-5 días laborables", cod_allowed:false };
+}
+
 async function logEvent(env, { vid, code = "", type, sku = "", req, details = {} }) {
   const m = requestMeta(req);
   const ipHash = await hashIp(m.ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
@@ -94,8 +115,9 @@ async function logEvent(env, { vid, code = "", type, sku = "", req, details = {}
     `INSERT OR IGNORE INTO events (vid,code,type,sku,ts,country,ua,ref,ip_masked,ip_hash,ip_full,
      city,region,postal_code,latitude,longitude,asn,as_org,qty,price,cart_total,product_title,product_img,
      event_id,session_id,path,category,duration_ms,scroll_depth,device_type,screen_width,utm_source,
-     utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid,whatsapp_location,is_bot,bot_reason)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+     utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid,whatsapp_location,is_bot,bot_reason,
+     site_version,search_query,result_count,sort_mode,filter_group,filter_sub,shipping_fee,shipping_zone,delivery_estimate)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(vid, code, type, sku, now(), m.country, m.ua.slice(0, 300), m.ref.slice(0, 300),
          m.ipMasked, ipHash, m.ip, m.city, m.region, m.postalCode, m.latitude, m.longitude,
          m.asn, m.asOrg.slice(0, 160), Math.max(0, Number(details.qty) || 0),
@@ -108,7 +130,11 @@ async function logEvent(env, { vid, code = "", type, sku = "", req, details = {}
          String(details.utm_campaign || "").slice(0, 180), String(details.utm_content || "").slice(0, 180),
          String(details.utm_term || "").slice(0, 180), String(details.fbclid || "").slice(0, 300),
          String(details.gclid || "").slice(0, 300), String(details.whatsapp_location || "").slice(0, 80),
-         reason ? 1 : 0, reason).run();
+         reason ? 1 : 0, reason, String(details.site_version || "").slice(0,80),
+         String(details.search_query || "").slice(0,240), Math.max(0, Number(details.result_count) || 0),
+         String(details.sort_mode || "").slice(0,40), String(details.filter_group || "").slice(0,160),
+         String(details.filter_sub || "").slice(0,160), Math.max(0, Number(details.shipping_fee) || 0),
+         String(details.shipping_zone || "").slice(0,80), String(details.delivery_estimate || "").slice(0,120)).run();
   const changed = (inserted.meta && (inserted.meta.changes ?? inserted.meta.rows_written)) || 0;
   if (!changed || !sessionId) return;
   const t = now(), isView = type === "view" ? 1 : 0, isCart = type === "addcart" ? 1 : 0;
@@ -145,6 +171,7 @@ export default {
     try {
       if (path.startsWith("/s/")) return handleShort(req, env, url);
       if (path === "/api/track") return handleTrack(req, env);
+      if (path === "/api/shipping/quote") return handleShippingQuote(req);
       if (path === "/api/order") return handleOrder(req, env);
       if (path === "/api/coupon/validate") return handleCouponValidate(req, env);
       if (path === "/api/coupon/redeem") return handleCouponRedeem(req, env);
@@ -180,7 +207,7 @@ async function handleShort(req, env, url) {
 async function handleTrack(req, env) {
   const body = await req.json().catch(() => ({}));
   const type = body.type;
-  if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll"].includes(type))
+  if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll", "search", "filter", "shipping_quote"].includes(type))
     return json({ ok: false }, 400);
 
   let vid = getCookie(req, VID_COOKIE);
@@ -191,6 +218,13 @@ async function handleTrack(req, env) {
   await logEvent(env, { vid, code: linkCode, type, sku: body.sku || "", req, details: body });
   const headers = fresh ? { "Set-Cookie": vidCookieHeader(vid) } : {};
   return json({ ok: true }, 200, headers);
+}
+
+async function handleShippingQuote(req) {
+  if (req.method !== "POST") return json({ error:"method_not_allowed" },405);
+  const b = await req.json().catch(() => ({}));
+  if (!b.province) return json({ error:"province_required" },400);
+  return json(shippingQuote(b.province, b.zone));
 }
 
 // POST /api/order —— 客户确认购物车后保存完整订单，再由前端打开 WhatsApp
@@ -227,17 +261,27 @@ async function handleOrder(req, env) {
       discount = Math.round(Math.min(subtotal, discount) * 100) / 100;
     }
   }
-  const total = Math.max(0, subtotal - discount);
+  const shipping = shippingQuote(b.province, b.zone);
+  const paymentMethod = b.payment_method === "cod" ? "cod" : "transfer";
+  if (paymentMethod === "cod" && !shipping.cod_allowed)
+    return json({ error:"cod_not_available" },400);
+  const productTotal = Math.max(0, subtotal - discount);
+  const shippingMin = Math.max(0, Number(shipping.fee_min) || 0);
+  const shippingMax = Math.max(shippingMin, Number(shipping.fee_max) || shippingMin);
+  const totalMin = productTotal + shippingMin, totalMax = productTotal + shippingMax;
+  const total = shippingMin === shippingMax ? totalMin : productTotal;
   const created = now();
   const statements = [env.DB.prepare(
     `INSERT INTO orders (order_id,vid,link_code,status,customer_name,phone,province,zone,address,note,
-     payment_method,subtotal,discount,total,coupon_code,ip_full,ip_masked,ip_hash,country,city,region,
-     postal_code,latitude,longitude,asn,as_org,ua,ref,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+     payment_method,shipping_zone,shipping_fee,shipping_fee_min,shipping_fee_max,delivery_estimate,
+     subtotal,discount,total,total_min,total_max,coupon_code,
+     ip_full,ip_masked,ip_hash,country,city,region,postal_code,latitude,longitude,asn,as_org,ua,ref,created_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(orderId, vid, linkCode, "pending", String(b.customer_name).slice(0,160),
     String(b.phone).slice(0,80), String(b.province || "").slice(0,120), String(b.zone || "").slice(0,120),
     String(b.address).slice(0,500), String(b.note || "").slice(0,500),
-    b.payment_method === "transfer" ? "transfer" : "cod", subtotal, discount, total,
+    paymentMethod, shipping.zone, shipping.fee, shippingMin, shippingMax, shipping.delivery,
+    subtotal, discount, total, totalMin, totalMax,
     couponCode.slice(0,80), m.ip, m.ipMasked, ipHash, m.country, m.city, m.region,
     m.postalCode, m.latitude, m.longitude, m.asn, m.asOrg.slice(0,160), m.ua.slice(0,300),
     m.ref.slice(0,300), created, created)];
@@ -249,8 +293,12 @@ async function handleOrder(req, env) {
   }
   await env.DB.batch(statements);
   await logEvent(env, { vid, code: linkCode, type: "order", req,
-    details: { ...(b.tracking || {}), cart_total: total } });
-  return json({ ok: true, order_id: orderId }, 201, { "Set-Cookie": vidCookieHeader(vid) });
+    details: { ...(b.tracking || {}), cart_total: totalMin, shipping_fee: shipping.fee,
+      shipping_zone: shipping.zone, delivery_estimate: shipping.delivery } });
+  return json({ ok:true, order_id:orderId, subtotal, discount, shipping_fee:shipping.fee,
+    shipping_fee_min:shippingMin, shipping_fee_max:shippingMax, shipping_zone:shipping.zone,
+    delivery_estimate:shipping.delivery, total, total_min:totalMin, total_max:totalMax }, 201,
+    { "Set-Cookie":vidCookieHeader(vid) });
 }
 
 // POST /api/coupon/validate  { code, subtotal }
@@ -432,6 +480,16 @@ async function handleAdmin(req, env, url) {
       `SELECT COUNT(*) total_events,SUM(is_bot) bot_events,
        SUM(session_id='') legacy_events FROM events WHERE ts>=?`
     ).bind(since).first();
+    const versions = await env.DB.prepare(
+      `SELECT COALESCE(NULLIF(site_version,''),'anterior') version,
+       COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions,
+       COUNT(DISTINCT CASE WHEN type='search' THEN COALESCE(NULLIF(session_id,''),vid) END) searchers,
+       COUNT(DISTINCT CASE WHEN type='addcart' THEN COALESCE(NULLIF(session_id,''),vid) END) carts,
+       COUNT(DISTINCT CASE WHEN type='checkout' THEN COALESCE(NULLIF(session_id,''),vid) END) checkouts,
+       COUNT(DISTINCT CASE WHEN type='order' THEN COALESCE(NULLIF(session_id,''),vid) END) orders,
+       ROUND(AVG(CASE WHEN type='search' THEN result_count END),1) avg_search_results
+       FROM events WHERE ts>=? AND is_bot=0 GROUP BY version ORDER BY MAX(ts) DESC`
+    ).bind(since).all();
     const costs = await env.DB.prepare(
       `SELECT campaign,SUM(spend) spend,SUM(impressions) impressions,SUM(ad_clicks) ad_clicks
        FROM campaign_costs WHERE day>=date(?/1000,'unixepoch') GROUP BY campaign`
@@ -443,7 +501,7 @@ async function handleAdmin(req, env, url) {
       row.ad_clicks = Number(c.ad_clicks)||0; row.cost_per_order = row.orders ? row.spend/row.orders : 0;
     }
     return json({ ok:true, days, funnel, channels:channels.results||[], devices:devices.results||[],
-      behavior:behavior.results||[], products:products.results||[], quality });
+      behavior:behavior.results||[], products:products.results||[], versions:versions.results||[], quality });
   }
 
   if (sub === "campaign-cost" && req.method === "POST") {

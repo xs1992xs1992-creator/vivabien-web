@@ -751,6 +751,15 @@ def stats_page():
     behavior_rows = "".join(f'<tr><td><b>{esc(x.get("segment",""))}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
                             f'<td class="n">{float(x.get("avg_seconds",0) or 0):.0f}s</td><td class="n">{float(x.get("avg_pages",0) or 0):.1f}</td>'
                             f'<td class="n">{float(x.get("avg_scroll",0) or 0):.0f}%</td></tr>' for x in d.get("behavior",[]))
+    version_rows = ""
+    for x in d.get("versions", []):
+        sessions=int(x.get("sessions",0) or 0); carts=int(x.get("carts",0) or 0); orders=int(x.get("orders",0) or 0)
+        sample = '<span class="sample">样本少</span>' if sessions < 50 else ''
+        version_rows += (f'<tr><td><b>{esc("新版 UX2" if x.get("version") == "ux2-20260713" else "改版前/旧数据")}</b>'
+                         f'{sample}</td><td class="n">{sessions}</td>'
+                         f'<td class="n">{int(x.get("searchers",0) or 0)}</td><td class="n">{pct(carts,sessions)}</td>'
+                         f'<td class="n">{int(x.get("checkouts",0) or 0)}</td><td class="n">{orders}</td>'
+                         f'<td class="n">{float(x.get("avg_search_results",0) or 0):.1f}</td></tr>')
     product_map={p.get("sku"):p for p in products()}
     product_rows=""
     for x in d.get("products",[]):
@@ -768,6 +777,7 @@ def stats_page():
            f'<h2 class="section-title">渠道对比</h2><div class="table-wrap"><table><thead><tr><th>渠道/活动</th><th>会话</th><th>未互动跳出</th><th>WhatsApp率</th><th>订单</th><th>平均停留</th><th>花费</th><th>每单成本</th></tr></thead><tbody>{channel_rows or table_empty}</tbody></table></div>'
            f'<h2 class="section-title">设备分段</h2><div class="table-wrap"><table><thead><tr><th>设备</th><th>会话</th><th>WhatsApp率</th><th>订单</th><th>平均停留</th></tr></thead><tbody>{device_rows or table_empty}</tbody></table></div>'
            f'<h2 class="section-title">行为对比</h2><div class="table-wrap"><table><thead><tr><th>访客分组</th><th>会话</th><th>平均停留</th><th>浏览页数</th><th>滚动深度</th></tr></thead><tbody>{behavior_rows or table_empty}</tbody></table></div>'
+           f'<h2 class="section-title">改版前后对比</h2><div class="table-wrap"><table><thead><tr><th>页面版本</th><th>会话</th><th>使用搜索</th><th>加购率</th><th>完成结算</th><th>订单</th><th>平均搜索结果</th></tr></thead><tbody>{version_rows or table_empty}</tbody></table></div>'
            f'<h2 class="section-title">商品机会榜</h2><div class="table-wrap"><table><thead><tr><th>商品</th><th>浏览访客</th><th>加购</th><th>WhatsApp</th><th>咨询率</th><th>判断</th></tr></thead><tbody>{product_rows or table_empty}</tbody></table></div>'
            '<h2 class="section-title">录入广告成本</h2><div class="cardp frm"><div class="cost-grid"><div><label>日期</label><input id="costDay" type="date"></div><div><label>活动名称（必须和UTM campaign一致）</label><input id="costCampaign"></div><div><label>来源</label><input id="costSource" placeholder="facebook"></div><div><label>花费 RD$</label><input id="costSpend" type="number"></div><div><label>展示量</label><input id="costImp" type="number"></div><div><label>广告点击</label><input id="costClicks" type="number"></div></div><button class="pri" onclick="saveCost()">保存广告成本</button></div>'
            '<div class="cardp"><div class="frm"><label>查访客足迹</label><div class="seg2"><input id="q" placeholder="短码 或 访客ID"><select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select><button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div><div id="tl"></div></div></div>' + _STATS_JS + _ANALYTICS_JS)
@@ -811,6 +821,14 @@ def orders_page():
         location = " · ".join(x for x in (o.get("province",""), o.get("zone","")) if x)
         geo = " · ".join(x for x in (o.get("city",""), o.get("region",""), o.get("postal_code","")) if x)
         note_html = f'<div class="order-note">备注：{esc(o.get("note",""))}</div>' if o.get("note") else ""
+        ship_min = float(o.get("shipping_fee_min", o.get("shipping_fee", 0)) or 0)
+        ship_max = float(o.get("shipping_fee_max", o.get("shipping_fee", 0)) or 0)
+        total_min = float(o.get("total_min", o.get("total", 0)) or 0)
+        total_max = float(o.get("total_max", o.get("total", 0)) or 0)
+        shipping_text = (f'RD$ {ship_min:,.0f}–{ship_max:,.0f}' if ship_max > ship_min
+                         else f'RD$ {ship_min:,.0f}')
+        total_text = (f'预计总计 RD$ {total_min:,.0f}–{total_max:,.0f}' if total_max > total_min
+                      else f'总计 RD$ {total_min:,.0f}')
         cards += (f'<article class="order-card" data-status="{esc(status)}">'
                   f'<header><div><b class="order-id">{esc(o.get("order_id",""))}</b><time>{created}</time></div>'
                   f'<select data-id="{esc(o.get("order_id",""))}" data-old="{esc(status)}" onchange="orderStatus(this)">{opts}</select></header>'
@@ -820,10 +838,13 @@ def orders_page():
                   f'<div><span>IP {esc(o.get("ip_full") or o.get("ip_masked",""))}</span><small>{esc(geo)}</small></div></div>'
                   f'<div class="order-items">{items}</div><footer>'
                   f'<span>{"转账" if o.get("payment_method") == "transfer" else "货到付款"}'
+                  f' · 预计运费 {shipping_text}'
+                  f'{(" · "+esc(o.get("delivery_estimate",""))) if o.get("delivery_estimate") else ""}'
                   f'{(" · 优惠码 "+esc(o.get("coupon_code"))) if o.get("coupon_code") else ""}</span>'
                   f'<div>小计 RD$ {float(o.get("subtotal",0) or 0):,.0f}'
                   f'{(" · 优惠 -RD$ "+format(float(o.get("discount",0) or 0), ",.0f")) if o.get("discount") else ""}'
-                  f' <b>总计 RD$ {float(o.get("total",0) or 0):,.0f}</b></div></footer>'
+                  f' · 预计运费 {shipping_text}'
+                  f' <b>{total_text}</b></div></footer>'
                   f'{note_html}</article>')
     stat_html = "".join(f'<div class="stat"><div class="v">{counts.get(k,0)}</div><div class="l">{v}</div></div>'
                         for k, v in status_names.items())

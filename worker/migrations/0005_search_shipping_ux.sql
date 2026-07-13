@@ -1,0 +1,19 @@
+ALTER TABLE events ADD COLUMN site_version TEXT DEFAULT '';
+ALTER TABLE events ADD COLUMN search_query TEXT DEFAULT '';
+ALTER TABLE events ADD COLUMN result_count INTEGER DEFAULT 0;
+ALTER TABLE events ADD COLUMN sort_mode TEXT DEFAULT '';
+ALTER TABLE events ADD COLUMN filter_group TEXT DEFAULT '';
+ALTER TABLE events ADD COLUMN filter_sub TEXT DEFAULT '';
+ALTER TABLE events ADD COLUMN shipping_fee REAL DEFAULT 0;
+ALTER TABLE events ADD COLUMN shipping_zone TEXT DEFAULT '';
+ALTER TABLE events ADD COLUMN delivery_estimate TEXT DEFAULT '';
+
+ALTER TABLE orders ADD COLUMN shipping_zone TEXT DEFAULT '';
+ALTER TABLE orders ADD COLUMN shipping_fee REAL NOT NULL DEFAULT 0;
+ALTER TABLE orders ADD COLUMN shipping_fee_min REAL NOT NULL DEFAULT 0;
+ALTER TABLE orders ADD COLUMN shipping_fee_max REAL NOT NULL DEFAULT 0;
+ALTER TABLE orders ADD COLUMN delivery_estimate TEXT DEFAULT '';
+ALTER TABLE orders ADD COLUMN total_min REAL NOT NULL DEFAULT 0;
+ALTER TABLE orders ADD COLUMN total_max REAL NOT NULL DEFAULT 0;
+
+CREATE INDEX IF NOT EXISTS idx_events_site_version ON events(site_version, ts);

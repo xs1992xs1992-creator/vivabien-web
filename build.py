@@ -16,6 +16,7 @@ API_BASE   = "https://vivabien.xyz" # 边缘后端（Worker）同域：/s/* 短�
 CSV_PATH   = "data/products.csv"
 IMG_DIR    = "images"               # 商品图片文件夹（VBxxxx.jpg 都放这里）
 OUT_DIR    = "dist"
+SITE_VERSION = "ux2-20260713"
 
 # 银行转账收款账户（结算页展示）
 BANKS = [
@@ -23,6 +24,7 @@ BANKS = [
     ("Banco BHD",     "39058710013", "Wenwen Shi"),
     ("Banreservas",   "9607180504",  "Weixiong Chen"),
 ]
+
 # ===============================================
 
 # ---------- 多级分类：大组 ----------
@@ -205,7 +207,8 @@ def parse_row(r):
     return dict(handle=r.get("Handle", ""), title=r.get("Title", ""),
                 body=r.get("Body (HTML)", ""), type=r.get("Type", ""),
                 published=r.get("Published", ""), sku=r.get("Variant SKU", ""),
-                price=r.get("Variant Price", ""), img=r.get("Image Src", ""))
+                price=r.get("Variant Price", ""), img=r.get("Image Src", ""),
+                inventory=r.get("Variant Inventory Qty", ""))
 
 # ---------- 图片类型体系（方案B，与上游 vivabien.py TIPO_ORDER 一致） ----------
 # 展示顺序（用户定）：场景效果图 → 白底图 → 正面 → 背面 → 细节 → 补充 → 尺寸图
@@ -266,6 +269,8 @@ def load_products():
         p["title"] = p["title"].strip()
         p["type"]  = p["type"].strip() or "Otros"
         p["price"] = float(p["price"]) if p["price"].strip() else None
+        raw_inventory = str(p.get("inventory", "")).strip()
+        p["inventory"] = int(raw_inventory) if re.fullmatch(r"-?\d+", raw_inventory) else None
         p["img"]   = p["img"].strip()
         p["extras"] = extras.get(p["handle"], [])
         # 卡片图 = 画廊第一张（有场景图先场景图，用户规则）
@@ -286,6 +291,19 @@ def esc(s):
 def body_html(raw):
     t = esc(raw.strip())
     return t.replace("\n", "<br>")
+
+def product_measurements(p):
+    """从现有标题和特点中提取可确认的尺寸/容量，不猜测缺失信息。"""
+    text = re.sub(r"<[^>]+>", " ", f'{p.get("title", "")} {p.get("body", "")}')
+    hits = re.findall(
+        r"\b\d+(?:[.,]\d+)?\s?(?:mm|cm|kg|ml|oz|fl\.?\s?oz|pulgadas?|unidades?|metros?|litros?|[glm])\b",
+        text, flags=re.I)
+    out = []
+    for hit in hits:
+        cleaned = re.sub(r"\s+", " ", hit.strip())
+        if cleaned.lower() not in {x.lower() for x in out}:
+            out.append(cleaned)
+    return " · ".join(out[:4])
 
 def wa_link(title):
     from urllib.parse import quote
@@ -354,6 +372,21 @@ button{font-family:inherit}
 .tile.on{border-color:#2563D9;box-shadow:0 0 0 1px #2563D9}
 .tico{width:46px;height:46px;margin:0 auto 8px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
 .tile .tnm{font-size:12px;font-weight:700;line-height:1.2}
+.cat-open{border:0;background:none;color:#2563D9;font-weight:800;font-size:12.5px;cursor:pointer}
+.cat-dialog{position:fixed;inset:0;background:rgba(15,24,39,.48);z-index:90;display:none;align-items:flex-end;justify-content:center}
+.cat-dialog.show{display:flex}
+.cat-sheet{width:100%;max-height:84vh;overflow:auto;background:#fff;border-radius:20px 20px 0 0;padding:18px;box-shadow:0 -16px 40px rgba(15,24,39,.18)}
+.cat-sheet-head{position:sticky;top:-18px;background:#fff;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:10px 0 14px;border-bottom:1px solid #EEF1F6}
+.cat-sheet-head h2{font-size:20px;font-weight:800}
+.cat-close{width:38px;height:38px;border:0;border-radius:50%;background:#F1F4F9;color:#435066;font-size:18px;cursor:pointer}
+.cat-section{padding:16px 0;border-bottom:1px solid #EEF1F6}
+.cat-section:last-child{border:0}
+.cat-section-title{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;text-align:left;font-weight:800;font-size:15px;color:#16202E;cursor:pointer;margin-bottom:10px}
+.cat-section-title span{color:#8a93a2;font-size:11px}
+.cat-subgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cat-sub{border:1px solid #E5EAF2;background:#F8FAFD;color:#344154;border-radius:10px;padding:10px;text-align:left;font-size:12px;font-weight:700;cursor:pointer;line-height:1.35}
+.cat-sub small{display:block;color:#8a93a2;margin-top:3px;font-weight:600}
+@media(min-width:720px){.cat-dialog{align-items:center}.cat-sheet{max-width:760px;border-radius:16px;max-height:80vh}.cat-subgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* featured collections */
 .feats{display:flex;flex-direction:column;gap:11px;margin:16px 0 2px}
 @media(min-width:640px){.feats{flex-direction:row;flex-wrap:wrap}.feats .feat{flex:1;min-width:280px}}
@@ -391,6 +424,26 @@ button{font-family:inherit}
 .subcats::-webkit-scrollbar{display:none}
 .schip{flex:none;background:#EAF0FB;border:1.5px solid transparent;color:#2563D9;font-weight:700;font-size:12px;padding:7px 13px;border-radius:99px;cursor:pointer;white-space:nowrap}
 .schip.on{background:#16202E;color:#fff}
+/* 搜索/分类结果模式 */
+.home-promo.hidden{display:none}
+.results-head{display:none;align-items:flex-start;justify-content:space-between;gap:12px;margin:18px 0 12px}
+.results-head.show{display:flex}
+.results-head h2{font-size:19px;line-height:1.25;font-weight:800}
+.results-head p{font-size:12px;color:#8a93a2;margin-top:4px}
+.results-actions{display:flex;gap:7px;flex:none}
+.result-btn,.sort-select{height:38px;border:1.5px solid #DDE5F0;border-radius:10px;background:#fff;color:#344154;font-weight:700;font-size:12px;padding:0 11px;cursor:pointer}
+.filter-panel{display:none;background:#fff;border:1px solid #E5EAF2;border-radius:14px;padding:13px;margin-bottom:12px}
+.filter-panel.show{display:block}
+.filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.filter-grid label{display:block;font-size:10.5px;font-weight:700;color:#68758a;margin-bottom:4px}
+.filter-grid select,.filter-grid input{width:100%;height:40px;border:1.5px solid #E5EAF2;border-radius:10px;background:#fff;padding:0 10px;font:12px inherit;color:#16202E}
+.filter-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.filter-foot button{border:0;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}
+.filter-reset{background:#F1F4F9;color:#5a6577}.filter-apply{background:#2563D9;color:#fff}
+.no-results{grid-column:1/-1;text-align:center;padding:52px 18px;background:#fff;border:1px solid #EDF1F7;border-radius:14px;color:#68758a}
+.no-results b{display:block;color:#16202E;font-size:17px;margin-bottom:7px}
+.load-more{display:none;margin:-40px auto 54px;border:1.5px solid #DDE5F0;background:#fff;color:#2563D9;border-radius:12px;padding:11px 20px;font-weight:800;cursor:pointer}
+.load-more.show{display:block}
 /* grid */
 .count{font-size:13px;color:#8a93a2;margin:10px 0 12px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;padding-bottom:60px}
@@ -441,6 +494,10 @@ button{font-family:inherit}
 .trust .em{width:38px;height:38px;border-radius:50%;background:#EAF0FB;display:flex;align-items:center;justify-content:center;font-size:18px}
 .sec{font-weight:800;font-size:15px;margin-bottom:8px}
 .desc{font-size:13px;color:#3a4250;line-height:1.65;margin-bottom:18px}
+.buy-facts{display:grid;gap:8px;margin:-4px 0 18px}
+.buy-fact{display:flex;align-items:flex-start;gap:9px;background:#F7F9FD;border:1px solid #E8EDF5;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.45;color:#435066}
+.buy-fact b{display:block;color:#16202E;margin-bottom:1px}
+.stock-ok{color:#157A4E}.stock-check{color:#9A6700}
 /* action bar（含加购信任微标） */
 .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EEF1F6;padding:12px 16px calc(8px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;z-index:60}
 .bar-btns{display:flex;gap:10px}
@@ -501,6 +558,9 @@ footer .rnc{font-size:11px;color:#b3bac6}
 .fld label{display:block;font-weight:700;font-size:12px;color:#5a6577;margin-bottom:5px}
 .fld input,.fld textarea,.fld select{width:100%;border:1.5px solid #E5EAF2;border-radius:13px;padding:12px 14px;font-size:14px;font-family:inherit;background:#fff;color:#16202E}
 .fld input:focus,.fld textarea:focus,.fld select:focus{outline:none;border-color:#2563D9}
+.fld.invalid input,.fld.invalid textarea,.fld.invalid select{border-color:#E44D4D;background:#FFF8F8}
+.fld .err-msg{display:none;color:#C73535;font-size:10.5px;font-weight:700;margin-top:4px}
+.fld.invalid .err-msg{display:block}
 .fld select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6577' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
 /* pago radios */
 .pay{display:flex;flex-direction:column;gap:9px}
@@ -532,12 +592,17 @@ footer .rnc{font-size:11px;color:#b3bac6}
 .btn-conf{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:#FF6B4A;color:#fff;font-weight:800;font-size:16px;height:54px;border-radius:16px;border:0;cursor:pointer;margin-top:6px}
 .btn-conf:disabled{opacity:.5}
 .sub-note{text-align:center;font-size:11.5px;color:#9aa3b2;margin-top:10px}
+.ship-quote{background:#EEF7FF;border:1px solid #CFE2F7;border-radius:13px;padding:11px 12px;margin:8px 0 10px;display:grid;grid-template-columns:1fr auto;gap:4px 12px}
+.ship-quote span{font-size:11px;color:#5f7186;font-weight:700}.ship-quote b{font-size:14px}.ship-quote small{grid-column:1/-1;color:#68758a;font-size:10.5px}
+.pay-note{display:none;background:#FFF5E9;border:1px solid #F6DDB4;color:#8a5a12;border-radius:11px;padding:10px 12px;font-size:11.5px;font-weight:700;line-height:1.45;margin-bottom:9px}
+.pay-note.show{display:block}
 /* confirmación */
 .ok{display:none;min-height:70vh;background:linear-gradient(160deg,#2563D9,#1A47A6);border-radius:24px;margin:18px;padding:60px 24px;text-align:center;color:#fff}
 .ok .ck{width:86px;height:86px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:38px}
 .ok h2{font-weight:800;font-size:26px;margin-bottom:12px}
 .ok p{font-size:14px;color:#d3e0fb;line-height:1.6;max-width:320px;margin:0 auto 26px}
 .ok a{display:inline-block;background:#fff;color:#2563D9;font-weight:800;font-size:15px;padding:14px 30px;border-radius:16px}
+.ok-actions{display:flex;flex-direction:column;gap:9px;max-width:320px;margin:0 auto}.ok-actions .ok-wa{background:#25D366;color:#fff}.ok-actions .ok-shop{background:#fff;color:#2563D9}
 """
 
 CART_JS = """<script>
@@ -578,7 +643,7 @@ TRACK_JS = """<script>
  var ss=get('vb_session',{});if(!ss.id||now-(ss.last||0)>1800000)ss={id:'s-'+(crypto.randomUUID?crypto.randomUUID():now+'-'+Math.random()),last:now};ss.last=now;put('vb_session',ss);
  var dev=/Mobi|Android|iPhone/i.test(navigator.userAgent)?'mobile':(/iPad|Tablet/i.test(navigator.userAgent)?'tablet':'desktop'),last=Date.now(),sent={};
  function id(){return crypto.randomUUID?crypto.randomUUID():'e-'+Date.now()+'-'+Math.random()}
- function ctx(){var p=window.VB_PAGE||{},b={event_id:id(),session_id:ss.id,path:location.pathname,device_type:dev,screen_width:screen.width,category:p.category||'',product_title:p.title||'',product_img:p.img||''};keys.forEach(function(k){b[k]=a[k]||''});return b}
+ function ctx(){var p=window.VB_PAGE||{},b={event_id:id(),session_id:ss.id,path:location.pathname,device_type:dev,screen_width:screen.width,site_version:'__VERSION__',category:p.category||'',product_title:p.title||'',product_img:p.img||''};keys.forEach(function(k){b[k]=a[k]||''});return b}
  function send(t,s,x,beacon){try{var b=ctx();b.type=t;b.sku=s||((window.VB_PAGE||{}).sku||'');if(x)for(var k in x)b[k]=x[k];var raw=JSON.stringify(b);if(beacon&&navigator.sendBeacon)navigator.sendBeacon(API,new Blob([raw],{type:'application/json'}));else fetch(API,{method:'POST',credentials:'include',keepalive:true,headers:{'Content-Type':'application/json'},body:raw}).catch(function(){})}catch(e){}}
  window.vbTrack=send;window.vbContext=ctx;
  document.addEventListener('click',function(e){var x=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(!x)return;var loc=x.classList.contains('wa-float')?'floating':x.classList.contains('hd-wa')?'header':x.classList.contains('btn-wa')?'product':'other';send('whatsapp','',{whatsapp_location:loc})},true);
@@ -586,7 +651,7 @@ TRACK_JS = """<script>
  setInterval(function(){if(document.visibilityState==='visible'){send('engagement','',{duration_ms:30000});last=Date.now();ss.last=last;put('vb_session',ss)}},30000);
  addEventListener('pagehide',function(){var d=Math.max(0,Math.min(30000,Date.now()-last));if(d>1000)send('engagement','',{duration_ms:d},true)});
 })();
-</script>""".replace("__API__", API_BASE)
+</script>""".replace("__API__", API_BASE).replace("__VERSION__", SITE_VERSION)
 
 WA_FLOAT = f"""<a class="wa-float" href="https://wa.me/{WHATSAPP}" target="_blank" aria-label="WhatsApp"
  onclick="fbq('track','Contact')">{WA_SVG}</a>
@@ -619,7 +684,7 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, track_category=""
 {body}
 {view_js}
 {WA_FLOAT if wa_float else ""}
-<footer>© {SITE_NAME} · Envíos en toda República Dominicana · Pago contra entrega
+<footer>© {SITE_NAME} · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
 <div class="rnc">RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro</div></footer>
 </body></html>"""
 
@@ -647,18 +712,19 @@ def carrito_page():
 
 <div class="box" id="formBox">
 <div class="bt">🚚 Datos de entrega</div>
-<div class="fld"><label>Nombre completo *</label><input id="fNom" placeholder="Tu nombre"></div>
-<div class="fld"><label>Teléfono / WhatsApp *</label><input id="fTel" inputmode="tel" placeholder="809 000 0000">
+<div class="fld" id="fldNom"><label>Nombre completo *</label><input id="fNom" name="name" autocomplete="name" placeholder="Tu nombre"><div class="err-msg">Escribe tu nombre.</div></div>
+<div class="fld" id="fldTel"><label>Teléfono / WhatsApp *</label><input id="fTel" name="tel" autocomplete="tel" inputmode="tel" placeholder="809 000 0000"><div class="err-msg">Escribe un teléfono válido.</div>
 <div class="hint">📞 Te llamaremos a este número cuando tu pedido esté llegando</div></div>
-<div class="fld"><label>Provincia *</label><select id="fProv" onchange="provUI()"></select></div>
-<div class="fld" id="sectorFld"><label>Sector / Zona *</label><select id="fSector"></select></div>
-<div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" placeholder="Ej: Santiago, Moca..."></div>
-<div class="fld"><label>Dirección (calle y número) *</label><textarea id="fDir" rows="2" placeholder="Calle, No., referencia"></textarea></div>
+<div class="fld" id="fldProv"><label>Provincia *</label><select id="fProv" name="address-level1" autocomplete="address-level1" onchange="provUI()"></select><div class="err-msg">Selecciona la provincia.</div></div>
+<div class="fld" id="sectorFld"><label>Sector / Zona *</label><select id="fSector" name="address-level2" autocomplete="address-level2" onchange="quoteShipping()"></select></div>
+<div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" name="address-level2" autocomplete="address-level2" placeholder="Ej: Santiago, Moca..." onblur="quoteShipping()"><div class="err-msg">Escribe el municipio o ciudad.</div></div>
+<div class="fld" id="fldDir"><label>Dirección (calle y número) *</label><textarea id="fDir" name="street-address" autocomplete="street-address" rows="2" placeholder="Calle, No., referencia"></textarea><div class="err-msg">Escribe la dirección de entrega.</div></div>
 <div class="fld"><label>Nota (opcional)</label><input id="fNota" placeholder="Referencia, horario..."></div>
 </div>
 
 <div class="box" id="payBox">
 <div class="bt">💳 ¿Cómo pagas?</div>
+<div class="pay-note" id="codNote">La entrega contra pago solo está disponible en el Gran Santo Domingo. Para otras zonas usamos transferencia bancaria.</div>
 <div class="pay">
 <label class="on" id="lCod"><input type="radio" name="pay" value="cod" checked onchange="payUI()"> 🤝 Contra entrega (efectivo)</label>
 <label id="lTra"><input type="radio" name="pay" value="transfer" onchange="payUI()"> 🏦 Transferencia bancaria</label>
@@ -679,23 +745,24 @@ __BANKS__
 <div class="cpn"><input id="cpnCode" placeholder="Código de descuento" autocapitalize="characters" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon()}"><button id="cpnBtn" type="button" onclick="applyCoupon()">Aplicar</button></div>
 <div class="cpn-msg" id="cpnMsg"></div>
 <div class="ln disc" id="discLn" style="display:none">Descuento (<span id="discCode"></span>) <b id="tDisc">- RD$ 0</b></div>
-<div class="ln">Envío <b>Se confirma por WhatsApp</b></div>
-<div class="gt">Total <span id="tTot">RD$ 0</span></div>
+<div class="ship-quote" id="shipQuote"><span>Envío estimado</span><b id="tShip">Selecciona tu provincia</b><small id="shipEta">Verás el costo y el tiempo antes de confirmar.</small></div>
+<div class="gt"><span id="totalLabel">Total</span> <span id="tTot">RD$ 0</span></div>
 <button class="btn-conf" id="btnConf" onclick="confirmar()">🛡️ Confirmar pedido</button>
-<div class="sub-note">Al confirmar se abre WhatsApp con tu pedido listo para enviar.</div>
+<div class="sub-note">Al confirmar, tu pedido queda registrado. Después puedes continuar por WhatsApp si lo deseas.</div>
 </div>
 </div>
 
 <div class="ok" id="okScreen">
 <div class="ck">✓</div>
-<h2>¡Pedido enviado!</h2>
-<p>Tu pedido <b id="okId"></b> fue enviado por WhatsApp.<br>Te confirmaremos la entrega en breve.</p>
-<a href="index.html">Seguir comprando</a>
+<h2>¡Pedido confirmado!</h2>
+<p>Tu pedido <b id="okId"></b> quedó registrado correctamente.<br>Te contactaremos para coordinar la entrega.</p>
+<div class="ok-actions"><a class="ok-wa" id="okWa" href="#" target="_blank">Continuar por WhatsApp</a><a class="ok-shop" href="index.html">Seguir comprando</a></div>
 </div>
 
 <script>
 var WA='__WA__';
 var COUPON=null; // {code,kind,value} —— 已应用的优惠券
+var SHIPPING={fee:0,fee_min:0,fee_max:0,zone:'',delivery:'',cod_allowed:false,ready:false};
 function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
 function subtotal(){return vbCart().reduce(function(a,it){return a+it.price*it.qty},0)}
 function calcDiscount(sub){
@@ -704,15 +771,21 @@ function calcDiscount(sub){
  return Math.min(d,sub);
 }
 function paintTotals(){
- var sub=subtotal(),disc=calcDiscount(sub),tot=sub-disc;
+ var sub=subtotal(),disc=calcDiscount(sub),productTotal=sub-disc;
+ var shipMin=SHIPPING.ready?Number(SHIPPING.fee_min||SHIPPING.fee||0):0;
+ var shipMax=SHIPPING.ready?Number(SHIPPING.fee_max||SHIPPING.fee||0):0;
+ var ranged=SHIPPING.ready&&shipMax>shipMin,totMin=productTotal+shipMin,totMax=productTotal+shipMax;
  document.getElementById('tSub').textContent=money(sub);
  var dl=document.getElementById('discLn');
  if(disc>0){dl.style.display='flex';
   document.getElementById('tDisc').textContent='- '+money(disc);
   document.getElementById('discCode').textContent=COUPON.code;
  }else{dl.style.display='none';}
- document.getElementById('tTot').textContent=money(tot);
- document.getElementById('btnConf').textContent='🛡️ Confirmar pedido · '+money(tot);
+ document.getElementById('tShip').textContent=SHIPPING.ready?(ranged?money(shipMin)+' – '+money(shipMax):money(shipMin)):'Selecciona tu provincia';
+ document.getElementById('shipEta').textContent=SHIPPING.ready?SHIPPING.delivery+' · Costo estimado según la zona.':'Verás el costo y el tiempo antes de confirmar.';
+ document.getElementById('totalLabel').textContent=ranged?'Total estimado':'Total';
+ document.getElementById('tTot').textContent=ranged?money(totMin)+' – '+money(totMax):money(totMin);
+ document.getElementById('btnConf').textContent=ranged?'🛡️ Confirmar pedido · '+money(productTotal)+' + envío':'🛡️ Confirmar pedido · '+money(totMin);
 }
 function applyCoupon(){
  var code=document.getElementById('cpnCode').value.trim().toUpperCase();
@@ -758,16 +831,30 @@ function payUI(){
  document.getElementById('lTra').classList.toggle('on',t==='transfer');
  document.getElementById('bankPanel').classList.toggle('show',t==='transfer');
 }
-var PROVS=["Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
-var SECTORES=["Santo Domingo Este","Santo Domingo Norte","Santo Domingo Oeste","Distrito Nacional (centro)","Naco","Piantini","Bella Vista","Gazcue","Los Prados","Arroyo Hondo","Los Ríos","El Millón","Evaristo Morales","Villa Mella","Herrera","Los Alcarrizos","Boca Chica","Villa Consuelo","Cristo Rey","Otro sector..."];
+var PROVS=["","Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
+var DN_SECTORES=["Distrito Nacional (centro)","Naco","Piantini","Bella Vista","Gazcue","Los Prados","Arroyo Hondo","Los Ríos","El Millón","Evaristo Morales","Villa Consuelo","Cristo Rey","Otro sector del Distrito Nacional"];
+var SD_SECTORES=["Santo Domingo Este","Santo Domingo Norte","Santo Domingo Oeste","Otro municipio de Santo Domingo"];
 function fillSel(id,arr){var s=document.getElementById(id);
- arr.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;s.appendChild(o)});}
+ s.innerHTML='';arr.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x||(id==='fProv'?'Selecciona una provincia':'Selecciona una zona');if(!x)o.disabled=true;o.selected=!x;s.appendChild(o)});}
 function provUI(){
- var isSD=document.getElementById('fProv').value.indexOf('Distrito Nacional')===0;
- document.getElementById('sectorFld').style.display=isSD?'block':'none';
- document.getElementById('cityFld').style.display=isSD?'none':'block';
+ var prov=document.getElementById('fProv').value,isDN=prov.indexOf('Distrito Nacional')===0,isSDP=prov.indexOf('Santo Domingo (provincia)')===0,isMetro=isDN||isSDP;
+ document.getElementById('sectorFld').style.display=isMetro?'block':'none';
+ document.getElementById('cityFld').style.display=isMetro?'none':'block';
+ if(isDN)fillSel('fSector',DN_SECTORES);else if(isSDP)fillSel('fSector',SD_SECTORES);
+ SHIPPING={fee:0,fee_min:0,fee_max:0,zone:'',delivery:'',cod_allowed:false,ready:false};quoteShipping();
 }
-fillSel('fProv',PROVS);fillSel('fSector',SECTORES);provUI();
+async function quoteShipping(){
+ var prov=document.getElementById('fProv').value;if(!prov){paintTotals();return}
+ var metro=document.getElementById('sectorFld').style.display!=='none';
+ var zone=metro?document.getElementById('fSector').value:document.getElementById('fCity').value.trim();
+ try{var r=await fetch('__API__/api/shipping/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({province:prov,zone:zone})});var d=await r.json();if(!r.ok||!d.ok)throw new Error();SHIPPING=d;
+  var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=transfer]');
+  cod.disabled=!d.cod_allowed;document.getElementById('lCod').style.display=d.cod_allowed?'flex':'none';document.getElementById('codNote').classList.toggle('show',!d.cod_allowed);
+  if(!d.cod_allowed)tra.checked=true;payUI();paintTotals();
+  try{vbTrack('shipping_quote','',{shipping_fee:d.fee,shipping_zone:d.zone,delivery_estimate:d.delivery})}catch(e){}
+ }catch(e){SHIPPING={fee:0,fee_min:0,fee_max:0,zone:'',delivery:'No pudimos calcular el envío. Intenta de nuevo.',cod_allowed:false,ready:false};paintTotals()}}
+fillSel('fProv',PROVS);fillSel('fSector',[]);paintTotals();
+function fieldState(id,bad){var x=document.getElementById(id);if(x)x.classList.toggle('invalid',!!bad)}
 async function confirmar(){
  var c=vbCart();if(!c.length)return;
  var nom=document.getElementById('fNom').value.trim(),
@@ -775,46 +862,51 @@ async function confirmar(){
      dir=document.getElementById('fDir').value.trim(),
      nota=document.getElementById('fNota').value.trim();
  var prov=document.getElementById('fProv').value;
- var isSD=prov.indexOf('Distrito Nacional')===0;
- var zona=isSD?document.getElementById('fSector').value
-              :document.getElementById('fCity').value.trim();
- if(!nom||!tel||!prov||!zona||!dir){
-  alert('Por favor completa nombre, teléfono, provincia, sector/ciudad y dirección.');return;}
+ var metro=document.getElementById('sectorFld').style.display!=='none';
+ var zona=metro?document.getElementById('fSector').value:document.getElementById('fCity').value.trim();
+ fieldState('fldNom',!nom);fieldState('fldTel',tel.replace(/\D/g,'').length<10);fieldState('fldProv',!prov);fieldState('cityFld',!metro&&!zona);fieldState('fldDir',!dir);
+ if(!nom||tel.replace(/\D/g,'').length<10||!prov||!zona||!dir){document.querySelector('.fld.invalid').scrollIntoView({behavior:'smooth',block:'center'});return;}
+ if(!SHIPPING.ready){await quoteShipping();if(!SHIPPING.ready){alert('No pudimos calcular el envío. Intenta nuevamente.');return;}}
  var loc=prov+' · '+zona;
  var pay=document.querySelector('input[name=pay]:checked').value;
  var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
  var sub=0,lines=c.map(function(it){sub+=it.price*it.qty;
    return it.qty+'x '+it.title+' ('+it.sku+') — '+money(it.price*it.qty)});
- var disc=calcDiscount(sub),tot=sub-disc;
+ var disc=calcDiscount(sub),productTotal=sub-disc;
+ var shipMin=Number(SHIPPING.fee_min||SHIPPING.fee||0),shipMax=Number(SHIPPING.fee_max||SHIPPING.fee||0);
+ var ranged=shipMax>shipMin,totMin=productTotal+shipMin,totMax=productTotal+shipMax;
+ var shippingText=ranged?money(shipMin)+' – '+money(shipMax):money(shipMin);
+ var totalText=ranged?money(totMin)+' – '+money(totMax):money(totMin);
  var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
   +(disc>0?'\\n——\\nSubtotal: '+money(sub)+'\\n🏷️ Cupón '+COUPON.code+': - '+money(disc):'')
-  +'\\n*Total: '+money(tot)+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
+  +'\\n🚚 Envío estimado: '+shippingText+' ('+SHIPPING.delivery+')'
+  +'\\n*Total estimado: '+totalText+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
   +(nota?'\\n📝 '+nota:'')
   +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
- var btn=document.getElementById('btnConf'),waWin=window.open('about:blank','_blank');
+ var btn=document.getElementById('btnConf');
  btn.disabled=true;btn.textContent='Guardando pedido...';
  try{
   var orderRes=await fetch('__API__/api/order',{method:'POST',credentials:'include',
    headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:oid,
     customer_name:nom,phone:tel,province:prov,zone:zona,address:dir,note:nota,
-    payment_method:pay,subtotal:sub,discount:disc,total:tot,
+    payment_method:pay,shipping_zone:SHIPPING.zone,shipping_fee:ranged?0:shipMin,
+    shipping_fee_min:shipMin,shipping_fee_max:shipMax,delivery_estimate:SHIPPING.delivery,
+    subtotal:sub,discount:disc,total:ranged?productTotal:totMin,total_min:totMin,total_max:totMax,
     coupon_code:COUPON?COUPON.code:'',tracking:vbContext(),items:c.map(function(it){return {
      sku:it.sku,title:it.title,image:it.img,unit_price:it.price,quantity:it.qty}})})});
   var orderData=await orderRes.json();
   if(!orderRes.ok||!orderData.ok)throw new Error(orderData.error||'No se pudo guardar el pedido');
- }catch(e){if(waWin)waWin.close();btn.disabled=false;paintTotals();
+ }catch(e){btn.disabled=false;paintTotals();
   alert('No pudimos guardar tu pedido. Revisa tu conexión e intenta de nuevo.');return;}
- fbq('track','Contact');
- try{fbq('track','InitiateCheckout',{value:tot,currency:'DOP',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
+ try{fbq('track','Purchase',{value:productTotal,currency:'DOP',content_type:'product',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
     vbTrack('checkout','',{coupon:COUPON?COUPON.code:''});
  if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify({code:COUPON.code,order_id:oid})}).catch(function(){})}catch(e){}}
- if(waWin)waWin.location='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
- else window.location.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
  localStorage.removeItem('vb_cart');localStorage.removeItem('vb_campaign_coupon');vbBadge();
  document.getElementById('okId').textContent=oid;
+ document.getElementById('okWa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
  document.getElementById('main').style.display='none';
  document.getElementById('okScreen').style.display='block';
  window.scrollTo(0,0);
@@ -827,7 +919,7 @@ try{var autoCoupon=new URLSearchParams(location.search).get('coupon')||localStor
                 .replace("__BANKLINES__", bank_lines).replace("__API__", API_BASE))
     return page(f"Tu compra — {SITE_NAME}", body,
                 pixel_extra="fbq('track','InitiateCheckout');",
-                desc="Carrito de compras VivaBien — pago contra entrega o transferencia.")
+                desc="Carrito de compras VivaBien — contra entrega en Gran Santo Domingo o transferencia nacional.")
 
 # ---------- 专题合集 ----------
 import json as _json, hashlib as _hashlib
@@ -945,6 +1037,45 @@ def featured_html(collections, by_sku):
                   f'<span class="go">Ver colección →</span></a>')
     return f'<div class="feats">{cards}</div>' if cards else ""
 
+def modern_home_body(feats, tiles, cat_sections, group_options, subs_json, cards, total):
+    """轻量首页：首批 24 个商品 + 外部索引搜索、筛选和渐进加载。"""
+    body = header() + """
+<div class="wrap">
+<div class="search"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="q" type="search" placeholder="¿Qué buscas hoy? Ej: audífonos, espejo…" autocomplete="off"><button class="clr" id="qClr" aria-label="Borrar">✕</button></div>
+<div class="recent" id="recentRow"></div>
+<div class="home-promo" id="homePromo"><div class="hero"><h1>Compra fácil, paga seguro</h1><div class="sub">🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo</div></div>__FEATS__<div class="cat-hd"><b>Categorías</b><button class="cat-open" id="catOpen">Ver todas →</button></div><div class="cattiles" id="cattiles">__TILES__</div></div>
+<div class="results-head" id="resultsHead"><div><h2 id="resultsTitle">Productos</h2><p id="resultsSummary"></p></div><div class="results-actions"><button class="result-btn" id="filterOpen">Filtrar</button><select class="sort-select" id="sort"><option value="default">Relevancia</option><option value="price-asc">Precio: menor</option><option value="price-desc">Precio: mayor</option><option value="name">Nombre A-Z</option></select></div></div>
+<div class="filter-panel" id="filterPanel"><div class="filter-grid"><div><label>Categoría</label><select id="filterGroup">__GROUP_OPTIONS__</select></div><div><label>Subcategoría</label><select id="filterSub"><option value="*">Todas</option></select></div><div><label>Precio mínimo RD$</label><input id="priceMin" inputmode="numeric" type="number" min="0" placeholder="0"></div><div><label>Precio máximo RD$</label><input id="priceMax" inputmode="numeric" type="number" min="0" placeholder="Sin límite"></div></div><div class="filter-foot"><button class="filter-reset" id="filterReset">Limpiar</button><button class="filter-apply" id="filterApply">Ver resultados</button></div></div>
+<div class="count"><span id="n">__COUNT__</span> productos</div><div class="grid" id="grid">__CARDS__</div><button class="load-more show" id="loadMore">Ver más productos</button></div>
+<div class="cat-dialog" id="catDialog" role="dialog" aria-modal="true" aria-labelledby="catDialogTitle"><div class="cat-sheet"><div class="cat-sheet-head"><h2 id="catDialogTitle">Todas las categorías</h2><button class="cat-close" id="catClose" aria-label="Cerrar">✕</button></div>__CAT_SECTIONS__</div></div>
+<script>
+var all=[],filtered=[],shown=0,BATCH=24,cur={q:'',g:'*',s:'*',min:null,max:null,sort:'default'},SUBS=__SUBS__;
+var ALIASES={auricular:['audifono','audifonos'],auriculares:['audifono','audifonos'],movil:['celular','telefono'],telefono:['celular'],nevera:['refrigerador'],bombilla:['bombillo'],biberon:['tetera'],cochecito:['carrito de bebe']};
+var qEl=document.getElementById('q'),qClr=document.getElementById('qClr'),qT=null,grid=document.getElementById('grid');
+function snorm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function h(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function recGet(){try{return JSON.parse(localStorage.getItem('vb_recent')||'[]')}catch(e){return[]}}
+function recAdd(w){var r=recGet().filter(function(x){return x!==w});r.unshift(w);r=r.slice(0,6);try{localStorage.setItem('vb_recent',JSON.stringify(r))}catch(e){}recPaint()}
+function recPaint(){var r=recGet(),row=document.getElementById('recentRow');if(!r.length){row.classList.remove('show');return}row.innerHTML='<span class="rlb">Recientes:</span>'+r.map(function(w){return '<span class="rch">'+h(w)+'</span>'}).join('')+'<button class="rclr" title="Borrar historial">✕</button>';row.classList.add('show');row.querySelectorAll('.rch').forEach(function(ch){ch.onclick=function(){qEl.value=ch.textContent;qEl.dispatchEvent(new Event('input'))}});row.querySelector('.rclr').onclick=function(){try{localStorage.removeItem('vb_recent')}catch(e){}recPaint()}}
+function matchWord(p,w){if(p.q.indexOf(w)>=0)return true;return (ALIASES[w]||[]).some(function(x){return p.q.indexOf(x)>=0})}
+function card(p){var price=p.price==null?'<span class="ask">Consultar</span>':'<b>RD$ '+Math.round(p.price).toLocaleString('en-US')+'</b>';var add=p.price==null?'':'<button class="card-add" type="button" aria-label="Agregar al carrito" data-sku="'+h(p.sku)+'" data-handle="'+h(p.handle)+'" data-title="'+h(p.title)+'" data-price="'+p.price+'" data-img="'+h(p.img)+'" onclick="vbCardAdd(event,this)">__BAG__</button>';return '<article class="card"><a class="card-link" href="producto/'+encodeURIComponent(p.handle)+'.html"><div class="imgbox"><img src="images/'+encodeURIComponent(p.img)+'" alt="'+h(p.title)+'" loading="lazy" onerror="this.style.display=\\'none\\'"><span class="badge">'+h(p.sub)+'</span></div><div class="info"><div class="nm">'+h(p.title)+'</div><div class="pr">'+price+'</div></div></a>'+add+'</article>'}
+function apply(reset){if(!all.length)return;var words=snorm(cur.q).split(/\s+/).filter(Boolean);filtered=all.filter(function(p){if(cur.g!=='*'&&p.group!==cur.g)return false;if(cur.s!=='*'&&p.sub!==cur.s)return false;if(words.length&&!words.every(function(w){return matchWord(p,w)}))return false;if(cur.min!=null&&(p.price==null||p.price<cur.min))return false;if(cur.max!=null&&(p.price==null||p.price>cur.max))return false;return true});filtered.sort(function(a,b){if(cur.sort==='price-asc')return (a.price==null?1e15:a.price)-(b.price==null?1e15:b.price);if(cur.sort==='price-desc')return (b.price==null?-1:b.price)-(a.price==null?-1:a.price);if(cur.sort==='name')return a.title.localeCompare(b.title,'es');return a.i-b.i});var mode=!!cur.q||cur.g!=='*'||cur.s!=='*'||cur.min!=null||cur.max!=null||cur.sort!=='default';document.getElementById('homePromo').classList.toggle('hidden',mode);document.getElementById('resultsHead').classList.toggle('show',mode);document.getElementById('n').textContent=filtered.length;var label=cur.q?'Resultados para “'+cur.q+'”':(cur.s!=='*'?cur.s:(cur.g!=='*'?cur.g:'Productos'));document.getElementById('resultsTitle').textContent=label;document.getElementById('resultsSummary').textContent=filtered.length+' productos encontrados';if(reset){shown=0;grid.innerHTML='';showNext()}}
+function showNext(){if(!all.length)return;if(!filtered.length){grid.innerHTML='<div class="no-results"><b>No encontramos productos</b>Prueba otra palabra o elimina algún filtro.</div>';document.getElementById('loadMore').classList.remove('show');return}var next=filtered.slice(shown,shown+BATCH);grid.insertAdjacentHTML('beforeend',next.map(card).join(''));shown+=next.length;document.getElementById('loadMore').classList.toggle('show',shown<filtered.length)}
+function updateSubs(g,selected){var s=document.getElementById('filterSub'),vals=g==='*'?[]:(SUBS[g]||[]);s.innerHTML='<option value="*">Todas</option>'+vals.map(function(x){return '<option value="'+h(x)+'">'+h(x)+'</option>'}).join('');s.value=selected&&vals.indexOf(selected)>=0?selected:'*'}
+function selectCategory(g,s){cur.g=g;cur.s=s||'*';document.getElementById('filterGroup').value=g;updateSubs(g,cur.s);closeCategories();apply(true);try{vbTrack('filter','',{filter_group:g,filter_sub:cur.s,result_count:filtered.length})}catch(e){}window.scrollTo({top:0,behavior:'smooth'})}
+function openCategories(g){var d=document.getElementById('catDialog');d.classList.add('show');document.body.style.overflow='hidden';if(g){var x=d.querySelector('[data-section="'+CSS.escape(g)+'"]');if(x)setTimeout(function(){x.scrollIntoView({block:'start'})},60)}}
+function closeCategories(){document.getElementById('catDialog').classList.remove('show');document.body.style.overflow=''}
+async function loadData(){try{var r=await fetch('products-index.json');all=await r.json();apply(true)}catch(e){document.getElementById('loadMore').classList.remove('show')}}
+recPaint();qEl.addEventListener('input',function(){var next=qEl.value.trim();if(!cur.q&&next){cur.g='*';cur.s='*';cur.min=null;cur.max=null;document.getElementById('filterGroup').value='*';updateSubs('*','')}cur.q=next;qClr.style.display=cur.q?'block':'none';apply(true);clearTimeout(qT);if(cur.q.length>2)qT=setTimeout(function(){try{fbq('track','Search',{search_string:cur.q});vbTrack('search','',{search_query:cur.q,result_count:filtered.length,sort_mode:cur.sort,filter_group:cur.g,filter_sub:cur.s})}catch(e){}recAdd(cur.q.toLowerCase())},900)});qClr.onclick=function(){qEl.value='';cur.q='';qClr.style.display='none';apply(true);qEl.focus()};var qp=new URLSearchParams(location.search).get('q');if(qp){qEl.value=qp;cur.q=qp;qClr.style.display='block'}if(new URLSearchParams(location.search).has('buscar'))qEl.focus();
+document.getElementById('catOpen').onclick=function(){openCategories('')};document.querySelectorAll('.tile').forEach(function(t){t.onclick=function(){openCategories(t.dataset.g)}});document.querySelectorAll('.cat-section-title,.cat-sub').forEach(function(b){b.onclick=function(){selectCategory(b.dataset.g,b.dataset.s)}});document.getElementById('catClose').onclick=closeCategories;document.getElementById('catDialog').onclick=function(e){if(e.target===this)closeCategories()};addEventListener('keydown',function(e){if(e.key==='Escape')closeCategories()});
+document.getElementById('filterOpen').onclick=function(){document.getElementById('filterPanel').classList.toggle('show')};document.getElementById('filterGroup').onchange=function(){updateSubs(this.value,'')};document.getElementById('filterApply').onclick=function(){cur.g=document.getElementById('filterGroup').value;cur.s=document.getElementById('filterSub').value;var a=document.getElementById('priceMin').value,b=document.getElementById('priceMax').value;cur.min=a===''?null:Number(a);cur.max=b===''?null:Number(b);document.getElementById('filterPanel').classList.remove('show');apply(true);try{vbTrack('filter','',{filter_group:cur.g,filter_sub:cur.s,result_count:filtered.length,sort_mode:cur.sort})}catch(e){}};document.getElementById('filterReset').onclick=function(){cur.g='*';cur.s='*';cur.min=null;cur.max=null;cur.sort='default';document.getElementById('filterGroup').value='*';updateSubs('*','');document.getElementById('priceMin').value='';document.getElementById('priceMax').value='';document.getElementById('sort').value='default';apply(true)};document.getElementById('sort').onchange=function(){cur.sort=this.value;apply(true)};document.getElementById('loadMore').onclick=showNext;
+var io=new IntersectionObserver(function(es){if(es[0].isIntersecting&&all.length&&shown<filtered.length)showNext()},{rootMargin:'300px'});io.observe(document.getElementById('loadMore'));setTimeout(loadData,0);
+</script>"""
+    return (body.replace("__FEATS__", feats).replace("__TILES__", tiles)
+            .replace("__COUNT__", str(total)).replace("__CARDS__", "".join(cards))
+            .replace("__CAT_SECTIONS__", "".join(cat_sections)).replace("__GROUP_OPTIONS__", group_options)
+            .replace("__SUBS__", subs_json).replace("__BAG__", BAG_SVG))
+
 def build():
     products = load_products()
     if os.path.exists(OUT_DIR):
@@ -965,8 +1096,19 @@ def build():
         subs_of[p["group"]][p["sub"]] += 1
     groups = [g for g in GROUP_ORDER if g in subs_of]
 
-    # ---- 商品卡 ----
-    cards = [product_card(p) for p in products]
+    # ---- 商品索引 + 首批商品卡（首页不再一次渲染 1000+ 个 DOM 节点） ----
+    index_products = []
+    for i, p in enumerate(products):
+        search_text = " ".join((p["title"], p["sub"], p["group"], p["type"], p["body"][:360]))
+        index_products.append({
+            "i": i, "sku": p["sku"], "handle": p["handle"], "title": p["title"],
+            "price": p["price"], "img": p["img"], "group": p["group"], "sub": p["sub"],
+            "available": p.get("inventory") is not None and p["inventory"] > 0,
+            "q": snorm(search_text),
+        })
+    with open(f"{OUT_DIR}/products-index.json", "w", encoding="utf-8") as f:
+        json.dump(index_products, f, ensure_ascii=False, separators=(",", ":"))
+    cards = [product_card(p) for p in products[:24]]
 
     # ---- 专题合集 ----
     by_sku = {p["sku"]: p for p in products}
@@ -983,92 +1125,24 @@ def build():
     tiles = "".join(
         f'<div class="tile" data-g="{esc(g)}"><div class="tico" style="background:{TILE_BG.get(g, "#F1F3F6")}">'
         f'{GROUP_ICONS.get(g, "🛍️")}</div><div class="tnm">{esc(g)}</div></div>' for g in groups)
-    subrows = []
+    cat_sections = []
     for g in groups:
-        schips = ['<div class="schip on" data-s="*">Todo</div>'] + [
-            f'<div class="schip" data-s="{esc(s)}">{esc(s)} · {n}</div>'
+        total = sum(subs_of[g].values())
+        sub_buttons = [
+            f'<button class="cat-sub" data-g="{esc(g)}" data-s="{esc(s)}">{esc(s)}<small>{n} productos</small></button>'
             for s, n in sorted(subs_of[g].items(), key=lambda kv: -kv[1])]
-        subrows.append(f'<div class="subcats" data-g="{esc(g)}">{"".join(schips)}</div>')
-
-    home_body = f"""{header()}
-<div class="wrap">
-<div class="search">
-<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-<input id="q" type="search" placeholder="¿Qué buscas hoy? Ej: audífonos, espejo…" autocomplete="off">
-<button class="clr" id="qClr" aria-label="Borrar">✕</button>
-</div>
-<div class="recent" id="recentRow"></div>
-<div class="hero"><h1>Compra fácil, paga seguro</h1>
-<div class="sub">🚚 Envíos a todo el país · 🤝 Contra entrega en Sto. Dgo.</div></div>
-{feats}
-<div class="cat-hd"><b id="catHdT">Categorías</b><span class="cat-clear" id="catClear">Quitar filtro ✕</span></div>
-<div class="cattiles" id="cattiles">{tiles}</div>
-{''.join(subrows)}
-<div class="count"><span id="n">{len(products)}</span> productos</div>
-<div class="grid" id="grid">{''.join(cards)}</div>
-</div>
-<script>
-var curG='*',curS='*',curQ='';
-function snorm(s){{return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')}}
-function apply(){{let n=0;
- const words=snorm(curQ).split(/\\s+/).filter(Boolean);
- document.querySelectorAll('.card').forEach(cd=>{{
-  const ok=(curG==='*'||cd.dataset.g===curG)&&(curS==='*'||cd.dataset.s===curS)
-   &&words.every(w=>cd.dataset.q.includes(w));
-  cd.style.display=ok?'':'none';if(ok)n++;}});
- document.getElementById('n').textContent=n;}}
-var qEl=document.getElementById('q'),qClr=document.getElementById('qClr'),qT=null;
-// 最近搜索（只存用户自己的搜索词，最多6个）
-function recGet(){{try{{return JSON.parse(localStorage.getItem('vb_recent')||'[]')}}catch(e){{return[]}}}}
-function recAdd(w){{var r=recGet().filter(x=>x!==w);r.unshift(w);r=r.slice(0,6);
- try{{localStorage.setItem('vb_recent',JSON.stringify(r))}}catch(e){{}}recPaint();}}
-function recPaint(){{
- var r=recGet(),row=document.getElementById('recentRow');
- if(!r.length){{row.classList.remove('show');return}}
- row.innerHTML='<span class="rlb">Recientes:</span>'+r.map(w=>'<span class="rch">'+w.replace(/[<>&"]/g,'')+'</span>').join('')
-  +'<button class="rclr" title="Borrar historial">✕</button>';
- row.classList.add('show');
- row.querySelectorAll('.rch').forEach(ch=>ch.onclick=()=>{{qEl.value=ch.textContent;qEl.dispatchEvent(new Event('input'))}});
- row.querySelector('.rclr').onclick=()=>{{try{{localStorage.removeItem('vb_recent')}}catch(e){{}}recPaint()}};
-}}
-recPaint();
-qEl.addEventListener('input',()=>{{
- curQ=qEl.value;qClr.style.display=curQ?'block':'none';apply();
- clearTimeout(qT);
- if(curQ.trim().length>2)qT=setTimeout(()=>{{
-  try{{fbq('track','Search',{{search_string:curQ.trim()}})}}catch(e){{}}
-  recAdd(curQ.trim().toLowerCase());
- }},1200);
-}});
-qClr.onclick=()=>{{qEl.value='';curQ='';qClr.style.display='none';apply();qEl.focus()}};
-var qp=new URLSearchParams(location.search).get('q');
-if(qp){{qEl.value=qp;curQ=qp;qClr.style.display='block';apply()}}
-if(new URLSearchParams(location.search).has('buscar'))qEl.focus();
-// 分类图标网格：点瓦片=选中该大类并展开子分类；再点或“Quitar filtro”=清除
-var catHdT=document.getElementById('catHdT'),catClear=document.getElementById('catClear');
-function setGroup(g,icon){{
- curG=g;curS='*';
- document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('on',t.dataset.g===g));
- document.querySelectorAll('.subcats').forEach(r=>{{
-  r.classList.toggle('show',r.dataset.g===g);
-  r.querySelectorAll('.schip').forEach((s,i)=>s.classList.toggle('on',i===0));}});
- catHdT.textContent=g==='*'?'Categorías':icon+' '+g;
- catClear.style.display=g==='*'?'none':'inline';
- apply();
-}}
-document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>{{
- var icon=t.querySelector('.tico').textContent;
- setGroup(t.classList.contains('on')?'*':t.dataset.g,icon);
- if(curG!=='*')t.scrollIntoView({{block:'nearest'}});
-}});
-catClear.onclick=()=>setGroup('*','');
-document.querySelectorAll('.schip').forEach(sc=>sc.onclick=()=>{{
- sc.parentElement.querySelectorAll('.schip').forEach(s=>s.classList.remove('on'));
- sc.classList.add('on');curS=sc.dataset.s;apply();}});
-</script>"""
+        cat_sections.append(
+            f'<section class="cat-section" data-section="{esc(g)}"><button class="cat-section-title" data-g="{esc(g)}" data-s="*">'
+            f'{GROUP_ICONS.get(g, "🛍️")} {esc(g)} <span>Ver los {total}</span></button>'
+            f'<div class="cat-subgrid">{"".join(sub_buttons)}</div></section>')
+    group_options = '<option value="*">Todas las categorías</option>' + "".join(
+        f'<option value="{esc(g)}">{esc(g)}</option>' for g in groups)
+    subs_json = json.dumps({g: sorted(subs_of[g]) for g in groups}, ensure_ascii=False)
+    home_body = modern_home_body(feats, tiles, cat_sections, group_options, subs_json,
+                                 cards, len(products))
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
         f.write(page(f"{SITE_NAME} — Tienda online RD", home_body, wa_float=True,
-                     desc="Hogar, belleza, herramientas, electrónica y más. Pago contra entrega en República Dominicana."))
+                     desc="Hogar, belleza, herramientas, electrónica y más. Contra entrega en Gran Santo Domingo."))
 
     # ---- 购物车页 ----
     with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
@@ -1181,6 +1255,17 @@ function addCart(b){
                    else '<div class="rp ask">Consultar</div>')
                 + '</a>' for c in recs)
             recs_html = f'<div class="recs"><h2>También te puede gustar</h2><div class="rec-row">{cards_r}</div></div>'
+        measurements = product_measurements(p)
+        if p.get("inventory") is not None and p["inventory"] > 0:
+            stock_html = '<b class="stock-ok">Disponible</b><span>Existencia registrada; confirmaremos antes del despacho.</span>'
+        else:
+            stock_html = '<b class="stock-check">Disponibilidad por confirmar</b><span>Te confirmaremos la existencia antes del despacho.</span>'
+        measure_html = (f'<div class="buy-fact"><span>📏</span><div><b>Tamaño / presentación</b>{esc(measurements)}</div></div>'
+                        if measurements else
+                        f'<div class="buy-fact"><span>📏</span><div><b>¿Necesitas una medida exacta?</b><a href="{wa_link(p["title"])}" target="_blank">Pregúntanos por WhatsApp</a></div></div>')
+        facts_html = (f'<div class="buy-facts"><div class="buy-fact"><span>✅</span><div>{stock_html}</div></div>'
+                      f'{measure_html}<div class="buy-fact"><span>🚚</span><div><b>Tiempo estimado</b>'
+                      '1-2 días laborables en Gran Santo Domingo; 1-7 días en el resto del país, según la zona.</div></div></div>')
         detail = f"""{header("../")}
 <div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['group'])} / {esc(p['sub'])}</div>
 <div class="dt">
@@ -1194,6 +1279,7 @@ function addCart(b){
 <div><span class="em">🤝</span>Contra entrega<br>en Sto. Dgo.</div>
 <div><span class="em">✅</span>Producto<br>verificado</div>
 </div>
+{facts_html}
 <div class="sec">Descripción</div>
 <div class="desc">{desc_html}</div>
 <div class="bar">

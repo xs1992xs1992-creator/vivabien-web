@@ -54,7 +54,16 @@ CREATE TABLE IF NOT EXISTS events (
   gclid TEXT DEFAULT '',
   whatsapp_location TEXT DEFAULT '',
   is_bot INTEGER DEFAULT 0,
-  bot_reason TEXT DEFAULT ''
+  bot_reason TEXT DEFAULT '',
+  site_version TEXT DEFAULT '',
+  search_query TEXT DEFAULT '',
+  result_count INTEGER DEFAULT 0,
+  sort_mode TEXT DEFAULT '',
+  filter_group TEXT DEFAULT '',
+  filter_sub TEXT DEFAULT '',
+  shipping_fee REAL DEFAULT 0,
+  shipping_zone TEXT DEFAULT '',
+  delivery_estimate TEXT DEFAULT ''
 );
 CREATE INDEX IF NOT EXISTS idx_events_vid  ON events(vid);
 CREATE INDEX IF NOT EXISTS idx_events_code ON events(code);
@@ -101,9 +110,16 @@ CREATE TABLE IF NOT EXISTS orders (
   address TEXT NOT NULL,
   note TEXT DEFAULT '',
   payment_method TEXT DEFAULT 'cod',
+  shipping_zone TEXT DEFAULT '',
+  shipping_fee REAL NOT NULL DEFAULT 0,
+  shipping_fee_min REAL NOT NULL DEFAULT 0,
+  shipping_fee_max REAL NOT NULL DEFAULT 0,
+  delivery_estimate TEXT DEFAULT '',
   subtotal REAL NOT NULL DEFAULT 0,
   discount REAL NOT NULL DEFAULT 0,
   total REAL NOT NULL DEFAULT 0,
+  total_min REAL NOT NULL DEFAULT 0,
+  total_max REAL NOT NULL DEFAULT 0,
   coupon_code TEXT DEFAULT '',
   ip_full TEXT DEFAULT '',
   ip_masked TEXT DEFAULT '',
