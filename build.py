@@ -716,8 +716,9 @@ def carrito_page():
 <div class="fld" id="fldTel"><label>Teléfono / WhatsApp *</label><input id="fTel" name="tel" autocomplete="tel" inputmode="tel" placeholder="809 000 0000"><div class="err-msg">Escribe un teléfono válido.</div>
 <div class="hint">📞 Te llamaremos a este número cuando tu pedido esté llegando</div></div>
 <div class="fld" id="fldProv"><label>Provincia *</label><select id="fProv" name="address-level1" autocomplete="address-level1" onchange="provUI()"></select><div class="err-msg">Selecciona la provincia.</div></div>
-<div class="fld" id="sectorFld"><label>Sector / Zona *</label><select id="fSector" name="address-level2" autocomplete="address-level2" onchange="quoteShipping()"></select></div>
-<div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" name="address-level2" autocomplete="address-level2" placeholder="Ej: Santiago, Moca..." onblur="quoteShipping()"><div class="err-msg">Escribe el municipio o ciudad.</div></div>
+<div class="fld" id="sectorFld"><label>Sector / Zona *</label><select id="sector-select" name="address-level2" autocomplete="address-level2" onchange="sectorUI()"></select>
+<div class="hint" id="shipNote" style="display:none;color:#8a6d1f"></div></div>
+<div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" name="address-level2" autocomplete="address-level2" placeholder="Ej: Santiago, Moca..." onblur="sectorUI()"><div class="err-msg">Escribe el municipio o ciudad.</div></div>
 <div class="fld" id="fldDir"><label>Dirección (calle y número) *</label><textarea id="fDir" name="street-address" autocomplete="street-address" rows="2" placeholder="Calle, No., referencia"></textarea><div class="err-msg">Escribe la dirección de entrega.</div></div>
 <div class="fld"><label>Nota (opcional)</label><input id="fNota" placeholder="Referencia, horario..."></div>
 </div>
@@ -745,7 +746,7 @@ __BANKS__
 <div class="cpn"><input id="cpnCode" placeholder="Código de descuento" autocapitalize="characters" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon()}"><button id="cpnBtn" type="button" onclick="applyCoupon()">Aplicar</button></div>
 <div class="cpn-msg" id="cpnMsg"></div>
 <div class="ln disc" id="discLn" style="display:none">Descuento (<span id="discCode"></span>) <b id="tDisc">- RD$ 0</b></div>
-<div class="ship-quote" id="shipQuote"><span>Envío estimado</span><b id="tShip">Selecciona tu provincia</b><small id="shipEta">Verás el costo y el tiempo antes de confirmar.</small></div>
+<div class="ship-quote" id="shipQuote"><span>Envío</span><b id="tShip">Selecciona tu sector</b><small id="shipEta">Verás el costo y el tiempo antes de confirmar.</small></div>
 <div class="gt"><span id="totalLabel">Total</span> <span id="tTot">RD$ 0</span></div>
 <button class="btn-conf" id="btnConf" onclick="confirmar()">🛡️ Confirmar pedido</button>
 <div class="sub-note">Al confirmar, tu pedido queda registrado. Después puedes continuar por WhatsApp si lo deseas.</div>
@@ -762,8 +763,55 @@ __BANKS__
 <script>
 var WA='__WA__';
 var COUPON=null; // {code,kind,value} —— 已应用的优惠券
-var SHIPPING={fee:0,fee_min:0,fee_max:0,zone:'',delivery:'',cod_allowed:false,ready:false};
+// 运费状态机：完全由 data/shipping_zones.json 驱动，JS 不硬编码任何 sector/价格
+// SHIP = null(未选) | {other:true}(Otro sector) | {price,eta,zone,sector}(精确报价)
+var ZONES=null, ZFAIL=false, DEF_NOTE='', SHIP=null;
+var OTHER_LABEL='Otro sector / No está en la lista';
 function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
+function isMetro(){return document.getElementById('sectorFld').style.display!=='none'}
+function shipFee(){return (SHIP&&SHIP.price!=null)?Number(SHIP.price):null}
+function loadZones(){
+ fetch('data/shipping_zones.json').then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
+ .then(function(d){ZONES=d.zones||[];DEF_NOTE=d.default_note||'';buildSectorSelect();sectorUI()})
+ .catch(function(e){ZFAIL=true;console.warn('shipping_zones.json 加载失败，运费按 por confirmar 处理:',e);buildSectorSelect();sectorUI()});
+}
+function buildSectorSelect(){
+ var sel=document.getElementById('sector-select');sel.innerHTML='';
+ var ph=document.createElement('option');ph.value='';ph.textContent='Selecciona tu sector';ph.disabled=true;ph.selected=true;sel.appendChild(ph);
+ var seen={};
+ (ZONES||[]).forEach(function(z){
+  var og=document.createElement('optgroup');
+  og.label='Zona '+z.id+' · RD$'+Number(z.price).toLocaleString('en-US')+' — '+(z.eta||'');
+  z.sectors.slice().sort(function(a,b){return a.localeCompare(b,'es')}).forEach(function(s){
+   if(seen[s]){console.warn('sector 跨 zone 重名，按第一个匹配:',s);return}
+   seen[s]=z.id;
+   var o=document.createElement('option');o.value=s;o.textContent=s;og.appendChild(o);
+  });
+  sel.appendChild(og);
+ });
+ var oo=document.createElement('option');oo.value='__other__';oo.textContent=OTHER_LABEL;sel.appendChild(oo);
+ // 回访自动预选上次的 sector
+ try{var mem=localStorage.getItem('vb_sector');
+  if(mem&&[].some.call(sel.options,function(o){return o.value===mem})){sel.value=mem}}catch(e){}
+}
+function findZone(sector){
+ for(var i=0;i<(ZONES||[]).length;i++)
+  if(ZONES[i].sectors.indexOf(sector)>=0)return ZONES[i];
+ return null;
+}
+function sectorUI(){
+ var sel=document.getElementById('sector-select'),v=sel.value,note=document.getElementById('shipNote');
+ note.style.display='none';
+ if(!isMetro()){SHIP={other:true};paintTotals();return}
+ if(!v){SHIP=null}
+ else if(v==='__other__'||ZFAIL){SHIP={other:true};
+  if(DEF_NOTE){note.textContent='ℹ️ '+DEF_NOTE;note.style.display='block'}}
+ else{var z=findZone(v);
+  SHIP=z?{price:z.price,eta:z.eta,zone:z.id,sector:v}:{other:true};
+  if(z){try{vbTrack('shipping_quote','',{shipping_fee:z.price,shipping_zone:z.id,delivery_estimate:z.eta})}catch(e){}}}
+ try{if(v)localStorage.setItem('vb_sector',v)}catch(e){}
+ paintTotals();
+}
 function subtotal(){return vbCart().reduce(function(a,it){return a+it.price*it.qty},0)}
 function calcDiscount(sub){
  if(!COUPON)return 0;
@@ -772,20 +820,24 @@ function calcDiscount(sub){
 }
 function paintTotals(){
  var sub=subtotal(),disc=calcDiscount(sub),productTotal=sub-disc;
- var shipMin=SHIPPING.ready?Number(SHIPPING.fee_min||SHIPPING.fee||0):0;
- var shipMax=SHIPPING.ready?Number(SHIPPING.fee_max||SHIPPING.fee||0):0;
- var ranged=SHIPPING.ready&&shipMax>shipMin,totMin=productTotal+shipMin,totMax=productTotal+shipMax;
+ var fee=shipFee(),tot=productTotal+(fee||0);
  document.getElementById('tSub').textContent=money(sub);
  var dl=document.getElementById('discLn');
  if(disc>0){dl.style.display='flex';
   document.getElementById('tDisc').textContent='- '+money(disc);
   document.getElementById('discCode').textContent=COUPON.code;
  }else{dl.style.display='none';}
- document.getElementById('tShip').textContent=SHIPPING.ready?(ranged?money(shipMin)+' – '+money(shipMax):money(shipMin)):'Selecciona tu provincia';
- document.getElementById('shipEta').textContent=SHIPPING.ready?SHIPPING.delivery+' · Costo estimado según la zona.':'Verás el costo y el tiempo antes de confirmar.';
- document.getElementById('totalLabel').textContent=ranged?'Total estimado':'Total';
- document.getElementById('tTot').textContent=ranged?money(totMin)+' – '+money(totMax):money(totMin);
- document.getElementById('btnConf').textContent=ranged?'🛡️ Confirmar pedido · '+money(productTotal)+' + envío':'🛡️ Confirmar pedido · '+money(totMin);
+ var tShip=document.getElementById('tShip'),eta=document.getElementById('shipEta');
+ if(fee!=null){tShip.textContent=money(fee);eta.textContent=SHIP.eta||'';}
+ else if(SHIP&&SHIP.other){tShip.textContent='por confirmar';eta.textContent='Te confirmamos el costo del envío por WhatsApp.';}
+ else{tShip.textContent='Selecciona tu sector';eta.textContent='Verás el costo y el tiempo antes de confirmar.';}
+ document.getElementById('tTot').textContent=money(tot);
+ // 未选 sector（大圣多明各且分区数据正常时）→ 按钮置灰
+ var btn=document.getElementById('btnConf');
+ var needSector=isMetro()&&!ZFAIL&&!SHIP;
+ btn.disabled=needSector;
+ btn.textContent=needSector?'Selecciona tu sector para calcular el envío'
+  :'🛡️ Confirmar pedido · '+money(tot)+(fee==null?' + envío':'');
 }
 function applyCoupon(){
  var code=document.getElementById('cpnCode').value.trim().toUpperCase();
@@ -832,28 +884,20 @@ function payUI(){
  document.getElementById('bankPanel').classList.toggle('show',t==='transfer');
 }
 var PROVS=["","Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
-var DN_SECTORES=["Distrito Nacional (centro)","Naco","Piantini","Bella Vista","Gazcue","Los Prados","Arroyo Hondo","Los Ríos","El Millón","Evaristo Morales","Villa Consuelo","Cristo Rey","Otro sector del Distrito Nacional"];
-var SD_SECTORES=["Santo Domingo Este","Santo Domingo Norte","Santo Domingo Oeste","Otro municipio de Santo Domingo"];
 function fillSel(id,arr){var s=document.getElementById(id);
- s.innerHTML='';arr.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x||(id==='fProv'?'Selecciona una provincia':'Selecciona una zona');if(!x)o.disabled=true;o.selected=!x;s.appendChild(o)});}
+ s.innerHTML='';arr.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x||'Selecciona una provincia';if(!x)o.disabled=true;o.selected=!x;s.appendChild(o)});}
 function provUI(){
- var prov=document.getElementById('fProv').value,isDN=prov.indexOf('Distrito Nacional')===0,isSDP=prov.indexOf('Santo Domingo (provincia)')===0,isMetro=isDN||isSDP;
- document.getElementById('sectorFld').style.display=isMetro?'block':'none';
- document.getElementById('cityFld').style.display=isMetro?'none':'block';
- if(isDN)fillSel('fSector',DN_SECTORES);else if(isSDP)fillSel('fSector',SD_SECTORES);
- SHIPPING={fee:0,fee_min:0,fee_max:0,zone:'',delivery:'',cod_allowed:false,ready:false};quoteShipping();
+ var prov=document.getElementById('fProv').value,isDN=prov.indexOf('Distrito Nacional')===0,isSDP=prov.indexOf('Santo Domingo (provincia)')===0,metro=isDN||isSDP;
+ document.getElementById('sectorFld').style.display=metro?'block':'none';
+ document.getElementById('cityFld').style.display=metro?'none':'block';
+ // 货到付款仅限大圣多明各；外省强制转账（纯前端判断）
+ var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=transfer]');
+ cod.disabled=!metro;document.getElementById('lCod').style.display=metro?'flex':'none';
+ document.getElementById('codNote').classList.toggle('show',!!prov&&!metro);
+ if(prov&&!metro)tra.checked=true;
+ payUI();sectorUI();
 }
-async function quoteShipping(){
- var prov=document.getElementById('fProv').value;if(!prov){paintTotals();return}
- var metro=document.getElementById('sectorFld').style.display!=='none';
- var zone=metro?document.getElementById('fSector').value:document.getElementById('fCity').value.trim();
- try{var r=await fetch('__API__/api/shipping/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({province:prov,zone:zone})});var d=await r.json();if(!r.ok||!d.ok)throw new Error();SHIPPING=d;
-  var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=transfer]');
-  cod.disabled=!d.cod_allowed;document.getElementById('lCod').style.display=d.cod_allowed?'flex':'none';document.getElementById('codNote').classList.toggle('show',!d.cod_allowed);
-  if(!d.cod_allowed)tra.checked=true;payUI();paintTotals();
-  try{vbTrack('shipping_quote','',{shipping_fee:d.fee,shipping_zone:d.zone,delivery_estimate:d.delivery})}catch(e){}
- }catch(e){SHIPPING={fee:0,fee_min:0,fee_max:0,zone:'',delivery:'No pudimos calcular el envío. Intenta de nuevo.',cod_allowed:false,ready:false};paintTotals()}}
-fillSel('fProv',PROVS);fillSel('fSector',[]);paintTotals();
+fillSel('fProv',PROVS);loadZones();paintTotals();
 function fieldState(id,bad){var x=document.getElementById(id);if(x)x.classList.toggle('invalid',!!bad)}
 async function confirmar(){
  var c=vbCart();if(!c.length)return;
@@ -862,25 +906,27 @@ async function confirmar(){
      dir=document.getElementById('fDir').value.trim(),
      nota=document.getElementById('fNota').value.trim();
  var prov=document.getElementById('fProv').value;
- var metro=document.getElementById('sectorFld').style.display!=='none';
- var zona=metro?document.getElementById('fSector').value:document.getElementById('fCity').value.trim();
- fieldState('fldNom',!nom);fieldState('fldTel',tel.replace(/\D/g,'').length<10);fieldState('fldProv',!prov);fieldState('cityFld',!metro&&!zona);fieldState('fldDir',!dir);
- if(!nom||tel.replace(/\D/g,'').length<10||!prov||!zona||!dir){document.querySelector('.fld.invalid').scrollIntoView({behavior:'smooth',block:'center'});return;}
- if(!SHIPPING.ready){await quoteShipping();if(!SHIPPING.ready){alert('No pudimos calcular el envío. Intenta nuevamente.');return;}}
+ var metro=isMetro();
+ var selV=document.getElementById('sector-select').value;
+ var zona=metro?(selV==='__other__'?OTHER_LABEL:selV):document.getElementById('fCity').value.trim();
+ fieldState('fldNom',!nom);fieldState('fldTel',tel.replace(/\D/g,'').length<10);fieldState('fldProv',!prov);
+ fieldState('sectorFld',metro&&!selV&&!ZFAIL);fieldState('cityFld',!metro&&!zona);fieldState('fldDir',!dir);
+ if(!nom||tel.replace(/\D/g,'').length<10||!prov||(metro&&!selV&&!ZFAIL)||(!metro&&!zona)||!dir){
+  var inv=document.querySelector('.fld.invalid');if(inv)inv.scrollIntoView({behavior:'smooth',block:'center'});return;}
+ var fee=shipFee();
  var loc=prov+' · '+zona;
  var pay=document.querySelector('input[name=pay]:checked').value;
  var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
  var sub=0,lines=c.map(function(it){sub+=it.price*it.qty;
    return it.qty+'x '+it.title+' ('+it.sku+') — '+money(it.price*it.qty)});
- var disc=calcDiscount(sub),productTotal=sub-disc;
- var shipMin=Number(SHIPPING.fee_min||SHIPPING.fee||0),shipMax=Number(SHIPPING.fee_max||SHIPPING.fee||0);
- var ranged=shipMax>shipMin,totMin=productTotal+shipMin,totMax=productTotal+shipMax;
- var shippingText=ranged?money(shipMin)+' – '+money(shipMax):money(shipMin);
- var totalText=ranged?money(totMin)+' – '+money(totMax):money(totMin);
+ var disc=calcDiscount(sub),productTotal=sub-disc,tot=productTotal+(fee||0);
+ var shippingText=fee!=null?money(fee)+(SHIP.eta?' ('+SHIP.eta+')':''):'por confirmar';
  var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
   +(disc>0?'\\n——\\nSubtotal: '+money(sub)+'\\n🏷️ Cupón '+COUPON.code+': - '+money(disc):'')
-  +'\\n🚚 Envío estimado: '+shippingText+' ('+SHIPPING.delivery+')'
-  +'\\n*Total estimado: '+totalText+'*\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
+  +'\\nSector: '+zona
+  +'\\n🚚 Envío: '+shippingText
+  +'\\n*Total: '+money(tot)+(fee==null?' + envío':'')+'*'
+  +'\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
   +(nota?'\\n📝 '+nota:'')
   +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
@@ -890,16 +936,17 @@ async function confirmar(){
   var orderRes=await fetch('__API__/api/order',{method:'POST',credentials:'include',
    headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:oid,
     customer_name:nom,phone:tel,province:prov,zone:zona,address:dir,note:nota,
-    payment_method:pay,shipping_zone:SHIPPING.zone,shipping_fee:ranged?0:shipMin,
-    shipping_fee_min:shipMin,shipping_fee_max:shipMax,delivery_estimate:SHIPPING.delivery,
-    subtotal:sub,discount:disc,total:ranged?productTotal:totMin,total_min:totMin,total_max:totMax,
+    payment_method:pay,shipping_zone:(SHIP&&SHIP.zone)||(metro?'otro':'interior'),
+    shipping_fee:fee||0,shipping_fee_min:fee||0,shipping_fee_max:fee||0,
+    delivery_estimate:(SHIP&&SHIP.eta)||'por confirmar',
+    subtotal:sub,discount:disc,total:tot,total_min:tot,total_max:tot,
     coupon_code:COUPON?COUPON.code:'',tracking:vbContext(),items:c.map(function(it){return {
      sku:it.sku,title:it.title,image:it.img,unit_price:it.price,quantity:it.qty}})})});
   var orderData=await orderRes.json();
   if(!orderRes.ok||!orderData.ok)throw new Error(orderData.error||'No se pudo guardar el pedido');
  }catch(e){btn.disabled=false;paintTotals();
   alert('No pudimos guardar tu pedido. Revisa tu conexión e intenta de nuevo.');return;}
- try{fbq('track','Purchase',{value:productTotal,currency:'DOP',content_type:'product',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
+ try{fbq('track','Purchase',{value:tot,currency:'DOP',content_type:'product',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
     vbTrack('checkout','',{coupon:COUPON?COUPON.code:''});
  if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
    headers:{'Content-Type':'application/json'},
@@ -1147,6 +1194,13 @@ def build():
     # ---- 购物车页 ----
     with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
         f.write(carrito_page())
+
+    # ---- 配送分区数据（前端 fetch，改价只改 JSON 不动 JS）----
+    if os.path.isfile("data/shipping_zones.json"):
+        os.makedirs(f"{OUT_DIR}/data", exist_ok=True)
+        shutil.copy2("data/shipping_zones.json", f"{OUT_DIR}/data/shipping_zones.json")
+    else:
+        print("⚠️  缺少 data/shipping_zones.json，结算页运费将显示 por confirmar")
 
     # ---- 专题合集页 ----
     n_coll = 0

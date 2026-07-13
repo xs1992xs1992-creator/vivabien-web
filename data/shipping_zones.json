@@ -1,0 +1,36 @@
+{
+  "currency": "RD$",
+  "default_note": "Si tu sector no aparece, elige 'Otro sector' y te confirmamos el envío por WhatsApp.",
+  "zones": [
+    {
+      "id": "A",
+      "price": 200,
+      "eta": "Entrega el mismo día",
+      "sectors": ["Alma Rosa I", "Alma Rosa II", "Ensanche Ozama", "Los Mina", "Los Trinitarios", "Invivienda", "Cancino", "Lucerna", "Villa Faro", "Los Frailes", "El Almirante", "Ensanche Isabelita"]
+    },
+    {
+      "id": "B",
+      "price": 200,
+      "eta": "Entrega el mismo día",
+      "sectors": ["San Isidro", "Brisa Oriental", "Valle del Este", "La Ureña", "Sabana Perdida", "Villa Duarte", "Zona Colonial", "Ciudad Nueva"]
+    },
+    {
+      "id": "C1",
+      "price": 300,
+      "eta": "Entrega en 24 horas",
+      "sectors": ["Naco", "Piantini", "Bella Vista", "Gazcue", "Evaristo Morales", "El Millón", "La Julia", "Ensanche Serrallés"]
+    },
+    {
+      "id": "C2",
+      "price": 400,
+      "eta": "Entrega en 24 horas",
+      "sectors": ["Villa Mella", "Boca Chica", "Andrés", "La Caleta", "Arroyo Hondo", "Los Ríos"]
+    },
+    {
+      "id": "D",
+      "price": 600,
+      "eta": "Entrega en 24-48 horas",
+      "sectors": ["Herrera", "Santo Domingo Oeste", "Los Alcarrizos", "Pantoja", "La Victoria", "San Antonio de Guerra", "Manoguayabo"]
+    }
+  ]
+}
