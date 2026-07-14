@@ -1,0 +1,16 @@
+[
+  {
+    "nombre": "VivaBien · Tienda 1",
+    "direccion": "San Pedro de Macorís · dirección por confirmar",
+    "horario": "Horario por confirmar",
+    "foto": "tienda1.jpg",
+    "mapa": "https://maps.google.com/?q=San+Pedro+de+Macoris"
+  },
+  {
+    "nombre": "VivaBien · Tienda 2",
+    "direccion": "San Pedro de Macorís · dirección por confirmar",
+    "horario": "Horario por confirmar",
+    "foto": "tienda2.jpg",
+    "mapa": "https://maps.google.com/?q=San+Pedro+de+Macoris"
+  }
+]

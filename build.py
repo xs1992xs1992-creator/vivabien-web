@@ -5,7 +5,9 @@ VivaBien 静态站构建脚本
 读取 data/products.csv → 生成 dist/ 整站（首页 + 商品详情页 + 购物车结算页）
 用法: python3 build.py
 """
-import csv, os, re, html, json, shutil, unicodedata
+import csv, os, re, html, json, shutil, unicodedata, hashlib
+from datetime import date
+from urllib.parse import quote
 
 # ============ 配置区（只需要改这里）============
 WHATSAPP   = "18092811992"          # WhatsApp 号码（国家码+号码，不带+号）
@@ -16,7 +18,10 @@ API_BASE   = "https://vivabien.xyz" # 边缘后端（Worker）同域：/s/* 短�
 CSV_PATH   = "data/products.csv"
 IMG_DIR    = "images"               # 商品图片文件夹（VBxxxx.jpg 都放这里）
 OUT_DIR    = "dist"
-SITE_VERSION = "ux2-20260713"
+SITE_VERSION = "cro1-20260713"
+REVIEWS_PATH = "data/reviews.json"
+FEATURED_PATH = "data/featured.json"
+STORES_PATH = "data/stores.json"
 
 # 银行转账收款账户（结算页展示）
 BANKS = [
@@ -208,7 +213,9 @@ def parse_row(r):
                 body=r.get("Body (HTML)", ""), type=r.get("Type", ""),
                 published=r.get("Published", ""), sku=r.get("Variant SKU", ""),
                 price=r.get("Variant Price", ""), img=r.get("Image Src", ""),
-                inventory=r.get("Variant Inventory Qty", ""))
+                inventory=r.get("Variant Inventory Qty", ""),
+                old_price=r.get("precio_anterior") or "",
+                label=r.get("etiqueta") or "", featured=r.get("destacado") or "")
 
 # ---------- 图片类型体系（方案B，与上游 vivabien.py TIPO_ORDER 一致） ----------
 # 展示顺序（用户定）：场景效果图 → 白底图 → 正面 → 背面 → 细节 → 补充 → 尺寸图
@@ -269,6 +276,12 @@ def load_products():
         p["title"] = p["title"].strip()
         p["type"]  = p["type"].strip() or "Otros"
         p["price"] = float(p["price"]) if p["price"].strip() else None
+        raw_old = str(p.get("old_price", "")).strip()
+        p["old_price"] = float(raw_old) if re.fullmatch(r"\d+(?:\.\d+)?", raw_old) else None
+        if p["price"] is None or p["old_price"] is None or p["old_price"] <= p["price"]:
+            p["old_price"] = None
+        p["label"] = str(p.get("label", "")).strip()[:24]
+        p["featured"] = str(p.get("featured", "")).strip().lower() in {"1", "true", "si", "sí", "yes", "x"}
         raw_inventory = str(p.get("inventory", "")).strip()
         p["inventory"] = int(raw_inventory) if re.fullmatch(r"-?\d+", raw_inventory) else None
         p["img"]   = p["img"].strip()
@@ -284,6 +297,23 @@ def load_products():
 
 def fmt_price(v):
     return "RD$ {:,.0f}".format(v) if v is not None else "Consultar precio"
+
+def discount_info(p):
+    old, current = p.get("old_price"), p.get("price")
+    if old is None or current is None or old <= current:
+        return None
+    saving = old - current
+    return {"saving": saving, "percent": max(1, round(saving / old * 100))}
+
+def load_json(path, default):
+    if not os.path.isfile(path):
+        return default
+    try:
+        with open(path, encoding="utf-8") as f:
+            value = json.load(f)
+        return value
+    except (OSError, ValueError):
+        return default
 
 def esc(s):
     return html.escape(s, quote=True)
@@ -349,6 +379,9 @@ button{font-family:inherit}
 .hero{margin:16px auto 4px;background:linear-gradient(120deg,#2563D9,#1A47A6);border-radius:22px;padding:28px 24px;color:#fff;position:relative;overflow:hidden}
 .hero h1{font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.02em;max-width:340px}
 .hero .sub{display:flex;align-items:center;gap:7px;margin-top:12px;font-weight:700;font-size:13px;color:#d3e0fb}
+.promise-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E5EAF2;border:1px solid #E5EAF2;border-radius:14px;overflow:hidden;margin:10px 0 18px}
+.promise-strip div{background:#fff;padding:11px 7px;text-align:center;font-size:10.5px;font-weight:800;line-height:1.35;color:#344154}
+@media(min-width:640px){.promise-strip div{font-size:12px;padding:13px 10px}}
 /* search（强化版：蓝边+阴影，一进页面就能看到） */
 .search{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #2563D9;border-radius:18px;padding:14px 16px;margin-top:16px;box-shadow:0 4px 16px rgba(37,99,217,.10)}
 .search svg{flex:none;color:#2563D9}
@@ -460,12 +493,17 @@ button{font-family:inherit}
 .card .pr{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
 .card .pr b{font-weight:800;font-size:16px}
 .card .pr .ask{font-weight:700;font-size:12px;color:#FF6B4A}
+.sale-badge{position:absolute;top:9px;right:9px;background:#FF6B4A;color:#fff;font-size:10px;font-weight:800;padding:4px 8px;border-radius:99px;box-shadow:0 2px 8px rgba(255,107,74,.24)}
+.offer-label{display:inline-flex;align-items:center;color:#C94F35;background:#FFF0EC;border-radius:6px;padding:3px 6px;font-size:9.5px;font-weight:800;margin-top:7px}
+.price-stack{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-top:7px}
+.price-stack .current{font-size:16px;font-weight:800}.price-stack del{color:#9AA3B2;font-size:11px;font-weight:600}
+.saving{display:inline-flex;color:#E4583B;background:#FFF0EC;border-radius:6px;padding:3px 6px;font-size:9.5px;font-weight:800;margin-top:4px}
 .card-add{position:absolute;right:11px;bottom:11px;width:38px;height:38px;border:0;border-radius:12px;background:#2563D9;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,217,.28);transition:background .15s,transform .15s}
 .card-add:active{transform:scale(.92)}
 .card-add.added{background:#157A4E}
 .card-add svg{width:19px;height:19px}
 /* detail */
-.dt{max-width:920px;margin:0 auto;padding:0 0 100px}
+.dt{max-width:920px;margin:0 auto;padding:0 0 165px}
 @media(min-width:760px){.dt{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:26px 18px 40px;align-items:start}}
 .dt .pic{background:#F0F3F8}
 @media(min-width:760px){.dt .pic{border-radius:22px;overflow:hidden;position:sticky;top:80px}}
@@ -488,6 +526,7 @@ button{font-family:inherit}
 .panel h1{font-weight:800;font-size:21px;line-height:1.25;margin-bottom:12px;letter-spacing:-.02em}
 .price{font-weight:800;font-size:30px;letter-spacing:-.02em;margin-bottom:16px}
 .price.ask{font-size:22px;color:#FF6B4A}
+.detail-price{margin-bottom:16px}.detail-price .price{display:inline;margin:0}.detail-price del{color:#9AA3B2;font-size:15px;font-weight:600;margin-left:8px}.detail-price .saving{font-size:11px;margin:8px 0 0}.detail-offer{display:inline-flex;background:#FFF0EC;color:#C94F35;border-radius:7px;padding:5px 8px;font-size:10px;font-weight:800;margin-bottom:8px}
 .trust{display:flex;justify-content:space-between;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:18px;padding:16px 6px;margin-bottom:20px}
 .trust>div{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;font-size:10.5px;font-weight:700;text-align:center}
 .trust>div+div{border-left:1px solid #E5EAF2}
@@ -498,6 +537,7 @@ button{font-family:inherit}
 .buy-fact{display:flex;align-items:flex-start;gap:9px;background:#F7F9FD;border:1px solid #E8EDF5;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.45;color:#435066}
 .buy-fact b{display:block;color:#16202E;margin-bottom:1px}
 .stock-ok{color:#157A4E}.stock-check{color:#9A6700}
+.customer-proof{display:flex;align-items:center;justify-content:center;background:#FFF8E8;border:1px solid #F4D88A;color:#765410;border-radius:11px;padding:9px 10px;margin:0 0 10px;font-size:11.5px;font-weight:800;text-align:center}
 /* action bar（含加购信任微标） */
 .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EEF1F6;padding:12px 16px calc(8px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;z-index:60}
 .bar-btns{display:flex;gap:10px}
@@ -522,8 +562,17 @@ button{font-family:inherit}
 .rec .rn{font-weight:700;font-size:11.5px;line-height:1.3;height:30px;overflow:hidden;padding:8px 9px 0}
 .rec .rp{font-weight:800;font-size:13.5px;padding:5px 9px 10px}
 .rec .rp.ask{color:#FF6B4A;font-size:11px;font-weight:700}
+/* home conversion sections */
+.home-section{margin:24px 0}.home-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}.home-section-head h2{font-size:18px;font-weight:800}.home-section-head p{font-size:11.5px;color:#8A93A2;margin-top:3px}
+.best-row{display:flex;gap:12px;overflow-x:auto;padding:2px 1px 10px;scrollbar-width:none;scroll-snap-type:x proximity}.best-row::-webkit-scrollbar{display:none}.best-row .card{flex:none;width:210px;scroll-snap-align:start}.best-row .card .nm{font-size:13.5px;height:36px}.best-row .card .info{padding-bottom:16px}
+.reviews-grid{display:grid;gap:10px}.review{background:#fff;border:1px solid #E8EDF5;border-radius:14px;padding:15px}.review-top{display:flex;align-items:center;gap:10px;margin-bottom:9px}.review-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;background:#EAF0FB;display:grid;place-items:center;color:#2563D9;font-weight:800;flex:none}.review-avatar img{width:100%;height:100%;object-fit:cover;grid-area:1/1}.review-avatar span{grid-area:1/1}.review-name{font-size:12.5px;font-weight:800}.review-city{font-size:10.5px;color:#8A93A2}.review-stars{color:#F5A524;font-size:12px;margin-left:auto}.review-text{font-size:12px;line-height:1.55;color:#435066}
+@media(min-width:700px){.reviews-grid{grid-template-columns:repeat(3,1fr)}}
+.stores{margin:30px 0 8px}.store-grid{display:grid;gap:12px}.store{display:grid;grid-template-columns:112px minmax(0,1fr);background:#fff;border:1px solid #E8EDF5;border-radius:16px;overflow:hidden}.store-photo{width:112px;height:100%;min-height:142px;object-fit:cover;background:#EEF2F7}.store-photo-missing{display:grid;place-items:center;color:#7C8798;font-size:11px;text-align:center;padding:10px}.store-info{padding:14px}.store-info h3{font-size:14px;font-weight:800}.store-info p{font-size:11.5px;line-height:1.5;color:#68758A;margin-top:5px}.store-info a{display:inline-flex;margin-top:10px;color:#2563D9;font-size:11.5px;font-weight:800}
+@media(min-width:720px){.store-grid{grid-template-columns:1fr 1fr}}
+.policy{max-width:760px;margin:24px auto 48px;padding:0 18px}.policy h1{font-size:27px;font-weight:800;margin-bottom:8px}.policy .lead{font-size:14px;color:#68758A;line-height:1.6;margin-bottom:20px}.policy section{background:#fff;border:1px solid #E8EDF5;border-radius:14px;padding:17px;margin-bottom:11px}.policy h2{font-size:15px;font-weight:800;margin-bottom:7px}.policy p,.policy li{font-size:12.5px;color:#435066;line-height:1.65}.policy ul{padding-left:18px}.policy .contact{display:inline-flex;background:#25D366;color:#fff;border-radius:12px;padding:12px 16px;font-weight:800;margin-top:6px}
 footer{text-align:center;font-size:12px;color:#9aa3b2;padding:26px 18px 34px;line-height:1.9}
 footer .rnc{font-size:11px;color:#b3bac6}
+footer .footer-links{display:flex;justify-content:center;gap:15px;margin-bottom:4px}footer .footer-links a{color:#2563D9;font-weight:700}
 /* 悬浮 WhatsApp（呼吸灯 + 30秒提示气泡） */
 .wa-float{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,.45);z-index:70;animation:wapulse 2.4s infinite}
 @keyframes wapulse{0%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.45)}70%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,0)}}
@@ -665,7 +714,7 @@ setTimeout(function(){{
 </script>"""
 
 def page(title, body, pixel_extra="", desc="", track_sku=None, track_category="",
-         track_title="", track_img="", wa_float=False):
+         track_title="", track_img="", wa_float=False, extra_head="", canonical="", rel=""):
     page_ctx = json.dumps({"sku": track_sku or "", "category": track_category or "",
                            "title": track_title or "", "img": track_img or ""}, ensure_ascii=False)
     view_js = f"<script>vbTrack('view',{json.dumps(track_sku or '')})</script>"
@@ -673,9 +722,11 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, track_category=""
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title>
-<meta name="description" content="{esc(desc[:150])}">
+<meta name="description" content="{esc(desc[:160])}">
+{f'<link rel="canonical" href="{esc(canonical)}">' if canonical else ''}
 {FONT}
 <style>{CSS}</style>
+{extra_head}
 {pixel(pixel_extra)}
 {CART_JS}
 <script>window.VB_PAGE={page_ctx};</script>
@@ -684,7 +735,8 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, track_category=""
 {body}
 {view_js}
 {WA_FLOAT if wa_float else ""}
-<footer>© {SITE_NAME} · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+<footer><div class="footer-links"><a href="{rel}garantia.html">Garantía y devoluciones</a><a href="https://wa.me/{WHATSAPP}" target="_blank">Contacto</a></div>
+© {SITE_NAME} · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
 <div class="rnc">RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro</div></footer>
 </body></html>"""
 
@@ -994,8 +1046,16 @@ def coll_grad(slug):
     return COLL_GRADIENTS[i]
 
 def product_card(p, rel=""):
-    price_html = (f'<b>{fmt_price(p["price"])}</b>' if p["price"] is not None
-                  else '<span class="ask">Consultar</span>')
+    sale = discount_info(p)
+    if sale:
+        price_html = (f'<div class="price-stack"><span class="current">{fmt_price(p["price"])}</span>'
+                      f'<del>{fmt_price(p["old_price"])}</del></div>'
+                      f'<span class="saving">Ahorras {fmt_price(sale["saving"])}</span>')
+    else:
+        price_html = (f'<div class="price-stack"><span class="current">{fmt_price(p["price"])}</span></div>'
+                      if p["price"] is not None else '<span class="ask">Consultar</span>')
+    sale_badge = f'<span class="sale-badge">-{sale["percent"]}%</span>' if sale else ""
+    label = f'<span class="offer-label">{esc(p["label"])}</span>' if p.get("label") else ""
     add_button = (f'<button class="card-add" type="button" aria-label="Agregar al carrito" '
                   f'data-sku="{esc(p["sku"])}" data-handle="{esc(p["handle"])}" '
                   f'data-title="{esc(p["title"])}" data-price="{p["price"]}" data-img="{esc(p["img"])}" '
@@ -1006,8 +1066,8 @@ def product_card(p, rel=""):
             f'><a class="card-link" href="{rel}producto/{p["handle"]}.html">'
             f'<div class="imgbox"><img src="{rel}images/{esc(p["img"])}" alt="{esc(p["title"])}" '
             f'loading="lazy" onerror="this.style.display=\'none\'">'
-            f'<span class="badge">{esc(p["sub"])}</span></div>'
-            f'<div class="info"><div class="nm">{esc(p["title"])}</div>'
+            f'<span class="badge">{esc(p["sub"])}</span>{sale_badge}</div>'
+            f'<div class="info"><div class="nm">{esc(p["title"])}</div>{label}'
             f'<div class="pr">{price_html}</div></div></a>{add_button}</article>')
 
 def coleccion_page(c, prods):
@@ -1063,7 +1123,8 @@ document.querySelectorAll('.cchip').forEach(function(ch){{ch.onclick=function(){
  document.getElementById('cN').textContent=n;}};}});
 </script>"""
     return page(f"{c['title']} — {SITE_NAME}", body, wa_float=True,
-                desc=(c.get("subtitle") or c["title"])[:150])
+                desc=(c.get("subtitle") or c["title"])[:150],
+                canonical=f"{SITE_URL}/coleccion/{c['slug']}.html", rel="../")
 
 def featured_html(collections, by_sku):
     """首页顶部专题入口卡片"""
@@ -1084,16 +1145,107 @@ def featured_html(collections, by_sku):
                   f'<span class="go">Ver colección →</span></a>')
     return f'<div class="feats">{cards}</div>' if cards else ""
 
-def modern_home_body(feats, tiles, cat_sections, group_options, subs_json, cards, total):
+PROMISE_HTML = """<div class="promise-strip" aria-label="Compromisos de servicio">
+<div>🚚 Entrega 24-72 horas</div><div>💵 Pagas al recibir</div><div>↩️ Garantía de 7 días</div>
+</div>"""
+
+def best_sellers_html(products):
+    configured = load_json(FEATURED_PATH, [])
+    if isinstance(configured, dict):
+        configured = configured.get("skus", [])
+    configured = [str(x).strip() for x in configured if str(x).strip()]
+    order = {sku: i for i, sku in enumerate(configured)}
+    picks = [p for p in products if p.get("featured") or p["sku"] in order]
+    picks.sort(key=lambda p: (order.get(p["sku"], 9999), not p.get("featured"), p["title"]))
+    picks = picks[:10]
+    if not picks:
+        return ""
+    cards = "".join(product_card(p) for p in picks)
+    return (f'<section class="home-section"><div class="home-section-head"><div><h2>🔥 Más Vendidos</h2>'
+            f'<p>Los favoritos de nuestros clientes</p></div></div><div class="best-row">{cards}</div></section>')
+
+def reviews_html():
+    reviews = load_json(REVIEWS_PATH, [])
+    if not isinstance(reviews, list):
+        return ""
+    reviews = [r for r in reviews if isinstance(r, dict) and r.get("activo") is not False]
+    seed = date.today().isoformat()
+    reviews.sort(key=lambda r: hashlib.sha256(
+        f'{seed}|{r.get("nombre", "")}|{r.get("ciudad", "")}'.encode("utf-8")).hexdigest())
+    cards = []
+    for review in reviews[:6]:
+        name, city, text = (str(review.get(k, "")).strip() for k in ("nombre", "ciudad", "texto"))
+        if not name or not text:
+            continue
+        photo = str(review.get("foto", "")).strip()
+        avatar = (f'<div class="review-avatar"><span>{esc(name[:1].upper())}</span>'
+                  f'<img src="images/{esc(photo)}" alt="" loading="lazy" onerror="this.remove()"></div>'
+                  if photo else f'<div class="review-avatar">{esc(name[:1].upper())}</div>')
+        cards.append(f'<article class="review"><div class="review-top">{avatar}<div><div class="review-name">{esc(name)}</div>'
+                     f'<div class="review-city">{esc(city)}</div></div><div class="review-stars" aria-label="5 estrellas">★★★★★</div></div>'
+                     f'<p class="review-text">“{esc(text)}”</p></article>')
+    if not cards:
+        return ""
+    return (f'<section class="home-section"><div class="home-section-head"><div><h2>Lo que dicen nuestros clientes</h2>'
+            f'<p>Experiencias de compra en República Dominicana</p></div></div>'
+            f'<div class="reviews-grid">{"".join(cards)}</div></section>')
+
+def stores_html():
+    stores = load_json(STORES_PATH, [])
+    if not isinstance(stores, list):
+        stores = []
+    cards = []
+    for i, store in enumerate(stores[:2], 1):
+        if not isinstance(store, dict):
+            continue
+        name = str(store.get("nombre") or f"Tienda VivaBien {i}").strip()
+        address = str(store.get("direccion") or "San Pedro de Macorís · dirección por confirmar").strip()
+        hours = str(store.get("horario") or "Horario por confirmar").strip()
+        image = str(store.get("foto") or f"tienda{i}.jpg").strip()
+        maps = str(store.get("mapa") or "https://maps.google.com/?q=San+Pedro+de+Macoris").strip()
+        image_path = os.path.join(IMG_DIR, os.path.basename(image))
+        photo = (f'<img class="store-photo" src="images/{esc(os.path.basename(image))}" alt="{esc(name)}" loading="lazy">'
+                 if os.path.isfile(image_path) else '<div class="store-photo store-photo-missing">🏪<br>Foto pendiente</div>')
+        cards.append(f'<article class="store">{photo}<div class="store-info"><h3>{esc(name)}</h3>'
+                     f'<p>{esc(address)}</p><p>{esc(hours)}</p><a href="{esc(maps)}" target="_blank" rel="noopener">📍 Cómo llegar</a></div></article>')
+    if not cards:
+        return ""
+    return (f'<section class="stores"><div class="home-section-head"><div><h2>Nuestras Tiendas</h2>'
+            f'<p>Tienda física real en San Pedro de Macorís · compra con confianza</p></div></div>'
+            f'<div class="store-grid">{"".join(cards)}</div></section>')
+
+def garantia_page():
+    body = f"""{header()}
+<main class="policy"><h1>Garantía y devoluciones</h1>
+<p class="lead">Queremos que compres con tranquilidad. Si algo no está bien, escríbenos y buscaremos una solución clara y rápida.</p>
+<section><h2>Garantía de 7 días</h2><p>Tienes hasta 7 días calendario después de recibir tu pedido para reportar un producto con defecto, daño de transporte o diferencia con lo solicitado.</p></section>
+<section><h2>¿Qué necesitamos?</h2><ul><li>Número de pedido o teléfono usado en la compra.</li><li>Fotos o video donde se vea el problema.</li><li>El producto, empaque y accesorios en el estado en que fueron recibidos.</li></ul></section>
+<section><h2>Cambios y devoluciones</h2><p>Después de revisar el caso, podremos ofrecer cambio, crédito o devolución según corresponda. Por higiene, algunos productos de uso personal abiertos no admiten devolución, salvo defecto comprobado.</p></section>
+<section><h2>Entrega</h2><p>La mayoría de los pedidos llega entre 24 y 72 horas. El tiempo final depende de la zona, disponibilidad y transportista; verás la estimación disponible antes de confirmar.</p></section>
+<a class="contact" href="https://wa.me/{WHATSAPP}" target="_blank">Hablar con VivaBien por WhatsApp</a></main>"""
+    return page(f"Garantía de 7 días | {SITE_NAME}", body, wa_float=True,
+                desc="Política de garantía, cambios y devoluciones de VivaBien en República Dominicana.",
+                canonical=f"{SITE_URL}/garantia.html")
+
+def category_page(title, products, description, slug):
+    cards = "".join(product_card(p, rel="../") for p in products)
+    body = (f'{header("../")}<main class="wrap"><div class="cat-hd"><div><h1 style="font-size:24px">{esc(title)}</h1>'
+            f'<p class="count">{esc(description)}</p></div></div><div class="count">{len(products)} productos</div>'
+            f'<div class="grid">{cards}</div></main>')
+    return page(f"{title} | Comprar online RD | {SITE_NAME}", body, wa_float=True,
+                desc=description, canonical=f"{SITE_URL}/categoria/{slug}.html", rel="../")
+
+def modern_home_body(feats, tiles, cat_sections, group_options, subs_json, cards, total,
+                     best_sellers="", reviews="", stores=""):
     """轻量首页：首批 24 个商品 + 外部索引搜索、筛选和渐进加载。"""
     body = header() + """
 <div class="wrap">
 <div class="search"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="q" type="search" placeholder="¿Qué buscas hoy? Ej: audífonos, espejo…" autocomplete="off"><button class="clr" id="qClr" aria-label="Borrar">✕</button></div>
 <div class="recent" id="recentRow"></div>
-<div class="home-promo" id="homePromo"><div class="hero"><h1>Compra fácil, paga seguro</h1><div class="sub">🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo</div></div>__FEATS__<div class="cat-hd"><b>Categorías</b><button class="cat-open" id="catOpen">Ver todas →</button></div><div class="cattiles" id="cattiles">__TILES__</div></div>
+<div class="home-promo" id="homePromo"><div class="hero"><h1>Compra fácil, paga seguro</h1><div class="sub">🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo</div></div>__PROMISES____FEATS__<div class="cat-hd"><b>Categorías</b><button class="cat-open" id="catOpen">Ver todas →</button></div><div class="cattiles" id="cattiles">__TILES__</div>__BEST____REVIEWS__</div>
 <div class="results-head" id="resultsHead"><div><h2 id="resultsTitle">Productos</h2><p id="resultsSummary"></p></div><div class="results-actions"><button class="result-btn" id="filterOpen">Filtrar</button><select class="sort-select" id="sort"><option value="default">Relevancia</option><option value="price-asc">Precio: menor</option><option value="price-desc">Precio: mayor</option><option value="name">Nombre A-Z</option></select></div></div>
 <div class="filter-panel" id="filterPanel"><div class="filter-grid"><div><label>Categoría</label><select id="filterGroup">__GROUP_OPTIONS__</select></div><div><label>Subcategoría</label><select id="filterSub"><option value="*">Todas</option></select></div><div><label>Precio mínimo RD$</label><input id="priceMin" inputmode="numeric" type="number" min="0" placeholder="0"></div><div><label>Precio máximo RD$</label><input id="priceMax" inputmode="numeric" type="number" min="0" placeholder="Sin límite"></div></div><div class="filter-foot"><button class="filter-reset" id="filterReset">Limpiar</button><button class="filter-apply" id="filterApply">Ver resultados</button></div></div>
-<div class="count"><span id="n">__COUNT__</span> productos</div><div class="grid" id="grid">__CARDS__</div><button class="load-more show" id="loadMore">Ver más productos</button></div>
+<div class="count"><span id="n">__COUNT__</span> productos</div><div class="grid" id="grid">__CARDS__</div><button class="load-more show" id="loadMore">Ver más productos</button>__STORES__</div>
 <div class="cat-dialog" id="catDialog" role="dialog" aria-modal="true" aria-labelledby="catDialogTitle"><div class="cat-sheet"><div class="cat-sheet-head"><h2 id="catDialogTitle">Todas las categorías</h2><button class="cat-close" id="catClose" aria-label="Cerrar">✕</button></div>__CAT_SECTIONS__</div></div>
 <script>
 var all=[],filtered=[],shown=0,BATCH=24,cur={q:'',g:'*',s:'*',min:null,max:null,sort:'default'},SUBS=__SUBS__;
@@ -1105,7 +1257,7 @@ function recGet(){try{return JSON.parse(localStorage.getItem('vb_recent')||'[]')
 function recAdd(w){var r=recGet().filter(function(x){return x!==w});r.unshift(w);r=r.slice(0,6);try{localStorage.setItem('vb_recent',JSON.stringify(r))}catch(e){}recPaint()}
 function recPaint(){var r=recGet(),row=document.getElementById('recentRow');if(!r.length){row.classList.remove('show');return}row.innerHTML='<span class="rlb">Recientes:</span>'+r.map(function(w){return '<span class="rch">'+h(w)+'</span>'}).join('')+'<button class="rclr" title="Borrar historial">✕</button>';row.classList.add('show');row.querySelectorAll('.rch').forEach(function(ch){ch.onclick=function(){qEl.value=ch.textContent;qEl.dispatchEvent(new Event('input'))}});row.querySelector('.rclr').onclick=function(){try{localStorage.removeItem('vb_recent')}catch(e){}recPaint()}}
 function matchWord(p,w){if(p.q.indexOf(w)>=0)return true;return (ALIASES[w]||[]).some(function(x){return p.q.indexOf(x)>=0})}
-function card(p){var price=p.price==null?'<span class="ask">Consultar</span>':'<b>RD$ '+Math.round(p.price).toLocaleString('en-US')+'</b>';var add=p.price==null?'':'<button class="card-add" type="button" aria-label="Agregar al carrito" data-sku="'+h(p.sku)+'" data-handle="'+h(p.handle)+'" data-title="'+h(p.title)+'" data-price="'+p.price+'" data-img="'+h(p.img)+'" onclick="vbCardAdd(event,this)">__BAG__</button>';return '<article class="card"><a class="card-link" href="producto/'+encodeURIComponent(p.handle)+'.html"><div class="imgbox"><img src="images/'+encodeURIComponent(p.img)+'" alt="'+h(p.title)+'" loading="lazy" onerror="this.style.display=\\'none\\'"><span class="badge">'+h(p.sub)+'</span></div><div class="info"><div class="nm">'+h(p.title)+'</div><div class="pr">'+price+'</div></div></a>'+add+'</article>'}
+function card(p){var sale=p.old_price!=null&&p.price!=null&&p.old_price>p.price,saving=sale?p.old_price-p.price:0,pct=sale?Math.max(1,Math.round(saving/p.old_price*100)):0;var price=p.price==null?'<span class="ask">Consultar</span>':(sale?'<div class="price-stack"><span class="current">RD$ '+Math.round(p.price).toLocaleString('en-US')+'</span><del>RD$ '+Math.round(p.old_price).toLocaleString('en-US')+'</del></div><span class="saving">Ahorras RD$ '+Math.round(saving).toLocaleString('en-US')+'</span>':'<div class="price-stack"><span class="current">RD$ '+Math.round(p.price).toLocaleString('en-US')+'</span></div>');var label=p.label?'<span class="offer-label">'+h(p.label)+'</span>':'';var badge=sale?'<span class="sale-badge">-'+pct+'%</span>':'';var add=p.price==null?'':'<button class="card-add" type="button" aria-label="Agregar al carrito" data-sku="'+h(p.sku)+'" data-handle="'+h(p.handle)+'" data-title="'+h(p.title)+'" data-price="'+p.price+'" data-img="'+h(p.img)+'" onclick="vbCardAdd(event,this)">__BAG__</button>';return '<article class="card"><a class="card-link" href="producto/'+encodeURIComponent(p.handle)+'.html"><div class="imgbox"><img src="images/'+encodeURIComponent(p.img)+'" alt="'+h(p.title)+'" loading="lazy" onerror="this.style.display=\\'none\\'"><span class="badge">'+h(p.sub)+'</span>'+badge+'</div><div class="info"><div class="nm">'+h(p.title)+'</div>'+label+'<div class="pr">'+price+'</div></div></a>'+add+'</article>'}
 function apply(reset){if(!all.length)return;var words=snorm(cur.q).split(/\s+/).filter(Boolean);filtered=all.filter(function(p){if(cur.g!=='*'&&p.group!==cur.g)return false;if(cur.s!=='*'&&p.sub!==cur.s)return false;if(words.length&&!words.every(function(w){return matchWord(p,w)}))return false;if(cur.min!=null&&(p.price==null||p.price<cur.min))return false;if(cur.max!=null&&(p.price==null||p.price>cur.max))return false;return true});filtered.sort(function(a,b){if(cur.sort==='price-asc')return (a.price==null?1e15:a.price)-(b.price==null?1e15:b.price);if(cur.sort==='price-desc')return (b.price==null?-1:b.price)-(a.price==null?-1:a.price);if(cur.sort==='name')return a.title.localeCompare(b.title,'es');return a.i-b.i});var mode=!!cur.q||cur.g!=='*'||cur.s!=='*'||cur.min!=null||cur.max!=null||cur.sort!=='default';document.getElementById('homePromo').classList.toggle('hidden',mode);document.getElementById('resultsHead').classList.toggle('show',mode);document.getElementById('n').textContent=filtered.length;var label=cur.q?'Resultados para “'+cur.q+'”':(cur.s!=='*'?cur.s:(cur.g!=='*'?cur.g:'Productos'));document.getElementById('resultsTitle').textContent=label;document.getElementById('resultsSummary').textContent=filtered.length+' productos encontrados';if(reset){shown=0;grid.innerHTML='';showNext()}}
 function showNext(){if(!all.length)return;if(!filtered.length){grid.innerHTML='<div class="no-results"><b>No encontramos productos</b>Prueba otra palabra o elimina algún filtro.</div>';document.getElementById('loadMore').classList.remove('show');return}var next=filtered.slice(shown,shown+BATCH);grid.insertAdjacentHTML('beforeend',next.map(card).join(''));shown+=next.length;document.getElementById('loadMore').classList.toggle('show',shown<filtered.length)}
 function updateSubs(g,selected){var s=document.getElementById('filterSub'),vals=g==='*'?[]:(SUBS[g]||[]);s.innerHTML='<option value="*">Todas</option>'+vals.map(function(x){return '<option value="'+h(x)+'">'+h(x)+'</option>'}).join('');s.value=selected&&vals.indexOf(selected)>=0?selected:'*'}
@@ -1118,7 +1270,8 @@ document.getElementById('catOpen').onclick=function(){openCategories('')};docume
 document.getElementById('filterOpen').onclick=function(){document.getElementById('filterPanel').classList.toggle('show')};document.getElementById('filterGroup').onchange=function(){updateSubs(this.value,'')};document.getElementById('filterApply').onclick=function(){cur.g=document.getElementById('filterGroup').value;cur.s=document.getElementById('filterSub').value;var a=document.getElementById('priceMin').value,b=document.getElementById('priceMax').value;cur.min=a===''?null:Number(a);cur.max=b===''?null:Number(b);document.getElementById('filterPanel').classList.remove('show');apply(true);try{vbTrack('filter','',{filter_group:cur.g,filter_sub:cur.s,result_count:filtered.length,sort_mode:cur.sort})}catch(e){}};document.getElementById('filterReset').onclick=function(){cur.g='*';cur.s='*';cur.min=null;cur.max=null;cur.sort='default';document.getElementById('filterGroup').value='*';updateSubs('*','');document.getElementById('priceMin').value='';document.getElementById('priceMax').value='';document.getElementById('sort').value='default';apply(true)};document.getElementById('sort').onchange=function(){cur.sort=this.value;apply(true)};document.getElementById('loadMore').onclick=showNext;
 var io=new IntersectionObserver(function(es){if(es[0].isIntersecting&&all.length&&shown<filtered.length)showNext()},{rootMargin:'300px'});io.observe(document.getElementById('loadMore'));setTimeout(loadData,0);
 </script>"""
-    return (body.replace("__FEATS__", feats).replace("__TILES__", tiles)
+    return (body.replace("__PROMISES__", PROMISE_HTML).replace("__FEATS__", feats).replace("__TILES__", tiles)
+            .replace("__BEST__", best_sellers).replace("__REVIEWS__", reviews).replace("__STORES__", stores)
             .replace("__COUNT__", str(total)).replace("__CARDS__", "".join(cards))
             .replace("__CAT_SECTIONS__", "".join(cat_sections)).replace("__GROUP_OPTIONS__", group_options)
             .replace("__SUBS__", subs_json).replace("__BAG__", BAG_SVG))
@@ -1150,6 +1303,7 @@ def build():
         index_products.append({
             "i": i, "sku": p["sku"], "handle": p["handle"], "title": p["title"],
             "price": p["price"], "img": p["img"], "group": p["group"], "sub": p["sub"],
+            "old_price": p.get("old_price"), "label": p.get("label", ""),
             "available": p.get("inventory") is not None and p["inventory"] > 0,
             "q": snorm(search_text),
         })
@@ -1186,14 +1340,20 @@ def build():
         f'<option value="{esc(g)}">{esc(g)}</option>' for g in groups)
     subs_json = json.dumps({g: sorted(subs_of[g]) for g in groups}, ensure_ascii=False)
     home_body = modern_home_body(feats, tiles, cat_sections, group_options, subs_json,
-                                 cards, len(products))
+                                 cards, len(products), best_sellers_html(products),
+                                 reviews_html(), stores_html())
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
         f.write(page(f"{SITE_NAME} — Tienda online RD", home_body, wa_float=True,
-                     desc="Hogar, belleza, herramientas, electrónica y más. Contra entrega en Gran Santo Domingo."))
+                     desc="Hogar, belleza, herramientas, electrónica y más. Contra entrega en Gran Santo Domingo.",
+                     canonical=f"{SITE_URL}/"))
 
     # ---- 购物车页 ----
     with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
         f.write(carrito_page())
+
+    # ---- Garantía ----
+    with open(f"{OUT_DIR}/garantia.html", "w", encoding="utf-8") as f:
+        f.write(garantia_page())
 
     # ---- 配送分区数据（前端 fetch，改价只改 JSON 不动 JS）----
     if os.path.isfile("data/shipping_zones.json"):
@@ -1216,8 +1376,25 @@ def build():
         if n_coll:
             print(f"✅ 专题合集: {n_coll} 个 → {OUT_DIR}/coleccion/")
 
+    # ---- 独立分类页（SEO + 可分享链接）----
+    os.makedirs(f"{OUT_DIR}/categoria", exist_ok=True)
+    category_urls = []
+    for g in groups:
+        group_products = [p for p in products if p["group"] == g]
+        group_slug = slugify(g)
+        description = f"Compra {g.lower()} online en República Dominicana. Precios claros, entrega y atención por WhatsApp."
+        with open(f"{OUT_DIR}/categoria/{group_slug}.html", "w", encoding="utf-8") as f:
+            f.write(category_page(g, group_products, description, group_slug))
+        category_urls.append(f"{SITE_URL}/categoria/{group_slug}.html")
+        for sub in sorted(subs_of[g]):
+            sub_products = [p for p in group_products if p["sub"] == sub]
+            sub_slug = slugify(f"{g}-{sub}")
+            sub_desc = f"Encuentra {sub.lower()} en VivaBien RD. Compra online con entrega y soporte por WhatsApp."
+            with open(f"{OUT_DIR}/categoria/{sub_slug}.html", "w", encoding="utf-8") as f:
+                f.write(category_page(sub, sub_products, sub_desc, sub_slug))
+            category_urls.append(f"{SITE_URL}/categoria/{sub_slug}.html")
+
     # ---- 推荐栏索引 ----
-    import hashlib
     by_sub, by_group = {}, {}
     for p in products:
         by_sub.setdefault((p["group"], p["sub"]), []).append(p)
@@ -1267,8 +1444,19 @@ def build():
                             f'alt="{esc(p["title"])}" onerror="this.style.opacity=0">')
             thumbs = ""
             gal_js = ""
-        price_html = (f'<div class="price">{fmt_price(p["price"])}</div>' if p["price"] is not None
-                      else '<div class="price ask">Consultar precio por WhatsApp</div>')
+        sale = discount_info(p)
+        detail_label = f'<span class="detail-offer">{esc(p["label"])}</span><br>' if p.get("label") else ""
+        if sale:
+            price_html = (f'<div class="detail-price">'
+                          f'{detail_label}'
+                          f'<div class="price">{fmt_price(p["price"])}</div><del>{fmt_price(p["old_price"])}</del><br>'
+                          f'<span class="saving">Ahorras {fmt_price(sale["saving"])} · -{sale["percent"]}%</span></div>')
+        elif p["price"] is not None:
+            price_html = (f'<div class="detail-price">'
+                          f'{detail_label}'
+                          f'<div class="price">{fmt_price(p["price"])}</div></div>')
+        else:
+            price_html = '<div class="price ask">Consultar precio por WhatsApp</div>'
         desc_html = body_html(p["body"]) if len(p["body"].strip()) > 10 else esc(p["title"])
         safe_name = esc(p["title"])
         ve = (f"""fbq('track','ViewContent',{{content_ids:['{p["sku"]}'],content_name:'{safe_name}',content_type:'product',value:{p["price"] or 0},currency:'DOP'}});""")
@@ -1329,14 +1517,15 @@ function addCart(b){
 <h1>{esc(p['title'])}</h1>
 {price_html}
 <div class="trust">
-<div><span class="em">🚚</span>Envío a<br>todo el país</div>
-<div><span class="em">🤝</span>Contra entrega<br>en Sto. Dgo.</div>
-<div><span class="em">✅</span>Producto<br>verificado</div>
+<div><span class="em">🚚</span>Entrega<br>24-72 horas</div>
+<div><span class="em">💵</span>Pagas<br>al recibir</div>
+<div><span class="em">↩️</span>Garantía<br>de 7 días</div>
 </div>
 {facts_html}
 <div class="sec">Descripción</div>
 <div class="desc">{desc_html}</div>
 <div class="bar">
+<div class="customer-proof">⭐ +120 clientes satisfechos en toda RD</div>
 <div class="bar-btns">
 {actions}
 </div>
@@ -1351,10 +1540,45 @@ function addCart(b){
 {recs_html}
 {gal_js}
 {add_js}"""
+        availability = "https://schema.org/InStock" if p.get("inventory", 0) and p["inventory"] > 0 else "https://schema.org/PreOrder"
+        product_schema = {
+            "@context": "https://schema.org", "@type": "Product", "name": p["title"],
+            "image": [f"{SITE_URL}/images/{g}" for g in (gal or [p["img"]])],
+            "description": re.sub(r"<[^>]+>", " ", p["body"]).strip()[:500] or p["title"],
+            "sku": p["sku"], "brand": {"@type": "Brand", "name": SITE_NAME},
+        }
+        if p["price"] is not None:
+            product_schema["offers"] = {
+                "@type": "Offer", "url": f"{SITE_URL}/producto/{p['handle']}.html",
+                "priceCurrency": "DOP", "price": f'{p["price"]:.2f}', "availability": availability,
+                "itemCondition": "https://schema.org/NewCondition"
+            }
+        schema_head = '<script type="application/ld+json">' + json.dumps(product_schema, ensure_ascii=False).replace("</", "<\\/") + '</script>'
+        product_title = f'{p["title"]} | {fmt_price(p["price"])} en RD | {SITE_NAME}'
+        product_desc = (f'{p["title"]} por {fmt_price(p["price"])}. Compra online en RD con contra entrega '
+                        f'en Gran Santo Domingo y envíos a todo el país.' if p["price"] is not None else
+                        f'{p["title"]}. Consulta precio y disponibilidad. Contra entrega en Gran Santo Domingo.')
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
-            f.write(page(f"{p['title']} — {SITE_NAME}", detail, pixel_extra=ve,
-                         desc=p["body"][:150], track_sku=p["sku"], track_category=p["sub"],
-                         track_title=p["title"], track_img=p["img"]))
+            f.write(page(product_title, detail, pixel_extra=ve,
+                         desc=product_desc, track_sku=p["sku"], track_category=p["sub"],
+                         track_title=p["title"], track_img=p["img"], extra_head=schema_head,
+                         canonical=f"{SITE_URL}/producto/{p['handle']}.html", rel="../"))
+
+    # ---- SEO 索引 ----
+    sitemap_urls = [f"{SITE_URL}/", f"{SITE_URL}/garantia.html", f"{SITE_URL}/carrito.html"]
+    sitemap_urls += category_urls
+    sitemap_urls += [f"{SITE_URL}/coleccion/{c['slug']}.html" for c in collections
+                     if any(s in by_sku for s in c.get("skus", []))]
+    sitemap_urls += [f"{SITE_URL}/producto/{p['handle']}.html" for p in products]
+    today = date.today().isoformat()
+    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    sitemap += [f'<url><loc>{esc(url)}</loc><lastmod>{today}</lastmod></url>' for url in sitemap_urls]
+    sitemap.append('</urlset>')
+    with open(f"{OUT_DIR}/sitemap.xml", "w", encoding="utf-8") as f:
+        f.write("\n".join(sitemap))
+    with open(f"{OUT_DIR}/robots.txt", "w", encoding="utf-8") as f:
+        f.write(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
 
     # ---- 分类统计 ----
     print(f"✅ 构建完成: {len(products)} 个商品 → {OUT_DIR}/")
