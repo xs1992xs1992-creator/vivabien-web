@@ -22,6 +22,7 @@ SITE_VERSION = "cro1-20260713"
 META_DOP_PER_USD = float(os.environ.get("VIVABIEN_META_DOP_PER_USD", "59.20"))
 REVIEWS_PATH = "data/reviews.json"
 FEATURED_PATH = "data/featured.json"
+HOME_PRIORITY_PATH = "data/home_priority.json"   # 首页商品网格优先展示的 SKU（运营可改）
 DETAIL_ROLLOUT_PATH = "data/product_detail_rollout.json"
 STORES_PATH = "data/stores.json"
 PANELS_PATH = "data/panels.json"
@@ -301,7 +302,13 @@ def load_products():
             p["img"] = gal[0]
         p["group"], p["sub"] = classify(p)
         products.append(p)
-    products.sort(key=lambda p: (p["price"] is None, p["group"], p["sub"]))
+    # 首页优先曝光：home_priority.json 里的 SKU 排最前（按文件里的顺序），其余照旧
+    prio = load_json(HOME_PRIORITY_PATH, {})
+    if isinstance(prio, dict):
+        prio = prio.get("skus", [])
+    rank = {str(s).strip(): i for i, s in enumerate(prio) if str(s).strip()}
+    products.sort(key=lambda p: (rank.get(p["sku"], 10**6),
+                                 p["price"] is None, p["group"], p["sub"]))
     return products
 
 def fmt_price(v):

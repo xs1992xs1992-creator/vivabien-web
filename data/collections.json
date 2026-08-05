@@ -48,12 +48,39 @@
     "slug": "panel-autoadhesivo"
   },
   {
+    "title": "Muebles y Hogar",
+    "subtitle": "Abanicos de techo, mesas de noche, estantes y escritorios para tu casa.",
+    "cta": "Ver muebles",
+    "image": "VBD53AFA9D.jpg",
+    "active": true,
+    "order": 3,
+    "skus": [
+      "VBD53AFA9D",
+      "VBFFED96B4",
+      "VB59D5443D",
+      "VB8B73E51E",
+      "VBDDA8788E",
+      "VB77A60DAF",
+      "VB1E3DEDAA",
+      "MUBL-ESCT-2561-120",
+      "LC050-030",
+      "LC050-109",
+      "LC050-108",
+      "LC050-023",
+      "LC050-CORNER-2C",
+      "LC050-BEDSIDE-3C",
+      "LC050-035",
+      "VBA0CC92A1"
+    ],
+    "slug": "muebles-y-hogar"
+  },
+  {
     "title": "Espejos",
     "subtitle": "Una nueva colección para renovar tus espacios.",
     "cta": "Ver colección",
     "image": "VBC690E309.jpg",
     "active": true,
-    "order": 3,
+    "order": 4,
     "coming_soon": true,
     "skus": [],
     "slug": "espejos"
