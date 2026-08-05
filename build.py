@@ -19,9 +19,14 @@ CSV_PATH   = "data/products.csv"
 IMG_DIR    = "images"               # 商品图片文件夹（VBxxxx.jpg 都放这里）
 OUT_DIR    = "dist"
 SITE_VERSION = "cro1-20260713"
+META_DOP_PER_USD = float(os.environ.get("VIVABIEN_META_DOP_PER_USD", "59.20"))
 REVIEWS_PATH = "data/reviews.json"
 FEATURED_PATH = "data/featured.json"
+DETAIL_ROLLOUT_PATH = "data/product_detail_rollout.json"
 STORES_PATH = "data/stores.json"
+PANELS_PATH = "data/panels.json"
+ADHESIVE_PANEL_PATH = "data/adhesive_panel.json"
+REPORT_DIR = "reports"
 
 # 银行转账收款账户（结算页展示）
 BANKS = [
@@ -76,6 +81,9 @@ SUBRULES = {
         ("Cuidado de la Piel",    ['mascarilla', 'crema', 'hidratante', 'limpiador', 'parche']),
     ],
     "Hogar": [
+        ("Muebles",                ['mesa de noche', 'estante', 'aparador', 'escritorio', 'mueble auxiliar',
+                                    'mesa de centro', 'juego de mesas', 'mesas nido', 'mesa infantil',
+                                    'silla colgante', 'tocador', 'mesa auxiliar', 'banco de']),
         ("Plantas y Flores",      ['planta', 'flor artificial', 'rama decorativa', 'macetero', 'jardinera']),
         ("Espejos, Marcos y Cuadros", ['espejo', 'cuadro', 'marco', 'portarretrato', 'foto']),
         ("Aromas para el Hogar",  ['vela', 'difusor', 'aceite esencial', 'esencia', 'ambientador', 'aromatic']),
@@ -100,6 +108,7 @@ SUBRULES = {
                                    'bandeja decorativa', 'charola decorativa', 'numero', 'letra', 'letrero']),
     ],
     "Cocina y Electrohogar": [
+        ("Muebles de Cocina",      ['mueble auxiliar de cocina', 'aparador', 'gabinete de cocina']),
         ("Estufas y Hornillas",    ['estufa', 'fogón', 'fogon', 'hornilla']),
         ("Ollas, Sartenes y Calderos", ['olla', 'sarten', 'caldero', 'cazo']),
         ("Utensilios de Cocina",  ['cuchillo', 'tabla de picar', 'rallador', 'colador', 'exprimidor',
@@ -318,6 +327,87 @@ def load_json(path, default):
 def esc(s):
     return html.escape(s, quote=True)
 
+def public_url(path=""):
+    """Return the canonical URL Cloudflare serves after its HTML redirect."""
+    path = str(path or "").lstrip("/")
+    if path in {"", "index.html"}:
+        return f"{SITE_URL}/"
+    if path.endswith(".html"):
+        path = path[:-5]
+    return f"{SITE_URL}/{quote(path, safe='/')}"
+
+def plain_text(raw):
+    text = re.sub(r"<[^>]+>", " ", str(raw or ""))
+    return re.sub(r"\s+", " ", html.unescape(text)).strip()
+
+def product_meta_description(p):
+    """Use product-specific source copy before the shared purchase context."""
+    detail = plain_text(p.get("body", ""))
+    text = f'{p["title"]}. '
+    if detail and snorm(detail) != snorm(p["title"]):
+        text += detail + " "
+    if p.get("price") is not None:
+        text += f'Precio {fmt_price(p["price"])}. '
+    text += "Compra online en República Dominicana."
+    return text[:157].rstrip(" ,.;") + "."
+
+def write_merchant_candidates(products, limit=100):
+    """Create a private review list; this is intentionally not a publishable feed."""
+    rows = []
+    excluded = {"adult_category": 0, "missing_price": 0, "unknown_stock": 0,
+                "missing_image": 0, "short_description": 0}
+    for p in products:
+        description = plain_text(p.get("body", ""))
+        gallery = product_gallery(p)
+        reasons = []
+        if p.get("type") == "Artículos para Adultos":
+            reasons.append("adult_category")
+        if p.get("price") is None:
+            reasons.append("missing_price")
+        if p.get("inventory") is None or p["inventory"] <= 0:
+            reasons.append("unknown_stock")
+        if not gallery:
+            reasons.append("missing_image")
+        if len(description) < 80:
+            reasons.append("short_description")
+        for reason in reasons:
+            excluded[reason] += 1
+        score = min(len(description), 500) / 25
+        score += 20 if p.get("price") is not None else 0
+        score += 20 if p.get("inventory") is not None and p["inventory"] > 0 else 0
+        score += 20 if gallery else 0
+        score += min(len(gallery), 5) * 4
+        rows.append({
+            "score": round(score, 1), "eligible": not reasons, "blockers": ",".join(reasons),
+            "sku": p["sku"], "handle": p["handle"], "title": p["title"],
+            "category": p["group"], "subcategory": p["sub"], "price_dop": p["price"],
+            "inventory": p["inventory"], "image_count": len(gallery),
+            "description_chars": len(description), "link": public_url(f"producto/{p['handle']}.html"),
+            "brand": "", "gtin": "", "mpn": "",
+            "identifier_status": "needs_business_confirmation",
+        })
+    candidates = sorted((r for r in rows if r["eligible"]),
+                        key=lambda r: (-r["score"], r["title"]))[:limit]
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    fields = ["rank", "score", "sku", "handle", "title", "category", "subcategory",
+              "price_dop", "inventory", "image_count", "description_chars", "link",
+              "brand", "gtin", "mpn", "identifier_status"]
+    with open(os.path.join(REPORT_DIR, "merchant_candidates.csv"), "w",
+              encoding="utf-8-sig", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for rank, row in enumerate(candidates, 1):
+            writer.writerow({key: (rank if key == "rank" else row[key]) for key in fields})
+    report = {
+        "generated_on": date.today().isoformat(), "catalog_products": len(products),
+        "eligible_before_identifier_review": sum(r["eligible"] for r in rows),
+        "selected_candidates": len(candidates), "excluded_counts": excluded,
+        "publish_blocker": "Confirm brand, GTIN or MPN for each candidate before creating the Merchant Center feed.",
+    }
+    with open(os.path.join(REPORT_DIR, "merchant_audit.json"), "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    return report
+
 def body_html(raw):
     t = esc(raw.strip())
     return t.replace("\n", "<br>")
@@ -420,16 +510,22 @@ button{font-family:inherit}
 .cat-sub{border:1px solid #E5EAF2;background:#F8FAFD;color:#344154;border-radius:10px;padding:10px;text-align:left;font-size:12px;font-weight:700;cursor:pointer;line-height:1.35}
 .cat-sub small{display:block;color:#8a93a2;margin-top:3px;font-weight:600}
 @media(min-width:720px){.cat-dialog{align-items:center}.cat-sheet{max-width:760px;border-radius:16px;max-height:80vh}.cat-subgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-/* featured collections */
-.feats{display:flex;flex-direction:column;gap:11px;margin:16px 0 2px}
-@media(min-width:640px){.feats{flex-direction:row;flex-wrap:wrap}.feats .feat{flex:1;min-width:280px}}
-.feat{border-radius:18px;padding:16px;color:#fff;text-decoration:none;display:block;position:relative;overflow:hidden}
-.feat .kick{font-size:10.5px;font-weight:800;letter-spacing:.06em;opacity:.85;text-transform:uppercase}
-.feat h3{font-size:19px;font-weight:800;margin:4px 0 2px;letter-spacing:-.01em}
-.feat p{font-size:12px;opacity:.92;font-weight:600}
-.feat .thumbs{display:flex;gap:7px;margin:12px 0 13px}
-.feat .thumbs img{flex:1;width:0;aspect-ratio:1;object-fit:cover;border-radius:10px;background:rgba(255,255,255,.18)}
-.feat .go{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#16202E;font-weight:800;font-size:13px;padding:8px 15px;border-radius:99px}
+/* featured collection switcher */
+.feat-switcher{margin:16px 0 2px}
+.feat-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#EAF0F9;padding:4px;border-radius:8px;margin-bottom:8px}
+.feat-tab{min-width:0;height:40px;border:0;border-radius:6px;background:transparent;color:#5D6879;font:800 12px inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat-tab.on{background:#fff;color:#2563D9;box-shadow:0 1px 4px rgba(27,46,78,.1)}
+.feat-stage{position:relative;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#16202E}
+.feat-slide{position:absolute;inset:0;display:none;color:#fff;text-decoration:none;overflow:hidden}
+.feat-slide.on{display:block}
+.feat-slide>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.feat-slide:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,17,29,.82) 0%,rgba(10,17,29,.48) 48%,rgba(10,17,29,.12) 100%)}
+.feat-copy{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;width:min(72%,430px);height:100%;padding:18px}
+.feat-kick{font-size:10.5px;font-weight:800;text-transform:uppercase}
+.feat-copy h3{font-size:23px;line-height:1.08;margin:5px 0 6px}
+.feat-copy p{font-size:12px;line-height:1.45;color:#EEF3FA;margin-bottom:13px}
+.feat-go{display:inline-flex;align-items:center;min-height:40px;background:#fff;color:#16202E;font-weight:800;font-size:12.5px;padding:0 15px;border-radius:7px}
+@media(min-width:640px){.feat-stage{aspect-ratio:16/7}.feat-copy{padding:25px}.feat-copy h3{font-size:29px}}
 /* theme (colección) page */
 .tbanner{color:#fff;padding:26px 18px 24px}
 .tbanner .bk{font-size:12px;opacity:.9;font-weight:700;margin-bottom:9px;color:#fff;text-decoration:none;display:inline-block}
@@ -551,6 +647,33 @@ button{font-family:inherit}
 .btn-add.added{background:#16a34a}
 .crumb{padding:14px 18px 0;font-size:13px;color:#8a93a2}
 .crumb a{color:#2563D9;font-weight:700}
+/* 新版通用商品详情：沿用墙纸页的购买节奏，按名单分批启用 */
+.commerce-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#7B8797;font-size:11px;font-weight:700;margin:-3px 0 10px}
+.commerce-meta span{background:#F1F5FB;border-radius:7px;padding:4px 7px}
+.commerce-strip{display:flex;align-items:center;justify-content:center;gap:8px;background:#ECF8EF;border:1px solid #CDEBD5;color:#17733E;border-radius:12px;padding:10px 9px;margin:0 0 14px;font-size:11.5px;font-weight:800;text-align:center}
+.commerce-strip i{width:1px;height:15px;background:#B8DEC3}
+.commerce-choice{display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid #EEF1F6;border-bottom:1px solid #EEF1F6;padding:13px 0;margin:2px 0 16px}
+.commerce-choice-label b{display:block;font-size:13px}.commerce-choice-label span{display:block;color:#8490A1;font-size:10.5px;margin-top:2px}
+.commerce-qty{display:grid;grid-template-columns:38px 42px 38px;align-items:center;border:1.5px solid #DDE5F0;border-radius:12px;overflow:hidden;background:#fff;height:40px}
+.commerce-qty button{height:100%;border:0;background:#F7F9FD;color:#2563D9;font-size:19px;font-weight:800;cursor:pointer}
+.commerce-qty output{text-align:center;font-size:14px;font-weight:800}
+.commerce-proof{display:flex;align-items:center;gap:9px;background:#FFF8E8;border:1px solid #F4D88A;color:#765410;border-radius:12px;padding:10px 12px;margin:0 0 15px;font-size:11.5px;font-weight:750;line-height:1.4}
+.commerce-proof strong{display:block;color:#4C390B}
+.commerce-bar-total{display:flex;align-items:end;justify-content:space-between;gap:12px;padding:0 2px}
+.commerce-bar-total span{display:block;color:#7B8797;font-size:10.5px;font-weight:700}.commerce-bar-total strong{font-size:22px;line-height:1;color:#16202E}
+.dt.commerce .customer-proof{display:none}
+@media(max-width:759px){
+ .dt.commerce{padding-bottom:152px}.dt.commerce .panel{padding-top:20px}
+ .dt.commerce .panel h1{font-size:19px;margin-bottom:8px}
+ .dt.commerce .detail-price{margin-bottom:12px}.dt.commerce .detail-price .price{font-size:29px}
+ .dt.commerce .trust{margin-bottom:16px}
+ .dt.commerce .bar{gap:9px}.dt.commerce .microtrust{display:none}
+ .dt.commerce .btn-back{display:none}.dt.commerce .btn-wa{width:50px}
+}
+@media(min-width:760px){
+ .dt.commerce{max-width:1040px;grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:32px}
+ .dt.commerce .panel{padding:24px}.dt.commerce .commerce-bar-total{margin-top:12px}
+}
 /* 推荐栏 */
 .recs{max-width:920px;margin:0 auto;padding:6px 18px 110px}
 @media(min-width:760px){.recs{padding-bottom:40px}}
@@ -596,6 +719,7 @@ footer .footer-links{display:flex;justify-content:center;gap:15px;margin-bottom:
 .ci .t{flex:1;min-width:0}
 .ci .nm{font-weight:700;font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .ci .pr{font-weight:800;font-size:14px;margin-top:4px}
+.ci .tier-note{display:block;margin-top:2px;color:#0F9D58;font-size:10px;font-weight:700}
 .qty{display:flex;align-items:center;gap:10px;margin-top:6px}
 .qty button{width:26px;height:26px;border-radius:9px;border:1.5px solid #E5EAF2;background:#fff;color:#2563D9;font-weight:800;font-size:15px;cursor:pointer}
 .qty span{font-weight:800;font-size:14px;min-width:16px;text-align:center}
@@ -611,6 +735,19 @@ footer .footer-links{display:flex;justify-content:center;gap:15px;margin-bottom:
 .fld .err-msg{display:none;color:#C73535;font-size:10.5px;font-weight:700;margin-top:4px}
 .fld.invalid .err-msg{display:block}
 .fld select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6577' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
+/* checkout location + preferred delivery */
+.delivery-extra{display:none;border-top:1px solid #E8EDF5;margin-top:14px;padding-top:15px}.delivery-extra.show{display:block}
+.extra-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:11px}.extra-icon{width:34px;height:34px;border-radius:9px;background:#EAF0FB;display:grid;place-items:center;flex:none}.extra-head b{display:block;font-size:13px}.extra-head p{font-size:10.5px;color:#68758A;line-height:1.45;margin-top:3px}.optional{color:#7B8797;font-weight:700}
+.map-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.map-row input{min-width:0}.map-paste{border:0;border-radius:10px;background:#2563D9;color:#fff;padding:0 13px;font-weight:800;cursor:pointer}.map-paste:disabled{opacity:.45}
+.map-status{display:none;align-items:center;justify-content:space-between;gap:9px;color:#167747;font-size:10.5px;font-weight:800;margin-top:8px}.map-status.show{display:flex}.map-status a{color:#2563D9;text-decoration:underline}.map-error{display:none;color:#C73535;font-size:10.5px;font-weight:700;margin-top:6px}.map-error.show{display:block}
+.location-later{display:flex;align-items:flex-start;gap:8px;margin-top:11px;color:#566276;font-size:11px;font-weight:700;line-height:1.45;cursor:pointer}.location-later input{width:17px;height:17px;margin:0;accent-color:#2563D9;flex:none}
+.map-help{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;background:transparent;color:#2563D9;padding:14px 1px 2px;font-weight:800;cursor:pointer}.map-tutorial{display:none;margin-top:11px}.map-tutorial.show{display:block}.map-steps{display:flex;gap:9px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:7px}.map-step{flex:0 0 76%;scroll-snap-align:start;background:#F7F9FD;border-radius:11px;padding:10px}.map-visual{height:78px;border-radius:9px;background:#E8EEF8;display:grid;place-items:center;font-size:30px;margin-bottom:8px}.map-step b{font-size:11.5px}.map-step p{font-size:10.5px;color:#68758A;line-height:1.4;margin-top:3px}.tutorial-hint{font-size:10.5px;color:#68758A;line-height:1.45;margin:7px 1px 0}
+.schedule-box{display:none}.schedule-box.show{display:block}.schedule-copy{font-size:11.5px;line-height:1.5;color:#68758A;margin:-5px 0 12px}.date-shortcuts{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}.date-choice,.time-choice{border:1.5px solid #DDE5F0;background:#fff;border-radius:10px;min-height:50px;padding:7px 5px;text-align:center;font-weight:800;color:#4E596B;cursor:pointer}.date-choice small{display:block;color:#8B95A5;font-size:9px;margin-top:3px}.date-choice.on,.time-choice.on{border-color:#2563D9;background:#EEF4FF;color:#2563D9}.date-choice:disabled,.time-choice:disabled{opacity:.45;cursor:not-allowed;background:#F2F4F7}
+.custom-date{display:none;grid-template-columns:.7fr 1.3fr .9fr;gap:7px;margin:-2px 0 11px}.custom-date.show{display:grid}.custom-date select{width:100%;height:43px;border:1.5px solid #DDE5F0;border-radius:10px;background:#fff;padding:0 9px;font:700 12px inherit;color:#344154}
+.time-choices{display:grid;grid-template-columns:1fr 1fr;gap:7px}.time-choice{min-height:44px;font-size:11px}.schedule-note{display:flex;gap:7px;background:#FFF8E8;border:1px solid #F2D990;border-radius:10px;padding:9px 10px;margin-top:10px;font-size:10px;line-height:1.45;color:#725314}
+button:focus-visible,.date-choice:focus-visible,.time-choice:focus-visible{outline:3px solid rgba(37,99,217,.25);outline-offset:2px}
+@media(min-width:640px){.map-steps{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible}.map-step{min-width:0}}
+@media(max-width:410px){.map-row{grid-template-columns:1fr}.map-paste{height:42px}.date-shortcuts{grid-template-columns:1fr 1fr}.date-shortcuts .date-choice:last-child{grid-column:1/-1}.time-choices{grid-template-columns:1fr}}
 /* pago radios */
 .pay{display:flex;flex-direction:column;gap:9px}
 .pay label{display:flex;align-items:center;gap:11px;border:1.5px solid #E5EAF2;border-radius:15px;padding:14px;cursor:pointer;font-weight:700;font-size:14px;background:#fff}
@@ -688,11 +825,13 @@ TRACK_JS = """<script>
  var API='__API__/api/track',now=Date.now(),q=new URLSearchParams(location.search),keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid'];
  function get(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')||d}catch(e){return d}}
  function put(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
- var a=get('vb_attr',{}),has=false;keys.forEach(function(k){if(q.get(k)){a[k]=q.get(k);has=true}});if(has)put('vb_attr',a);
+ function uuid(prefix){return prefix+(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random())}
+ var client=get('vb_client_id','');if(!client){client=uuid('c-');put('vb_client_id',client)}
+ var a=get('vb_attr',{}),first=get('vb_first_attr',{}),has=false;keys.forEach(function(k){if(q.get(k)){a[k]=q.get(k);has=true}});if(has){put('vb_attr',a);if(!first.captured_at){first={captured_at:now};keys.forEach(function(k){first[k]=a[k]||''});put('vb_first_attr',first)}}
  var ss=get('vb_session',{});if(!ss.id||now-(ss.last||0)>1800000)ss={id:'s-'+(crypto.randomUUID?crypto.randomUUID():now+'-'+Math.random()),last:now};ss.last=now;put('vb_session',ss);
  var dev=/Mobi|Android|iPhone/i.test(navigator.userAgent)?'mobile':(/iPad|Tablet/i.test(navigator.userAgent)?'tablet':'desktop'),last=Date.now(),sent={};
  function id(){return crypto.randomUUID?crypto.randomUUID():'e-'+Date.now()+'-'+Math.random()}
- function ctx(){var p=window.VB_PAGE||{},b={event_id:id(),session_id:ss.id,path:location.pathname,device_type:dev,screen_width:screen.width,site_version:'__VERSION__',category:p.category||'',product_title:p.title||'',product_img:p.img||''};keys.forEach(function(k){b[k]=a[k]||''});return b}
+ function ctx(){var p=window.VB_PAGE||{},b={event_id:id(),client_id:client,session_id:ss.id,path:location.pathname,device_type:dev,screen_width:screen.width,site_version:'__VERSION__',category:p.category||'',product_title:p.title||'',product_img:p.img||''};keys.forEach(function(k){b[k]=a[k]||'';b['first_'+k]=first[k]||''});return b}
  function send(t,s,x,beacon){try{var b=ctx();b.type=t;b.sku=s||((window.VB_PAGE||{}).sku||'');if(x)for(var k in x)b[k]=x[k];var raw=JSON.stringify(b);if(beacon&&navigator.sendBeacon)navigator.sendBeacon(API,new Blob([raw],{type:'application/json'}));else fetch(API,{method:'POST',credentials:'include',keepalive:true,headers:{'Content-Type':'application/json'},body:raw}).catch(function(){})}catch(e){}}
  window.vbTrack=send;window.vbContext=ctx;
  document.addEventListener('click',function(e){var x=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(!x)return;var loc=x.classList.contains('wa-float')?'floating':x.classList.contains('hd-wa')?'header':x.classList.contains('btn-wa')?'product':'other';send('whatsapp','',{whatsapp_location:loc})},true);
@@ -714,7 +853,8 @@ setTimeout(function(){{
 </script>"""
 
 def page(title, body, pixel_extra="", desc="", track_sku=None, track_category="",
-         track_title="", track_img="", wa_float=False, extra_head="", canonical="", rel=""):
+         track_title="", track_img="", wa_float=False, extra_head="", canonical="", rel="",
+         robots="index,follow", og_image=""):
     page_ctx = json.dumps({"sku": track_sku or "", "category": track_category or "",
                            "title": track_title or "", "img": track_img or ""}, ensure_ascii=False)
     view_js = f"<script>vbTrack('view',{json.dumps(track_sku or '')})</script>"
@@ -723,7 +863,15 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, track_category=""
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc[:160])}">
+<meta name="robots" content="{esc(robots)}">
 {f'<link rel="canonical" href="{esc(canonical)}">' if canonical else ''}
+<meta property="og:type" content="{'product' if track_sku else 'website'}">
+<meta property="og:site_name" content="{esc(SITE_NAME)}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc[:200])}">
+{f'<meta property="og:url" content="{esc(canonical)}">' if canonical else ''}
+{f'<meta property="og:image" content="{esc(og_image)}">' if og_image else ''}
+<meta name="twitter:card" content="{'summary_large_image' if og_image else 'summary'}">
 {FONT}
 <style>{CSS}</style>
 {extra_head}
@@ -735,18 +883,18 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, track_category=""
 {body}
 {view_js}
 {WA_FLOAT if wa_float else ""}
-<footer><div class="footer-links"><a href="{rel}garantia.html">Garantía y devoluciones</a><a href="https://wa.me/{WHATSAPP}" target="_blank">Contacto</a></div>
+<footer><div class="footer-links"><a href="{rel}garantia">Garantía y devoluciones</a><a href="https://wa.me/{WHATSAPP}" target="_blank">Contacto</a></div>
 © {SITE_NAME} · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
 <div class="rnc">RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro</div></footer>
 </body></html>"""
 
 def header(rel=""):
     return f"""<div class="hd"><div class="wrap hd-in">
-<a class="logo" href="{rel}index.html"><span class="ic">{SITE_NAME[0]}</span>{esc(SITE_NAME)}</a>
+<a class="logo" href="{rel or './'}"><span class="ic">{SITE_NAME[0]}</span>{esc(SITE_NAME)}</a>
 <div class="hd-r">
 <a class="hd-wa" href="https://wa.me/{WHATSAPP}" target="_blank" onclick="fbq('track','Contact')">{WA_SVG} WhatsApp</a>
-<a class="hd-cart" href="{rel}index.html?buscar=1" aria-label="Buscar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a>
-<a class="hd-cart" href="{rel}carrito.html" aria-label="Carrito">{BAG_SVG}<span class="cart-n" id="cartN"></span></a>
+<a class="hd-cart" href="{rel}?buscar=1" aria-label="Buscar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a>
+<a class="hd-cart" href="{rel}carrito" aria-label="Carrito">{BAG_SVG}<span class="cart-n" id="cartN"></span></a>
 </div>
 </div></div>"""
 
@@ -756,6 +904,14 @@ def carrito_page():
         f'<div class="bk"><div><div class="bn">{esc(b)}</div><div class="bo">{esc(o)}</div></div>'
         f'<div class="ba">{esc(a)}</div></div>' for b, a, o in BANKS)
     bank_lines = "\\n".join(f"{b}: {a} ({o})" for b, a, o in BANKS)
+    adhesive_cfg = load_json(ADHESIVE_PANEL_PATH, {})
+    tier_prices = {}
+    if isinstance(adhesive_cfg, dict) and adhesive_cfg.get("sku") and adhesive_cfg.get("tier_price"):
+        tier_prices[str(adhesive_cfg["sku"])] = {
+            "min_qty": max(2, int(adhesive_cfg.get("tier_min_qty") or 2)),
+            "unit_price": float(adhesive_cfg["tier_price"]),
+        }
+    tier_prices_json = json.dumps(tier_prices, ensure_ascii=False)
 
     body = header() + """
 <div class="ct" id="main">
@@ -772,7 +928,45 @@ def carrito_page():
 <div class="hint" id="shipNote" style="display:none;color:#8a6d1f"></div></div>
 <div class="fld" id="cityFld" style="display:none"><label>Municipio / Ciudad *</label><input id="fCity" name="address-level2" autocomplete="address-level2" placeholder="Ej: Santiago, Moca..." onblur="sectorUI()"><div class="err-msg">Escribe el municipio o ciudad.</div></div>
 <div class="fld" id="fldDir"><label>Dirección (calle y número) *</label><textarea id="fDir" name="street-address" autocomplete="street-address" rows="2" placeholder="Calle, No., referencia"></textarea><div class="err-msg">Escribe la dirección de entrega.</div></div>
+<div class="delivery-extra" id="locationExtra">
+<div class="extra-head"><span class="extra-icon">📍</span><div><b>Ubicación exacta <span class="optional">(recomendada)</span></b><p>Comparte un enlace de Google Maps o Waze para ayudar al mensajero a encontrar la entrada.</p></div></div>
+<div class="map-row"><input id="fMap" type="url" inputmode="url" placeholder="Pega un enlace de Google Maps o Waze" oninput="mapUI()"><button type="button" class="map-paste" id="mapPaste" onclick="pasteMap()">Pegar enlace</button></div>
+<div class="map-status" id="mapStatus" role="status" aria-live="polite"><span>✓ Enlace de ubicación recibido</span><a id="mapOpen" href="#" target="_blank" rel="noopener">Abrir y verificar</a></div>
+<div class="map-error" id="mapError">Usa un enlace válido de Google Maps o Waze.</div>
+<label class="location-later"><input type="checkbox" id="fLocationLater" onchange="locationLaterUI()"><span>Enviaré mi ubicación por Waze o WhatsApp después de confirmar el pedido.</span></label>
+<button type="button" class="map-help" id="mapHelp" aria-expanded="false" onclick="toggleMapHelp()"><span>¿Cómo compartir mi ubicación?</span><span id="mapHelpIcon">＋</span></button>
+<div class="map-tutorial" id="mapTutorial">
+<div class="map-steps">
+<div class="map-step"><div class="map-visual">📍</div><b>1. Marca la entrada</b><p>Abre Google Maps o Waze y marca el punto exacto de entrega.</p></div>
+<div class="map-step"><div class="map-visual">↗️</div><b>2. Pulsa “Compartir”</b><p>Busca la opción Compartir ubicación o Compartir viaje.</p></div>
+<div class="map-step"><div class="map-visual">🔗</div><b>3. Copia el enlace</b><p>Regresa a VivaBien y pega el enlace en el campo de arriba.</p></div>
+</div><p class="tutorial-hint">Marca la entrada del edificio o residencial, no solamente el nombre del sector.</p>
+</div>
+</div>
 <div class="fld"><label>Nota (opcional)</label><input id="fNota" placeholder="Referencia, horario..."></div>
+</div>
+
+<div class="box schedule-box" id="scheduleBox">
+<div class="bt">🕒 Fecha y horario de entrega</div>
+<p class="schedule-copy">Entregamos de 9:00 AM a 7:00 PM. Los pedidos realizados antes de las 6:00 PM pueden entregarse el mismo día.</p>
+<div class="date-shortcuts" id="dateShortcuts">
+<button type="button" class="date-choice on" id="dateToday" onclick="chooseDate('today')">Hoy<small id="todayText">Disponible antes de 6 PM</small></button>
+<button type="button" class="date-choice" id="dateTomorrow" onclick="chooseDate('tomorrow')">Mañana<small id="tomorrowText"></small></button>
+<button type="button" class="date-choice" id="dateOther" onclick="chooseDate('other')">Otra fecha<small>Día / Mes / Año</small></button>
+</div>
+<div class="custom-date" id="customDate">
+<select id="deliveryDay" aria-label="Día" onchange="customDateChanged()"><option value="">Día</option></select>
+<select id="deliveryMonth" aria-label="Mes" onchange="customDateChanged()"></select>
+<select id="deliveryYear" aria-label="Año" onchange="customDateChanged()"></select>
+</div>
+<div class="time-choices" id="timeChoices">
+<button type="button" class="time-choice" data-value="09:00-12:00" data-end="12" onclick="chooseTime(this)">9:00 AM – 12:00 PM</button>
+<button type="button" class="time-choice" data-value="12:00-15:00" data-end="15" onclick="chooseTime(this)">12:00 PM – 3:00 PM</button>
+<button type="button" class="time-choice" data-value="15:00-19:00" data-end="19" onclick="chooseTime(this)">3:00 PM – 7:00 PM</button>
+<button type="button" class="time-choice on" data-value="09:00-19:00" data-end="19" onclick="chooseTime(this)">Cualquier horario · 9:00 AM – 7:00 PM</button>
+</div>
+<div class="schedule-note"><span>ℹ️</span><span>Este es tu horario preferido. Te confirmaremos la hora exacta por WhatsApp antes de la entrega.</span></div>
+<div class="map-error" id="dateError">Selecciona una fecha válida.</div>
 </div>
 
 <div class="box" id="payBox">
@@ -809,12 +1003,15 @@ __BANKS__
 <div class="ck">✓</div>
 <h2>¡Pedido confirmado!</h2>
 <p>Tu pedido <b id="okId"></b> quedó registrado correctamente.<br>Te contactaremos para coordinar la entrega.</p>
-<div class="ok-actions"><a class="ok-wa" id="okWa" href="#" target="_blank">Continuar por WhatsApp</a><a class="ok-shop" href="index.html">Seguir comprando</a></div>
+<div class="ok-actions"><a class="ok-wa" id="okWa" href="#" target="_blank">Continuar por WhatsApp</a><a class="ok-shop" href="./">Seguir comprando</a></div>
 </div>
 
 <script>
 var WA='__WA__';
 var COUPON=null; // {code,kind,value} —— 已应用的优惠券
+var TIER_PRICES=__TIER_PRICES__;
+var DELIVERY_DATE='',DELIVERY_WINDOW='09:00-19:00',DELIVERY_MODE='today';
+var MONTHS_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 // 运费状态机：完全由 data/shipping_zones.json 驱动，JS 不硬编码任何 sector/价格
 // SHIP = null(未选) | {other:true}(Otro sector) | {price,eta,zone,sector}(精确报价)
 var ZONES=null, ZFAIL=false, DEF_NOTE='', SHIP=null;
@@ -822,6 +1019,21 @@ var OTHER_LABEL='Otro sector / No está en la lista';
 function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
 function isMetro(){return document.getElementById('sectorFld').style.display!=='none'}
 function shipFee(){return (SHIP&&SHIP.price!=null)?Number(SHIP.price):null}
+function santoParts(){var ps=new Intl.DateTimeFormat('en-US',{timeZone:'America/Santo_Domingo',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',hourCycle:'h23'}).formatToParts(new Date()),o={};ps.forEach(function(x){if(x.type!=='literal')o[x.type]=Number(x.value)});return o}
+function localDate(p){return new Date(p.year,p.month-1,p.day)}
+function isoDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function dateLabel(d){return new Intl.DateTimeFormat('es-DO',{day:'numeric',month:'short'}).format(d)}
+function isLocationUrl(v){return /^(https:\/\/)?(maps\.app\.goo\.gl|www\.google\.[^/]+\/maps|goo\.gl\/maps|waze\.com\/ul|www\.waze\.com\/live-map|ul\.waze\.com)/i.test((v||'').trim())}
+function mapUI(showError){var inp=document.getElementById('fMap'),v=inp.value.trim(),ok=isLocationUrl(v),later=document.getElementById('fLocationLater').checked,st=document.getElementById('mapStatus'),er=document.getElementById('mapError');st.classList.toggle('show',ok||later);er.classList.toggle('show',!!v&&!ok&&!!showError);if(ok){st.querySelector('span').textContent='✓ Enlace de ubicación recibido';document.getElementById('mapOpen').style.display='inline';document.getElementById('mapOpen').href=/^https:\/\//i.test(v)?v:'https://'+v}else if(later){st.querySelector('span').textContent='✓ Puedes enviar la ubicación después de confirmar';document.getElementById('mapOpen').style.display='none'}else{document.getElementById('mapOpen').style.display='none'}}
+async function pasteMap(){try{document.getElementById('fMap').value=await navigator.clipboard.readText();mapUI(true)}catch(e){document.getElementById('fMap').focus()}}
+function locationLaterUI(){var on=document.getElementById('fLocationLater').checked;document.getElementById('fMap').disabled=on;document.getElementById('mapPaste').disabled=on;if(on)document.getElementById('mapError').classList.remove('show');mapUI(false)}
+function toggleMapHelp(){var t=document.getElementById('mapTutorial'),b=document.getElementById('mapHelp'),open=t.classList.toggle('show');b.setAttribute('aria-expanded',open?'true':'false');document.getElementById('mapHelpIcon').textContent=open?'−':'＋'}
+function populateDays(){var ds=document.getElementById('deliveryDay'),m=Number(document.getElementById('deliveryMonth').value),y=Number(document.getElementById('deliveryYear').value),keep=Number(ds.value)||1,max=new Date(y,m,0).getDate();ds.innerHTML='<option value="">Día</option>';for(var d=1;d<=max;d++)ds.innerHTML+='<option value="'+d+'">'+d+'</option>';ds.value=String(Math.min(keep,max))}
+function initDeliveryUI(){var p=santoParts(),today=localDate(p),tomorrow=new Date(today);tomorrow.setDate(today.getDate()+1);var ms=document.getElementById('deliveryMonth'),ys=document.getElementById('deliveryYear');ms.innerHTML=MONTHS_ES.map(function(x,i){return '<option value="'+(i+1)+'">'+x+'</option>'}).join('');ys.innerHTML='<option value="'+p.year+'">'+p.year+'</option><option value="'+(p.year+1)+'">'+(p.year+1)+'</option>';ms.value=String(today.getMonth()+1);ys.value=String(today.getFullYear());populateDays();document.getElementById('deliveryDay').value=String(today.getDate());document.getElementById('tomorrowText').textContent=dateLabel(tomorrow);if(p.hour>=18){document.getElementById('dateToday').disabled=true;document.getElementById('dateToday').classList.remove('on');document.getElementById('todayText').textContent='Cerrado después de 6 PM';document.getElementById('dateTomorrow').classList.add('on');DELIVERY_MODE='tomorrow';DELIVERY_DATE=isoDate(tomorrow)}else DELIVERY_DATE=isoDate(today);updateTimeAvailability()}
+function chooseDate(mode){var b=document.getElementById(mode==='today'?'dateToday':mode==='tomorrow'?'dateTomorrow':'dateOther');if(b.disabled)return;DELIVERY_MODE=mode;document.querySelectorAll('.date-choice').forEach(function(x){x.classList.toggle('on',x===b)});document.getElementById('customDate').classList.toggle('show',mode==='other');var p=santoParts(),d=localDate(p);if(mode==='tomorrow')d.setDate(d.getDate()+1);if(mode!=='other')DELIVERY_DATE=isoDate(d);else customDateChanged();document.getElementById('dateError').classList.remove('show');updateTimeAvailability()}
+function customDateChanged(){populateDays();var d=Number(document.getElementById('deliveryDay').value),m=Number(document.getElementById('deliveryMonth').value),y=Number(document.getElementById('deliveryYear').value);DELIVERY_DATE=d&&m&&y?isoDate(new Date(y,m-1,d)):'';var p=santoParts(),min=localDate(p);if(p.hour>=18)min.setDate(min.getDate()+1);document.getElementById('dateError').classList.toggle('show',!DELIVERY_DATE||DELIVERY_DATE<isoDate(min));updateTimeAvailability()}
+function updateTimeAvailability(){var p=santoParts(),today=isoDate(localDate(p)),same=DELIVERY_DATE===today;document.querySelectorAll('.time-choice').forEach(function(b){b.disabled=same&&p.hour>=Number(b.dataset.end);if(b.disabled)b.classList.remove('on')});var on=document.querySelector('.time-choice.on:not(:disabled)');if(!on){var avail=[].slice.call(document.querySelectorAll('.time-choice:not(:disabled)')).pop();if(avail){avail.classList.add('on');DELIVERY_WINDOW=avail.dataset.value}}}
+function chooseTime(b){if(b.disabled)return;document.querySelectorAll('.time-choice').forEach(function(x){x.classList.remove('on')});b.classList.add('on');DELIVERY_WINDOW=b.dataset.value}
 function loadZones(){
  fetch('data/shipping_zones.json').then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
  .then(function(d){ZONES=d.zones||[];DEF_NOTE=d.default_note||'';buildSectorSelect();sectorUI()})
@@ -864,7 +1076,10 @@ function sectorUI(){
  try{if(v)localStorage.setItem('vb_sector',v)}catch(e){}
  paintTotals();
 }
-function subtotal(){return vbCart().reduce(function(a,it){return a+it.price*it.qty},0)}
+function tierRule(it){var embedded=Number(it.tier_price)>0?{min_qty:Number(it.tier_min_qty)||2,unit_price:Number(it.tier_price)}:null;return embedded||TIER_PRICES[it.sku]||null}
+function effectiveUnit(it){var rule=tierRule(it);return rule&&it.qty>=rule.min_qty?rule.unit_price:Number(it.price)}
+function itemTotal(it){return effectiveUnit(it)*it.qty}
+function subtotal(){return vbCart().reduce(function(a,it){return a+itemTotal(it)},0)}
 function calcDiscount(sub){
  if(!COUPON)return 0;
  var d=COUPON.kind==='percent'?sub*COUPON.value/100:COUPON.value;
@@ -915,20 +1130,21 @@ function applyCoupon(){
 function render(){
  var c=vbCart(),box=document.getElementById('items');
  if(!c.length){
-  document.getElementById('itemsBox').innerHTML='<div class="empty">Tu carrito está vacío.<br><br><a href="index.html">← Ver productos</a></div>';
+  document.getElementById('itemsBox').innerHTML='<div class="empty">Tu carrito está vacío.<br><br><a href="./">← Ver productos</a></div>';
   ['formBox','payBox','totBox'].forEach(function(i){document.getElementById(i).style.display='none'});
   return;}
- box.innerHTML=c.map(function(it,i){
+ box.innerHTML=c.map(function(it,i){var unit=effectiveUnit(it),tier=unit<Number(it.price);
   return '<div class="ci"><img src="images/'+it.img+'" onerror="this.style.opacity=0">'
-  +'<div class="t"><div class="nm">'+it.title+'</div><div class="pr">'+money(it.price)+'</div>'
+  +'<div class="t"><div class="nm">'+it.title+'</div><div class="pr">'+money(unit)+' por unidad</div>'
+  +(tier?'<small class="tier-note">✓ Precio por cantidad aplicado</small>':'')
   +'<div class="qty"><button onclick="qty('+i+',-1)">−</button><span>'+it.qty+'</span><button onclick="qty('+i+',1)">+</button></div></div>'
   +'<button class="rm" onclick="rm('+i+')">✕</button></div>';}).join('');
+ try{if(!sessionStorage.getItem('vb_checkout_started')){sessionStorage.setItem('vb_checkout_started','1');c.forEach(function(it){vbTrack('checkout_start',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:'cart_page'})})}}catch(e){}
  paintTotals();
 }
-function qty(i,d){var c=vbCart();c[i].qty+=d;if(c[i].qty<1)c[i].qty=1;vbSave(c);render();
- if(d>0){var it=c[i];try{vbTrack('addcart',it.sku,{qty:it.qty,price:it.price,
-  cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),product_title:it.title,product_img:it.img})}catch(e){}}}
-function rm(i){var c=vbCart();c.splice(i,1);vbSave(c);render()}
+function qty(i,d){var c=vbCart(),it=c[i];it.qty+=d;if(it.qty<1)it.qty=1;vbSave(c);render();
+ try{vbTrack('cart_update',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:d>0?'cart_increase':'cart_decrease'})}catch(e){}}
+function rm(i){var c=vbCart(),it=c[i];c.splice(i,1);vbSave(c);render();try{vbTrack('cart_remove',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:'cart_remove'})}catch(e){}}
 function payUI(){
  var t=document.querySelector('input[name=pay]:checked').value;
  document.getElementById('lCod').classList.toggle('on',t==='cod');
@@ -942,6 +1158,8 @@ function provUI(){
  var prov=document.getElementById('fProv').value,isDN=prov.indexOf('Distrito Nacional')===0,isSDP=prov.indexOf('Santo Domingo (provincia)')===0,metro=isDN||isSDP;
  document.getElementById('sectorFld').style.display=metro?'block':'none';
  document.getElementById('cityFld').style.display=metro?'none':'block';
+ document.getElementById('locationExtra').classList.toggle('show',metro);
+ document.getElementById('scheduleBox').classList.toggle('show',metro);
  // 货到付款仅限大圣多明各；外省强制转账（纯前端判断）
  var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=transfer]');
  cod.disabled=!metro;document.getElementById('lCod').style.display=metro?'flex':'none';
@@ -949,7 +1167,7 @@ function provUI(){
  if(prov&&!metro)tra.checked=true;
  payUI();sectorUI();
 }
-fillSel('fProv',PROVS);loadZones();paintTotals();
+fillSel('fProv',PROVS);initDeliveryUI();loadZones();paintTotals();
 function fieldState(id,bad){var x=document.getElementById(id);if(x)x.classList.toggle('invalid',!!bad)}
 async function confirmar(){
  var c=vbCart();if(!c.length)return;
@@ -959,18 +1177,23 @@ async function confirmar(){
      nota=document.getElementById('fNota').value.trim();
  var prov=document.getElementById('fProv').value;
  var metro=isMetro();
+ var mapUrl=metro?document.getElementById('fMap').value.trim():'',locationLater=metro&&document.getElementById('fLocationLater').checked;
  var selV=document.getElementById('sector-select').value;
  var zona=metro?(selV==='__other__'?OTHER_LABEL:selV):document.getElementById('fCity').value.trim();
+ var pNow=santoParts(),minDate=localDate(pNow);if(pNow.hour>=18)minDate.setDate(minDate.getDate()+1);
+ var mapBad=!!mapUrl&&!isLocationUrl(mapUrl),dateBad=metro&&(!DELIVERY_DATE||DELIVERY_DATE<isoDate(minDate)||!DELIVERY_WINDOW);
  fieldState('fldNom',!nom);fieldState('fldTel',tel.replace(/\D/g,'').length<10);fieldState('fldProv',!prov);
  fieldState('sectorFld',metro&&!selV&&!ZFAIL);fieldState('cityFld',!metro&&!zona);fieldState('fldDir',!dir);
- if(!nom||tel.replace(/\D/g,'').length<10||!prov||(metro&&!selV&&!ZFAIL)||(!metro&&!zona)||!dir){
-  var inv=document.querySelector('.fld.invalid');if(inv)inv.scrollIntoView({behavior:'smooth',block:'center'});return;}
+ document.getElementById('mapError').classList.toggle('show',mapBad);document.getElementById('dateError').classList.toggle('show',dateBad);
+ if(!nom||tel.replace(/\D/g,'').length<10||!prov||(metro&&!selV&&!ZFAIL)||(!metro&&!zona)||!dir||mapBad||dateBad){
+  try{c.forEach(function(it){vbTrack('checkout_error',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),source_section:'delivery_validation'})})}catch(e){}
+  var inv=document.querySelector('.fld.invalid')||document.querySelector('.map-error.show');if(inv)inv.scrollIntoView({behavior:'smooth',block:'center'});return;}
  var fee=shipFee();
  var loc=prov+' · '+zona;
  var pay=document.querySelector('input[name=pay]:checked').value;
  var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
- var sub=0,lines=c.map(function(it){sub+=it.price*it.qty;
-   return it.qty+'x '+it.title+' ('+it.sku+') — '+money(it.price*it.qty)});
+ var sub=0,lines=c.map(function(it){var lineTotal=itemTotal(it);sub+=lineTotal;
+   return it.qty+'x '+it.title+' ('+it.sku+') — '+money(lineTotal)});
  var disc=calcDiscount(sub),productTotal=sub-disc,tot=productTotal+(fee||0);
  var shippingText=fee!=null?money(fee)+(SHIP.eta?' ('+SHIP.eta+')':''):'por confirmar';
  var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
@@ -979,6 +1202,8 @@ async function confirmar(){
   +'\\n🚚 Envío: '+shippingText
   +'\\n*Total: '+money(tot)+(fee==null?' + envío':'')+'*'
   +'\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
+  +(metro?'\\n🗺️ Ubicación: '+(mapUrl||(locationLater?'La enviará por Waze o WhatsApp después':'No proporcionada')):'')
+  +(metro?'\\n🕒 Preferencia: '+DELIVERY_DATE+' · '+DELIVERY_WINDOW:'')
   +(nota?'\\n📝 '+nota:'')
   +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
   +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
@@ -988,18 +1213,22 @@ async function confirmar(){
   var orderRes=await fetch('__API__/api/order',{method:'POST',credentials:'include',
    headers:{'Content-Type':'application/json'},body:JSON.stringify({order_id:oid,
     customer_name:nom,phone:tel,province:prov,zone:zona,address:dir,note:nota,
+    map_url:mapUrl,location_followup:locationLater?1:0,
+    preferred_delivery_date:metro?DELIVERY_DATE:'',preferred_delivery_window:metro?DELIVERY_WINDOW:'',
     payment_method:pay,shipping_zone:(SHIP&&SHIP.zone)||(metro?'otro':'interior'),
     shipping_fee:fee||0,shipping_fee_min:fee||0,shipping_fee_max:fee||0,
     delivery_estimate:(SHIP&&SHIP.eta)||'por confirmar',
     subtotal:sub,discount:disc,total:tot,total_min:tot,total_max:tot,
     coupon_code:COUPON?COUPON.code:'',tracking:vbContext(),items:c.map(function(it){return {
-     sku:it.sku,title:it.title,image:it.img,unit_price:it.price,quantity:it.qty}})})});
+     sku:it.sku,title:it.title,image:it.img,unit_price:effectiveUnit(it),quantity:it.qty}})})});
   var orderData=await orderRes.json();
   if(!orderRes.ok||!orderData.ok)throw new Error(orderData.error||'No se pudo guardar el pedido');
- }catch(e){btn.disabled=false;paintTotals();
+ }catch(e){btn.disabled=false;paintTotals();try{c.forEach(function(it){vbTrack('checkout_error',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:tot,source_section:'order_api'})})}catch(_e){}
   alert('No pudimos guardar tu pedido. Revisa tu conexión e intenta de nuevo.');return;}
- try{fbq('track','Purchase',{value:tot,currency:'DOP',content_type:'product',num_items:c.reduce(function(a,b){return a+b.qty},0)})}catch(e){}
-    vbTrack('checkout','',{coupon:COUPON?COUPON.code:''});
+ try{fbq('track','Purchase',{content_ids:c.map(function(x){return x.sku}),content_type:'product',
+  num_items:c.reduce(function(a,b){return a+b.qty},0),order_id:oid,
+  value:Math.round(tot/__META_DOP_PER_USD__*100)/100,currency:'USD',local_value_dop:tot})}catch(e){}
+ try{c.forEach(function(it){vbTrack('checkout',it.sku,{order_id:oid,qty:it.qty,price:effectiveUnit(it),cart_total:tot,selected_color:it.color||'',source_section:'order_confirmed',coupon:COUPON?COUPON.code:''})})}catch(e){}
  if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify({code:COUPON.code,order_id:oid})}).catch(function(){})}catch(e){}}
@@ -1010,15 +1239,17 @@ async function confirmar(){
  document.getElementById('okScreen').style.display='block';
  window.scrollTo(0,0);
 }
+try{localStorage.removeItem('vb_campaign_coupon')}catch(e){}
 render();payUI();
-try{var autoCoupon=new URLSearchParams(location.search).get('coupon')||localStorage.getItem('vb_campaign_coupon');
- if(autoCoupon){document.getElementById('cpnCode').value=autoCoupon.toUpperCase();setTimeout(applyCoupon,80)}}catch(e){}
 </script>"""
     body = (body.replace("__BANKS__", banks_html).replace("__WA__", WHATSAPP)
-                .replace("__BANKLINES__", bank_lines).replace("__API__", API_BASE))
+                .replace("__BANKLINES__", bank_lines).replace("__API__", API_BASE)
+                .replace("__TIER_PRICES__", tier_prices_json)
+                .replace("__META_DOP_PER_USD__", f"{META_DOP_PER_USD:.4f}"))
     return page(f"Tu compra — {SITE_NAME}", body,
                 pixel_extra="fbq('track','InitiateCheckout');",
-                desc="Carrito de compras VivaBien — contra entrega en Gran Santo Domingo o transferencia nacional.")
+                desc="Carrito de compras VivaBien — contra entrega en Gran Santo Domingo o transferencia nacional.",
+                canonical=public_url("carrito.html"), robots="noindex,follow")
 
 # ---------- 专题合集 ----------
 import json as _json, hashlib as _hashlib
@@ -1063,7 +1294,7 @@ def product_card(p, rel=""):
                   if p["price"] is not None else "")
     return (f'<article class="card" data-g="{esc(p["group"])}" data-s="{esc(p["sub"])}" '
             f'data-q="{esc(snorm(p["title"] + " " + p["sub"] + " " + p["group"]))}" '
-            f'><a class="card-link" href="{rel}producto/{p["handle"]}.html">'
+            f'><a class="card-link" href="{rel}producto/{p["handle"]}">'
             f'<div class="imgbox"><img src="{rel}images/{esc(p["img"])}" alt="{esc(p["title"])}" '
             f'loading="lazy" onerror="this.style.display=\'none\'">'
             f'<span class="badge">{esc(p["sub"])}</span>{sale_badge}</div>'
@@ -1094,7 +1325,7 @@ def coleccion_page(c, prods):
     cta = esc((c.get("cta") or "").strip() or f"Ver los {len(prods)} productos")
     body = f"""{header("../")}
 <div class="tbanner" style="{hero_style}">
-<a class="bk" href="../index.html">← Volver a la tienda</a>
+<a class="bk" href="../">← Volver a la tienda</a>
 <h2>{esc(c["title"])}</h2>
 {f'<p>{esc(c.get("subtitle",""))}</p>' if c.get("subtitle") else ""}
 <a class="tcta" href="#cgrid">{cta} →</a>
@@ -1124,26 +1355,69 @@ document.querySelectorAll('.cchip').forEach(function(ch){{ch.onclick=function(){
 </script>"""
     return page(f"{c['title']} — {SITE_NAME}", body, wa_float=True,
                 desc=(c.get("subtitle") or c["title"])[:150],
-                canonical=f"{SITE_URL}/coleccion/{c['slug']}.html", rel="../")
+                canonical=public_url(f"coleccion/{c['slug']}.html"), rel="../")
+
+def coming_soon_collection_page(c):
+    """尚未上架商品的专题占位页；保留正式路由，后续可直接填充商品。"""
+    image = str(c.get("image") or "").strip()
+    media = (f'<img src="../images/{esc(image)}" alt="{esc(c["title"])}">' if image else "")
+    body = f"""{header("../")}
+<main class="soon-page">
+ <div class="soon-media">{media}</div>
+ <div class="soon-copy">
+  <span>Próximamente</span>
+  <h1>{esc(c['title'])}</h1>
+  <p>{esc(c.get('subtitle') or 'Estamos preparando esta colección para ti.')}</p>
+  <a href="../">Volver a la tienda</a>
+ </div>
+</main>
+<style>
+.soon-page{{min-height:calc(100vh - 68px);display:grid;background:#F5F7FB}}
+.soon-media{{min-height:44vh;background:#E9EDF4;overflow:hidden}}
+.soon-media img{{width:100%;height:100%;object-fit:cover}}
+.soon-copy{{padding:34px 20px 52px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}}
+.soon-copy span{{color:#2563D9;font-size:11px;font-weight:800;text-transform:uppercase}}
+.soon-copy h1{{font-size:36px;line-height:1.05;margin:8px 0 12px}}
+.soon-copy p{{max-width:480px;color:#667085;line-height:1.6}}
+.soon-copy a{{margin-top:22px;display:inline-flex;align-items:center;min-height:46px;padding:0 18px;border-radius:8px;background:#2563D9;color:#fff;font-weight:800}}
+@media(min-width:760px){{.soon-page{{grid-template-columns:1.05fr .95fr}}.soon-media{{min-height:calc(100vh - 68px)}}.soon-copy{{padding:60px}}.soon-copy h1{{font-size:54px}}}}
+</style>"""
+    return page(f"{c['title']} | Próximamente | {SITE_NAME}", body, wa_float=True,
+                desc=(c.get("subtitle") or f"Próximamente: {c['title']} en VivaBien.")[:150],
+                canonical=public_url(f"coleccion/{c['slug']}.html"), rel="../")
 
 def featured_html(collections, by_sku):
-    """首页顶部专题入口卡片"""
-    cards = ""
+    """首页顶部专题切换器：普通专题、独立落地页和待上新专题共用。"""
+    tabs, slides = [], []
+    visible = []
     for c in collections:
         prods = [by_sku[s] for s in c.get("skus", []) if s in by_sku]
-        if not prods:
+        image = str(c.get("image") or (prods[0]["img"] if prods else "")).strip()
+        if not image:
             continue
-        c0, c1 = coll_grad(c["slug"])
-        thumbs = "".join(
-            f'<img src="images/{esc(pp["img"])}" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
-            for pp in prods[:4])
-        sub = f'<p>{esc(c.get("subtitle",""))}</p>' if c.get("subtitle") else ""
-        cards += (f'<a class="feat" style="background:linear-gradient(120deg,{c0},{c1})" '
-                  f'href="coleccion/{esc(c["slug"])}.html">'
-                  f'<div class="kick">★ Destacado</div><h3>{esc(c["title"])}</h3>{sub}'
-                  f'<div class="thumbs">{thumbs}</div>'
-                  f'<span class="go">Ver colección →</span></a>')
-    return f'<div class="feats">{cards}</div>' if cards else ""
+        visible.append((c, image))
+    for i, (c, image) in enumerate(visible):
+        active = " on" if i == 0 else ""
+        href = str(c.get("landing") or f'coleccion/{c["slug"]}.html').strip()
+        cta = str(c.get("cta") or "Ver colección").strip()
+        kick = "Próximamente" if c.get("coming_soon") else "Colección destacada"
+        tabs.append(f'<button class="feat-tab{active}" type="button" role="tab" '
+                    f'aria-selected="{str(i == 0).lower()}" data-feat="{i}">{esc(c["title"])}</button>')
+        slides.append(f'<a class="feat-slide{active}" data-feat-panel="{i}" href="{esc(href)}">'
+                      f'<img src="images/{esc(image)}" alt="{esc(c["title"])}" loading="lazy">'
+                      f'<span class="feat-copy"><span class="feat-kick">{esc(kick)}</span>'
+                      f'<h3>{esc(c["title"])}</h3><p>{esc(c.get("subtitle", ""))}</p>'
+                      f'<span class="feat-go">{esc(cta)} →</span></span></a>')
+    if not slides:
+        return ""
+    return (f'<section class="feat-switcher" aria-label="Colecciones destacadas">'
+            f'<div class="feat-tabs" role="tablist">{"".join(tabs)}</div>'
+            f'<div class="feat-stage">{"".join(slides)}</div></section>'
+            '<script>(function(){var ts=document.querySelectorAll(".feat-tab"),'
+            'ps=document.querySelectorAll(".feat-slide");ts.forEach(function(t){t.onclick=function(){'
+            'var n=t.dataset.feat;ts.forEach(function(x){var on=x===t;x.classList.toggle("on",on);'
+            'x.setAttribute("aria-selected",on)});ps.forEach(function(x){x.classList.toggle("on",'
+            'x.dataset.featPanel===n)})}})})();</script>')
 
 PROMISE_HTML = """<div class="promise-strip" aria-label="Compromisos de servicio">
 <div>🚚 Entrega 24-72 horas</div><div>💵 Pagas al recibir</div><div>↩️ Garantía de 7 días</div>
@@ -1225,7 +1499,7 @@ def garantia_page():
 <a class="contact" href="https://wa.me/{WHATSAPP}" target="_blank">Hablar con VivaBien por WhatsApp</a></main>"""
     return page(f"Garantía de 7 días | {SITE_NAME}", body, wa_float=True,
                 desc="Política de garantía, cambios y devoluciones de VivaBien en República Dominicana.",
-                canonical=f"{SITE_URL}/garantia.html")
+                canonical=public_url("garantia.html"))
 
 def category_page(title, products, description, slug):
     cards = "".join(product_card(p, rel="../") for p in products)
@@ -1233,7 +1507,748 @@ def category_page(title, products, description, slug):
             f'<p class="count">{esc(description)}</p></div></div><div class="count">{len(products)} productos</div>'
             f'<div class="grid">{cards}</div></main>')
     return page(f"{title} | Comprar online RD | {SITE_NAME}", body, wa_float=True,
-                desc=description, canonical=f"{SITE_URL}/categoria/{slug}.html", rel="../")
+                desc=description, canonical=public_url(f"categoria/{slug}.html"), rel="../")
+
+def load_panel_products():
+    """读取格栅板 SKU，供专题、详情页、搜索和购物车共用。"""
+    cfg = load_json(PANELS_PATH, {})
+    raw_products = cfg.get("products") if isinstance(cfg, dict) else []
+    products = []
+    for raw in raw_products if isinstance(raw_products, list) else []:
+        if not isinstance(raw, dict):
+            continue
+        sku = str(raw.get("sku") or "").strip().upper()
+        image = str(raw.get("image") or "").strip().lstrip("/")
+        try:
+            price = float(raw.get("price"))
+        except (TypeError, ValueError):
+            continue
+        if not sku or not image or price <= 0:
+            continue
+        products.append({"sku": sku, "name": str(raw.get("name") or sku).strip(),
+                         "price": price, "image": image,
+                         "available": raw.get("available") is not False})
+    return cfg if isinstance(cfg, dict) else {}, products
+
+def panels_page():
+    """格栅板独立专题页：真实纹理选色、数量计算、加购和 WhatsApp。"""
+    cfg, products = load_panel_products()
+    if not products:
+        return ""
+
+    cards = []
+    for i, p in enumerate(products):
+        cards.append(f'''<button class="pz-card{' selected' if i == 0 else ''}" type="button"
+ data-sku="{esc(p['sku'])}" aria-pressed="{'true' if i == 0 else 'false'}">
+<span class="pz-card-img"><img src="images/{esc(p['image'])}" alt="Panel decorativo {esc(p['sku'])} {esc(p['name'])}" loading="lazy"></span>
+<span class="pz-card-copy"><b>{esc(p['sku'])}</b><span>{esc(p['name'])}</span><strong>{fmt_price(p['price'])}</strong></span>
+</button>''')
+    product_json = json.dumps(products, ensure_ascii=False).replace("</", "<\\/")
+    hero = products[0]
+    hero_image = str(cfg.get("hero_image") or hero["image"]).strip().lstrip("/")
+    hero_alt = str(cfg.get("hero_alt") or f"Panel decorativo {hero['sku']}").strip()
+    title = str(cfg.get("title") or "Transforma tu pared. Transforma tu espacio.").strip()
+    subtitle = str(cfg.get("subtitle") or "Paneles decorativos modernos para renovar tu hogar.").strip()
+    shipping = str(cfg.get("shipping_faq") or "El costo y el tiempo de entrega se confirman según tu ubicación.").strip()
+    wa_general = f"https://wa.me/{WHATSAPP}?text=" + quote("Hola, quiero información sobre los paneles decorativos ZT.")
+
+    css = r"""
+<style>
+.pz-page,.pz-page *{box-sizing:border-box}.pz-page{background:#F5F5F5;color:#172033;overflow:hidden}.pz-wrap{width:min(900px,100%);margin:auto;padding:0 14px}
+.pz-nav{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.96);border-bottom:1px solid #E8EDF5}.pz-nav-in{height:64px;display:flex;align-items:center;gap:18px}.pz-logo{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:800}.pz-logo-i{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:#2563D9;color:#fff}.pz-links{display:none;margin-left:auto;gap:22px;font-size:13px;font-weight:700}.pz-actions{margin-left:auto;display:flex;gap:8px}.pz-icon{width:42px;height:42px;display:grid;place-items:center;border:1px solid #DFE6F1;border-radius:8px;color:#2563D9;background:#fff}.pz-buy{display:none;align-items:center;height:42px;padding:0 16px;background:#FF6B4A;color:#fff;border-radius:8px;font-size:13px;font-weight:800}
+.pz-hero{height:min(70vh,650px);min-height:470px;position:relative;background:#2b2a27}.pz-hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 16%}.pz-hero-copy{display:none}.pz-hero-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:23px}.pz-btn{min-height:48px;padding:0 16px;border:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;cursor:pointer}.pz-primary{background:#FF6B00;color:#fff}.pz-secondary{background:#fff;color:#172033}
+.pz-trust{background:#F4F7FB;border-bottom:1px solid #E6ECF4}.pz-trust-in{display:grid;grid-template-columns:repeat(3,1fr)}.pz-trust span{padding:14px 4px;text-align:center;font-size:9px;font-weight:800;border-right:1px solid #DDE5F0;overflow-wrap:anywhere}.pz-trust span:last-child{border:0}
+.pz-summary{padding:18px 14px;background:#fff;border-bottom:8px solid #F5F5F5}.pz-summary h1{font-size:21px;line-height:1.28}.pz-summary-meta{margin-top:7px;color:#667085;font-size:11px}.pz-summary-price{margin-top:12px;color:#FF6B00;font-size:34px;font-weight:800}.pz-summary-stock{display:inline-block;margin-top:8px;padding:5px 8px;border:1px solid #FFB485;border-radius:4px;color:#C94E00;font-size:10px;font-weight:800}.pz-summary-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.pz-summary-actions a{min-width:0}
+.pz-section{padding:64px 0}.pz-soft{background:#F7F9FD}.pz-head{max-width:650px;margin-bottom:26px}.pz-eyebrow{font-size:11px;font-weight:800;text-transform:uppercase;color:#2563D9}.pz-head h2{font-size:29px;line-height:1.15;margin-top:8px}.pz-head p{font-size:14px;color:#667085;line-height:1.6;margin-top:9px}
+.pz-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pz-card{text-align:left;border:1px solid #DADDE2;background:#fff;border-radius:7px;overflow:hidden;padding:3px;cursor:pointer;color:#172033}.pz-card.selected{border:2px solid #2563D9;padding:2px;box-shadow:0 0 0 2px rgba(37,99,217,.1)}.pz-card-img{display:block;aspect-ratio:1;overflow:hidden;border-radius:4px;background:#E8EDF3}.pz-card-img img{width:100%;height:100%;object-fit:cover}.pz-card-copy{display:flex;flex-direction:column;padding:8px 5px;min-height:88px}.pz-card-copy b{font-size:11px}.pz-card-copy span{font-size:9px;color:#6B7280;margin:3px 0 7px;min-height:24px}.pz-card-copy strong{font-size:12px;margin-top:auto;color:#FF6B00}
+.pz-preview-grid{display:grid;gap:24px}.pz-preview-media{position:relative;aspect-ratio:4/5;background:#ECEFF3;overflow:hidden}.pz-preview-media img{width:100%;height:100%;object-fit:cover;transition:opacity .2s ease}.pz-preview-badge{position:absolute;left:14px;bottom:14px;background:#fff;color:#172033;padding:10px 12px;border-radius:6px;font-size:12px;font-weight:800;box-shadow:0 6px 20px rgba(0,0,0,.15)}.pz-preview-info{display:flex;flex-direction:column;justify-content:center}.pz-preview-info h3{font-size:28px;margin-top:8px}.pz-preview-price{font-size:27px;font-weight:800;margin:16px 0}.pz-swatches{display:flex;gap:8px;flex-wrap:wrap}.pz-swatch{border:1px solid #DCE3ED;background:#fff;border-radius:6px;padding:10px 12px;font-size:12px;font-weight:800;cursor:pointer}.pz-swatch.selected{background:#2563D9;border-color:#2563D9;color:#fff}.pz-add{margin-top:18px;width:100%;gap:8px}
+.pz-spec-grid{display:grid;gap:24px;align-items:center}.pz-spec-art{min-height:330px;background-image:linear-gradient(rgba(255,255,255,.05),rgba(255,255,255,.05)),var(--panel-image);background-size:cover;background-position:center;border-radius:8px}.pz-measures{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0}.pz-measure{padding:18px;background:#F3F6FA;border-left:4px solid #2563D9}.pz-measure b{display:block;font-size:24px}.pz-measure span{font-size:11px;color:#667085}.pz-points{display:grid;gap:12px}.pz-point{display:flex;gap:12px}.pz-num{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#EEF4FF;color:#2563D9;font-size:12px;font-weight:800}.pz-point b{display:block;font-size:14px}.pz-point p{font-size:12px;color:#667085;line-height:1.5;margin-top:3px}
+.pz-calc{display:grid;gap:22px;background:#172033;color:#fff;padding:24px;border-radius:8px}.pz-calc-copy h2{font-size:28px;line-height:1.15}.pz-calc-copy p{color:#C5CDDA;font-size:13px;line-height:1.6;margin-top:10px}.pz-form{background:#fff;color:#172033;padding:18px;border-radius:8px}.pz-fields{display:grid;gap:12px}.pz-field label{display:block;font-size:11px;font-weight:800;margin-bottom:6px}.pz-input{display:flex;border:1px solid #D6DFEB;border-radius:7px;overflow:hidden}.pz-input input{width:100%;border:0;padding:13px;font:700 16px inherit;outline:0}.pz-input span{display:grid;place-items:center;padding:0 12px;background:#F4F6F9;color:#667085;font-size:12px}.pz-calc-btn{width:100%;margin-top:14px}.pz-result{display:none;margin-top:14px;padding:13px;background:#EEF4FF;border-radius:7px;color:#172033;font-size:13px;line-height:1.5}.pz-result strong{display:block;font-size:20px;color:#2563D9}.pz-result.error{display:block;background:#FFF0EE;color:#A3362C}.pz-result-actions{display:none;gap:8px;margin-top:10px}.pz-result-actions .pz-btn{flex:1;padding:0 10px}.pz-wa-small{background:#25D366;color:#fff}
+.pz-steps{display:grid;gap:12px}.pz-step{padding:22px;border-top:3px solid #2563D9;background:#F7F9FD}.pz-step small{font-weight:800;color:#2563D9}.pz-step h3{font-size:18px;margin:12px 0 7px}.pz-step p{font-size:12px;color:#667085;line-height:1.55}.pz-faq{max-width:820px;margin:auto}.pz-faq details{border-bottom:1px solid #E1E7F0;padding:17px 0}.pz-faq summary{cursor:pointer;font-size:14px;font-weight:800;list-style:none}.pz-faq summary::-webkit-details-marker{display:none}.pz-faq p{font-size:13px;color:#667085;line-height:1.6;padding-top:10px}
+.pz-review-grid{display:grid;gap:10px}.pz-review{padding:16px;border:1px solid #E1E7F0;border-radius:7px;background:#fff}.pz-review b{font-size:13px}.pz-review p{margin-top:7px;color:#4B5565;font-size:12px;line-height:1.55}.pz-review-source{margin-top:13px;color:#667085;font-size:10px;line-height:1.5}.pz-detail-row{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.pz-detail-row::-webkit-scrollbar{display:none}.pz-detail-card{flex:0 0 min(78vw,300px);margin:0;overflow:hidden;border:1px solid #E1E7F0;border-radius:7px;background:#fff;scroll-snap-align:start}.pz-detail-card img{width:100%;aspect-ratio:1;display:block;object-fit:cover}.pz-detail-card figcaption{padding:11px;color:#667085;font-size:10px;line-height:1.45}.pz-detail-card b{display:block;margin-bottom:3px;color:#172033;font-size:12px}
+.pz-final{position:relative;min-height:520px;display:flex;align-items:flex-end;color:#fff;background:#202026}.pz-final img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.pz-final:after{content:"";position:absolute;inset:0;background:rgba(8,12,18,.62)}.pz-final-copy{position:relative;z-index:1;padding:55px 18px;width:min(1160px,100%);margin:auto}.pz-final h2{font-size:34px;max-width:520px}.pz-final p{margin:10px 0 20px;color:#E5EAF2}.pz-mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:90;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #DFE6F0}.pz-mobile-bar .pz-btn{min-height:46px}.pz-mobile-wa{background:#25D366;color:#fff}
+@media(min-width:720px){.pz-links{display:flex}.pz-actions{margin-left:0}.pz-buy{display:flex}.pz-trust span{font-size:12px}.pz-summary{padding:24px}.pz-products{grid-template-columns:repeat(5,1fr);gap:12px}.pz-preview-grid,.pz-spec-grid{grid-template-columns:1.1fr .9fr;gap:50px}.pz-preview-media{aspect-ratio:5/4}.pz-spec-grid{grid-template-columns:1fr 1fr}.pz-calc{grid-template-columns:.85fr 1.15fr;padding:42px;align-items:center}.pz-fields{grid-template-columns:1fr 1fr}.pz-steps{grid-template-columns:repeat(3,1fr)}.pz-review-grid{grid-template-columns:repeat(2,1fr)}.pz-mobile-bar{display:none}.pz-section{padding:72px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}.pz-preview-media img{transition:none}}
+</style>
+"""
+    body = r"""
+<div class="pz-page">
+<nav class="pz-nav"><div class="pz-wrap pz-nav-in"><a class="pz-logo" href="./"><span class="pz-logo-i">V</span>VivaBien</a><div class="pz-links"><a href="#colores">Colores</a><a href="#medidas">Medidas</a><a href="#calculadora">Calculadora</a><a href="#preguntas">Preguntas</a></div><div class="pz-actions"><a class="pz-icon" href="carrito" aria-label="Carrito">__BAG__<span class="cart-n" id="cartN"></span></a><a class="pz-buy" href="#colores">COMPRAR</a></div></div></nav>
+<header class="pz-hero"><img class="pz-hero-media" src="images/__HERO_IMAGE__" alt="__HERO_ALT__" fetchpriority="high"><div class="pz-hero-copy"><span class="pz-kicker">Panel decorativo · 290 × 17 cm</span><h1>__TITLE__</h1><p>__SUBTITLE__</p><div class="pz-hero-buttons"><a class="pz-btn pz-primary" href="#colores">VER COLORES</a><a class="pz-btn pz-secondary" href="#calculadora">CALCULAR CANTIDAD</a></div></div></header>
+<div class="pz-trust"><div class="pz-wrap pz-trust-in"><span>290 cm de largo</span><span>17 cm de ancho</span><span>Asesoría por WhatsApp</span></div></div>
+<section class="pz-summary"><h1>__TITLE__</h1><p class="pz-summary-meta">Panel rígido ranurado · 290 × 17 cm · <b id="pzSummarySku">__HERO_SKU__</b></p><div class="pz-summary-price" id="pzSummaryPrice">__HERO_PRICE__</div><span class="pz-summary-stock">PRECIO POR PANEL</span><div class="pz-summary-actions"><a class="pz-btn pz-primary" href="#colores">ELEGIR COLOR</a><a class="pz-btn pz-secondary" href="#calculadora">CALCULAR</a></div></section>
+<main>
+<section class="pz-section" id="colores"><div class="pz-wrap"><div class="pz-head"><span class="pz-eyebrow">Colección ZT</span><h2>Elige el color</h2><p>Todos los recortes tienen el mismo tamaño para comparar mejor. El SKU aparece debajo de cada muestra.</p></div><div class="pz-products">__PRODUCT_CARDS__</div></div></section>
+<section class="pz-section pz-soft"><div class="pz-wrap pz-preview-grid"><div class="pz-preview-media"><img id="pzMainImage" src="images/__INITIAL_PRODUCT_IMAGE__" alt="Panel decorativo __HERO_SKU__"><span class="pz-preview-badge" id="pzBadge">__HERO_SKU__ · __HERO_NAME__</span></div><div class="pz-preview-info"><span class="pz-eyebrow">Vista del acabado real</span><h3 id="pzName">__HERO_NAME__</h3><div class="pz-preview-price" id="pzPrice">__HERO_PRICE__</div><div class="pz-swatches" id="pzSwatches">__SWATCHES__</div><button class="pz-btn pz-primary pz-add" id="pzAddOne">__BAG__ AGREGAR AL CARRITO</button></div></div></section>
+<section class="pz-section"><div class="pz-wrap"><div class="pz-head"><span class="pz-eyebrow">Comentarios públicos</span><h2>Lo que más valoran en paneles similares</h2><p>Resumen editorial de opiniones públicas sobre productos comparables; no son reseñas verificadas de pedidos de VivaBien.</p></div><div class="pz-review-grid"><article class="pz-review"><b>El cambio visual se nota rápido</b><p>Compradores destacan que una pared sencilla se ve más terminada y cálida después de instalar paneles ranurados.</p></article><article class="pz-review"><b>Medir y alinear hace la diferencia</b><p>La recomendación más repetida es presentar las piezas primero y mantener la primera perfectamente nivelada.</p></article><article class="pz-review"><b>Conviene revisar el tono con la luz real</b><p>El acabado puede verse más claro u oscuro según la pantalla, la iluminación y el ángulo del espacio.</p></article><article class="pz-review"><b>Hay que revisar bordes al recibir</b><p>Algunas opiniones de paneles comparables mencionan golpes de transporte; revisa las piezas antes de instalar.</p></article></div><p class="pz-review-source">Síntesis basada en opiniones públicas de productos similares de Home Depot, WoodUpp y Naturewall. No atribuimos prestaciones acústicas, impermeabilidad ni material sin ficha técnica confirmada.</p></div></section>
+<section class="pz-section pz-soft"><div class="pz-wrap"><div class="pz-head"><span class="pz-eyebrow">Detalles visuales</span><h2>Compara ambiente, textura y acabados</h2></div><div class="pz-detail-row"><figure class="pz-detail-card"><img src="images/__HERO_IMAGE__" alt="Sala con panel decorativo ranurado" loading="lazy"><figcaption><b>Resultado en un ambiente</b>Referencia visual para una pared protagonista.</figcaption></figure><figure class="pz-detail-card"><img src="images/panels/swatches/ZT-101.jpg" alt="Textura ZT-101" loading="lazy"><figcaption><b>Roble dorado · ZT-101</b>Acercamiento uniforme de la textura.</figcaption></figure><figure class="pz-detail-card"><img src="images/panels/swatches/ZT-169.jpg" alt="Textura ZT-169" loading="lazy"><figcaption><b>Terrazo gris · ZT-169</b>Una alternativa fría para espacios modernos.</figcaption></figure><figure class="pz-detail-card"><img src="images/panels/swatches/ZT-135.jpg" alt="Textura ZT-135" loading="lazy"><figcaption><b>Rojo madera · ZT-135</b>Una opción más cálida y marcada.</figcaption></figure></div></div></section>
+<section class="pz-section" id="medidas"><div class="pz-wrap pz-spec-grid"><div class="pz-spec-art" id="pzSpecArt"></div><div><div class="pz-head"><span class="pz-eyebrow">Medidas confirmadas</span><h2>Una pieza larga para una pared más limpia</h2><p>La cantidad depende del ancho de tu pared. Si la altura supera el largo del panel, te ayudamos a revisar el proyecto.</p></div><div class="pz-measures"><div class="pz-measure"><b>290 cm</b><span>de largo</span></div><div class="pz-measure"><b>17 cm</b><span>de ancho</span></div></div><div class="pz-points"><div class="pz-point"><span class="pz-num">1</span><div><b>Relieve decorativo</b><p>Frente ranurado con cuatro líneas elevadas visibles.</p></div></div><div class="pz-point"><span class="pz-num">2</span><div><b>Tonos combinables</b><p>Opciones claras, cálidas y blancas para distintos ambientes.</p></div></div><div class="pz-point"><span class="pz-num">3</span><div><b>Medición sencilla</b><p>Usa la calculadora para obtener una cantidad inicial.</p></div></div></div></div></div></section>
+<section class="pz-section pz-soft" id="calculadora"><div class="pz-wrap"><div class="pz-calc"><div class="pz-calc-copy"><span class="pz-eyebrow">Calculadora</span><h2>¿Cuántos paneles necesitas?</h2><p>Calculamos una instalación vertical usando paneles de 17 cm de ancho y 290 cm de largo.</p></div><form class="pz-form" id="pzCalc" novalidate><div class="pz-fields"><div class="pz-field"><label for="pzWidth">Ancho de la pared</label><div class="pz-input"><input id="pzWidth" type="number" inputmode="decimal" min="1" placeholder="Ej. 340"><span>cm</span></div></div><div class="pz-field"><label for="pzHeight">Alto de la pared</label><div class="pz-input"><input id="pzHeight" type="number" inputmode="decimal" min="1" placeholder="Ej. 260"><span>cm</span></div></div></div><button class="pz-btn pz-primary pz-calc-btn" type="submit">CALCULAR CANTIDAD</button><div class="pz-result" id="pzResult"></div><div class="pz-result-actions" id="pzResultActions"><button class="pz-btn pz-primary" type="button" id="pzAddQty">Agregar al carrito</button><a class="pz-btn pz-wa-small" id="pzCalcWa" href="__WA_GENERAL__" target="_blank">WhatsApp</a></div></form></div></div></section>
+<section class="pz-section"><div class="pz-wrap"><div class="pz-head"><span class="pz-eyebrow">Cómo comenzar</span><h2>Renueva tu espacio en pocos pasos</h2></div><div class="pz-steps"><article class="pz-step"><small>PASO 01</small><h3>Mide tu pared</h3><p>Toma el ancho y el alto en centímetros.</p></article><article class="pz-step"><small>PASO 02</small><h3>Elige tu tono</h3><p>Selecciona el modelo ZT que combine con tu espacio.</p></article><article class="pz-step"><small>PASO 03</small><h3>Confirma tu pedido</h3><p>Agrega la cantidad o escríbenos para revisar tus medidas.</p></article></div></div></section>
+<section class="pz-section pz-soft" id="preguntas"><div class="pz-wrap pz-faq"><div class="pz-head"><span class="pz-eyebrow">Información útil</span><h2>Preguntas frecuentes</h2></div><details><summary>¿Cuál es el tamaño de cada panel?</summary><p>Cada panel mide 290 cm de largo y 17 cm de ancho.</p></details><details><summary>¿Cómo sé cuántos paneles necesito?</summary><p>Usa nuestra calculadora con las medidas de tu pared o envíanos las medidas por WhatsApp.</p></details><details><summary>¿Los colores de las fotos son reales?</summary><p>Las imágenes corresponden a los modelos mostrados. El tono puede variar ligeramente según la luz y la pantalla.</p></details><details><summary>¿Cómo puedo comprar?</summary><p>Selecciona el modelo, calcula la cantidad y agrégalo al carrito. También puedes consultarnos por WhatsApp.</p></details><details><summary>¿Hacen envíos?</summary><p>__SHIPPING__</p></details></div></section>
+</main>
+<section class="pz-final"><img id="pzFinalImage" src="images/__FINAL_IMAGE__" alt="Detalle de panel decorativo ZT"><div class="pz-final-copy"><h2>Tu pared puede tener un acabado diferente.</h2><p>Elige tu tono y calcula la cantidad que necesitas.</p><div class="pz-hero-buttons"><a class="pz-btn pz-primary" href="#colores">VER COLORES</a><a class="pz-btn pz-secondary" href="__WA_GENERAL__" target="_blank">HABLAR POR WHATSAPP</a></div></div></section>
+<div class="pz-mobile-bar"><a class="pz-btn pz-primary" href="#colores">VER COLORES</a><a class="pz-btn pz-mobile-wa" href="__WA_GENERAL__" target="_blank">WHATSAPP</a></div>
+</div>
+<script>
+(function(){
+ var products=__PRODUCT_JSON__,selected=products[0],estimated=0;
+ function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
+ function product(sku){return products.find(function(p){return p.sku===sku})||products[0]}
+ function select(sku){selected=product(sku);var im=document.getElementById('pzMainImage');im.style.opacity='.2';setTimeout(function(){im.src='images/'+selected.image;im.alt='Panel decorativo '+selected.sku+' '+selected.name;im.style.opacity='1'},120);document.getElementById('pzBadge').textContent=selected.sku+' · '+selected.name;document.getElementById('pzName').textContent=selected.name;document.getElementById('pzPrice').textContent=money(selected.price);document.getElementById('pzSummarySku').textContent=selected.sku;document.getElementById('pzSummaryPrice').textContent=money(selected.price);document.getElementById('pzSpecArt').style.setProperty('--panel-image','url("images/'+selected.image+'")');document.querySelectorAll('.pz-card,.pz-swatch').forEach(function(x){var on=x.dataset.sku===sku;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',on?'true':'false')});if(estimated)paintResult(estimated);try{vbTrack('filter',sku,{filter_group:'paneles',filter_sub:'color_preview_change'})}catch(e){}}
+ function add(qty){var c=vbCart(),f=c.find(function(x){return x.sku===selected.sku});if(f)f.qty+=qty;else c.push({sku:selected.sku,handle:selected.sku.toLowerCase(),title:'Panel decorativo '+selected.sku+' · '+selected.name,price:selected.price,img:selected.image,qty:qty});vbSave(c);try{fbq('track','AddToCart',{content_ids:[selected.sku],content_type:'product',value:selected.price*qty,currency:'DOP'});vbTrack('addcart',selected.sku,{qty:qty,price:selected.price,cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),product_title:'Panel decorativo '+selected.sku,product_img:selected.image})}catch(e){}location.href='carrito'}
+ function paintResult(qty){var r=document.getElementById('pzResult');r.className='pz-result';r.style.display='block';r.innerHTML='<strong>'+qty+' paneles</strong>Estimado para instalación vertical con el modelo '+selected.sku+'. Confirma las medidas antes del pedido.';document.getElementById('pzResultActions').style.display='flex';document.getElementById('pzAddQty').textContent='Agregar '+qty+' al carrito';document.getElementById('pzCalcWa').href='https://wa.me/__WA_NUMBER__?text='+encodeURIComponent('Hola, calculé '+qty+' paneles del modelo '+selected.sku+'. Quiero confirmar las medidas.')}
+ document.querySelectorAll('.pz-card,.pz-swatch').forEach(function(x){x.onclick=function(){select(x.dataset.sku);document.querySelector('.pz-preview-media').scrollIntoView({behavior:'smooth',block:'center'})}});
+ document.getElementById('pzAddOne').onclick=function(){add(1)};document.getElementById('pzAddQty').onclick=function(){if(estimated)add(estimated)};
+ document.getElementById('pzCalc').onsubmit=function(e){e.preventDefault();var w=Number(document.getElementById('pzWidth').value),h=Number(document.getElementById('pzHeight').value),r=document.getElementById('pzResult');document.getElementById('pzResultActions').style.display='none';estimated=0;if(!Number.isFinite(w)||!Number.isFinite(h)||w<=0||h<=0){r.className='pz-result error';r.textContent='Escribe medidas válidas mayores que cero.';return}if(h>290){r.className='pz-result error';r.innerHTML='La altura supera los 290 cm. Escríbenos para ayudarte a calcular la cantidad correcta.';document.getElementById('pzResultActions').style.display='flex';document.getElementById('pzAddQty').style.display='none';document.getElementById('pzCalcWa').href='https://wa.me/__WA_NUMBER__?text='+encodeURIComponent('Hola, necesito ayuda para calcular paneles. Mi pared mide '+w+' cm de ancho y '+h+' cm de alto.');try{vbTrack('search','',{search_query:'panel_calculator_height_exceeded',result_count:0})}catch(e){}return}document.getElementById('pzAddQty').style.display='inline-flex';estimated=Math.ceil(w/17);paintResult(estimated);try{vbTrack('search',selected.sku,{search_query:'panel_calculator_success',result_count:estimated})}catch(e){}};
+ select(selected.sku);
+})();
+</script>
+"""
+    swatches = "".join(f'<button class="pz-swatch{" selected" if i == 0 else ""}" type="button" data-sku="{esc(p["sku"])}" aria-pressed="{"true" if i == 0 else "false"}">{esc(p["sku"])}</button>' for i, p in enumerate(products))
+    body = (body.replace("__BAG__", BAG_SVG).replace("__TITLE__", esc(title))
+            .replace("__SUBTITLE__", esc(subtitle)).replace("__HERO_IMAGE__", esc(hero_image))
+            .replace("__HERO_ALT__", esc(hero_alt))
+            .replace("__INITIAL_PRODUCT_IMAGE__", esc(hero["image"]))
+            .replace("__FINAL_IMAGE__", esc(products[-1]["image"])).replace("__HERO_SKU__", esc(hero["sku"]))
+            .replace("__HERO_NAME__", esc(hero["name"])).replace("__HERO_PRICE__", fmt_price(hero["price"]))
+            .replace("__PRODUCT_CARDS__", "".join(cards)).replace("__SWATCHES__", swatches)
+            .replace("__PRODUCT_JSON__", product_json).replace("__WA_GENERAL__", esc(wa_general))
+            .replace("__WA_NUMBER__", WHATSAPP).replace("__SHIPPING__", esc(shipping)))
+    item_schema = {"@context": "https://schema.org", "@type": "ItemList",
+                   "name": "Paneles decorativos ZT", "itemListElement": [
+                       {"@type": "ListItem", "position": i + 1,
+                        "item": {"@type": "Product", "name": f"Panel decorativo {p['sku']} {p['name']}",
+                                 "sku": p["sku"], "image": f"{SITE_URL}/images/{p['image']}",
+                                 "offers": {"@type": "Offer", "priceCurrency": "DOP",
+                                            "price": f"{p['price']:.2f}",
+                                            "availability": "https://schema.org/InStock"}}}
+                       for i, p in enumerate(products)]}
+    schema = '<script type="application/ld+json">' + json.dumps(item_schema, ensure_ascii=False).replace("</", "<\\/") + '</script>'
+    return page(f"Paneles Decorativos para Pared | {SITE_NAME}", body, wa_float=False,
+                desc="Paneles decorativos ZT de 290 × 17 cm. Explora colores y calcula cuántos paneles necesitas.",
+                track_category="Paneles decorativos", extra_head=css + schema,
+                canonical=public_url("paneles-decorativos.html"),
+                og_image=f"{SITE_URL}/images/{quote(hero_image, safe='/')}")
+
+def panel_product_page():
+    """格栅板统一商品详情：同一页面切换多个 ZT SKU。"""
+    _, products = load_panel_products()
+    if not products:
+        return ""
+    first = products[0]
+    options = "".join(
+        f'<button class="pv-option{" on" if i == 0 else ""}" type="button" data-sku="{esc(p["sku"])}">'
+        f'<img src="../images/{esc(p["image"])}" alt="{esc(p["sku"])}" loading="lazy">'
+        f'<span><b>{esc(p["sku"])}</b><small>{esc(p["name"])}</small></span></button>'
+        for i, p in enumerate(products))
+    product_json = json.dumps(products, ensure_ascii=False).replace("</", "<\\/")
+    wa_base = f"https://wa.me/{WHATSAPP}?text="
+    css = r"""
+<style>
+.pv-shell{max-width:1160px;margin:auto;padding:18px 18px 46px}.pv-crumb{font-size:11px;color:#7D8795;margin-bottom:13px}.pv-crumb a{color:#2563D9}
+.pv-grid{display:grid;gap:22px}.pv-media{position:relative;aspect-ratio:1;background:#F0F3F7;overflow:hidden;border-radius:8px}.pv-media img{width:100%;height:100%;object-fit:cover;transition:opacity .16s ease}.pv-sku-badge{position:absolute;left:12px;bottom:12px;padding:8px 10px;border-radius:6px;background:#fff;color:#172033;font-size:12px;font-weight:800;box-shadow:0 5px 18px rgba(14,29,54,.16)}
+.pv-info h1{font-size:27px;line-height:1.12}.pv-sub{color:#667085;font-size:13px;margin-top:7px}.pv-price{font-size:29px;font-weight:800;margin:18px 0 13px}.pv-label{display:block;font-size:11px;font-weight:800;margin-bottom:8px}.pv-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.pv-option{min-width:0;border:2px solid #E3E8F0;border-radius:8px;background:#fff;padding:6px;text-align:left;cursor:pointer}.pv-option.on{border-color:#2563D9;background:#F2F6FF}.pv-option img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:5px}.pv-option span{display:block;padding:7px 2px 2px}.pv-option b,.pv-option small{display:block;overflow:hidden;text-overflow:ellipsis}.pv-option b{font-size:12px}.pv-option small{font-size:10px;color:#6B7280;margin-top:2px;white-space:nowrap}
+.pv-quantity{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding:10px 12px;background:#F5F7FA;border-radius:8px}.pv-quantity>span{font-size:12px;font-weight:800}.pv-stepper{display:flex;align-items:center;gap:12px}.pv-stepper button{width:36px;height:36px;border:1px solid #DCE3ED;border-radius:7px;background:#fff;color:#2563D9;font-size:19px;font-weight:800;cursor:pointer}.pv-stepper output{min-width:22px;text-align:center;font-weight:800}
+.pv-actions{display:grid;grid-template-columns:48px 1fr;gap:8px;margin-top:10px}.pv-wa{display:grid;place-items:center;border-radius:8px;background:#25D366;color:#fff}.pv-add{min-height:50px;border:0;border-radius:8px;background:#2563D9;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}.pv-add.added{background:#173E8F}.pv-cart-link{display:none;margin-top:8px;text-align:center;color:#2563D9;font-size:12px;font-weight:800}.pv-cart-link.show{display:block}
+.pv-trust{display:grid;grid-template-columns:repeat(3,1fr);margin-top:18px;border:1px solid #E5EAF2;border-radius:8px}.pv-trust div{padding:12px 5px;text-align:center;font-size:10px;font-weight:800}.pv-trust div+div{border-left:1px solid #E5EAF2}.pv-detail{margin-top:28px;padding-top:24px;border-top:1px solid #E7ECF3}.pv-detail h2{font-size:19px;margin-bottom:10px}.pv-detail p{color:#5E6979;font-size:13px;line-height:1.65}.pv-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}.pv-fact{background:#F5F7FA;padding:13px;border-radius:7px}.pv-fact b{display:block;font-size:14px}.pv-fact span{font-size:11px;color:#697586}.pv-topic{display:inline-flex;align-items:center;min-height:44px;padding:0 15px;border-radius:8px;background:#FFF0EC;color:#C94B31;font-size:12px;font-weight:800}
+@media(min-width:760px){.pv-shell{padding-top:28px}.pv-grid{grid-template-columns:1.05fr .95fr;gap:44px;align-items:start}.pv-info{position:sticky;top:86px}.pv-info h1{font-size:38px}.pv-media{aspect-ratio:4/5}.pv-options{gap:10px}}
+</style>"""
+    body = f"""{header('../')}
+<main class="pv-shell">
+ <div class="pv-crumb"><a href="../">VivaBien</a> / <a href="../paneles-decorativos.html">Paneles decorativos</a> / <span id="pvCrumb">{esc(first['sku'])}</span></div>
+ <div class="pv-grid">
+  <div class="pv-media"><img id="pvImage" src="../images/{esc(first['image'])}" alt="Panel decorativo {esc(first['sku'])}"><span class="pv-sku-badge" id="pvBadge">{esc(first['sku'])}</span></div>
+  <div class="pv-info">
+   <h1>Panel decorativo ranurado</h1><p class="pv-sub" id="pvName">{esc(first['name'])} · {esc(first['sku'])}</p>
+   <div class="pv-price" id="pvPrice">{fmt_price(first['price'])}</div>
+   <span class="pv-label">Elige el modelo</span><div class="pv-options">{options}</div>
+   <div class="pv-quantity"><span>Cantidad</span><div class="pv-stepper"><button id="pvMinus" type="button" aria-label="Reducir cantidad">−</button><output id="pvQty">1</output><button id="pvPlus" type="button" aria-label="Aumentar cantidad">+</button></div></div>
+   <div class="pv-actions"><a class="pv-wa" id="pvWa" href="{wa_base}" target="_blank" aria-label="Consultar por WhatsApp">{WA_SVG}</a><button class="pv-add" id="pvAdd" type="button">{BAG_SVG} Agregar al carrito</button></div>
+   <a class="pv-cart-link" id="pvCart" href="../carrito">Ver carrito →</a>
+   <div class="pv-trust"><div>🚚 Entrega<br>24-72 horas</div><div>💵 Pagas<br>al recibir</div><div>↩️ Garantía<br>de 7 días</div></div>
+   <div class="pv-detail"><h2>Un acabado moderno para tus paredes</h2><p>Panel decorativo de formato vertical para salas, dormitorios y oficinas. Selecciona el modelo ZT que combine con tu espacio y confirma la cantidad antes de realizar el pedido.</p><div class="pv-facts"><div class="pv-fact"><b>290 cm</b><span>de largo</span></div><div class="pv-fact"><b>17 cm</b><span>de ancho</span></div></div><a class="pv-topic" href="../paneles-decorativos.html">Ver inspiración y calcular paneles →</a></div>
+  </div>
+ </div>
+</main>
+<script>
+(function(){{
+ var products={product_json},selected=products[0],qty=1;
+ function money(n){{return 'RD$ '+Math.round(n).toLocaleString('en-US')}}
+ function choose(sku,push){{selected=products.find(function(p){{return p.sku===sku}})||products[0];
+  var im=document.getElementById('pvImage');im.style.opacity='.25';setTimeout(function(){{im.src='../images/'+selected.image;im.alt='Panel decorativo '+selected.sku+' '+selected.name;im.style.opacity='1'}},90);
+  document.getElementById('pvBadge').textContent=selected.sku;document.getElementById('pvCrumb').textContent=selected.sku;document.getElementById('pvName').textContent=selected.name+' · '+selected.sku;document.getElementById('pvPrice').textContent=money(selected.price);
+  document.getElementById('pvWa').href='{wa_base}'+encodeURIComponent('Hola, estoy interesado en el panel decorativo '+selected.sku+'. Quiero más información.');
+  document.querySelectorAll('.pv-option').forEach(function(x){{x.classList.toggle('on',x.dataset.sku===selected.sku)}});document.getElementById('pvAdd').classList.remove('added');document.getElementById('pvAdd').innerHTML='{BAG_SVG} Agregar al carrito';document.getElementById('pvCart').classList.remove('show');
+  if(push)history.replaceState(null,'','?sku='+encodeURIComponent(selected.sku));document.title='Panel decorativo '+selected.sku+' · '+selected.name+' | VivaBien';try{{vbTrack('view',selected.sku,{{product_title:'Panel decorativo '+selected.sku,product_img:selected.image,category:'Paneles decorativos'}})}}catch(e){{}}
+ }}
+ function paintQty(){{document.getElementById('pvQty').textContent=qty}}
+ document.querySelectorAll('.pv-option').forEach(function(x){{x.onclick=function(){{choose(x.dataset.sku,true)}}}});document.getElementById('pvMinus').onclick=function(){{qty=Math.max(1,qty-1);paintQty()}};document.getElementById('pvPlus').onclick=function(){{qty=Math.min(99,qty+1);paintQty()}};
+ document.getElementById('pvAdd').onclick=function(){{var c=vbCart(),f=c.find(function(x){{return x.sku===selected.sku}});if(f)f.qty+=qty;else c.push({{sku:selected.sku,handle:'panel-decorativo?sku='+selected.sku,title:'Panel decorativo '+selected.sku+' · '+selected.name,price:selected.price,img:selected.image,qty:qty}});vbSave(c);var b=this;b.classList.add('added');b.textContent='✓ Agregado al carrito';document.getElementById('pvCart').classList.add('show');try{{fbq('track','AddToCart',{{content_ids:[selected.sku],content_type:'product',value:selected.price*qty,currency:'DOP'}});vbTrack('addcart',selected.sku,{{qty:qty,price:selected.price,cart_total:c.reduce(function(a,x){{return a+x.price*x.qty}},0),product_title:'Panel decorativo '+selected.sku,product_img:selected.image}})}}catch(e){{}}}};
+ choose(new URLSearchParams(location.search).get('sku')||products[0].sku,false);
+}})();
+</script>"""
+    schema = {"@context": "https://schema.org", "@type": "ProductGroup",
+              "name": "Panel decorativo ranurado ZT", "productGroupID": "PANEL-ZT",
+              "variesBy": "https://schema.org/color", "hasVariant": [
+                  {"@type": "Product", "name": f"Panel decorativo {p['sku']} {p['name']}",
+                   "sku": p["sku"], "image": f"{SITE_URL}/images/{p['image']}",
+                   "offers": {"@type": "Offer", "priceCurrency": "DOP", "price": f"{p['price']:.2f}",
+                              "availability": "https://schema.org/InStock"}}
+                  for p in products]}
+    schema_head = '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False).replace("</", "<\\/") + '</script>'
+    return page(f"Panel decorativo ranurado 290 × 17 cm | {SITE_NAME}", body, wa_float=False,
+                desc="Panel decorativo ranurado ZT de 290 × 17 cm. Elige color, cantidad y compra online en VivaBien.",
+                track_category="Paneles decorativos", extra_head=css + schema_head,
+                canonical=public_url("producto/panel-decorativo.html"), rel="../",
+                og_image=f"{SITE_URL}/images/{quote(first['image'], safe='/')}")
+
+def adhesive_panel_page():
+    """Meta 投流落地页：卷装自粘木纹格栅贴面，效果优先、单品直购。"""
+    cfg = load_json(ADHESIVE_PANEL_PATH, {})
+    if not isinstance(cfg, dict) or not cfg.get("sku"):
+        return ""
+
+    sku = str(cfg.get("sku")).strip()
+    name = str(cfg.get("name") or "Panel decorativo autoadhesivo efecto madera").strip()
+    short_name = str(cfg.get("short_name") or name).strip()
+    handle = str(cfg.get("handle") or "panel-autoadhesivo").strip()
+    color = str(cfg.get("color") or "Roble natural").strip()
+    try:
+        price = float(cfg.get("price") or 0)
+        width = float(cfg.get("width_cm") or 40)
+        length = float(cfg.get("length_cm") or 300)
+        coverage = float(cfg.get("coverage_m2") or (width * length / 10000))
+    except (TypeError, ValueError):
+        return ""
+    if price <= 0 or width <= 0 or length <= 0 or coverage <= 0:
+        return ""
+
+    hero_image = str(cfg.get("hero_image") or "").lstrip("/")
+    product_image = str(cfg.get("product_image") or hero_image).lstrip("/")
+    installation_image = str(cfg.get("installation_image") or product_image).lstrip("/")
+    flexible_image = str(cfg.get("flexible_image") or product_image).lstrip("/")
+    roll_image = str(cfg.get("roll_image") or product_image).lstrip("/")
+    shipping_text = str(cfg.get("shipping_text") or
+                        "El costo y el tiempo de entrega se calculan según tu zona.").strip()
+    wa_url = (f"https://wa.me/{WHATSAPP}?text=" +
+              quote(f"Hola, quiero información sobre {short_name} ({sku})."))
+    product_json = json.dumps({
+        "sku": sku, "handle": handle, "title": name, "price": price,
+        "img": product_image, "color": color,
+    }, ensure_ascii=False).replace("</", "<\\/")
+
+    css = r"""
+<style>
+.ar-page,.ar-page *{box-sizing:border-box}.ar-page{--ink:#152033;--blue:#2563D9;--orange:#FF6B4A;--soft:#F4F7FB;--line:#E3E9F2;color:var(--ink);background:#fff;overflow:hidden}.ar-wrap{width:min(1160px,100%);margin:auto;padding:0 18px}
+.ar-nav{position:sticky;top:0;z-index:80;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line)}.ar-nav-in{height:62px;display:flex;align-items:center;gap:16px}.ar-logo{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:800}.ar-logo-i{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--blue);color:#fff}.ar-nav-links{display:none;margin-left:auto;gap:22px;font-size:12px;font-weight:800}.ar-cart{margin-left:auto;width:42px;height:42px;display:grid;place-items:center;border:1px solid #DCE4EF;border-radius:8px;color:var(--blue);position:relative}.ar-cart .cart-n{right:-4px;top:-6px}.ar-nav-buy{display:none;min-height:42px;padding:0 15px;border-radius:8px;background:var(--orange);color:#fff;align-items:center;font-size:12px;font-weight:800}
+.ar-hero{position:relative;min-height:78vh;display:flex;align-items:flex-end;color:#fff;background:#2B2925}.ar-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% center}.ar-hero:after{content:"";position:absolute;inset:0;background:rgba(8,13,20,.48)}.ar-hero-copy{position:relative;z-index:1;width:min(1160px,100%);margin:auto;padding:62px 18px 54px}.ar-kicker{display:inline-block;padding:7px 10px;border:1px solid rgba(255,255,255,.65);border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase}.ar-hero h1{max-width:660px;margin-top:13px;font-size:36px;line-height:1.06;overflow-wrap:anywhere}.ar-hero p{max-width:570px;margin-top:13px;font-size:14px;line-height:1.55;color:#F5F7FA}.ar-price{margin-top:17px;display:flex;align-items:baseline;gap:8px}.ar-price strong{font-size:29px}.ar-price span{font-size:11px;color:#E8ECF2}.ar-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.ar-btn{min-height:48px;padding:0 16px;border:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;cursor:pointer}.ar-primary{background:var(--orange);color:#fff}.ar-secondary{background:#fff;color:var(--ink)}.ar-whatsapp{background:#25D366;color:#fff}
+.ar-trust{border-bottom:1px solid var(--line);background:var(--soft)}.ar-trust-in{display:grid;grid-template-columns:repeat(3,1fr)}.ar-trust-in>div{min-height:64px;padding:12px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-right:1px solid #DCE4EF}.ar-trust-in>div:last-child{border:0}.ar-trust b{font-size:10px}.ar-trust span{font-size:9px;color:#667085;margin-top:3px}
+.ar-section{padding:62px 0}.ar-section.soft{background:var(--soft)}.ar-head{max-width:650px;margin-bottom:25px}.ar-eyebrow{color:var(--blue);font-size:10px;font-weight:800;text-transform:uppercase}.ar-head h2{margin-top:7px;font-size:29px;line-height:1.12}.ar-head p{margin-top:9px;color:#667085;font-size:13px;line-height:1.6}.ar-split{display:grid;gap:24px;align-items:center}.ar-media{position:relative;overflow:hidden;border-radius:8px;background:#E9EDF3}.ar-media.square{aspect-ratio:1}.ar-media.portrait{aspect-ratio:4/5}.ar-media img{width:100%;height:100%;display:block;object-fit:cover}.ar-media-note{position:absolute;left:12px;bottom:12px;padding:8px 10px;border-radius:6px;background:#fff;color:var(--ink);font-size:10px;font-weight:800;box-shadow:0 5px 18px rgba(20,32,50,.16)}
+.ar-copy h2{font-size:29px;line-height:1.12}.ar-copy>p{margin-top:12px;color:#667085;font-size:13px;line-height:1.65}.ar-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}.ar-fact{min-width:0;padding:15px 8px;background:#fff;border:1px solid var(--line);border-radius:8px;text-align:center}.ar-fact b{display:block;font-size:16px;overflow-wrap:anywhere}.ar-fact span{display:block;margin-top:4px;font-size:9px;color:#667085}
+.ar-install-grid{display:grid;gap:14px}.ar-install-photo{aspect-ratio:1;border-radius:8px;overflow:hidden;background:#E7ECF2}.ar-install-photo img{width:100%;height:100%;object-fit:cover}.ar-steps{display:grid;gap:10px}.ar-step{padding:18px;background:#fff;border-top:3px solid var(--blue)}.ar-step small{color:var(--blue);font-weight:800}.ar-step h3{margin-top:7px;font-size:16px}.ar-step p{margin-top:5px;color:#667085;font-size:12px;line-height:1.55}
+.ar-flex{position:relative;min-height:480px;display:flex;align-items:flex-end;color:#fff;background:#292521}.ar-flex img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.ar-flex:after{content:"";position:absolute;inset:0;background:rgba(7,12,18,.56)}.ar-flex-copy{position:relative;z-index:1;padding:44px 18px;width:min(1160px,100%);margin:auto}.ar-flex h2{font-size:31px;max-width:560px}.ar-flex p{max-width:540px;margin-top:10px;font-size:13px;line-height:1.6;color:#EEF2F6}
+.ar-calc{display:grid;gap:22px;padding:24px;border-radius:8px;background:var(--ink);color:#fff}.ar-calc-copy h2{font-size:28px;line-height:1.15}.ar-calc-copy p{margin-top:9px;color:#C8D0DC;font-size:12px;line-height:1.6}.ar-form{padding:18px;border-radius:8px;background:#fff;color:var(--ink)}.ar-fields{display:grid;gap:10px}.ar-field label{display:block;margin-bottom:6px;font-size:10px;font-weight:800}.ar-input{display:flex;border:1px solid #D7DFEA;border-radius:7px;overflow:hidden}.ar-input input{width:100%;border:0;outline:0;padding:13px;font:700 16px inherit}.ar-input span{display:grid;place-items:center;padding:0 11px;background:#F2F5F9;color:#667085;font-size:11px}.ar-calc-button{width:100%;margin-top:12px;background:var(--blue);color:#fff}.ar-result{display:none;margin-top:12px;padding:12px;border-radius:7px;background:#EEF4FF;color:var(--ink);font-size:12px;line-height:1.5}.ar-result.show{display:block}.ar-result strong{display:block;color:var(--blue);font-size:20px}.ar-result.error{background:#FFF0ED;color:#A33A2D}
+.ar-buybox{display:grid;gap:22px;align-items:center}.ar-buy-photo{aspect-ratio:1;border-radius:8px;overflow:hidden;background:#F1F3F6}.ar-buy-photo img{width:100%;height:100%;object-fit:cover}.ar-buy-info h2{font-size:27px}.ar-buy-info .ar-color{margin-top:7px;color:#667085;font-size:12px}.ar-buy-price{font-size:31px;font-weight:800;margin:16px 0}.ar-qty{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;background:var(--soft)}.ar-qty>span{font-size:11px;font-weight:800}.ar-stepper{display:flex;align-items:center;gap:12px}.ar-stepper button{width:36px;height:36px;border:1px solid #DCE3ED;border-radius:7px;background:#fff;color:var(--blue);font-size:18px;font-weight:800;cursor:pointer}.ar-stepper output{min-width:20px;text-align:center;font-weight:800}.ar-buy-actions{display:grid;grid-template-columns:48px 1fr;gap:8px;margin-top:10px}.ar-buy-actions .ar-btn{width:100%}.ar-added{display:none;margin-top:9px;text-align:center;color:var(--blue);font-size:11px;font-weight:800}.ar-added.show{display:block}.ar-shipping{margin-top:15px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;line-height:1.5;color:#667085}
+.ar-faq{max-width:820px;margin:auto}.ar-faq details{border-bottom:1px solid var(--line);padding:17px 0}.ar-faq summary{cursor:pointer;list-style:none;font-size:13px;font-weight:800}.ar-faq summary::-webkit-details-marker{display:none}.ar-faq p{padding-top:9px;color:#667085;font-size:12px;line-height:1.6}
+.ar-mobile-buy{position:fixed;left:0;right:0;bottom:0;z-index:90;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:9px 12px calc(9px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}.ar-mobile-buy strong{font-size:14px}.ar-mobile-buy .ar-btn{min-height:46px}
+@media(min-width:740px){.ar-nav-links{display:flex}.ar-cart{margin-left:0}.ar-nav-buy{display:flex}.ar-hero h1{font-size:62px}.ar-hero-copy{padding-bottom:76px}.ar-trust b{font-size:12px}.ar-trust span{font-size:10px}.ar-section{padding:84px 0}.ar-split,.ar-buybox{grid-template-columns:1.06fr .94fr;gap:50px}.ar-media.portrait{aspect-ratio:5/4}.ar-install-grid{grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}.ar-calc{grid-template-columns:.85fr 1.15fr;padding:40px;align-items:center}.ar-fields{grid-template-columns:1fr 1fr}.ar-mobile-buy{display:none}.ar-flex-copy{padding:64px 18px}.ar-flex h2{font-size:44px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+</style>
+"""
+
+    body = r"""
+<div class="ar-page">
+<nav class="ar-nav"><div class="ar-wrap ar-nav-in">
+ <a class="ar-logo" href="./"><span class="ar-logo-i">V</span>VivaBien</a>
+ <div class="ar-nav-links"><a href="#producto">Producto</a><a href="#instalacion">Instalación</a><a href="#calculadora">Calculadora</a><a href="#preguntas">Preguntas</a></div>
+ <a class="ar-cart" href="carrito" aria-label="Carrito">__BAG__<span class="cart-n" id="cartN"></span></a>
+ <a class="ar-nav-buy" href="#comprar">COMPRAR</a>
+</div></nav>
+
+<header class="ar-hero">
+ <img src="images/__HERO_IMAGE__" alt="Sala con pared decorativa de listones y rollo autoadhesivo" fetchpriority="high">
+ <div class="ar-hero-copy">
+  <span class="ar-kicker">Panel flexible · Autoadhesivo · Efecto madera</span>
+  <h1>Renueva tu pared sin una obra grande.</h1>
+  <p>Un panel decorativo en rollo que aporta textura y calidez. Corta, despega y aplica sobre una superficie limpia, lisa y seca.</p>
+  <div class="ar-price"><strong>__PRICE__</strong><span>por rollo · __WIDTH__ × __LENGTH__ cm</span></div>
+  <div class="ar-buttons"><a class="ar-btn ar-primary" href="#comprar">COMPRAR AHORA</a><a class="ar-btn ar-secondary" href="#instalacion">VER CÓMO SE INSTALA</a></div>
+ </div>
+</header>
+
+<section class="ar-trust"><div class="ar-wrap ar-trust-in">
+ <div><b>🚚 Envíos a todo RD</b><span>Costo según tu zona</span></div>
+ <div><b>💵 Pago al recibir</b><span>En Gran Santo Domingo</span></div>
+ <div><b>↩️ Garantía 7 días</b><span>Compra con tranquilidad</span></div>
+</div></section>
+
+<section class="ar-section" id="producto"><div class="ar-wrap ar-split">
+ <div class="ar-media portrait"><img src="images/__PRODUCT_IMAGE__" alt="Rollo de panel decorativo autoadhesivo efecto madera" loading="lazy"><span class="ar-media-note">Vista del producto y tonos de referencia</span></div>
+ <div class="ar-copy"><span class="ar-eyebrow">El producto real, de cerca</span><h2>Textura visual de madera en formato flexible</h2><p>El formato en rollo permite cubrir paredes y acompañar curvas suaves. Las líneas oscuras crean profundidad sin ocupar el espacio de un panel rígido.</p>
+  <div class="ar-facts"><div class="ar-fact"><b>__WIDTH__ cm</b><span>de ancho</span></div><div class="ar-fact"><b>__LENGTH__ cm</b><span>de largo</span></div><div class="ar-fact"><b>__COVERAGE_LABEL__ m²</b><span>por rollo</span></div></div>
+ </div>
+</div></section>
+
+<section class="ar-section soft" id="instalacion"><div class="ar-wrap">
+ <div class="ar-head"><span class="ar-eyebrow">Instalación sencilla</span><h2>De una pared simple a un acabado con textura</h2><p>Prepara bien la superficie y trabaja poco a poco para mantener las líneas derechas.</p></div>
+ <div class="ar-install-grid">
+  <div class="ar-install-photo"><img src="images/__INSTALLATION_IMAGE__" alt="Aplicación del panel decorativo flexible sobre una pared" loading="lazy"></div>
+  <div class="ar-steps"><article class="ar-step"><small>01</small><h3>Limpia y mide</h3><p>La pared debe estar limpia, completamente seca, lisa y libre de polvo o grasa.</p></article><article class="ar-step"><small>02</small><h3>Corta a la medida</h3><p>Marca el tramo que necesitas y comprueba la posición antes de retirar el protector.</p></article><article class="ar-step"><small>03</small><h3>Despega y presiona</h3><p>Avanza por secciones, presionando de forma uniforme para evitar desalineaciones.</p></article></div>
+ </div>
+</div></section>
+
+<section class="ar-flex"><img src="images/__FLEXIBLE_IMAGE__" alt="Panel decorativo en rollo adaptándose a una superficie curva" loading="lazy"><div class="ar-flex-copy"><span class="ar-kicker">Flexible por diseño</span><h2>También acompaña curvas suaves y detalles del espacio.</h2><p>Antes de cubrir una superficie completa, prueba una pequeña sección para confirmar adherencia, acabado y dirección del patrón.</p></div></section>
+
+<section class="ar-section" id="calculadora"><div class="ar-wrap ar-calc">
+ <div class="ar-calc-copy"><span class="ar-kicker">Calculadora rápida</span><h2>¿Cuántos rollos necesitas?</h2><p>Ingresa las medidas de la superficie. Añadimos un 10% estimado para cortes y ajustes.</p></div>
+ <div class="ar-form"><div class="ar-fields"><div class="ar-field"><label>Ancho de la pared</label><div class="ar-input"><input id="arWidth" type="number" inputmode="decimal" min="1" placeholder="Ej. 240"><span>cm</span></div></div><div class="ar-field"><label>Alto de la pared</label><div class="ar-input"><input id="arHeight" type="number" inputmode="decimal" min="1" placeholder="Ej. 260"><span>cm</span></div></div></div><button class="ar-btn ar-calc-button" id="arCalculate" type="button">CALCULAR ROLLOS</button><div class="ar-result" id="arResult"></div></div>
+</div></section>
+
+<section class="ar-section soft" id="comprar"><div class="ar-wrap ar-buybox">
+ <div class="ar-buy-photo"><img src="images/__ROLL_IMAGE__" alt="Rollo de panel autoadhesivo color roble natural" loading="lazy"></div>
+ <div class="ar-buy-info"><span class="ar-eyebrow">Listo para transformar tu espacio</span><h2>__SHORT_NAME__</h2><p class="ar-color">Color: __COLOR__ · Rollo de __WIDTH__ × __LENGTH__ cm</p><div class="ar-buy-price">__PRICE__</div>
+  <div class="ar-qty"><span>Cantidad de rollos</span><div class="ar-stepper"><button id="arMinus" type="button" aria-label="Reducir cantidad">−</button><output id="arQty">1</output><button id="arPlus" type="button" aria-label="Aumentar cantidad">+</button></div></div>
+  <div class="ar-buy-actions"><a class="ar-btn ar-whatsapp" href="__WA_URL__" target="_blank" aria-label="Consultar por WhatsApp">__WA_ICON__</a><button class="ar-btn ar-primary" id="arAdd" type="button">__BAG__ AGREGAR AL CARRITO</button></div>
+  <a class="ar-added" id="arAdded" href="carrito">✓ Agregado. Ver carrito →</a><p class="ar-shipping">__SHIPPING__</p>
+ </div>
+</div></section>
+
+<section class="ar-section" id="preguntas"><div class="ar-wrap ar-faq"><div class="ar-head"><span class="ar-eyebrow">Antes de pedir</span><h2>Preguntas frecuentes</h2></div>
+ <details><summary>¿Qué tamaño tiene cada rollo?</summary><p>Cada rollo mide __WIDTH__ cm de ancho por __LENGTH__ cm de largo y cubre aproximadamente __COVERAGE_LABEL__ m² antes de considerar cortes.</p></details>
+ <details><summary>¿Necesita pegamento adicional?</summary><p>El producto tiene respaldo autoadhesivo. La fijación final depende de que la superficie esté limpia, seca y lisa; prueba primero una sección pequeña.</p></details>
+ <details><summary>¿Sirve para paredes con textura?</summary><p>No recomendamos asumirlo. Las superficies porosas, húmedas, con polvo o textura marcada pueden reducir la adherencia. Envíanos una foto por WhatsApp antes de pedir.</p></details>
+ <details><summary>¿Cómo calculo la cantidad?</summary><p>Usa la calculadora de esta página. El resultado incluye un 10% estimado para cortes, pero conviene confirmar medidas y orientación antes de comprar.</p></details>
+ <details><summary>¿Hacen envíos?</summary><p>__SHIPPING__</p></details>
+</div></section>
+
+<div class="ar-mobile-buy"><strong>__PRICE__</strong><a class="ar-btn ar-primary" href="#comprar">COMPRAR AHORA</a></div>
+</div>
+<script>
+(function(){
+ var PRODUCT=__PRODUCT_JSON__,qty=1,coverage=__COVERAGE__;
+ function paintQty(){document.getElementById('arQty').textContent=qty}
+ document.getElementById('arMinus').onclick=function(){qty=Math.max(1,qty-1);paintQty()};
+ document.getElementById('arPlus').onclick=function(){qty=Math.min(99,qty+1);paintQty()};
+ document.getElementById('arCalculate').onclick=function(){
+  var w=Number(document.getElementById('arWidth').value),h=Number(document.getElementById('arHeight').value),out=document.getElementById('arResult');
+  out.className='ar-result show';
+  if(!isFinite(w)||!isFinite(h)||w<=0||h<=0){out.className='ar-result show error';out.textContent='Ingresa medidas válidas mayores que cero.';return}
+  var area=(w*h)/10000,rolls=Math.ceil((area*1.10)/coverage);
+  out.innerHTML='<strong>'+rolls+' rollo'+(rolls===1?'':'s')+'</strong>Estimado para '+area.toFixed(2)+' m², incluyendo 10% para cortes.';
+  qty=Math.min(99,Math.max(1,rolls));paintQty();
+  try{vbTrack('search',PRODUCT.sku,{search_query:'adhesive_panel_calculator',result_count:rolls})}catch(e){}
+ };
+ document.getElementById('arAdd').onclick=function(){
+  var c=vbCart(),f=c.find(function(x){return x.sku===PRODUCT.sku});
+  if(f)f.qty+=qty;else c.push({sku:PRODUCT.sku,handle:PRODUCT.handle,title:PRODUCT.title,price:PRODUCT.price,img:PRODUCT.img,qty:qty});
+  vbSave(c);document.getElementById('arAdded').classList.add('show');this.textContent='✓ AGREGADO AL CARRITO';
+  try{fbq('track','AddToCart',{content_ids:[PRODUCT.sku],content_type:'product',value:PRODUCT.price*qty,currency:'DOP'});vbTrack('addcart',PRODUCT.sku,{qty:qty,price:PRODUCT.price,cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),product_title:PRODUCT.title,product_img:PRODUCT.img})}catch(e){}
+ };
+})();
+</script>
+"""
+    body = (body.replace("__HERO_IMAGE__", esc(hero_image))
+            .replace("__PRODUCT_IMAGE__", esc(product_image))
+            .replace("__INSTALLATION_IMAGE__", esc(installation_image))
+            .replace("__FLEXIBLE_IMAGE__", esc(flexible_image))
+            .replace("__ROLL_IMAGE__", esc(roll_image))
+            .replace("__SHORT_NAME__", esc(short_name))
+            .replace("__COLOR__", esc(color))
+            .replace("__PRICE__", fmt_price(price))
+            .replace("__WIDTH__", f"{width:g}")
+            .replace("__LENGTH__", f"{length:g}")
+            .replace("__COVERAGE_LABEL__", f"{coverage:g}")
+            .replace("__SHIPPING__", esc(shipping_text))
+            .replace("__WA_URL__", esc(wa_url))
+            .replace("__WA_ICON__", WA_SVG)
+            .replace("__BAG__", BAG_SVG)
+            .replace("__PRODUCT_JSON__", product_json)
+            .replace("__COVERAGE__", f"{coverage:.3f}"))
+
+    schema = {
+        "@context": "https://schema.org", "@type": "Product", "name": name,
+        "sku": sku, "image": [f"{SITE_URL}/images/{hero_image}",
+                              f"{SITE_URL}/images/{product_image}"],
+        "description": ("Panel decorativo flexible autoadhesivo efecto madera en rollo "
+                        f"de {width:g} × {length:g} cm."),
+        "color": color,
+        "offers": {"@type": "Offer", "priceCurrency": "DOP", "price": f"{price:.2f}",
+                   "availability": "https://schema.org/InStock",
+                   "url": public_url("panel-autoadhesivo.html")},
+    }
+    schema_head = ('<script type="application/ld+json">' +
+                   json.dumps(schema, ensure_ascii=False).replace("</", "<\\/") + '</script>')
+    return page(f"{short_name} | Comprar en RD | {SITE_NAME}", body, wa_float=False,
+                desc=("Panel decorativo flexible autoadhesivo efecto madera. "
+                      "Mide tu pared, calcula rollos y compra online en VivaBien."),
+                track_sku=sku, track_category="Decoración del Hogar",
+                track_title=name, track_img=product_image,
+                extra_head=css + schema_head,
+                canonical=public_url("panel-autoadhesivo.html"),
+                og_image=f"{SITE_URL}/images/{quote(hero_image, safe='/')}")
+
+
+def adhesive_panel_variant_page(variant):
+    """Preview-only conversion layouts for the adhesive panel landing page."""
+    cfg = load_json(ADHESIVE_PANEL_PATH, {})
+    if variant not in (1, 2, 3) or not isinstance(cfg, dict) or not cfg.get("sku"):
+        return ""
+
+    sku = str(cfg["sku"]).strip()
+    name = str(cfg.get("name") or "Panel decorativo autoadhesivo efecto madera").strip()
+    short_name = str(cfg.get("short_name") or name).strip()
+    handle = str(cfg.get("handle") or "panel-autoadhesivo").strip()
+    color = str(cfg.get("color") or "Roble natural").strip()
+    price = float(cfg.get("price") or 0)
+    width = float(cfg.get("width_cm") or 0)
+    length = float(cfg.get("length_cm") or 0)
+    coverage = float(cfg.get("coverage_m2") or 0)
+    if min(price, width, length, coverage) <= 0:
+        return ""
+
+    product_image = str(cfg.get("product_image") or "").lstrip("/")
+    installation_image = str(cfg.get("installation_image") or product_image).lstrip("/")
+    roll_image = str(cfg.get("roll_image") or product_image).lstrip("/")
+    shipping_text = str(cfg.get("shipping_text") or
+                        "El costo y el tiempo de entrega se calculan según tu zona.").strip()
+    hero_image = "panel-autoadhesivo/hero-natural.jpg"
+    wa_url = (f"https://wa.me/{WHATSAPP}?text=" +
+              quote(f"Hola, quiero información sobre {short_name} ({sku})."))
+    product_json = json.dumps({
+        "sku": sku, "handle": handle, "title": name, "price": price,
+        "img": product_image, "color": color,
+    }, ensure_ascii=False).replace("</", "<\\/")
+
+    css = r"""
+<style>
+.av,.av *{box-sizing:border-box}.av{--blue:#2563D9;--orange:#FF6B4A;--ink:#152033;--muted:#667085;--line:#E1E7EF;--soft:#F4F7FB;--green:#17845C;color:var(--ink);background:#fff;overflow:hidden}.av a{text-decoration:none}.av-wrap{width:min(1160px,100%);margin:auto;padding:0 18px}
+.av-switch{position:relative;z-index:2;width:max-content;max-width:calc(100% - 16px);margin:8px auto;display:flex;padding:4px;overflow:auto;background:var(--ink);border-radius:8px;box-shadow:0 5px 18px rgba(0,0,0,.14)}.av-switch a{min-width:82px;padding:9px 10px;border-radius:6px;text-align:center;color:#fff;font-size:11px;font-weight:800}.av-switch a.on{background:#fff;color:var(--blue)}
+.av-nav{height:62px;display:flex;align-items:center;border-bottom:1px solid var(--line);background:#fff}.av-nav-in{display:flex;align-items:center;gap:12px}.av-logo{display:flex;align-items:center;gap:9px;color:var(--ink);font-size:19px;font-weight:800}.av-logo-i{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:var(--blue);color:#fff}.av-nav-links{display:none;margin-left:auto;gap:20px;font-size:12px;font-weight:800}.av-cart{margin-left:auto;width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;color:var(--blue);position:relative}.av-cart .cart-n{right:-4px;top:-6px}
+.av-hero{height:74vh;min-height:510px;max-height:820px;background:#D7D2C9}.av-hero img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 54%}
+.av-intro{padding:24px 0;border-bottom:1px solid var(--line)}.av-intro-grid{display:grid;gap:17px}.av-eyebrow{display:block;color:var(--blue);font-size:10px;font-weight:800;text-transform:uppercase}.av-intro h1{margin-top:6px;font-size:28px;line-height:1.1;overflow-wrap:anywhere}.av-spec{margin-top:8px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}.av-price{font-size:29px;font-weight:800}.av-actions{display:grid;grid-template-columns:1fr 48px;gap:8px}.av-btn{min-height:48px;padding:0 15px;border:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;cursor:pointer}.av-primary{background:var(--orange);color:#fff}.av-wa{background:#25D366;color:#fff}.av-outline{border:1px solid var(--line);background:#fff;color:var(--blue)}
+.av-trust{display:grid;grid-template-columns:repeat(3,1fr);background:var(--soft);border-bottom:1px solid var(--line)}.av-trust div{min-height:67px;padding:11px 5px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-right:1px solid var(--line)}.av-trust div:last-child{border:0}.av-trust b{font-size:10px}.av-trust span{margin-top:3px;color:var(--muted);font-size:9px}
+.av-section{padding:58px 0}.av-section.soft{background:var(--soft)}.av-head{max-width:660px;margin-bottom:24px}.av-head h2{margin-top:6px;font-size:29px;line-height:1.13}.av-head p{margin-top:9px;color:var(--muted);font-size:13px;line-height:1.6}.av-gallery{display:grid;grid-template-columns:1.25fr .75fr;grid-template-rows:repeat(2,1fr);gap:9px}.av-photo{position:relative;min-height:0;overflow:hidden;border-radius:8px;background:#E6EAF0}.av-photo:first-child{grid-row:1/3;aspect-ratio:4/5}.av-photo img{width:100%;height:100%;display:block;object-fit:cover}.av-photo small{position:absolute;left:9px;bottom:9px;padding:7px 8px;border-radius:5px;background:rgba(255,255,255,.94);font-size:9px;font-weight:800}
+.av-proof-grid{display:grid;gap:10px}.av-proof{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}.av-proof img{width:110px;height:110px;border-radius:6px;object-fit:cover}.av-proof h3{font-size:15px}.av-proof p{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.5}.av-disclosure{margin-top:12px;color:var(--muted);font-size:10px;line-height:1.5}
+.av-calc{display:grid;gap:20px;padding:24px;border-radius:8px;background:var(--ink);color:#fff}.av-calc h2{font-size:27px}.av-calc p{margin-top:8px;color:#CBD3DF;font-size:12px;line-height:1.55}.av-form{padding:17px;border-radius:8px;background:#fff;color:var(--ink)}.av-fields{display:grid;gap:10px}.av-field label{display:block;margin-bottom:5px;font-size:10px;font-weight:800}.av-input{display:flex;border:1px solid #D7DFE9;border-radius:7px;overflow:hidden}.av-input input{width:100%;padding:13px;border:0;outline:0;font:700 16px inherit}.av-input span{display:grid;place-items:center;padding:0 10px;background:#F0F3F7;color:var(--muted);font-size:10px}.av-calc-go{width:100%;margin-top:11px;background:var(--blue);color:#fff}.av-result{display:none;margin-top:10px;padding:11px;border-radius:7px;background:#EDF3FF;font-size:11px;line-height:1.5}.av-result.show{display:block}.av-result strong{display:block;color:var(--blue);font-size:20px}.av-result.error{background:#FFF0ED;color:#9B3328}
+.av-buy{display:grid;gap:22px;align-items:center}.av-buy-img{aspect-ratio:1;overflow:hidden;border-radius:8px;background:#EDF0F4}.av-buy-img img{width:100%;height:100%;object-fit:cover}.av-buy h2{margin-top:6px;font-size:27px;line-height:1.15}.av-buy-price{margin:15px 0;font-size:31px;font-weight:800}.av-qty{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:8px;background:var(--soft);font-size:11px;font-weight:800}.av-stepper{display:flex;align-items:center;gap:12px}.av-stepper button{width:36px;height:36px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--blue);font-size:18px}.av-buy-actions{display:grid;grid-template-columns:48px 1fr;gap:8px;margin-top:9px}.av-added{display:none;margin-top:8px;color:var(--blue);text-align:center;font-size:11px;font-weight:800}.av-added.show{display:block}
+.av-reviews{display:grid;gap:11px}.av-review{padding:18px;border:1px solid var(--line);border-radius:8px;background:#fff}.av-stars{color:#F2A100;letter-spacing:0;font-size:14px}.av-review blockquote{margin:10px 0;color:#303B4B;font-size:12px;line-height:1.58}.av-review footer{font-size:10px;font-weight:800}.av-review footer span{color:var(--green)}.av-review.critical{border-left:4px solid var(--orange)}.av-review-source{margin-top:13px;color:var(--muted);font-size:10px;line-height:1.5}
+.av-warning{display:grid;gap:18px;padding:22px;border-radius:8px;background:#FFF4F0;border:1px solid #FFD8CE}.av-warning h2{font-size:23px}.av-warning p,.av-warning li{color:#70443B;font-size:12px;line-height:1.55}.av-warning ul{margin:10px 0 0 18px}.av-faq details{padding:16px 0;border-bottom:1px solid var(--line)}.av-faq summary{cursor:pointer;font-size:13px;font-weight:800}.av-faq p{padding-top:8px;color:var(--muted);font-size:12px;line-height:1.55}
+.av-mobile{position:fixed;z-index:100;left:0;right:0;bottom:0;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);transform:translateY(120%);transition:transform .2s ease}.av-mobile.show{transform:translateY(0)}.av-mobile strong{font-size:14px}
+.av.v2 .av-intro{background:var(--soft)}.av.v2 .av-intro-grid{padding:18px;border-radius:8px;background:#fff;border:1px solid var(--line)}.av.v2 .av-section{padding:48px 0}.av.v2 .av-proof-grid{grid-template-columns:1fr}.av.v3 .av-intro{border:0}.av.v3 .av-social-lead{background:#163B34;color:#fff}.av.v3 .av-social-lead .av-head p{color:#D4E1DD}.av.v3 .av-social-lead .av-eyebrow{color:#79D2AF}.av.v3 .av-review{border:0}.av.v3 .av-gallery{grid-template-columns:1fr 1fr;grid-template-rows:auto}.av.v3 .av-photo:first-child{grid-row:auto;grid-column:1/3;aspect-ratio:16/10}
+@media(min-width:760px){.av-nav-links{display:flex}.av-cart{margin-left:0}.av-hero{height:76vh}.av-intro{padding:30px 0}.av-intro-grid{grid-template-columns:1fr auto auto;align-items:center}.av-intro h1{font-size:34px}.av-actions{min-width:255px}.av-section{padding:82px 0}.av-gallery{grid-template-columns:1.35fr .65fr;gap:14px}.av-photo:first-child{aspect-ratio:16/10}.av-proof-grid{grid-template-columns:repeat(3,1fr)}.av-proof{display:block}.av-proof img{width:100%;height:auto;aspect-ratio:1}.av-proof h3{margin-top:12px}.av-calc{grid-template-columns:.8fr 1.2fr;align-items:center;padding:38px}.av-fields{grid-template-columns:1fr 1fr}.av-buy{grid-template-columns:1fr 1fr;gap:50px}.av-reviews{grid-template-columns:repeat(3,1fr)}.av-warning{grid-template-columns:.8fr 1.2fr;align-items:center}.av-mobile{display:none}.av.v2 .av-proof-grid{grid-template-columns:repeat(3,1fr)}}
+@media(prefers-reduced-motion:reduce){.av-mobile{transition:none}}
+</style>
+"""
+
+    switcher = "".join(
+        f'<a class="{"on" if item == variant else ""}" href="panel-autoadhesivo-v{item}.html">'
+        f'Versión {item}</a>' for item in (1, 2, 3)
+    )
+    nav = f"""
+<div class="av-switch" aria-label="Comparar diseños">{switcher}</div>
+<nav class="av-nav"><div class="av-wrap av-nav-in">
+ <a class="av-logo" href="./"><span class="av-logo-i">V</span>VivaBien</a>
+ <div class="av-nav-links"><a href="#detalles">Detalles</a><a href="#calculadora">Calculadora</a><a href="#opiniones">Opiniones</a></div>
+ <a class="av-cart" href="carrito" aria-label="Carrito">{BAG_SVG}<span class="cart-n" id="cartN"></span></a>
+</div></nav>
+"""
+    hero = f"""
+<header class="av-hero" id="hero"><img src="images/{esc(hero_image)}" alt="Ambiente moderno con pared decorativa de listones finos efecto madera" fetchpriority="high"></header>
+"""
+    intro = f"""
+<section class="av-intro"><div class="av-wrap av-intro-grid">
+ <div><span class="av-eyebrow">Panel flexible autoadhesivo</span><h1>{esc(short_name)}</h1><p class="av-spec">{width:g} × {length:g} cm · {coverage:g} m² · {esc(color)}</p></div>
+ <div class="av-price">{fmt_price(price)}</div>
+ <div class="av-actions"><a class="av-btn av-primary" href="#comprar">AGREGAR AL CARRITO</a><a class="av-btn av-wa" href="{esc(wa_url)}" target="_blank" aria-label="Consultar por WhatsApp">{WA_SVG}</a></div>
+</div></section>
+"""
+    trust = """
+<div class="av-trust"><div><b>🚚 Envíos a todo RD</b><span>Costo según tu zona</span></div><div><b>💵 Pago al recibir</b><span>Gran Santo Domingo</span></div><div><b>↩️ Garantía 7 días</b><span>Compra con tranquilidad</span></div></div>
+"""
+    gallery = """
+<section class="av-section" id="detalles"><div class="av-wrap">
+ <div class="av-head"><span class="av-eyebrow">Mira el acabado</span><h2>Textura, respaldo y cambio visual</h2><p>Imágenes de referencia de productos comparables para ayudarte a entender el formato. El color final puede variar según la luz y la pantalla.</p></div>
+ <div class="av-gallery">
+  <figure class="av-photo"><img src="images/panel-autoadhesivo/reference-before-after.jpg" alt="Comparación de pared antes y después de aplicar panel flexible" loading="lazy"><small>Antes / después de referencia</small></figure>
+  <figure class="av-photo"><img src="images/panel-autoadhesivo/reference-texture.jpg" alt="Detalle cercano de textura acanalada efecto madera" loading="lazy"><small>Textura de referencia</small></figure>
+  <figure class="av-photo"><img src="images/panel-autoadhesivo/reference-backing.jpg" alt="Respaldo adhesivo de un panel flexible comparable" loading="lazy"><small>Respaldo autoadhesivo</small></figure>
+ </div><p class="av-disclosure">Estas imágenes explicativas pertenecen a productos comparables. Antes de publicar la versión final sustituiremos las que no correspondan exactamente al lote de VivaBien.</p>
+</div></section>
+"""
+    proof = """
+<section class="av-section soft"><div class="av-wrap">
+ <div class="av-head"><span class="av-eyebrow">Antes de instalar</span><h2>Tres cosas que debes comprobar</h2><p>La preparación de la pared es la parte que más influye en el resultado.</p></div>
+ <div class="av-proof-grid">
+  <article class="av-proof"><img src="images/panel-autoadhesivo/reference-texture.jpg" alt="Textura de panel flexible" loading="lazy"><div><h3>Revisa el tono</h3><p>Comprueba el color con la luz real del espacio antes de cubrir toda la pared.</p></div></article>
+  <article class="av-proof"><img src="images/__INSTALLATION_IMAGE__" alt="Instalación de panel decorativo" loading="lazy"><div><h3>Alinea primero</h3><p>Mide y presenta el rollo antes de retirar completamente el protector.</p></div></article>
+  <article class="av-proof"><img src="images/panel-autoadhesivo/reference-surfaces.jpg" alt="Superficies aptas y no aptas para panel autoadhesivo" loading="lazy"><div><h3>Pared lisa y seca</h3><p>Polvo, humedad y textura marcada pueden reducir la adherencia.</p></div></article>
+ </div>
+</div></section>
+""".replace("__INSTALLATION_IMAGE__", esc(installation_image))
+    calculator = f"""
+<section class="av-section" id="calculadora"><div class="av-wrap av-calc">
+ <div><span class="av-eyebrow">Calculadora rápida</span><h2>¿Cuántos rollos necesitas?</h2><p>Calculamos el área y añadimos 10% estimado para cortes. Cada rollo cubre {coverage:g} m².</p></div>
+ <div class="av-form"><div class="av-fields"><div class="av-field"><label>Ancho de la pared</label><div class="av-input"><input id="avWidth" type="number" inputmode="decimal" min="1" placeholder="Ej. 240"><span>cm</span></div></div><div class="av-field"><label>Alto de la pared</label><div class="av-input"><input id="avHeight" type="number" inputmode="decimal" min="1" placeholder="Ej. 260"><span>cm</span></div></div></div><button class="av-btn av-calc-go" id="avCalculate" type="button">CALCULAR ROLLOS</button><div class="av-result" id="avResult"></div></div>
+</div></section>
+"""
+    reviews = """
+<section class="av-section __REVIEW_CLASS__" id="opiniones"><div class="av-wrap">
+ <div class="av-head"><span class="av-eyebrow">Lo que dicen compradores</span><h2>Opiniones verificadas de productos comparables</h2><p>No son todavía reseñas de clientes de VivaBien. Las mostramos como referencia transparente de lo que compradores reales valoran y de los problemas que debemos evitar.</p></div>
+ <div class="av-reviews">
+  <article class="av-review"><div class="av-stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“Finalmente recibí el producto antes de lo previsto. Tiene un aspecto muy bonito y combinará perfectamente con el fondo de mi mueble para TV.”</blockquote><footer>de***27 · Filipinas · <span>Compra verificada</span></footer></article>
+  <article class="av-review"><div class="av-stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“El material se siente bien al tacto y es grueso. El adhesivo parece lo suficientemente fuerte. El diseño es excelente.”</blockquote><footer>Ja***on · Australia · <span>Compra verificada</span></footer></article>
+  <article class="av-review critical"><div class="av-stars" aria-label="5 de 5 estrellas">★★★★★</div><blockquote>“Se veía hermoso, pero después aparecieron burbujas y comenzó a despegarse.” Esta experiencia refuerza la importancia de limpiar, secar y probar primero una sección.</blockquote><footer>Judith M. · Colombia · <span>Compra verificada</span></footer></article>
+ </div><p class="av-review-source">Fuente de referencia: reseñas visibles en Temu para artículos similares. Texto resumido y traducido cuando correspondía.</p>
+</div></section>
+""".replace("__REVIEW_CLASS__", "av-social-lead" if variant == 3 else "soft")
+    warning = """
+<section class="av-section"><div class="av-wrap av-warning">
+ <div><span class="av-eyebrow">Evita burbujas y desprendimientos</span><h2>La pared importa tanto como el producto.</h2></div>
+ <div><p>Antes de instalar todo el rollo:</p><ul><li>Retira polvo, grasa y humedad.</li><li>No lo apliques sobre pintura suelta o textura profunda.</li><li>Haz una prueba pequeña y espera antes de continuar.</li><li>Presiona por secciones, sin retirar todo el protector de una vez.</li></ul></div>
+</div></section>
+"""
+    buy = f"""
+<section class="av-section soft" id="comprar"><div class="av-wrap av-buy">
+ <div class="av-buy-img"><img src="images/{esc(roll_image)}" alt="Rollo de panel autoadhesivo efecto madera" loading="lazy"></div>
+ <div><span class="av-eyebrow">Listo para pedir</span><h2>{esc(short_name)}</h2><p class="av-spec">SKU {esc(sku)} · {width:g} × {length:g} cm · {coverage:g} m² por rollo</p><div class="av-buy-price">{fmt_price(price)}</div>
+  <div class="av-qty"><span>Cantidad de rollos</span><div class="av-stepper"><button id="avMinus" type="button" aria-label="Reducir cantidad">−</button><output id="avQty">1</output><button id="avPlus" type="button" aria-label="Aumentar cantidad">+</button></div></div>
+  <div class="av-buy-actions"><a class="av-btn av-wa" href="{esc(wa_url)}" target="_blank" aria-label="Consultar por WhatsApp">{WA_SVG}</a><button class="av-btn av-primary" id="avAdd" type="button">{BAG_SVG} AGREGAR AL CARRITO</button></div>
+  <a class="av-added" id="avAdded" href="carrito">✓ Agregado. Ver carrito →</a><p class="av-disclosure">{esc(shipping_text)}</p>
+ </div>
+</div></section>
+"""
+    faq = f"""
+<section class="av-section" id="preguntas"><div class="av-wrap av-faq"><div class="av-head"><span class="av-eyebrow">Información clara</span><h2>Preguntas frecuentes</h2></div>
+ <details><summary>¿Qué tamaño tiene?</summary><p>Cada rollo mide {width:g} cm de ancho por {length:g} cm de largo y cubre aproximadamente {coverage:g} m² antes de cortes.</p></details>
+ <details><summary>¿En qué pared se puede colocar?</summary><p>Recomendamos una superficie lisa, limpia y completamente seca. Si tu pared tiene humedad o textura marcada, envíanos una foto antes de pedir.</p></details>
+ <details><summary>¿Cómo calculo la cantidad?</summary><p>Usa la calculadora. El resultado añade 10% para cortes, aunque conviene confirmar las medidas antes de comprar.</p></details>
+</div></section>
+"""
+
+    if variant == 1:
+        sections = intro + trust + gallery + proof + calculator + reviews + warning + buy + faq
+    elif variant == 2:
+        sections = intro + trust + buy + calculator + proof + warning + reviews + faq
+    else:
+        sections = intro + trust + reviews + gallery + warning + proof + buy + calculator + faq
+
+    js = f"""
+<div class="av-mobile" id="avMobile"><strong>{fmt_price(price)}</strong><a class="av-btn av-primary" href="#comprar">COMPRAR</a></div>
+</div>
+<script>
+(function(){{
+ var PRODUCT={product_json},qty=1,coverage={coverage:.3f};
+ function paint(){{document.getElementById('avQty').textContent=qty}}
+ document.getElementById('avMinus').onclick=function(){{qty=Math.max(1,qty-1);paint()}};
+ document.getElementById('avPlus').onclick=function(){{qty=Math.min(99,qty+1);paint()}};
+ document.getElementById('avCalculate').onclick=function(){{
+  var w=Number(document.getElementById('avWidth').value),h=Number(document.getElementById('avHeight').value),out=document.getElementById('avResult');
+  out.className='av-result show';
+  if(!isFinite(w)||!isFinite(h)||w<=0||h<=0){{out.className='av-result show error';out.textContent='Ingresa medidas válidas mayores que cero.';return}}
+  var area=w*h/10000,rolls=Math.ceil(area*1.10/coverage);out.innerHTML='<strong>'+rolls+' rollo'+(rolls===1?'':'s')+'</strong>Estimado para '+area.toFixed(2)+' m², incluyendo 10% para cortes.';qty=Math.min(99,Math.max(1,rolls));paint();
+ }};
+ document.getElementById('avAdd').onclick=function(){{
+  var c=vbCart(),f=c.find(function(x){{return x.sku===PRODUCT.sku}});if(f)f.qty+=qty;else c.push({{sku:PRODUCT.sku,handle:PRODUCT.handle,title:PRODUCT.title,price:PRODUCT.price,img:PRODUCT.img,qty:qty}});vbSave(c);this.textContent='✓ AGREGADO';document.getElementById('avAdded').classList.add('show');
+  try{{fbq('track','AddToCart',{{content_ids:[PRODUCT.sku],content_type:'product',value:PRODUCT.price*qty,currency:'DOP'}});vbTrack('addcart',PRODUCT.sku,{{qty:qty,price:PRODUCT.price,source_section:'adhesive_variant_{variant}'}})}}catch(e){{}}
+ }};
+ var mobile=document.getElementById('avMobile'),hero=document.getElementById('hero');new IntersectionObserver(function(entries){{mobile.classList.toggle('show',!entries[0].isIntersecting)}},{{threshold:.05}}).observe(hero);
+}})();
+</script>
+"""
+    body = f'<div class="av v{variant}">{nav}{hero}{sections}{js}'
+    return page(f"Propuesta {variant} · {short_name} | {SITE_NAME}", body, wa_float=False,
+                desc="Vista previa de diseño para panel decorativo autoadhesivo VivaBien.",
+                track_sku=sku, track_category="Decoración del Hogar",
+                track_title=name, track_img=product_image, extra_head=css,
+                canonical=public_url("panel-autoadhesivo.html"),
+                og_image=f"{SITE_URL}/images/{quote(hero_image, safe='/')}")
+
+
+def adhesive_panel_temu_page():
+    """Mobile commerce preview following Temu's proven product-detail hierarchy."""
+    cfg = load_json(ADHESIVE_PANEL_PATH, {})
+    if not isinstance(cfg, dict) or not cfg.get("sku"):
+        return ""
+    sku = str(cfg["sku"]).strip()
+    name = str(cfg.get("name") or "Panel decorativo autoadhesivo efecto madera").strip()
+    short_name = str(cfg.get("short_name") or name).strip()
+    handle = str(cfg.get("handle") or "panel-autoadhesivo").strip()
+    raw_colors = cfg.get("colors") if isinstance(cfg.get("colors"), list) else []
+    colors = [
+        {
+            "id": str(item.get("id") or "").strip(),
+            "name": str(item.get("name") or "").strip(),
+            "image": str(item.get("image") or "").lstrip("/"),
+        }
+        for item in raw_colors if isinstance(item, dict)
+        and item.get("name") and item.get("image")
+    ]
+    color = colors[0]["name"] if colors else str(cfg.get("color") or "Roble natural").strip()
+    price = float(cfg.get("price") or 0)
+    old_price = float(cfg.get("old_price") or 0)
+    tier_price = float(cfg.get("tier_price") or price)
+    tier_min_qty = max(2, int(cfg.get("tier_min_qty") or 2))
+    width = float(cfg.get("width_cm") or 0)
+    length = float(cfg.get("length_cm") or 0)
+    coverage = float(cfg.get("coverage_m2") or 0)
+    if min(price, width, length, coverage) <= 0:
+        return ""
+
+    shipping_text = str(cfg.get("shipping_text") or
+                        "El costo y el tiempo de entrega se calculan según tu zona.").strip()
+    product_image = str(cfg.get("product_image") or "").lstrip("/")
+    installation_image = str(cfg.get("installation_image") or product_image).lstrip("/")
+    hero_image = str(cfg.get("hero_image") or "panel-autoadhesivo/hero-ai-v2.jpg").lstrip("/")
+    wa_url = (f"https://wa.me/{WHATSAPP}?text=" +
+              quote(f"Hola, quiero información sobre {short_name} ({sku})."))
+    selected_image = colors[0]["image"] if colors else product_image
+    product_json = json.dumps({
+        "sku": sku, "handle": handle, "title": name, "price": price,
+        "old_price": old_price, "tier_price": tier_price,
+        "tier_min_qty": tier_min_qty, "img": selected_image, "color": color,
+    }, ensure_ascii=False).replace("</", "<\\/")
+    color_html = "".join(
+        f'<button class="tm-color-option{" on" if i == 0 else ""}" type="button" '
+        f'data-color="{esc(item["name"])}" data-image="{esc(item["image"])}" '
+        f'aria-pressed="{"true" if i == 0 else "false"}">'
+        f'<span class="tm-color-photo"><img src="images/{esc(item["image"])}" '
+        f'alt="Color {esc(item["name"])}" loading="lazy"></span>'
+        f'<b>{esc(item["name"])}</b></button>'
+        for i, item in enumerate(colors)
+    )
+    slides = [
+        (hero_image,
+         "Ambiente decorado con panel flexible efecto madera"),
+        ("panel-autoadhesivo/hero-natural.jpg",
+         "Ambiente moderno con panel decorativo efecto madera"),
+        (product_image, "Rollo de panel decorativo y colores de referencia"),
+        ("panel-autoadhesivo/reference-texture.jpg",
+         "Detalle de textura de un producto comparable"),
+        ("panel-autoadhesivo/reference-backing.jpg",
+         "Respaldo autoadhesivo de un producto comparable"),
+        ("panel-autoadhesivo/reference-before-after.jpg",
+         "Antes y después de referencia"),
+    ]
+    slide_html = "".join(
+        f'<figure class="tm-slide{" tm-slide-main" if i == 0 else ""}"><img src="images/{esc(src)}" alt="{esc(alt)}" '
+        + ('fetchpriority="high"' if i == 0 else 'loading="lazy"')
+        + '></figure>'
+        for i, (src, alt) in enumerate(slides)
+    )
+    thumb_html = "".join(
+        f'<button class="tm-thumb{" on" if i == 0 else ""}" type="button" data-slide="{i}" '
+        f'aria-label="Ver imagen {i + 1}"><img src="images/{esc(src)}" alt=""></button>'
+        for i, (src, _) in enumerate(slides)
+    )
+
+    css = r"""
+<style>
+.tm,.tm *{box-sizing:border-box}.tm{--ink:#191919;--muted:#666;--line:#E5E5E5;--orange:#FF6B00;--blue:#2563D9;--green:#169B45;background:#F5F5F5;color:var(--ink);overflow:hidden}.tm button{font:inherit}.tm-wrap{width:min(760px,100%);margin:auto;background:#fff}
+.tm-head{height:58px;padding:0 14px;display:flex;align-items:center;gap:10px;background:#fff;border-bottom:1px solid var(--line)}.tm-back,.tm-icon{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink)}.tm-icon{position:relative}.tm-logo{margin-right:auto;display:flex;align-items:center;gap:8px;font-size:18px;font-weight:800}.tm-logo span{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:var(--blue);color:#fff}
+.tm-gallery{position:relative;background:#F0F0F0}.tm-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.tm-track::-webkit-scrollbar{display:none}.tm-slide{min-width:100%;height:min(72vh,650px);scroll-snap-align:start;overflow:hidden;background:#111}.tm-slide img{width:100%;height:100%;display:block;object-fit:cover}.tm-count{position:absolute;right:13px;bottom:13px;padding:6px 10px;border-radius:16px;background:rgba(0,0,0,.62);color:#fff;font-size:11px}.tm-thumbs{display:flex;gap:7px;padding:10px 12px;overflow:auto;background:#fff}.tm-thumb{flex:0 0 56px;width:56px;height:56px;padding:0;border:2px solid transparent;border-radius:7px;overflow:hidden;background:#EEE}.tm-thumb.on{border-color:var(--orange)}.tm-thumb img{width:100%;height:100%;object-fit:cover}
+.tm-strip{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#F0FFF4;color:#117A36;border-top:1px solid #D8F3E1;border-bottom:1px solid #D8F3E1;font-size:12px;font-weight:700}.tm-strip span{color:#D0D0D0}
+.tm-info{padding:15px 14px 17px}.tm-info h1{font-size:19px;line-height:1.32;overflow-wrap:anywhere}.tm-meta{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}.tm-old-price{margin-top:12px;color:var(--muted);font-size:11px}.tm-old-price del{margin-left:4px;text-decoration-thickness:1.5px}.tm-price{display:flex;align-items:baseline;gap:7px;margin-top:5px}.tm-price strong{color:var(--orange);font-size:34px;line-height:1}.tm-price span{color:var(--muted);font-size:11px}.tm-tier-deals{display:grid;gap:7px;margin-top:13px}.tm-tier-option{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;padding:8px 10px;border:1px solid #FFD0B2;border-radius:7px;background:#FFF8F3;color:var(--ink);text-align:left}.tm-tier-option.on{border:2px solid var(--orange);background:#FFF1E7}.tm-tier-option b{display:block;font-size:12px}.tm-tier-option small{display:block;margin-top:2px;color:var(--muted);font-size:9px}.tm-tier-option strong{color:var(--orange);font-size:14px;white-space:nowrap}.tm-stock{display:inline-block;margin-top:10px;padding:5px 8px;border:1px solid #FFB485;border-radius:4px;color:#C94E00;font-size:10px;font-weight:800}
+.tm-choice{padding:16px 14px;border-top:8px solid #F5F5F5}.tm-row-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;font-size:14px;font-weight:800}.tm-row-title span{color:var(--muted);font-size:11px;font-weight:500}.tm-color-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.tm-color-option{position:relative;min-width:0;padding:4px 4px 8px;border:1px solid #DADDE2;border-radius:7px;background:#fff;color:var(--ink);text-align:left}.tm-color-option.on{border:2px solid var(--blue);padding:3px 3px 7px;box-shadow:0 0 0 2px rgba(37,99,217,.1)}.tm-color-option.on:after{content:"✓";position:absolute;top:8px;right:8px;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:900}.tm-color-photo{display:block;width:100%;aspect-ratio:1;overflow:hidden;border-radius:4px;background:#EEE}.tm-color-photo img{width:100%;height:100%;display:block;object-fit:cover}.tm-color-option b{display:block;padding:7px 3px 0;font-size:9px;line-height:1.25;overflow-wrap:anywhere}.tm-qty{display:flex;align-items:center;gap:0}.tm-qty button{width:39px;height:39px;border:1px solid #DDD;background:#F7F7F7;font-size:20px}.tm-qty output{min-width:44px;height:39px;display:grid;place-items:center;border-top:1px solid #DDD;border-bottom:1px solid #DDD;font-weight:800}
+.tm-review-showcase{padding:16px 0 18px;border-top:8px solid #F5F5F5;background:#fff}.tm-review-showcase-head{display:flex;align-items:center;justify-content:space-between;padding:0 14px 11px}.tm-review-showcase-head h2{font-size:18px}.tm-review-nav{display:flex;gap:6px}.tm-review-nav button{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink);font-size:18px}.tm-review-track{display:flex;gap:10px;padding:0 14px;overflow-x:auto;overscroll-behavior-x:contain;scroll-behavior:smooth;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:auto}.tm-review-track::-webkit-scrollbar{display:none}.tm-review-card{flex:0 0 min(86vw,350px);overflow:hidden;border-radius:8px;background:#050505;color:#fff;scroll-snap-align:start;scroll-snap-stop:always}.tm-review-photo{width:100%;height:390px;padding:0;border:0;overflow:hidden;background:#151515;cursor:zoom-in;touch-action:auto}.tm-review-photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 36%;pointer-events:none}.tm-review-copy{padding:13px 14px 15px}.tm-review-user{display:flex;justify-content:space-between;gap:8px;color:#E7E7E7;font-size:10px}.tm-review-copy .tm-stars{margin-top:8px;color:#fff;font-size:16px}.tm-review-copy p{min-height:54px;margin-top:8px;font-size:11px;line-height:1.52}.tm-review-buy{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.tm-review-buy strong{font-size:16px}.tm-review-add{min-height:38px;padding:0 14px;border:0;border-radius:20px;background:var(--orange);color:#fff;font-size:10px;font-weight:800}
+.tm-trust{display:grid;grid-template-columns:repeat(3,1fr);border-top:8px solid #F5F5F5;border-bottom:8px solid #F5F5F5;background:#fff}.tm-trust div{padding:13px 5px;text-align:center;border-right:1px solid var(--line)}.tm-trust div:last-child{border:0}.tm-trust b{display:block;font-size:10px}.tm-trust span{display:block;margin-top:4px;color:var(--muted);font-size:9px}
+.tm-section{padding:22px 14px;border-bottom:8px solid #F5F5F5}.tm-section h2{font-size:20px}.tm-section>p{margin-top:7px;color:var(--muted);font-size:12px;line-height:1.55}.tm-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.tm-fact{padding:13px 5px;text-align:center;border:1px solid var(--line);border-radius:7px}.tm-fact b{display:block;font-size:15px}.tm-fact span{display:block;margin-top:4px;color:var(--muted);font-size:9px}
+.tm-compare{margin-top:14px}.tm-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.tm-compare-panel{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:7px;background:#EEE}.tm-compare-panel img{width:100%;height:100%;display:block;object-fit:cover}.tm-compare-panel span{position:absolute;left:8px;bottom:8px;padding:5px 8px;border-radius:4px;background:rgba(0,0,0,.72);color:#fff;font-size:9px;font-weight:900}.tm-compare-note{margin:7px 1px 0;color:var(--muted);font-size:9px;line-height:1.45}.tm-detail-row{display:flex;gap:10px;margin-top:15px;padding-bottom:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.tm-detail-row::-webkit-scrollbar{display:none}.tm-detail-card{flex:0 0 min(78vw,310px);margin:0;overflow:hidden;border:1px solid var(--line);border-radius:7px;background:#fff;scroll-snap-align:start}.tm-detail-card img{width:100%;aspect-ratio:1;display:block;object-fit:cover}.tm-detail-card figcaption{padding:10px 11px;color:var(--muted);font-size:10px;line-height:1.45}.tm-detail-card figcaption b{display:block;margin-bottom:3px;color:var(--ink);font-size:11px}
+.tm-spanish-details{display:grid;gap:10px;margin-top:16px}.tm-spanish-detail{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:7px;background:#fff}.tm-spanish-detail img{width:100%;display:block}.tm-spanish-detail figcaption{padding:10px 11px;color:var(--muted);font-size:10px;line-height:1.45}
+.tm-warning{margin-top:14px;padding:14px;border-radius:7px;background:#FFF5EE;border:1px solid #FFD8BD}.tm-warning b{font-size:13px}.tm-warning ul{margin:8px 0 0 18px;color:#73452C;font-size:11px;line-height:1.65}
+.tm-calc{margin-top:14px;padding:16px;border-radius:7px;background:#20252D;color:#fff}.tm-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.tm-field label{display:block;margin-bottom:5px;color:#D5DBE3;font-size:9px}.tm-input{display:flex;overflow:hidden;border-radius:6px;background:#fff}.tm-input input{min-width:0;width:100%;padding:12px 9px;border:0;outline:0;font-weight:800}.tm-input span{display:grid;place-items:center;padding:0 8px;background:#EEE;color:#555;font-size:9px}.tm-calc button{width:100%;margin-top:9px;background:var(--orange);color:#fff}.tm-result{display:none;margin-top:9px;padding:10px;border-radius:6px;background:#fff;color:var(--ink);font-size:11px}.tm-result.show{display:block}.tm-result strong{display:block;color:var(--orange);font-size:19px}
+.tm-buyer-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px}.tm-buyer-photo{margin:0;overflow:hidden;border-radius:7px;background:#F0F0F0}.tm-buyer-photo img{width:100%;aspect-ratio:1;display:block;object-fit:cover}.tm-buyer-photo figcaption{padding:7px 5px;color:var(--muted);font-size:8px;line-height:1.35;text-align:center}
+.tm-reviews{display:grid;gap:10px;margin-top:14px}.tm-review{padding:14px;border:1px solid var(--line);border-radius:7px}.tm-stars{color:#FF9A00;font-size:13px}.tm-review p{margin-top:8px;font-size:12px;line-height:1.5}.tm-review footer{margin-top:10px;color:var(--muted);font-size:9px}.tm-source{margin-top:11px!important;font-size:9px!important}.tm-wa{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;margin-top:13px;border-radius:7px;background:#25D366;color:#fff;font-size:12px;font-weight:800}
+.tm-bottom{position:fixed;z-index:100;left:0;right:0;bottom:0;padding:9px 10px calc(9px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #DDD}.tm-bottom-in{width:min(740px,100%);margin:auto;display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:center}.tm-bottom-price span{display:block;color:var(--muted);font-size:9px}.tm-bottom-price strong{font-size:18px}.tm-add{min-height:52px;border:0;border-radius:26px;background:var(--orange);color:#fff;font-size:14px;font-weight:900}.tm-added{display:none;padding:9px 14px;background:#E9FFF1;color:#087D32;text-align:center;font-size:11px;font-weight:800}.tm-added.show{display:block}
+.tm-lightbox{position:fixed;z-index:400;inset:0;display:none;grid-template-rows:auto 1fr auto;background:#000;color:#fff}.tm-lightbox.show{display:grid}.tm-lightbox-top{display:flex;align-items:center;justify-content:space-between;padding:12px 14px calc(8px + env(safe-area-inset-top))}.tm-lightbox-close,.tm-lightbox-arrow{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:25px}.tm-lightbox-stage{position:relative;min-height:0;display:grid;place-items:center;overflow:hidden;touch-action:pan-y}.tm-lightbox-stage img{width:100%;height:100%;display:block;object-fit:contain}.tm-lightbox-arrow{position:absolute;top:50%;transform:translateY(-50%)}.tm-lightbox-prev{left:10px}.tm-lightbox-next{right:10px}.tm-lightbox-caption{padding:10px 18px calc(16px + env(safe-area-inset-bottom));text-align:center;color:#D9D9D9;font-size:11px}
+.tm-spacer{height:84px}
+@media(max-width:779px){.tm-slide-main img{transform:scale(1.6)}}
+@media(min-width:780px){.tm-wrap{margin-top:20px;box-shadow:0 8px 30px rgba(0,0,0,.08)}.tm-compare-panel{aspect-ratio:16/10}.tm-detail-card{flex-basis:300px}.tm-spanish-details{grid-template-columns:1fr 1fr}.tm-reviews{grid-template-columns:repeat(3,1fr)}.tm-bottom{left:50%;right:auto;width:760px;transform:translateX(-50%)}}
+</style>
+"""
+    body = f"""
+<div class="tm"><main class="tm-wrap">
+ <header class="tm-head"><a class="tm-back" href="./" aria-label="Volver">‹</a><a class="tm-logo" href="./"><span>V</span>VivaBien</a><a class="tm-icon" href="buscar" aria-label="Buscar">⌕</a><a class="tm-icon" href="carrito" aria-label="Carrito">{BAG_SVG}<span class="cart-n" id="cartN"></span></a></header>
+ <section class="tm-gallery"><div class="tm-track" id="tmTrack">{slide_html}</div><span class="tm-count"><b id="tmCurrent">1</b> / {len(slides)}</span></section>
+ <div class="tm-thumbs">{thumb_html}</div>
+ <div class="tm-strip">✓ Envíos a todo RD <span>|</span> ✓ Compra protegida</div>
+ <section class="tm-info">
+  <h1>{esc(name)}</h1><p class="tm-meta">SKU {esc(sku)} · Panel flexible en rollo · {width:g} × {length:g} cm</p>
+  <div class="tm-old-price">Antes <del>{fmt_price(old_price)}</del></div>
+  <div class="tm-price"><strong>{fmt_price(price)}</strong><span>por rollo · {coverage:g} m²</span></div>
+  <div class="tm-tier-deals"><button class="tm-tier-option" type="button" data-tier-qty="2"><span><b>Compra 2 rollos</b><small>Antes {fmt_price(price * 2)} · Ahorras {fmt_price((price - tier_price) * 2)}</small></span><strong>{fmt_price(tier_price * 2)}</strong></button><button class="tm-tier-option" type="button" data-tier-qty="3"><span><b>Compra 3 rollos</b><small>Antes {fmt_price(price * 3)} · Ahorras {fmt_price((price - tier_price) * 3)}</small></span><strong>{fmt_price(tier_price * 3)}</strong></button></div>
+  <span class="tm-stock">PRECIO CONFIRMADO</span>
+ </section>
+ <section class="tm-choice"><div class="tm-row-title">Elige el color <span>Seleccionado: <b id="tmSelectedColor">{esc(color)}</b></span></div><div class="tm-color-grid">{color_html}</div></section>
+ <section class="tm-choice"><div class="tm-row-title">Cantidad <span>Rollo de {width:g} × {length:g} cm</span></div><div class="tm-qty"><button id="tmMinus" type="button" aria-label="Reducir cantidad">−</button><output id="tmQty">1</output><button id="tmPlus" type="button" aria-label="Aumentar cantidad">+</button></div></section>
+ <section class="tm-review-showcase" id="opiniones"><div class="tm-review-showcase-head"><h2>Fotos de compradores</h2><div class="tm-review-nav"><button id="tmReviewPrev" type="button" aria-label="Foto anterior">‹</button><button id="tmReviewNext" type="button" aria-label="Foto siguiente">›</button></div></div><div class="tm-review-track" id="tmReviewTrack">
+  <article class="tm-review-card"><button class="tm-review-photo tm-review-open" data-review="0" type="button" aria-label="Ampliar foto de 08***07"><img src="images/panel-autoadhesivo/customer-review-1.jpg" alt="Instalación compartida por comprador de panel similar" loading="lazy"></button><div class="tm-review-copy"><div class="tm-review-user"><b>08***07</b><span>Compra verificada</span></div><div class="tm-stars">★★★★☆</div><p>Se ve genial, pero al abrirlo noté que algunas partes tenían burbujas y tuve que reemplazarlo.</p><div class="tm-review-buy"><strong>{fmt_price(price)}</strong><button class="tm-review-add" type="button">Añadir al carrito</button></div></div></article>
+  <article class="tm-review-card"><button class="tm-review-photo tm-review-open" data-review="1" type="button" aria-label="Ampliar foto de Alexandra Davis"><img src="images/panel-autoadhesivo/customer-review-2.jpg" alt="Pared decorada compartida por compradora de panel similar" loading="lazy"></button><div class="tm-review-copy"><div class="tm-review-user"><b>Alexandra Davis</b><span>Compra verificada</span></div><div class="tm-stars">★★★★★</div><p>Un cambio absolutamente increíble que transforma completamente la dinámica de la habitación.</p><div class="tm-review-buy"><strong>{fmt_price(price)}</strong><button class="tm-review-add" type="button">Añadir al carrito</button></div></div></article>
+  <article class="tm-review-card"><button class="tm-review-photo tm-review-open" data-review="2" type="button" aria-label="Ampliar foto de da***20"><img src="images/panel-autoadhesivo/customer-review-3.jpg" alt="Isla de cocina decorada con panel efecto madera" loading="lazy"></button><div class="tm-review-copy"><div class="tm-review-user"><b>da***20</b><span>Foto de comprador</span></div><div class="tm-stars">★★★★☆</div><p>Es fácil de instalar y le da un aspecto muy bonito.</p><div class="tm-review-buy"><strong>{fmt_price(price)}</strong><button class="tm-review-add" type="button">Añadir al carrito</button></div></div></article>
+  <article class="tm-review-card"><button class="tm-review-photo tm-review-open" data-review="3" type="button" aria-label="Ampliar foto de Lucy Juniper"><img src="images/panel-autoadhesivo/customer-review-4.jpg" alt="Habitación con panel gris compartida por compradora" loading="lazy"></button><div class="tm-review-copy"><div class="tm-review-user"><b>Lucy Juniper</b><span>Compra verificada</span></div><div class="tm-stars">★★★★★</div><p>Es muy fácil de usar, pero hay que tener cuidado al cortar el rollo porque puede agrietarse.</p><div class="tm-review-buy"><strong>{fmt_price(price)}</strong><button class="tm-review-add" type="button">Añadir al carrito</button></div></div></article>
+  <article class="tm-review-card"><button class="tm-review-photo tm-review-open" data-review="4" type="button" aria-label="Ampliar foto de Sarah Ristagno"><img src="images/panel-autoadhesivo/customer-review-5.jpg" alt="Pared de televisión decorada compartida por compradora" loading="lazy"></button><div class="tm-review-copy"><div class="tm-review-user"><b>Sarah Ristagno</b><span>Foto de comprador</span></div><div class="tm-stars">★★★★☆</div><p>Foto compartida después de instalar un panel similar en la pared del televisor.</p><div class="tm-review-buy"><strong>{fmt_price(price)}</strong><button class="tm-review-add" type="button">Añadir al carrito</button></div></div></article>
+  <article class="tm-review-card"><button class="tm-review-photo tm-review-open" data-review="5" type="button" aria-label="Ampliar foto de Paula Barbosa"><img src="images/panel-autoadhesivo/customer-review-6.jpg" alt="Pared de baño decorada con panel efecto madera" loading="lazy"></button><div class="tm-review-copy"><div class="tm-review-user"><b>Paula Barbosa</b><span>Foto de comprador</span></div><div class="tm-stars">★★★★★</div><p>Excelente. Justo lo que imaginé. Hay que colocarlo con cuidado para evitar doblarlo.</p><div class="tm-review-buy"><strong>{fmt_price(price)}</strong><button class="tm-review-add" type="button">Añadir al carrito</button></div></div></article>
+ </div><p class="tm-source" style="padding:0 14px">Fotos y opiniones de compradores de productos similares; las medidas mostradas en las capturas pueden ser diferentes.</p></section>
+ <div class="tm-trust"><div><b>🚚 Envíos</b><span>Todo el país</span></div><div><b>💵 Contra entrega</b><span>Gran Santo Domingo</span></div><div><b>↩️ Garantía</b><span>7 días</span></div></div>
+ <section class="tm-section" id="detalles"><h2>Detalles del producto</h2><p>Un revestimiento flexible con efecto de listones finos para renovar paredes sin el volumen de un panel rígido.</p><div class="tm-facts"><div class="tm-fact"><b>{width:g} cm</b><span>Ancho</span></div><div class="tm-fact"><b>{length:g} cm</b><span>Largo</span></div><div class="tm-fact"><b>{coverage:g} m²</b><span>Por rollo</span></div></div>
+  <div class="tm-compare"><div class="tm-compare-grid"><div class="tm-compare-panel"><img src="images/panel-autoadhesivo/detail-before-ai.png" alt="Comedor con pared lisa antes de la renovación" loading="lazy"><span>ANTES</span></div><div class="tm-compare-panel"><img src="images/panel-autoadhesivo/detail-after-brown.jpg" alt="Comedor con panel decorativo marrón instalado" loading="lazy"><span>DESPUÉS</span></div></div><p class="tm-compare-note">Visualización del mismo ambiente. La imagen “Antes” fue recreada con IA para mostrar el cambio de pared; confirma el tono real en las fotos del producto.</p></div>
+  <div class="tm-detail-row" aria-label="Detalles visuales del panel"><figure class="tm-detail-card"><img src="images/panel-autoadhesivo/detail-brown-room.jpg" alt="Panel flexible marrón aplicado en una pared moderna" loading="lazy"><figcaption><b>Resultado completo</b>Referencia de cómo el listón fino cambia una pared.</figcaption></figure><figure class="tm-detail-card"><img src="images/panel-autoadhesivo/detail-brown-roll.jpg" alt="Rollo de panel flexible marrón junto a una pared" loading="lazy"><figcaption><b>Formato flexible</b>El producto se presenta en rollo para facilitar el manejo.</figcaption></figure><figure class="tm-detail-card"><img src="images/panel-autoadhesivo/detail-adhesive-backing.jpg" alt="Parte trasera adhesiva de un panel flexible comparable" loading="lazy"><figcaption><b>Respaldo autoadhesivo</b>Retira el protector poco a poco durante la aplicación.</figcaption></figure><figure class="tm-detail-card"><img src="images/panel-autoadhesivo/detail-texture-close.jpg" alt="Detalle cercano de textura y líneas del panel" loading="lazy"><figcaption><b>Textura de cerca</b>Las líneas finas crean profundidad sin ocupar mucho espacio.</figcaption></figure></div>
+  <div class="tm-spanish-details"><figure class="tm-spanish-detail"><img src="images/panel-autoadhesivo/detail-spanish-before-after.jpg" alt="Antes y después de una pared renovada con panel decorativo" loading="lazy"><figcaption>Una pared deteriorada puede convertirse en un punto focal más cálido.</figcaption></figure><figure class="tm-spanish-detail"><img src="images/panel-autoadhesivo/detail-spanish-spaces-v2.jpg" alt="Panel decorativo usado en comedor, sala y dormitorio" loading="lazy"><figcaption>Referencia de uso en sala, comedor y dormitorio.</figcaption></figure></div>
+  <div class="tm-warning"><b>Antes de instalar</b><ul><li>Elimina polvo, grasa y humedad.</li><li>No lo apliques sobre pintura suelta o textura profunda.</li><li>Prueba una sección pequeña antes de cubrir toda la pared.</li><li>Avanza por secciones para reducir burbujas.</li></ul></div>
+ </section>
+ <section class="tm-section" id="calculadora"><h2>Calcula cuántos rollos necesitas</h2><p>Añadimos 10% estimado para cortes y ajustes.</p><div class="tm-calc"><div class="tm-fields"><div class="tm-field"><label>Ancho de la pared</label><div class="tm-input"><input id="tmWidth" type="number" inputmode="decimal" min="1" placeholder="240"><span>cm</span></div></div><div class="tm-field"><label>Alto de la pared</label><div class="tm-input"><input id="tmHeight" type="number" inputmode="decimal" min="1" placeholder="260"><span>cm</span></div></div></div><button class="tm-add" id="tmCalculate" type="button">CALCULAR</button><div class="tm-result" id="tmResult"></div></div></section>
+ <section class="tm-section"><h2>¿Necesitas ayuda antes de pedir?</h2><p>Envíanos una foto de tu pared y sus medidas. Te ayudamos a confirmar la cantidad y si la superficie es adecuada.</p><a class="tm-wa" href="{esc(wa_url)}" target="_blank">{WA_SVG} CONSULTAR POR WHATSAPP</a></section>
+ <div class="tm-added" id="tmAdded">✓ Agregado al carrito</div><div class="tm-spacer"></div>
+ </main>
+ <div class="tm-lightbox" id="tmLightbox" role="dialog" aria-modal="true" aria-label="Fotos de compradores" aria-hidden="true"><div class="tm-lightbox-top"><button class="tm-lightbox-close" id="tmLightboxClose" type="button" aria-label="Cerrar">×</button><b id="tmLightboxCount">1 / 6</b><span style="width:44px"></span></div><div class="tm-lightbox-stage" id="tmLightboxStage"><img id="tmLightboxImage" src="images/panel-autoadhesivo/customer-review-1.jpg" alt="Foto de comprador ampliada"><button class="tm-lightbox-arrow tm-lightbox-prev" id="tmLightboxPrev" type="button" aria-label="Foto anterior">‹</button><button class="tm-lightbox-arrow tm-lightbox-next" id="tmLightboxNext" type="button" aria-label="Foto siguiente">›</button></div><div class="tm-lightbox-caption" id="tmLightboxCaption"></div></div>
+ <div class="tm-bottom"><div class="tm-bottom-in"><div class="tm-bottom-price"><span>Total del producto</span><strong id="tmTotal">{fmt_price(price)}</strong></div><button class="tm-add" id="tmAdd" type="button">¡AGRÉGALO AHORA!</button></div></div>
+</div>
+<script>
+(function(){{
+ var PRODUCT={product_json},qty=1,coverage={coverage:.3f},slides={len(slides)},track=document.getElementById('tmTrack');
+ function money(n){{return 'RD$ '+Math.round(n).toLocaleString('en-US')}}
+ function unitPrice(q){{return q>=PRODUCT.tier_min_qty?PRODUCT.tier_price:PRODUCT.price}}
+ function totalPrice(q){{return unitPrice(q)*q}}
+ function paint(){{document.getElementById('tmQty').textContent=qty;document.getElementById('tmTotal').textContent=money(totalPrice(qty));document.querySelectorAll('.tm-tier-option').forEach(function(b){{b.classList.toggle('on',Number(b.dataset.tierQty)===qty)}})}}
+ function changeQty(next,source){{var previous=qty;qty=Math.max(1,Math.min(99,next));paint();if(qty!==previous)try{{vbTrack('quantity_change',PRODUCT.sku,{{qty:qty,price:unitPrice(qty),cart_total:totalPrice(qty),offer_qty:qty,selected_color:PRODUCT.color,source_section:source}})}}catch(e){{}}}}
+ document.getElementById('tmMinus').onclick=function(){{changeQty(qty-1,'quantity_stepper')}};
+ document.getElementById('tmPlus').onclick=function(){{changeQty(qty+1,'quantity_stepper')}};
+ document.querySelectorAll('.tm-tier-option').forEach(function(button){{button.onclick=function(){{changeQty(Number(button.dataset.tierQty),'volume_offer');try{{vbTrack('tier_select',PRODUCT.sku,{{qty:qty,price:unitPrice(qty),cart_total:totalPrice(qty),offer_qty:qty,selected_color:PRODUCT.color,source_section:'price_offer'}})}}catch(e){{}}}}}});
+ document.querySelectorAll('.tm-color-option').forEach(function(button){{button.onclick=function(){{document.querySelectorAll('.tm-color-option').forEach(function(item){{var selected=item===button;item.classList.toggle('on',selected);item.setAttribute('aria-pressed',selected?'true':'false')}});PRODUCT.color=button.dataset.color;PRODUCT.img=button.dataset.image;document.getElementById('tmSelectedColor').textContent=PRODUCT.color;try{{vbTrack('color_select',PRODUCT.sku,{{selected_color:PRODUCT.color,source_section:'color_selector'}})}}catch(e){{}}}}}});
+ document.querySelectorAll('.tm-thumb').forEach(function(b){{b.onclick=function(){{var i=Number(b.dataset.slide);track.scrollTo({{left:track.clientWidth*i,behavior:'smooth'}})}}}});
+ var galleryIndex=-1;track.addEventListener('scroll',function(){{var i=Math.max(0,Math.min(slides-1,Math.round(track.scrollLeft/track.clientWidth)));document.getElementById('tmCurrent').textContent=i+1;document.querySelectorAll('.tm-thumb').forEach(function(b){{b.classList.toggle('on',Number(b.dataset.slide)===i)}});if(i!==galleryIndex){{galleryIndex=i;try{{vbTrack('gallery_view',PRODUCT.sku,{{gallery_index:i,selected_color:PRODUCT.color,source_section:'product_gallery'}})}}catch(e){{}}}}}},{{passive:true}});
+ document.getElementById('tmCalculate').onclick=function(){{var w=Number(document.getElementById('tmWidth').value),h=Number(document.getElementById('tmHeight').value),out=document.getElementById('tmResult');out.className='tm-result show';if(!isFinite(w)||!isFinite(h)||w<=0||h<=0){{out.textContent='Ingresa medidas válidas mayores que cero.';return}}var area=w*h/10000,rolls=Math.ceil(area*1.10/coverage);out.innerHTML='<strong>'+rolls+' rollo'+(rolls===1?'':'s')+'</strong>Estimado para '+area.toFixed(2)+' m² con 10% para cortes.';qty=Math.min(99,Math.max(1,rolls));paint();try{{vbTrack('calculator_success',PRODUCT.sku,{{calculated_qty:rolls,wall_width:w,wall_height:h,selected_color:PRODUCT.color,source_section:'coverage_calculator'}})}}catch(e){{}}}};
+ function addProduct(button,source){{var c=vbCart(),f=c.find(function(x){{return x.sku===PRODUCT.sku&&x.color===PRODUCT.color}});if(f){{f.qty+=qty;f.img=PRODUCT.img;f.tier_price=PRODUCT.tier_price;f.tier_min_qty=PRODUCT.tier_min_qty;f.old_price=PRODUCT.old_price}}else c.push({{sku:PRODUCT.sku,handle:PRODUCT.handle,title:PRODUCT.title+' · '+PRODUCT.color,color:PRODUCT.color,price:PRODUCT.price,old_price:PRODUCT.old_price,tier_price:PRODUCT.tier_price,tier_min_qty:PRODUCT.tier_min_qty,img:PRODUCT.img,qty:qty}});vbSave(c);button.textContent='✓ AGREGADO';document.getElementById('tmAdded').classList.add('show');try{{fbq('track','AddToCart',{{content_ids:[PRODUCT.sku],content_type:'product',value:totalPrice(qty),currency:'DOP'}});vbTrack('addcart',PRODUCT.sku,{{qty:qty,price:unitPrice(qty),cart_total:totalPrice(qty),offer_qty:qty,selected_color:PRODUCT.color,source_section:source}})}}catch(e){{}}}}
+ document.getElementById('tmAdd').onclick=function(){{addProduct(this,'sticky_buy_bar');location.href='carrito.html'}};
+ document.querySelectorAll('.tm-review-add').forEach(function(button,index){{button.onclick=function(){{addProduct(button,'buyer_review_'+(index+1))}}}});
+ var reviewTrack=document.getElementById('tmReviewTrack');
+ function moveReviews(direction){{reviewTrack.scrollBy({{left:direction*Math.max(280,reviewTrack.clientWidth*.9),behavior:'smooth'}})}}
+ document.getElementById('tmReviewPrev').onclick=function(){{moveReviews(-1)}};
+ document.getElementById('tmReviewNext').onclick=function(){{moveReviews(1)}};
+ var reviewButtons=Array.prototype.slice.call(document.querySelectorAll('.tm-review-open')),lightbox=document.getElementById('tmLightbox'),lightboxImage=document.getElementById('tmLightboxImage'),lightboxCount=document.getElementById('tmLightboxCount'),lightboxCaption=document.getElementById('tmLightboxCaption'),reviewIndex=0,touchStartX=0;
+ function paintReview(){{var button=reviewButtons[reviewIndex],img=button.querySelector('img'),card=button.closest('.tm-review-card');lightboxImage.src=img.src;lightboxImage.alt=img.alt;lightboxCount.textContent=(reviewIndex+1)+' / '+reviewButtons.length;lightboxCaption.textContent=card.querySelector('.tm-review-user b').textContent}}
+ function openReview(index){{reviewIndex=index;paintReview();lightbox.classList.add('show');lightbox.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';try{{vbTrack('review_open',PRODUCT.sku,{{review_index:index,selected_color:PRODUCT.color,source_section:'buyer_reviews'}})}}catch(e){{}}}}
+ function closeReview(){{lightbox.classList.remove('show');lightbox.setAttribute('aria-hidden','true');document.body.style.overflow=''}}
+ function stepReview(direction){{reviewIndex=(reviewIndex+direction+reviewButtons.length)%reviewButtons.length;paintReview()}}
+ reviewButtons.forEach(function(button,index){{button.onclick=function(){{openReview(index)}}}});
+ document.getElementById('tmLightboxClose').onclick=closeReview;
+ document.getElementById('tmLightboxPrev').onclick=function(){{stepReview(-1)}};
+ document.getElementById('tmLightboxNext').onclick=function(){{stepReview(1)}};
+ document.getElementById('tmLightboxStage').addEventListener('touchstart',function(e){{touchStartX=e.changedTouches[0].clientX}},{{passive:true}});
+ document.getElementById('tmLightboxStage').addEventListener('touchend',function(e){{var delta=e.changedTouches[0].clientX-touchStartX;if(Math.abs(delta)>45)stepReview(delta<0?1:-1)}},{{passive:true}});
+ addEventListener('keydown',function(e){{if(!lightbox.classList.contains('show'))return;if(e.key==='Escape')closeReview();if(e.key==='ArrowLeft')stepReview(-1);if(e.key==='ArrowRight')stepReview(1)}});
+ var observed={{}};if('IntersectionObserver' in window){{var sectionObserver=new IntersectionObserver(function(entries){{entries.forEach(function(entry){{if(!entry.isIntersecting)return;var key=entry.target.id||entry.target.className.split(' ')[0];if(observed[key])return;observed[key]=1;try{{vbTrack('section_view',PRODUCT.sku,{{source_section:key}})}}catch(e){{}}}})}},{{threshold:.35}});['.tm-buybox','#opiniones','.tm-spanish-details','.tm-calc','.tm-faq'].forEach(function(sel){{var el=document.querySelector(sel);if(el)sectionObserver.observe(el)}})}}
+ paint();
+}})();
+</script>
+"""
+    return page(f"{short_name} | {SITE_NAME}", body, wa_float=False,
+                desc=f"Panel autoadhesivo efecto madera de {width:g} × {length:g} cm.",
+                track_sku=sku, track_category="Decoración del Hogar",
+                track_title=name, track_img=hero_image, extra_head=css,
+                canonical=public_url("panel-autoadhesivo.html"),
+                og_image=f"{SITE_URL}/images/{hero_image}")
+
 
 def modern_home_body(feats, tiles, cat_sections, group_options, subs_json, cards, total,
                      best_sellers="", reviews="", stores=""):
@@ -1257,7 +2272,7 @@ function recGet(){try{return JSON.parse(localStorage.getItem('vb_recent')||'[]')
 function recAdd(w){var r=recGet().filter(function(x){return x!==w});r.unshift(w);r=r.slice(0,6);try{localStorage.setItem('vb_recent',JSON.stringify(r))}catch(e){}recPaint()}
 function recPaint(){var r=recGet(),row=document.getElementById('recentRow');if(!r.length){row.classList.remove('show');return}row.innerHTML='<span class="rlb">Recientes:</span>'+r.map(function(w){return '<span class="rch">'+h(w)+'</span>'}).join('')+'<button class="rclr" title="Borrar historial">✕</button>';row.classList.add('show');row.querySelectorAll('.rch').forEach(function(ch){ch.onclick=function(){qEl.value=ch.textContent;qEl.dispatchEvent(new Event('input'))}});row.querySelector('.rclr').onclick=function(){try{localStorage.removeItem('vb_recent')}catch(e){}recPaint()}}
 function matchWord(p,w){if(p.q.indexOf(w)>=0)return true;return (ALIASES[w]||[]).some(function(x){return p.q.indexOf(x)>=0})}
-function card(p){var sale=p.old_price!=null&&p.price!=null&&p.old_price>p.price,saving=sale?p.old_price-p.price:0,pct=sale?Math.max(1,Math.round(saving/p.old_price*100)):0;var price=p.price==null?'<span class="ask">Consultar</span>':(sale?'<div class="price-stack"><span class="current">RD$ '+Math.round(p.price).toLocaleString('en-US')+'</span><del>RD$ '+Math.round(p.old_price).toLocaleString('en-US')+'</del></div><span class="saving">Ahorras RD$ '+Math.round(saving).toLocaleString('en-US')+'</span>':'<div class="price-stack"><span class="current">RD$ '+Math.round(p.price).toLocaleString('en-US')+'</span></div>');var label=p.label?'<span class="offer-label">'+h(p.label)+'</span>':'';var badge=sale?'<span class="sale-badge">-'+pct+'%</span>':'';var add=p.price==null?'':'<button class="card-add" type="button" aria-label="Agregar al carrito" data-sku="'+h(p.sku)+'" data-handle="'+h(p.handle)+'" data-title="'+h(p.title)+'" data-price="'+p.price+'" data-img="'+h(p.img)+'" onclick="vbCardAdd(event,this)">__BAG__</button>';return '<article class="card"><a class="card-link" href="producto/'+encodeURIComponent(p.handle)+'.html"><div class="imgbox"><img src="images/'+encodeURIComponent(p.img)+'" alt="'+h(p.title)+'" loading="lazy" onerror="this.style.display=\\'none\\'"><span class="badge">'+h(p.sub)+'</span>'+badge+'</div><div class="info"><div class="nm">'+h(p.title)+'</div>'+label+'<div class="pr">'+price+'</div></div></a>'+add+'</article>'}
+function card(p){var sale=p.old_price!=null&&p.price!=null&&p.old_price>p.price,saving=sale?p.old_price-p.price:0,pct=sale?Math.max(1,Math.round(saving/p.old_price*100)):0;var price=p.price==null?'<span class="ask">Consultar</span>':(sale?'<div class="price-stack"><span class="current">RD$ '+Math.round(p.price).toLocaleString('en-US')+'</span><del>RD$ '+Math.round(p.old_price).toLocaleString('en-US')+'</del></div><span class="saving">Ahorras RD$ '+Math.round(saving).toLocaleString('en-US')+'</span>':'<div class="price-stack"><span class="current">RD$ '+Math.round(p.price).toLocaleString('en-US')+'</span></div>');var label=p.label?'<span class="offer-label">'+h(p.label)+'</span>':'';var badge=sale?'<span class="sale-badge">-'+pct+'%</span>':'';var add=p.price==null?'':'<button class="card-add" type="button" aria-label="Agregar al carrito" data-sku="'+h(p.sku)+'" data-handle="'+h(p.handle)+'" data-title="'+h(p.title)+'" data-price="'+p.price+'" data-img="'+h(p.img)+'" onclick="vbCardAdd(event,this)">__BAG__</button>';var href=p.url||('producto/'+encodeURIComponent(p.handle));return '<article class="card"><a class="card-link" href="'+h(href)+'"><div class="imgbox"><img src="images/'+encodeURIComponent(p.img)+'" alt="'+h(p.title)+'" loading="lazy" onerror="this.style.display=\\'none\\'"><span class="badge">'+h(p.sub)+'</span>'+badge+'</div><div class="info"><div class="nm">'+h(p.title)+'</div>'+label+'<div class="pr">'+price+'</div></div></a>'+add+'</article>'}
 function apply(reset){if(!all.length)return;var words=snorm(cur.q).split(/\s+/).filter(Boolean);filtered=all.filter(function(p){if(cur.g!=='*'&&p.group!==cur.g)return false;if(cur.s!=='*'&&p.sub!==cur.s)return false;if(words.length&&!words.every(function(w){return matchWord(p,w)}))return false;if(cur.min!=null&&(p.price==null||p.price<cur.min))return false;if(cur.max!=null&&(p.price==null||p.price>cur.max))return false;return true});filtered.sort(function(a,b){if(cur.sort==='price-asc')return (a.price==null?1e15:a.price)-(b.price==null?1e15:b.price);if(cur.sort==='price-desc')return (b.price==null?-1:b.price)-(a.price==null?-1:a.price);if(cur.sort==='name')return a.title.localeCompare(b.title,'es');return a.i-b.i});var mode=!!cur.q||cur.g!=='*'||cur.s!=='*'||cur.min!=null||cur.max!=null||cur.sort!=='default';document.getElementById('homePromo').classList.toggle('hidden',mode);document.getElementById('resultsHead').classList.toggle('show',mode);document.getElementById('n').textContent=filtered.length;var label=cur.q?'Resultados para “'+cur.q+'”':(cur.s!=='*'?cur.s:(cur.g!=='*'?cur.g:'Productos'));document.getElementById('resultsTitle').textContent=label;document.getElementById('resultsSummary').textContent=filtered.length+' productos encontrados';if(reset){shown=0;grid.innerHTML='';showNext()}}
 function showNext(){if(!all.length)return;if(!filtered.length){grid.innerHTML='<div class="no-results"><b>No encontramos productos</b>Prueba otra palabra o elimina algún filtro.</div>';document.getElementById('loadMore').classList.remove('show');return}var next=filtered.slice(shown,shown+BATCH);grid.insertAdjacentHTML('beforeend',next.map(card).join(''));shown+=next.length;document.getElementById('loadMore').classList.toggle('show',shown<filtered.length)}
 function updateSubs(g,selected){var s=document.getElementById('filterSub'),vals=g==='*'?[]:(SUBS[g]||[]);s.innerHTML='<option value="*">Todas</option>'+vals.map(function(x){return '<option value="'+h(x)+'">'+h(x)+'</option>'}).join('');s.value=selected&&vals.indexOf(selected)>=0?selected:'*'}
@@ -1278,6 +2293,10 @@ var io=new IntersectionObserver(function(es){if(es[0].isIntersecting&&all.length
 
 def build():
     products = load_products()
+    detail_rollout = load_json(DETAIL_ROLLOUT_PATH, {})
+    detail_rollout_skus = set(detail_rollout.get("skus", []))
+    detail_rollout_all = detail_rollout.get("mode") == "all"
+    merchant_report = write_merchant_candidates(products)
     if os.path.exists(OUT_DIR):
         shutil.rmtree(OUT_DIR)
     os.makedirs(f"{OUT_DIR}/producto", exist_ok=True)
@@ -1306,6 +2325,18 @@ def build():
             "old_price": p.get("old_price"), "label": p.get("label", ""),
             "available": p.get("inventory") is not None and p["inventory"] > 0,
             "q": snorm(search_text),
+        })
+    _, panel_variants = load_panel_products()
+    for i, p in enumerate(panel_variants, start=len(index_products)):
+        title = f"Panel decorativo ranurado {p['sku']} · {p['name']}"
+        index_products.append({
+            "i": i, "sku": p["sku"], "handle": "panel-decorativo",
+            "url": f"producto/panel-decorativo.html?sku={quote(p['sku'])}",
+            "title": title, "price": p["price"], "img": p["image"],
+            "group": "Hogar", "sub": "Paneles decorativos",
+            "old_price": None, "label": "290 × 17 cm",
+            "available": p["available"],
+            "q": snorm(f"{title} panel pared paneles decorativos panel ranurado lambrin liston ZT {p['sku']}"),
         })
     with open(f"{OUT_DIR}/products-index.json", "w", encoding="utf-8") as f:
         json.dump(index_products, f, ensure_ascii=False, separators=(",", ":"))
@@ -1340,12 +2371,12 @@ def build():
         f'<option value="{esc(g)}">{esc(g)}</option>' for g in groups)
     subs_json = json.dumps({g: sorted(subs_of[g]) for g in groups}, ensure_ascii=False)
     home_body = modern_home_body(feats, tiles, cat_sections, group_options, subs_json,
-                                 cards, len(products), best_sellers_html(products),
+                                 cards, len(index_products), best_sellers_html(products),
                                  reviews_html(), stores_html())
     with open(f"{OUT_DIR}/index.html", "w", encoding="utf-8") as f:
         f.write(page(f"{SITE_NAME} — Tienda online RD", home_body, wa_float=True,
                      desc="Hogar, belleza, herramientas, electrónica y más. Contra entrega en Gran Santo Domingo.",
-                     canonical=f"{SITE_URL}/"))
+                     canonical=public_url()))
 
     # ---- 购物车页 ----
     with open(f"{OUT_DIR}/carrito.html", "w", encoding="utf-8") as f:
@@ -1354,6 +2385,34 @@ def build():
     # ---- Garantía ----
     with open(f"{OUT_DIR}/garantia.html", "w", encoding="utf-8") as f:
         f.write(garantia_page())
+
+    # ---- 格栅板独立专题页（数据来自 data/panels.json）----
+    panels_html = panels_page()
+    if panels_html:
+        with open(f"{OUT_DIR}/paneles-decorativos.html", "w", encoding="utf-8") as f:
+            f.write(panels_html)
+        print(f"✅ 格栅板专题: {OUT_DIR}/paneles-decorativos.html")
+    panel_detail_html = panel_product_page()
+    if panel_detail_html:
+        with open(f"{OUT_DIR}/producto/panel-decorativo.html", "w", encoding="utf-8") as f:
+            f.write(panel_detail_html)
+        print(f"✅ 格栅板多 SKU 详情: {OUT_DIR}/producto/panel-decorativo.html")
+
+    # ---- 卷装自粘格栅贴面投流落地页 ----
+    adhesive_panel_html = adhesive_panel_page()
+    if adhesive_panel_html:
+        with open(f"{OUT_DIR}/panel-autoadhesivo.html", "w", encoding="utf-8") as f:
+            f.write(adhesive_panel_html)
+        print(f"✅ 自粘墙面卷材落地页: {OUT_DIR}/panel-autoadhesivo.html")
+        for variant in (1, 2, 3):
+            variant_html = adhesive_panel_variant_page(variant)
+            with open(f"{OUT_DIR}/panel-autoadhesivo-v{variant}.html", "w", encoding="utf-8") as f:
+                f.write(variant_html)
+        print(f"✅ 自粘墙面卷材设计提案: 3 个预览版本")
+        temu_html = adhesive_panel_temu_page()
+        with open(f"{OUT_DIR}/panel-autoadhesivo-temu.html", "w", encoding="utf-8") as f:
+            f.write(temu_html)
+        print(f"✅ 自粘墙面卷材 Temu 排版预览")
 
     # ---- 配送分区数据（前端 fetch，改价只改 JSON 不动 JS）----
     if os.path.isfile("data/shipping_zones.json"):
@@ -1367,11 +2426,13 @@ def build():
     if collections:
         os.makedirs(f"{OUT_DIR}/coleccion", exist_ok=True)
         for c in collections:
+            if c.get("landing"):
+                continue
             prods = [by_sku[s] for s in c.get("skus", []) if s in by_sku]
-            if not prods:
+            if not prods and not c.get("coming_soon"):
                 continue
             with open(f"{OUT_DIR}/coleccion/{c['slug']}.html", "w", encoding="utf-8") as f:
-                f.write(coleccion_page(c, prods))
+                f.write(coming_soon_collection_page(c) if c.get("coming_soon") else coleccion_page(c, prods))
             n_coll += 1
         if n_coll:
             print(f"✅ 专题合集: {n_coll} 个 → {OUT_DIR}/coleccion/")
@@ -1385,14 +2446,14 @@ def build():
         description = f"Compra {g.lower()} online en República Dominicana. Precios claros, entrega y atención por WhatsApp."
         with open(f"{OUT_DIR}/categoria/{group_slug}.html", "w", encoding="utf-8") as f:
             f.write(category_page(g, group_products, description, group_slug))
-        category_urls.append(f"{SITE_URL}/categoria/{group_slug}.html")
+        category_urls.append(public_url(f"categoria/{group_slug}.html"))
         for sub in sorted(subs_of[g]):
             sub_products = [p for p in group_products if p["sub"] == sub]
             sub_slug = slugify(f"{g}-{sub}")
             sub_desc = f"Encuentra {sub.lower()} en VivaBien RD. Compra online con entrega y soporte por WhatsApp."
             with open(f"{OUT_DIR}/categoria/{sub_slug}.html", "w", encoding="utf-8") as f:
                 f.write(category_page(sub, sub_products, sub_desc, sub_slug))
-            category_urls.append(f"{SITE_URL}/categoria/{sub_slug}.html")
+            category_urls.append(public_url(f"categoria/{sub_slug}.html"))
 
     # ---- 推荐栏索引 ----
     by_sub, by_group = {}, {}
@@ -1415,6 +2476,7 @@ def build():
 
     # ---- 详情页 ----
     for p in products:
+        commerce_detail = detail_rollout_all or p["sku"] in detail_rollout_skus
         # 多图画廊：整宽滑动 + 圆点指示器 + 缩略图（单图退化为普通大图）
         gal = product_gallery(p)
         if len(gal) > 1:
@@ -1461,7 +2523,7 @@ def build():
         safe_name = esc(p["title"])
         ve = (f"""fbq('track','ViewContent',{{content_ids:['{p["sku"]}'],content_name:'{safe_name}',content_type:'product',value:{p["price"] or 0},currency:'DOP'}});""")
         if p["price"] is not None:
-            actions = f"""<a class="btn-back" href="../index.html">←</a>
+            actions = f"""<a class="btn-back" href="../">←</a>
 <a class="btn-wa" href="{wa_link(p['title'])}" target="_blank" aria-label="WhatsApp"
  onclick="fbq('track','Contact',{{content_ids:['{p["sku"]}']}})">{WA_SVG}</a>
 <button class="btn-add" id="btnAdd" data-sku="{esc(p['sku'])}" data-handle="{esc(p['handle'])}"
@@ -1478,11 +2540,29 @@ function addCart(b){
  var it=c.find(function(x){return x.sku===sku});
  vbTrack('addcart',sku,{qty:it.qty,price:it.price,cart_total:c.reduce(function(a,x){return a+x.price*x.qty},0),product_title:it.title,product_img:it.img});
  b.classList.add('added');b.innerHTML='✓ Agregado — Ver carrito';
- b.onclick=function(){location.href='../carrito.html'};
+ b.onclick=function(){location.href='../carrito'};
 }
 </script>"""
+            if commerce_detail:
+                add_js = add_js.replace(
+                    "var c=vbCart(),sku=b.dataset.sku,f=c.find(function(x){return x.sku===sku});",
+                    "var q=Math.max(1,parseInt((document.getElementById('detailQty')||{}).value||1,10));"
+                    "var c=vbCart(),sku=b.dataset.sku,f=c.find(function(x){return x.sku===sku});")
+                add_js = add_js.replace(
+                    "if(f){f.qty++}else{c.push({sku:sku,handle:b.dataset.handle,title:b.dataset.title,\n  price:parseFloat(b.dataset.price),img:b.dataset.img,qty:1})}",
+                    "if(f){f.qty+=q}else{c.push({sku:sku,handle:b.dataset.handle,title:b.dataset.title,\n  price:parseFloat(b.dataset.price),img:b.dataset.img,qty:q})}")
+                add_js = add_js.replace(
+                    "value:parseFloat(b.dataset.price),currency:'DOP'",
+                    "value:parseFloat(b.dataset.price)*q,currency:'DOP'")
+                add_js = f"""<script>
+function detailQty(delta){{
+ var q=document.getElementById('detailQty'),total=document.getElementById('detailTotal');
+ if(!q)return;var n=Math.max(1,Math.min(99,parseInt(q.value||1,10)+delta));q.value=n;q.textContent=n;
+ if(total)total.textContent='RD$ '+({p['price']:.2f}*n).toLocaleString('en-US',{{maximumFractionDigits:2}});
+}}
+</script>""" + add_js
         else:
-            actions = f"""<a class="btn-back" href="../index.html">←</a>
+            actions = f"""<a class="btn-back" href="../">←</a>
 <a class="btn-wa wide" href="{wa_link(p['title'])}" target="_blank"
  onclick="fbq('track','Contact',{{content_ids:['{p["sku"]}']}})">{WA_SVG} Pedir por WhatsApp</a>"""
             add_js = ""
@@ -1490,7 +2570,7 @@ function addCart(b){
         recs_html = ""
         if recs:
             cards_r = "".join(
-                f'<a class="rec" href="{c["handle"]}.html">'
+                f'<a class="rec" href="{c["handle"]}">'
                 f'<img src="../images/{esc(c["img"])}" loading="lazy" onerror="this.style.opacity=0">'
                 f'<div class="rn">{esc(c["title"])}</div>'
                 + (f'<div class="rp">{fmt_price(c["price"])}</div>' if c["price"] is not None
@@ -1508,14 +2588,40 @@ function addCart(b){
         facts_html = (f'<div class="buy-facts"><div class="buy-fact"><span>✅</span><div>{stock_html}</div></div>'
                       f'{measure_html}<div class="buy-fact"><span>🚚</span><div><b>Tiempo estimado</b>'
                       '1-2 días laborables en Gran Santo Domingo; 1-7 días en el resto del país, según la zona.</div></div></div>')
+        detail_class = "dt commerce" if commerce_detail else "dt"
+        if commerce_detail:
+            commerce_meta = (f'<div class="commerce-meta"><span>SKU {esc(p["sku"])}</span>'
+                               f'<span>{esc(p["sub"])}</span></div>')
+            commerce_strip = ('<div class="commerce-strip"><span>✓ Envíos a todo RD</span>'
+                              '<i></i><span>✓ Compra protegida</span></div>')
+            commerce_proof = ('<div class="commerce-proof"><span>💬</span><div>'
+                              '<strong>¿Tienes dudas antes de comprar?</strong>'
+                              'Confirma existencia, tamaño o entrega por WhatsApp.</div></div>')
+            if p["price"] is not None:
+                quantity_html = ('<div class="commerce-choice"><div class="commerce-choice-label">'
+                                 '<b>Cantidad</b><span>Selecciona cuántas unidades necesitas</span></div>'
+                                 '<div class="commerce-qty"><button type="button" onclick="detailQty(-1)" '
+                                 'aria-label="Reducir cantidad">−</button><output id="detailQty" value="1">1</output>'
+                                 '<button type="button" onclick="detailQty(1)" aria-label="Aumentar cantidad">+</button></div></div>')
+                commerce_total = (f'<div class="commerce-bar-total"><span>Total del producto</span>'
+                                  f'<strong id="detailTotal">{fmt_price(p["price"])}</strong></div>')
+            else:
+                quantity_html = ""
+                commerce_total = ""
+        else:
+            commerce_meta = commerce_strip = commerce_proof = quantity_html = commerce_total = ""
         detail = f"""{header("../")}
-<div class="crumb"><a href="../index.html">← {esc(SITE_NAME)}</a> / {esc(p['group'])} / {esc(p['sub'])}</div>
-<div class="dt">
+<div class="crumb"><a href="../">{esc(SITE_NAME)}</a> / <a href="../categoria/{slugify(p['group'])}">{esc(p['group'])}</a> / {esc(p['sub'])}</div>
+<div class="{detail_class}">
 <div class="pic">{gallery_html}{thumbs}</div>
 <div>
 <div class="panel">
 <h1>{esc(p['title'])}</h1>
+{commerce_meta}
 {price_html}
+{commerce_strip}
+{quantity_html}
+{commerce_proof}
 <div class="trust">
 <div><span class="em">🚚</span>Entrega<br>24-72 horas</div>
 <div><span class="em">💵</span>Pagas<br>al recibir</div>
@@ -1525,6 +2631,7 @@ function addCart(b){
 <div class="sec">Descripción</div>
 <div class="desc">{desc_html}</div>
 <div class="bar">
+{commerce_total}
 <div class="customer-proof">⭐ +120 clientes satisfechos en toda RD</div>
 <div class="bar-btns">
 {actions}
@@ -1540,40 +2647,60 @@ function addCart(b){
 {recs_html}
 {gal_js}
 {add_js}"""
-        availability = "https://schema.org/InStock" if p.get("inventory", 0) and p["inventory"] > 0 else "https://schema.org/PreOrder"
+        availability = None
+        if p.get("inventory") is not None:
+            availability = ("https://schema.org/InStock" if p["inventory"] > 0
+                            else "https://schema.org/OutOfStock")
+        product_url = public_url(f"producto/{p['handle']}.html")
+        category_url = public_url(f"categoria/{slugify(p['group'])}.html")
         product_schema = {
-            "@context": "https://schema.org", "@type": "Product", "name": p["title"],
+            "@type": "Product", "name": p["title"],
             "image": [f"{SITE_URL}/images/{g}" for g in (gal or [p["img"]])],
-            "description": re.sub(r"<[^>]+>", " ", p["body"]).strip()[:500] or p["title"],
-            "sku": p["sku"], "brand": {"@type": "Brand", "name": SITE_NAME},
+            "description": plain_text(p["body"])[:500] or p["title"],
+            "sku": p["sku"],
         }
         if p["price"] is not None:
             product_schema["offers"] = {
-                "@type": "Offer", "url": f"{SITE_URL}/producto/{p['handle']}.html",
-                "priceCurrency": "DOP", "price": f'{p["price"]:.2f}', "availability": availability,
+                "@type": "Offer", "url": product_url,
+                "priceCurrency": "DOP", "price": f'{p["price"]:.2f}',
                 "itemCondition": "https://schema.org/NewCondition"
             }
-        schema_head = '<script type="application/ld+json">' + json.dumps(product_schema, ensure_ascii=False).replace("</", "<\\/") + '</script>'
+            if availability:
+                product_schema["offers"]["availability"] = availability
+        breadcrumb_schema = {
+            "@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": SITE_NAME, "item": public_url()},
+                {"@type": "ListItem", "position": 2, "name": p["group"], "item": category_url},
+                {"@type": "ListItem", "position": 3, "name": p["title"], "item": product_url},
+            ]
+        }
+        schema_graph = {"@context": "https://schema.org", "@graph": [product_schema, breadcrumb_schema]}
+        schema_head = '<script type="application/ld+json">' + json.dumps(schema_graph, ensure_ascii=False).replace("</", "<\\/") + '</script>'
         product_title = f'{p["title"]} | {fmt_price(p["price"])} en RD | {SITE_NAME}'
-        product_desc = (f'{p["title"]} por {fmt_price(p["price"])}. Compra online en RD con contra entrega '
-                        f'en Gran Santo Domingo y envíos a todo el país.' if p["price"] is not None else
-                        f'{p["title"]}. Consulta precio y disponibilidad. Contra entrega en Gran Santo Domingo.')
+        product_desc = product_meta_description(p)
         with open(f"{OUT_DIR}/producto/{p['handle']}.html", "w", encoding="utf-8") as f:
             f.write(page(product_title, detail, pixel_extra=ve,
                          desc=product_desc, track_sku=p["sku"], track_category=p["sub"],
                          track_title=p["title"], track_img=p["img"], extra_head=schema_head,
-                         canonical=f"{SITE_URL}/producto/{p['handle']}.html", rel="../"))
+                         canonical=product_url, rel="../",
+                         og_image=f"{SITE_URL}/images/{quote((gal or [p['img']])[0])}"))
 
     # ---- SEO 索引 ----
-    sitemap_urls = [f"{SITE_URL}/", f"{SITE_URL}/garantia.html", f"{SITE_URL}/carrito.html"]
+    sitemap_urls = [public_url(), public_url("garantia.html")]
+    if panels_html:
+        sitemap_urls.append(public_url("paneles-decorativos.html"))
+    if panel_detail_html:
+        sitemap_urls.append(public_url("producto/panel-decorativo.html"))
+    if adhesive_panel_html:
+        sitemap_urls.append(public_url("panel-autoadhesivo.html"))
     sitemap_urls += category_urls
-    sitemap_urls += [f"{SITE_URL}/coleccion/{c['slug']}.html" for c in collections
-                     if any(s in by_sku for s in c.get("skus", []))]
-    sitemap_urls += [f"{SITE_URL}/producto/{p['handle']}.html" for p in products]
-    today = date.today().isoformat()
+    sitemap_urls += [public_url(f"coleccion/{c['slug']}.html") for c in collections
+                     if not c.get("landing") and
+                     (c.get("coming_soon") or any(s in by_sku for s in c.get("skus", [])))]
+    sitemap_urls += [public_url(f"producto/{p['handle']}.html") for p in products]
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    sitemap += [f'<url><loc>{esc(url)}</loc><lastmod>{today}</lastmod></url>' for url in sitemap_urls]
+    sitemap += [f'<url><loc>{esc(url)}</loc></url>' for url in sitemap_urls]
     sitemap.append('</urlset>')
     with open(f"{OUT_DIR}/sitemap.xml", "w", encoding="utf-8") as f:
         f.write("\n".join(sitemap))
@@ -1582,6 +2709,7 @@ function addCart(b){
 
     # ---- 分类统计 ----
     print(f"✅ 构建完成: {len(products)} 个商品 → {OUT_DIR}/")
+    print(f"✅ Merchant 候选: {merchant_report['selected_candidates']} 个 → {REPORT_DIR}/merchant_candidates.csv")
     for g in groups:
         subs = sorted(subs_of[g].items(), key=lambda kv: -kv[1])
         print(f"   {g}: " + ", ".join(f"{s}({n})" for s, n in subs))

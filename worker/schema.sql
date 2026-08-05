@@ -63,7 +63,16 @@ CREATE TABLE IF NOT EXISTS events (
   filter_sub TEXT DEFAULT '',
   shipping_fee REAL DEFAULT 0,
   shipping_zone TEXT DEFAULT '',
-  delivery_estimate TEXT DEFAULT ''
+  delivery_estimate TEXT DEFAULT '',
+  source_section TEXT DEFAULT '',
+  selected_color TEXT DEFAULT '',
+  offer_qty INTEGER DEFAULT 0,
+  gallery_index INTEGER DEFAULT 0,
+  review_index INTEGER DEFAULT -1,
+  calculated_qty INTEGER DEFAULT 0,
+  wall_width REAL DEFAULT 0,
+  wall_height REAL DEFAULT 0,
+  order_id TEXT DEFAULT ''
 );
 CREATE INDEX IF NOT EXISTS idx_events_vid  ON events(vid);
 CREATE INDEX IF NOT EXISTS idx_events_code ON events(code);
@@ -72,6 +81,8 @@ CREATE INDEX IF NOT EXISTS idx_events_ip_hash ON events(ip_hash);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_events_event_id ON events(event_id) WHERE event_id<>'';
 CREATE INDEX IF NOT EXISTS idx_events_session ON events(session_id);
 CREATE INDEX IF NOT EXISTS idx_events_type_ts ON events(type,ts);
+CREATE INDEX IF NOT EXISTS idx_events_sku_type_ts ON events(sku,type,ts);
+CREATE INDEX IF NOT EXISTS idx_events_order_id ON events(order_id);
 
 -- 优惠券
 CREATE TABLE IF NOT EXISTS coupons (
@@ -109,6 +120,10 @@ CREATE TABLE IF NOT EXISTS orders (
   zone TEXT DEFAULT '',
   address TEXT NOT NULL,
   note TEXT DEFAULT '',
+  map_url TEXT DEFAULT '',
+  location_followup INTEGER NOT NULL DEFAULT 0,
+  preferred_delivery_date TEXT DEFAULT '',
+  preferred_delivery_window TEXT DEFAULT '',
   payment_method TEXT DEFAULT 'cod',
   shipping_zone TEXT DEFAULT '',
   shipping_fee REAL NOT NULL DEFAULT 0,
@@ -121,6 +136,19 @@ CREATE TABLE IF NOT EXISTS orders (
   total_min REAL NOT NULL DEFAULT 0,
   total_max REAL NOT NULL DEFAULT 0,
   coupon_code TEXT DEFAULT '',
+  session_id TEXT DEFAULT '',
+  utm_source TEXT DEFAULT '',
+  utm_medium TEXT DEFAULT '',
+  utm_campaign TEXT DEFAULT '',
+  utm_content TEXT DEFAULT '',
+  utm_term TEXT DEFAULT '',
+  fbclid TEXT DEFAULT '',
+  gclid TEXT DEFAULT '',
+  first_utm_source TEXT DEFAULT '',
+  first_utm_medium TEXT DEFAULT '',
+  first_utm_campaign TEXT DEFAULT '',
+  first_utm_content TEXT DEFAULT '',
+  first_utm_term TEXT DEFAULT '',
   ip_full TEXT DEFAULT '',
   ip_masked TEXT DEFAULT '',
   ip_hash TEXT DEFAULT '',
@@ -140,6 +168,8 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_vid ON orders(vid);
+CREATE INDEX IF NOT EXISTS idx_orders_session ON orders(session_id);
+CREATE INDEX IF NOT EXISTS idx_orders_campaign ON orders(utm_campaign);
 
 CREATE TABLE IF NOT EXISTS order_items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

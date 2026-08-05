@@ -3,7 +3,7 @@
 """
 VivaBien 本地商品管理后台
 用法: cd ~/vivabien-web && python3 admin.py
-浏览器自动打开 http://localhost:8765（公网走 Cloudflare Tunnel + Access）
+浏览器自动打开 http://localhost:8766（公网走 Cloudflare Tunnel + Access）
 功能: 改价格/标题/分类/详情描述、商品多图管理（补充图/尺寸图/替换/删除）、
      上传新商品、删商品、一键重新构建、一键发布上线（构建+git push）
 数据直接读写 data/products.csv，与 build.py 共用同一数据源
@@ -15,7 +15,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from urllib.parse import parse_qs, unquote, quote
 
-PORT     = 8765
+PORT     = int(os.environ.get("VIVABIEN_ADMIN_PORT", "8766"))
 CSV_PATH = "data/products.csv"
 IMG_DIR  = "images"
 
@@ -60,6 +60,15 @@ def worker_call(path, method="GET", payload=None):
         except Exception: return None, f"HTTP {e.code}"
     except Exception as e:
         return None, f"连接后端失败：{e}"
+
+def admin_image_src(raw):
+    """Map a catalog-relative image path to the local admin image route."""
+    path = str(raw or "").replace("\\", "/").lstrip("/")
+    if path.startswith("images/"):
+        path = path[7:]
+    if not path or any(part in {"", ".", ".."} for part in path.split("/")):
+        return ""
+    return "/images/" + quote(path, safe="/")
 
 # ---------- 登录密码 ----------
 # 密码存在 admin_password.txt（已加入 .gitignore，不会上传）。
@@ -449,6 +458,7 @@ def nav(active=""):
             f'<a class="{c("carts")}" href="/cart-visitors">加购访客</a>'
             f'<a class="{c("marketing")}" href="/marketing">📣 营销留存</a>'
             f'<a class="{c("stats")}" href="/stats">📊 数据</a>'
+            f'<a class="{c("wallpaper")}" href="/wallpaper-stats">墙纸广告</a>'
             f'<a class="{c("coll")}" href="/colecciones">🪴 专题</a></div>')
 
 def sub_shell(title, active, inner):
@@ -783,6 +793,187 @@ def stats_page():
            '<div class="cardp"><div class="frm"><label>查访客足迹</label><div class="seg2"><input id="q" placeholder="短码 或 访客ID"><select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select><button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div><div id="tl"></div></div></div>' + _STATS_JS + _ANALYTICS_JS)
     return sub_shell("数据分析", "stats", inner)
 
+def wallpaper_stats_page(days=30):
+    days = days if days in (7, 30, 90) else 30
+    sku = "VB-ROLL-001"
+    data, err = worker_call(f"product-analytics?sku={quote(sku)}&days={days}")
+    d = data or {}
+    s = d.get("summary") or {}
+    visitors = int(s.get("visitors", 0) or 0)
+    addcarts = int(s.get("addcart_visitors", 0) or 0)
+    whatsapps = int(s.get("whatsapp_sessions", 0) or 0)
+    orders = int(s.get("orders", 0) or 0)
+    revenue = float(s.get("revenue", 0) or 0)
+
+    def pct(a, b):
+        return f"{a / b * 100:.1f}%" if b else "—"
+
+    kpis = [
+        ("墙纸访客", visitors, "访问过墙纸商品页"),
+        ("加购访客", addcarts, f"访客→加购 {pct(addcarts, visitors)}"),
+        ("加购卷数", int(s.get("addcart_units", 0) or 0), "所有加购事件合计"),
+        ("WhatsApp", whatsapps, f"访客→咨询 {pct(whatsapps, visitors)}"),
+        ("有效订单", orders, f"访客→下单 {pct(orders, visitors)}"),
+        ("订单卷数", int(s.get("units", 0) or 0), f"销售额 RD$ {revenue:,.0f}"),
+    ]
+    kpi_html = "".join(
+        f'<div class="w-kpi"><span>{esc(label)}</span><b>{value}</b><small>{esc(note)}</small></div>'
+        for label, value, note in kpis
+    )
+
+    channel_rows = ""
+    for x in d.get("channels", []):
+        sessions = int(x.get("sessions", 0) or 0)
+        carts = int(x.get("carts", 0) or 0)
+        channel_rows += (
+            f'<tr><td><b>{esc(x.get("channel", ""))}</b></td>'
+            f'<td class="n">{sessions}</td><td class="n">{carts}</td>'
+            f'<td class="n">{pct(carts, sessions)}</td>'
+            f'<td class="n">{int(x.get("whatsapps", 0) or 0)}</td>'
+            f'<td class="n">{int(x.get("actual_orders", 0) or 0)}</td>'
+            f'<td class="n">{float(x.get("avg_seconds", 0) or 0):.0f}s</td>'
+            f'<td class="n">RD$ {float(x.get("spend", 0) or 0):,.0f}</td>'
+            f'<td class="n">{("RD$ "+format(float(x.get("cost_per_cart",0)),",.0f")) if carts and x.get("spend") else "—"}</td></tr>'
+        )
+
+    order_by_day = {x.get("day"): x for x in d.get("daily_orders", [])}
+    daily_rows = ""
+    max_visitors = max([int(x.get("visitors", 0) or 0) for x in d.get("daily", [])] or [1])
+    for x in d.get("daily", []):
+        day = x.get("day", "")
+        od = order_by_day.get(day, {})
+        count = int(x.get("visitors", 0) or 0)
+        width = max(3, round(count / max_visitors * 100)) if count else 0
+        daily_rows += (
+            f'<tr><td>{esc(day)}</td><td><div class="daybar"><i style="width:{width}%"></i><b>{count}</b></div></td>'
+            f'<td class="n">{int(x.get("addcarts", 0) or 0)}</td>'
+            f'<td class="n">{int(od.get("orders", 0) or 0)}</td>'
+            f'<td class="n">RD$ {float(od.get("revenue", 0) or 0):,.0f}</td></tr>'
+        )
+    for day, od in order_by_day.items():
+        if not any(x.get("day") == day for x in d.get("daily", [])):
+            daily_rows += (
+                f'<tr><td>{esc(day)}</td><td><div class="daybar"><b>0</b></div></td><td class="n">0</td>'
+                f'<td class="n">{int(od.get("orders", 0) or 0)}</td>'
+                f'<td class="n">RD$ {float(od.get("revenue", 0) or 0):,.0f}</td></tr>'
+            )
+
+    recent_rows = ""
+    type_names = {"view":"浏览", "addcart":"加购", "whatsapp":"WhatsApp", "checkout":"订单确认",
+                  "checkout_start":"到达结账", "checkout_error":"结账受阻", "color_select":"选颜色",
+                  "tier_select":"选优惠", "gallery_view":"查看主图", "review_open":"查看评论图",
+                  "calculator_success":"使用计算器", "cart_update":"修改数量", "cart_remove":"移除商品",
+                  "order":"正式下单", "scroll":"滚动", "engagement":"停留"}
+    for x in d.get("recent", [])[:50]:
+        ts = time.strftime("%m-%d %H:%M", time.localtime((x.get("ts", 0) or 0) / 1000))
+        geo = " · ".join(v for v in (x.get("city", ""), x.get("region", "")) if v)
+        source = x.get("utm_campaign") or x.get("code") or x.get("utm_source") or "直接访问"
+        detail = ""
+        if x.get("type") == "addcart":
+            detail = f'×{int(x.get("qty", 0) or 0)} · RD$ {float(x.get("cart_total", 0) or 0):,.0f}'
+        elif x.get("selected_color"):
+            detail = str(x.get("selected_color"))
+        elif x.get("type") == "calculator_success":
+            detail = f'{float(x.get("wall_width",0) or 0):g}×{float(x.get("wall_height",0) or 0):g} cm → {int(x.get("calculated_qty",0) or 0)} 卷'
+        elif x.get("source_section"):
+            detail = str(x.get("source_section"))
+        recent_rows += (
+            f'<tr><td>{ts}</td><td><span class="etype">{esc(type_names.get(x.get("type"), x.get("type", "")))}</span></td>'
+            f'<td><b>{esc(x.get("ip_full") or x.get("ip_masked", ""))}</b><small>{esc(geo)}</small></td>'
+            f'<td>{esc(x.get("device_type") or "未知")}</td><td><code>{esc(source)}</code></td>'
+            f'<td>{esc(detail)}</td></tr>'
+        )
+
+    funnel_steps = [
+        ("访问墙纸页", visitors),
+        ("有效互动", int(s.get("engaged_sessions", 0) or 0)),
+        ("选择颜色", int(s.get("color_sessions", 0) or 0)),
+        ("查看多件优惠", int(s.get("offer_sessions", 0) or 0)),
+        ("使用计算器", int(s.get("calculator_sessions", 0) or 0)),
+        ("加入购物车", addcarts),
+        ("到达结账页", int(s.get("checkout_sessions", 0) or 0)),
+        ("正式下单", orders),
+    ]
+    funnel_html = ""
+    for i, (label, value) in enumerate(funnel_steps):
+        prev = funnel_steps[i - 1][1] if i else visitors
+        funnel_html += (f'<div class="wf-step"><span>{esc(label)}</span><b>{value}</b>'
+                        f'<small>{("起点" if i == 0 else pct(value, prev))}</small></div>')
+
+    status_names = {"pending":"待确认", "confirmed":"已确认", "shipping":"配送中",
+                    "completed":"已完成", "cancelled":"已取消"}
+    status_html = "".join(
+        f'<div class="status-chip"><span>{esc(status_names.get(x.get("status"), x.get("status", "")))}</span>'
+        f'<b>{int(x.get("orders",0) or 0)}</b><small>{int(x.get("units",0) or 0)} 卷 · RD$ {float(x.get("revenue",0) or 0):,.0f}</small></div>'
+        for x in d.get("order_status", [])
+    ) or '<div class="empty">暂无订单状态数据</div>'
+
+    color_rows = "".join(
+        f'<tr><td><b>{esc(x.get("color") or "未标记")}</b></td><td class="n">{int(x.get("selectors",0) or 0)}</td>'
+        f'<td class="n">{int(x.get("carts",0) or 0)}</td><td class="n">{int(x.get("units",0) or 0)}</td></tr>'
+        for x in d.get("colors", [])
+    )
+    source_rows = "".join(
+        f'<tr><td><b>{esc(x.get("source") or "未标记")}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
+        f'<td class="n">{int(x.get("actions",0) or 0)}</td><td class="n">{int(x.get("units",0) or 0)}</td></tr>'
+        for x in d.get("add_sources", [])
+    )
+    device_rows = "".join(
+        f'<tr><td><b>{esc(x.get("device") or "未知")}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
+        f'<td class="n">{int(x.get("carts",0) or 0)} ({pct(int(x.get("carts",0) or 0),int(x.get("sessions",0) or 0))})</td>'
+        f'<td class="n">{int(x.get("whatsapps",0) or 0)}</td><td class="n">{float(x.get("avg_seconds",0) or 0):.0f}s</td></tr>'
+        for x in d.get("devices", [])
+    )
+    region_rows = "".join(
+        f'<tr><td><b>{esc(x.get("region") or "未知")}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
+        f'<td class="n">{int(x.get("carts",0) or 0)}</td><td class="n">{int(x.get("whatsapps",0) or 0)}</td></tr>'
+        for x in d.get("regions", [])
+    )
+    q = d.get("quality") or {}
+    unattributed = d.get("unattributed_orders") or {}
+    quality_note = (f'统计以会话为主口径。历史数据中有 {int(q.get("multi_vid_sessions",0) or 0)} 个会话曾对应多个访客 ID，'
+                    f'有 {int(q.get("addcarts_without_total",0) or 0)} 条旧加购缺少购物车金额；'
+                    f'{int(unattributed.get("actual_orders",0) or 0)} 个旧订单因当时未保存 UTM 被列为未归因，不会错误计入直接访问。新版本上线后会逐步消除这些误差。')
+
+    empty = '<tr><td colspan="9" class="empty">还没有墙纸广告数据</td></tr>'
+    tabs = "".join(
+        f'<a class="{"on" if days == n else ""}" href="/wallpaper-stats?days={n}">近 {n} 天</a>'
+        for n in (7, 30, 90)
+    )
+    inner = (
+        f'{_warn(err)}<style>'
+        '.w-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px}'
+        '.w-head h1{margin:0}.periods{display:flex;gap:6px}.periods a{padding:8px 11px;border:1px solid #DCE4EF;border-radius:7px;color:#536176;text-decoration:none;font-size:12px;font-weight:800;background:#fff}.periods a.on{background:#2563D9;color:#fff;border-color:#2563D9}'
+        '.w-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.w-kpi{background:#fff;border:1px solid #E5EAF2;border-radius:8px;padding:14px}.w-kpi span,.w-kpi small{display:block;color:#6D7A8D;font-size:11px}.w-kpi b{display:block;font-size:24px;margin:5px 0;color:#172033}.w-kpi small{line-height:1.35}'
+        '.w-title{font-size:17px;margin:24px 0 10px}.table-scroll{overflow:auto}.table-scroll table{min-width:780px}.daybar{display:flex;align-items:center;gap:8px;min-width:180px}.daybar i{display:block;height:8px;background:#2563D9;border-radius:4px;max-width:140px}.daybar b{font-size:12px}.etype{display:inline-block;padding:3px 7px;border-radius:5px;background:#EDF3FF;color:#2563D9;font-size:11px;font-weight:800}td small{display:block;color:#8A96A7;margin-top:3px}'
+        '.w-note{margin-top:12px;color:#6D7A8D;font-size:12px;line-height:1.55}'
+        '.wf{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.wf-step,.status-chip{padding:12px;border:1px solid #E5EAF2;border-radius:8px;background:#fff}.wf-step span,.wf-step small,.status-chip span,.status-chip small{display:block;color:#6D7A8D;font-size:10px}.wf-step b,.status-chip b{display:block;margin:4px 0;font-size:21px}.statuses{display:flex;gap:8px;flex-wrap:wrap}.status-chip{min-width:150px}.split-tables{display:grid;grid-template-columns:1fr 1fr;gap:14px}.data-alert{margin:12px 0;padding:11px 13px;border:1px solid #F2D38A;border-radius:8px;background:#FFF9E8;color:#76520B;font-size:12px;line-height:1.5}.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.cost-grid input{width:100%;padding:9px;border:1px solid #DCE4EF;border-radius:7px}.cost-grid label{display:block;margin-bottom:4px;color:#68758a;font-size:10px}'
+        '@media(max-width:900px){.w-kpis{grid-template-columns:repeat(2,1fr)}.w-head{align-items:flex-start;flex-direction:column}.wf{grid-template-columns:repeat(2,1fr)}.split-tables{grid-template-columns:1fr}.cost-grid{grid-template-columns:1fr}}'
+        '</style><div class="w-head"><div><h1>墙纸广告数据</h1>'
+        f'<div class="sub">固定商品 {sku} · Panel decorativo autoadhesivo</div></div>'
+        f'<div class="periods">{tabs}</div></div><div class="w-kpis">{kpi_html}</div>'
+        f'<div class="w-note">平均停留 {float(s.get("avg_seconds",0) or 0):.0f} 秒 · 平均滚动 {float(s.get("avg_scroll",0) or 0):.0f}%。'
+        f' 其中 {int(s.get("meta_network_visitors",0) or 0)} 个访客来自 Meta/Facebook 网络，可能包含广告预览或代理流量，先保留但不要直接当成真实客户。'
+        '订单和销售额按订单商品明细精确计算；渠道转化按访问过墙纸页的同一会话归因。</div>'
+        f'<div class="data-alert">{esc(quality_note)}</div>'
+        f'<h2 class="w-title">墙纸转化漏斗</h2><div class="wf">{funnel_html}</div>'
+        f'<h2 class="w-title">订单质量</h2><div class="statuses">{status_html}</div>'
+        f'<h2 class="w-title">广告渠道表现</h2><div class="table-scroll"><table><thead><tr>'
+        '<th>渠道/活动</th><th>会话</th><th>加购</th><th>加购率</th><th>WhatsApp</th><th>实际订单</th><th>停留</th><th>花费</th><th>每次加购成本</th>'
+        f'</tr></thead><tbody>{channel_rows or empty}</tbody></table></div>'
+        f'<div class="split-tables"><div><h2 class="w-title">颜色选择与加购</h2><div class="table-scroll"><table><thead><tr><th>颜色</th><th>选择会话</th><th>加购会话</th><th>加购卷数</th></tr></thead><tbody>{color_rows or empty}</tbody></table></div></div>'
+        f'<div><h2 class="w-title">加购入口</h2><div class="table-scroll"><table><thead><tr><th>入口</th><th>会话</th><th>动作</th><th>卷数</th></tr></thead><tbody>{source_rows or empty}</tbody></table></div></div></div>'
+        f'<div class="split-tables"><div><h2 class="w-title">设备表现</h2><div class="table-scroll"><table><thead><tr><th>设备</th><th>会话</th><th>加购率</th><th>WhatsApp</th><th>停留</th></tr></thead><tbody>{device_rows or empty}</tbody></table></div></div>'
+        f'<div><h2 class="w-title">地区表现</h2><div class="table-scroll"><table><thead><tr><th>地区</th><th>会话</th><th>加购</th><th>WhatsApp</th></tr></thead><tbody>{region_rows or empty}</tbody></table></div></div></div>'
+        f'<h2 class="w-title">每日趋势</h2><div class="table-scroll"><table><thead><tr>'
+        f'<th>日期</th><th>访客</th><th>加购访客</th><th>订单</th><th>销售额</th></tr></thead><tbody>{daily_rows or empty}</tbody></table></div>'
+        f'<h2 class="w-title">最近墙纸行为</h2><div class="table-scroll"><table><thead><tr>'
+        f'<th>时间</th><th>行为</th><th>IP / 地区</th><th>设备</th><th>渠道</th><th>详情</th></tr></thead><tbody>{recent_rows or empty}</tbody></table></div>'
+        '<h2 class="w-title">录入墙纸广告成本</h2><div class="cardp frm"><div class="cost-grid"><div><label>日期</label><input id="costDay" type="date"></div><div><label>Meta 活动 ID / UTM campaign</label><input id="costCampaign"></div><div><label>来源</label><input id="costSource" value="facebook"></div><div><label>花费 RD$</label><input id="costSpend" type="number"></div><div><label>展示量</label><input id="costImp" type="number"></div><div><label>广告点击</label><input id="costClicks" type="number"></div></div><button class="pri" onclick="saveCost()">保存广告成本</button></div>'
+        + _ANALYTICS_JS
+    )
+    return sub_shell("墙纸广告数据", "wallpaper", inner)
+
 _ORDER_JS = """<script>
 var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',completed:'已完成',cancelled:'已取消'};
 async function orderStatus(sel){var id=sel.dataset.id,old=sel.dataset.old;sel.disabled=true;
@@ -806,8 +997,7 @@ def orders_page():
         counts[status] = counts.get(status, 0) + 1
         items = ""
         for it in o.get("items", []):
-            img = os.path.basename(it.get("image", ""))
-            src = f'/images/{quote(img)}' if img else ""
+            src = admin_image_src(it.get("image", ""))
             img_html = f'<img src="{src}" alt="">' if src else '<div class="item-noimg">无图</div>'
             items += (f'<div class="order-item">'
                       f'{img_html}'
@@ -821,6 +1011,17 @@ def orders_page():
         location = " · ".join(x for x in (o.get("province",""), o.get("zone","")) if x)
         geo = " · ".join(x for x in (o.get("city",""), o.get("region",""), o.get("postal_code","")) if x)
         note_html = f'<div class="order-note">备注：{esc(o.get("note",""))}</div>' if o.get("note") else ""
+        map_url = str(o.get("map_url") or "").strip()
+        if map_url:
+            map_html = f'<a class="order-map" href="{esc(map_url)}" target="_blank" rel="noopener">📍 打开 Google Maps / Waze</a>'
+        elif o.get("location_followup"):
+            map_html = '<small class="location-pending">📍 客户稍后通过 Waze / WhatsApp 补发定位</small>'
+        else:
+            map_html = ""
+        preferred_date = str(o.get("preferred_delivery_date") or "").strip()
+        preferred_window = str(o.get("preferred_delivery_window") or "").strip()
+        delivery_pref_html = (f'<div class="delivery-pref">🕒 客户希望：{esc(preferred_date)} · {esc(preferred_window)}</div>'
+                              if preferred_date or preferred_window else "")
         ship_min = float(o.get("shipping_fee_min", o.get("shipping_fee", 0)) or 0)
         ship_max = float(o.get("shipping_fee_max", o.get("shipping_fee", 0)) or 0)
         total_min = float(o.get("total_min", o.get("total", 0)) or 0)
@@ -834,7 +1035,7 @@ def orders_page():
                   f'<select data-id="{esc(o.get("order_id",""))}" data-old="{esc(status)}" onchange="orderStatus(this)">{opts}</select></header>'
                   f'<div class="order-customer"><div><strong>{esc(o.get("customer_name",""))}</strong>'
                   f'<a href="https://wa.me/{phone}" target="_blank">WhatsApp {esc(o.get("phone",""))}</a></div>'
-                  f'<div><span>{esc(location)}</span><small>{esc(o.get("address",""))}</small></div>'
+                  f'<div><span>{esc(location)}</span><small>{esc(o.get("address",""))}</small>{map_html}</div>'
                   f'<div><span>IP {esc(o.get("ip_full") or o.get("ip_masked",""))}</span><small>{esc(geo)}</small></div></div>'
                   f'<div class="order-items">{items}</div><footer>'
                   f'<span>{"转账" if o.get("payment_method") == "transfer" else "货到付款"}'
@@ -845,6 +1046,7 @@ def orders_page():
                   f'{(" · 优惠 -RD$ "+format(float(o.get("discount",0) or 0), ",.0f")) if o.get("discount") else ""}'
                   f' · 预计运费 {shipping_text}'
                   f' <b>{total_text}</b></div></footer>'
+                  f'{delivery_pref_html}'
                   f'{note_html}</article>')
     stat_html = "".join(f'<div class="stat"><div class="v">{counts.get(k,0)}</div><div class="l">{v}</div></div>'
                         for k, v in status_names.items())
@@ -853,6 +1055,7 @@ def orders_page():
              '.order-tools{display:flex;gap:10px;margin-bottom:16px}.order-tools input,.order-tools select{border:1.5px solid #E5EAF2;border-radius:10px;padding:10px 12px;background:#fff}.order-tools input{flex:1}'
              '.order-list{display:flex;flex-direction:column;gap:14px}.order-card{background:#fff;border:1px solid #E3E9F2;border-radius:14px;overflow:hidden}.order-card>header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#F8FAFD}.order-id{font-size:16px}.order-card time{font-size:11px;color:#8792a4;margin-left:10px}.order-card select{border:1px solid #DCE4EF;border-radius:9px;padding:8px;background:#fff;font-weight:700}'
              '.order-customer{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px;padding:13px 16px;border-bottom:1px solid #EEF2F7}.order-customer div{display:flex;flex-direction:column;gap:4px}.order-customer a{color:#138a4b;font-size:12px;font-weight:700;text-decoration:none}.order-customer span{font-size:13px;font-weight:700}.order-customer small{color:#7d8999;line-height:1.35}'
+             '.order-customer .order-map{color:#2563D9;margin-top:3px}.location-pending{color:#986A12!important;font-weight:700}.delivery-pref{margin:0 16px 11px;padding:9px 11px;border-radius:9px;background:#EEF4FF;color:#2455A8;font-size:12px;font-weight:800}'
              '.order-items{padding:4px 16px}.order-item{display:grid;grid-template-columns:54px minmax(0,1fr) 52px 90px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F7}.order-item img,.item-noimg{width:54px;height:54px;border-radius:7px;object-fit:cover;background:#F1F4F8}.item-noimg{display:grid;place-items:center;font-size:10px;color:#9aa3b2}.item-main{display:flex;flex-direction:column;gap:4px}.item-main b{font-size:13px}.item-main small{color:#8b96a6}.item-qty{font-weight:800}.item-money{text-align:right;font-weight:800}'
              '.order-card>footer{display:flex;justify-content:space-between;gap:12px;padding:13px 16px}.order-card>footer span{font-size:12px;color:#68758a}.order-card>footer b{margin-left:12px;font-size:16px}.order-note{padding:0 16px 13px;color:#68758a;font-size:12px}.empty-orders{padding:50px;text-align:center;color:#8d98a8}'
              '@media(max-width:720px){.order-customer{grid-template-columns:1fr}.order-card>footer{flex-direction:column}.order-item{grid-template-columns:48px minmax(0,1fr) 34px 76px}.order-item img,.item-noimg{width:48px;height:48px}}'
@@ -869,9 +1072,10 @@ def cart_visitors_page():
     rows = ""
     for e in (data or {}).get("events", []):
         p = product_by_sku.get(e.get("sku"), {})
-        img = os.path.basename(e.get("product_img") or p.get("img", ""))
+        img = e.get("product_img") or p.get("img", "")
         title = e.get("product_title") or p.get("title") or e.get("sku", "")
-        img_html = f'<img src="/images/{quote(img)}">' if img else ""
+        src = admin_image_src(img)
+        img_html = f'<img src="{src}">' if src else ""
         ts = time.strftime("%m-%d %H:%M", time.localtime((e.get("ts",0) or 0) / 1000))
         geo = " · ".join(x for x in (e.get("city",""), e.get("region",""), e.get("postal_code","")) if x)
         rows += (f'<tr><td>{ts}</td><td><b>{esc(e.get("ip_full") or e.get("ip_masked",""))}</b><br><small>{esc(geo)}</small></td>'
@@ -879,8 +1083,12 @@ def cart_visitors_page():
                  f'<td class="n">{int(e.get("qty",0) or 0)}</td><td class="n">RD$ {float(e.get("cart_total",0) or 0):,.0f}</td>'
                  f'<td><code>{esc(e.get("code") or "直接访问")}</code></td></tr>')
     empty_row = '<tr><td colspan="6" class="empty">暂无新格式的加购记录</td></tr>'
-    inner = (f'{_warn(err)}<style>.cart-table{{overflow:auto}}.cart-table table{{min-width:850px}}.cart-product{{display:flex;align-items:center;gap:9px;min-width:260px}}.cart-product img{{width:48px;height:48px;border-radius:7px;object-fit:cover}}.cart-product div{{display:flex;flex-direction:column;gap:4px}}small{{color:#8994a4}}'
+    filtered = int((data or {}).get("filtered_invalid", 0) or 0)
+    quality_note = (f'<div class="data-note">已隐藏 {filtered} 条旧格式无效记录（数量或金额为 0）。</div>'
+                    if filtered else "")
+    inner = (f'{_warn(err)}<style>.cart-table{{overflow:auto}}.cart-table table{{min-width:850px}}.cart-product{{display:flex;align-items:center;gap:9px;min-width:260px}}.cart-product img{{width:48px;height:48px;border-radius:7px;object-fit:cover}}.cart-product div{{display:flex;flex-direction:column;gap:4px}}small{{color:#8994a4}}.data-note{{margin:0 0 12px;padding:10px 12px;border-radius:8px;background:#FFF7E6;color:#765614;font-size:12px}}'
              f'</style><h1>加购访客 <span class="sub">最近30天，查看哪个IP加购了什么</span></h1>'
+             f'{quality_note}'
              f'<div class="cart-table"><table><thead><tr><th>时间</th><th>IP / 位置</th><th>商品</th><th>数量</th><th>购物车金额</th><th>来源短链</th></tr></thead><tbody>{rows if rows else empty_row}</tbody></table></div>')
     return sub_shell("加购访客", "carts", inner)
 
@@ -1222,6 +1430,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a href="/colecciones">🪴 专题合集</a>
 <a href="/marketing">📣 营销留存</a>
 <a href="/stats">📊 数据</a>
+<a href="/wallpaper-stats">墙纸广告</a>
 <a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button onclick="restartAdmin(this)">🔄 重启后台</button>
 </div>
@@ -1630,6 +1839,12 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, marketing_page())
         if p == "/stats":
             return self.send(200, stats_page())
+        if p == "/wallpaper-stats":
+            try:
+                days = int(qs.get("days", ["30"])[0])
+            except ValueError:
+                days = 30
+            return self.send(200, wallpaper_stats_page(days))
         if p == "/orders":
             return self.send(200, orders_page())
         if p == "/cart-visitors":
@@ -1667,6 +1882,8 @@ class H(BaseHTTPRequestHandler):
         for prefix, root in (("/images/", IMG_DIR), ("/preview/", "dist")):
             if p.startswith(prefix):
                 fp = os.path.normpath(os.path.join(root, p[len(prefix):]))
+                if prefix == "/preview/" and not os.path.splitext(fp)[1]:
+                    fp = os.path.join(fp, "index.html") if os.path.isdir(fp) else fp + ".html"
                 if not fp.startswith(root) or not os.path.isfile(fp):
                     return self.send(404, "not found")
                 ext = os.path.splitext(fp)[1].lower()

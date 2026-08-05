@@ -1,0 +1,70 @@
+{
+  "sku": "VB-ROLL-001",
+  "handle": "panel-autoadhesivo",
+  "name": "Panel decorativo autoadhesivo efecto madera",
+  "short_name": "Panel autoadhesivo efecto madera",
+  "price": 1280,
+  "old_price": 1995,
+  "tier_price": 1100,
+  "tier_min_qty": 2,
+  "price_status": "confirmed_by_user",
+  "currency": "DOP",
+  "color": "Roble natural",
+  "colors": [
+    {
+      "id": "caoba-calido",
+      "name": "Caoba cálido",
+      "image": "panel-autoadhesivo/colors/caoba-calido-ai.jpg",
+      "reference_image": "panel-autoadhesivo/colors/caoba-calido.jpg"
+    },
+    {
+      "id": "blanco",
+      "name": "Blanco",
+      "image": "panel-autoadhesivo/colors/blanco-ai.jpg",
+      "reference_image": "panel-autoadhesivo/colors/blanco.jpg"
+    },
+    {
+      "id": "gris-ceniza",
+      "name": "Gris ceniza",
+      "image": "panel-autoadhesivo/colors/gris-ceniza-ai.jpg",
+      "reference_image": "panel-autoadhesivo/colors/gris-ceniza.jpg"
+    },
+    {
+      "id": "nogal-oscuro",
+      "name": "Nogal oscuro",
+      "image": "panel-autoadhesivo/colors/nogal-oscuro-ai.jpg",
+      "reference_image": "panel-autoadhesivo/colors/nogal-oscuro.jpg"
+    },
+    {
+      "id": "roble-claro",
+      "name": "Roble claro",
+      "image": "panel-autoadhesivo/colors/roble-claro-ai.jpg",
+      "reference_image": "panel-autoadhesivo/colors/roble-claro.jpg"
+    },
+    {
+      "id": "roble-dorado",
+      "name": "Roble dorado",
+      "image": "panel-autoadhesivo/colors/roble-dorado-ai.jpg",
+      "reference_image": "panel-autoadhesivo/colors/roble-dorado.jpg"
+    }
+  ],
+  "width_cm": 60,
+  "length_cm": 300,
+  "coverage_m2": 1.8,
+  "hero_image": "panel-autoadhesivo/hero-ai-v2.jpg",
+  "product_image": "panel-autoadhesivo/rollo-colores.jpg",
+  "installation_image": "panel-autoadhesivo/instalacion.jpg",
+  "flexible_image": "panel-autoadhesivo/flexible.jpg",
+  "roll_image": "panel-autoadhesivo/rollo-pared.jpg",
+  "shipping_text": "Envíos a todo el país. El costo y el tiempo se calculan según tu zona.",
+  "source_notes": [
+    "Precio RD$1,280 confirmado por el usuario el 2026-07-30.",
+    "Precio anterior RD$1,995 y precio por cantidad RD$1,100 desde 2 rollos.",
+    "Medida 60 x 300 cm confirmada por el usuario.",
+    "No publicar afirmaciones de impermeabilidad, aislamiento acústico o remoción sin verificar la muestra física."
+  ],
+  "image_sources": [
+    "https://nordicwallart.com/products/3d-striped-self-adhesive-pvc-wall-panelling-neutral-tones-design-for-modern-living-rooms-tv-backdrops-creative-diy-decor-projects-300cm-x-40cm",
+    "https://www.innostickers.com/products/natural-oak-wood-grain-peel-and-stick-wall-paneling-roll"
+  ]
+}

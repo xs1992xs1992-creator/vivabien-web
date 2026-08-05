@@ -6,6 +6,8 @@
 //   /api/admin/*                 受 X-Admin-Key 保护，admin.py 调用
 // 存储：D1（env.DB）。密钥：env.ADMIN_KEY。
 
+import SHIPPING_CONFIG from "../../data/shipping_zones.json";
+
 const SITE = "https://vivabien.xyz";
 const VID_COOKIE = "vb_vid";
 const LINK_COOKIE = "vb_link";
@@ -90,10 +92,17 @@ function botReason(meta) {
 
 function shippingQuote(province = "", zone = "") {
   const p = String(province).trim(), z = String(zone).trim();
-  const metro = p.startsWith("Distrito Nacional") ||
-    (p.startsWith("Santo Domingo (provincia)") && ["Santo Domingo Este", "Santo Domingo Norte", "Santo Domingo Oeste"].includes(z));
-  if (metro) return { ok:true, ready:true, zone:"gran_santo_domingo", label:"Gran Santo Domingo",
-    fee:0, fee_min:150, fee_max:600, delivery:"1-2 días laborables", cod_allowed:true };
+  const metro = p.startsWith("Distrito Nacional") || p.startsWith("Santo Domingo (provincia)");
+  if (metro) {
+    const exact = (SHIPPING_CONFIG.zones || []).find((item) => (item.sectors || []).includes(z));
+    if (exact) {
+      const fee = Math.max(0, Number(exact.price) || 0);
+      return { ok:true, ready:true, zone:String(exact.id), label:z, fee,
+        fee_min:fee, fee_max:fee, delivery:String(exact.eta || "por confirmar"), cod_allowed:true };
+    }
+    return { ok:true, ready:false, zone:"otro", label:"Otro sector",
+      fee:0, fee_min:150, fee_max:600, delivery:"por confirmar", cod_allowed:true };
+  }
   if (p.startsWith("Santo Domingo (provincia)") || SHIPPING_NEAR.has(p))
     return { ok:true, ready:true, zone:"cercana", label:"Zona cercana", fee:250, fee_min:250, fee_max:250,
       delivery:"1-3 días laborables", cod_allowed:false };
@@ -116,8 +125,9 @@ async function logEvent(env, { vid, code = "", type, sku = "", req, details = {}
      city,region,postal_code,latitude,longitude,asn,as_org,qty,price,cart_total,product_title,product_img,
      event_id,session_id,path,category,duration_ms,scroll_depth,device_type,screen_width,utm_source,
      utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid,whatsapp_location,is_bot,bot_reason,
-     site_version,search_query,result_count,sort_mode,filter_group,filter_sub,shipping_fee,shipping_zone,delivery_estimate)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+     site_version,search_query,result_count,sort_mode,filter_group,filter_sub,shipping_fee,shipping_zone,delivery_estimate,
+     source_section,selected_color,offer_qty,gallery_index,review_index,calculated_qty,wall_width,wall_height,order_id)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(vid, code, type, sku, now(), m.country, m.ua.slice(0, 300), m.ref.slice(0, 300),
          m.ipMasked, ipHash, m.ip, m.city, m.region, m.postalCode, m.latitude, m.longitude,
          m.asn, m.asOrg.slice(0, 160), Math.max(0, Number(details.qty) || 0),
@@ -134,7 +144,12 @@ async function logEvent(env, { vid, code = "", type, sku = "", req, details = {}
          String(details.search_query || "").slice(0,240), Math.max(0, Number(details.result_count) || 0),
          String(details.sort_mode || "").slice(0,40), String(details.filter_group || "").slice(0,160),
          String(details.filter_sub || "").slice(0,160), Math.max(0, Number(details.shipping_fee) || 0),
-         String(details.shipping_zone || "").slice(0,80), String(details.delivery_estimate || "").slice(0,120)).run();
+         String(details.shipping_zone || "").slice(0,80), String(details.delivery_estimate || "").slice(0,120),
+         String(details.source_section || "").slice(0,100), String(details.selected_color || details.color || "").slice(0,120),
+         Math.max(0, Number(details.offer_qty) || 0), Math.max(0, Number(details.gallery_index) || 0),
+         Number.isFinite(Number(details.review_index)) ? Number(details.review_index) : -1,
+         Math.max(0, Number(details.calculated_qty) || 0), Math.max(0, Number(details.wall_width) || 0),
+         Math.max(0, Number(details.wall_height) || 0), String(details.order_id || "").slice(0,40)).run();
   const changed = (inserted.meta && (inserted.meta.changes ?? inserted.meta.rows_written)) || 0;
   if (!changed || !sessionId) return;
   const t = now(), isView = type === "view" ? 1 : 0, isCart = type === "addcart" ? 1 : 0;
@@ -207,10 +222,13 @@ async function handleShort(req, env, url) {
 async function handleTrack(req, env) {
   const body = await req.json().catch(() => ({}));
   const type = body.type;
-  if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll", "search", "filter", "shipping_quote"].includes(type))
+  if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll", "search", "filter", "shipping_quote",
+        "gallery_view", "color_select", "tier_select", "quantity_change", "review_open", "calculator_success",
+        "section_view", "cart_update", "cart_remove", "checkout_start", "checkout_error"].includes(type))
     return json({ ok: false }, 400);
 
-  let vid = getCookie(req, VID_COOKIE);
+  const clientId = String(body.client_id || "").slice(0, 80);
+  let vid = /^c-[A-Za-z0-9-]{12,78}$/.test(clientId) ? clientId : getCookie(req, VID_COOKIE);
   const fresh = !vid;
   if (!vid) vid = crypto.randomUUID();
 
@@ -239,7 +257,9 @@ async function handleOrder(req, env) {
   const exists = await env.DB.prepare("SELECT order_id FROM orders WHERE order_id=?").bind(orderId).first();
   if (exists) return json({ ok: true, order_id: orderId, duplicate: true });
 
-  const vid = getCookie(req, VID_COOKIE) || crypto.randomUUID();
+  const tracking = b.tracking && typeof b.tracking === "object" ? b.tracking : {};
+  const clientId = String(tracking.client_id || "").slice(0, 80);
+  const vid = /^c-[A-Za-z0-9-]{12,78}$/.test(clientId) ? clientId : (getCookie(req, VID_COOKIE) || crypto.randomUUID());
   const linkCode = getCookie(req, LINK_COOKIE) || "";
   const m = requestMeta(req);
   const ipHash = await hashIp(m.ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
@@ -263,6 +283,18 @@ async function handleOrder(req, env) {
   }
   const shipping = shippingQuote(b.province, b.zone);
   const paymentMethod = b.payment_method === "cod" ? "cod" : "transfer";
+  let mapUrl = String(b.map_url || "").trim().slice(0, 500);
+  const mapAllowed = /^(https:\/\/)?(maps\.app\.goo\.gl|www\.google\.[^/]+\/maps|goo\.gl\/maps|waze\.com\/ul|www\.waze\.com\/live-map|ul\.waze\.com)/i;
+  if (mapUrl && !mapAllowed.test(mapUrl)) return json({ error:"invalid_location_link" },400);
+  if (mapUrl && !/^https?:\/\//i.test(mapUrl)) mapUrl = `https://${mapUrl}`;
+  const locationFollowup = b.location_followup ? 1 : 0;
+  const preferredDate = String(b.preferred_delivery_date || "").trim().slice(0, 10);
+  const preferredWindow = String(b.preferred_delivery_window || "").trim().slice(0, 40);
+  if (preferredDate && !/^\d{4}-\d{2}-\d{2}$/.test(preferredDate))
+    return json({ error:"invalid_delivery_date" },400);
+  const allowedWindows = new Set(["09:00-12:00","12:00-15:00","15:00-19:00","09:00-19:00"]);
+  if (preferredWindow && !allowedWindows.has(preferredWindow))
+    return json({ error:"invalid_delivery_window" },400);
   if (paymentMethod === "cod" && !shipping.cod_allowed)
     return json({ error:"cod_not_available" },400);
   const productTotal = Math.max(0, subtotal - discount);
@@ -272,17 +304,28 @@ async function handleOrder(req, env) {
   const total = shippingMin === shippingMax ? totalMin : productTotal;
   const created = now();
   const statements = [env.DB.prepare(
-    `INSERT INTO orders (order_id,vid,link_code,status,customer_name,phone,province,zone,address,note,
-     payment_method,shipping_zone,shipping_fee,shipping_fee_min,shipping_fee_max,delivery_estimate,
+   `INSERT INTO orders (order_id,vid,link_code,status,customer_name,phone,province,zone,address,note,
+     map_url,location_followup,preferred_delivery_date,preferred_delivery_window,
+    payment_method,shipping_zone,shipping_fee,shipping_fee_min,shipping_fee_max,delivery_estimate,
      subtotal,discount,total,total_min,total_max,coupon_code,
+     session_id,utm_source,utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid,
+     first_utm_source,first_utm_medium,first_utm_campaign,first_utm_content,first_utm_term,
      ip_full,ip_masked,ip_hash,country,city,region,postal_code,latitude,longitude,asn,as_org,ua,ref,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(orderId, vid, linkCode, "pending", String(b.customer_name).slice(0,160),
     String(b.phone).slice(0,80), String(b.province || "").slice(0,120), String(b.zone || "").slice(0,120),
-    String(b.address).slice(0,500), String(b.note || "").slice(0,500),
-    paymentMethod, shipping.zone, shipping.fee, shippingMin, shippingMax, shipping.delivery,
+   String(b.address).slice(0,500), String(b.note || "").slice(0,500),
+    mapUrl, locationFollowup, preferredDate, preferredWindow,
+   paymentMethod, shipping.zone, shipping.fee, shippingMin, shippingMax, shipping.delivery,
     subtotal, discount, total, totalMin, totalMax,
-    couponCode.slice(0,80), m.ip, m.ipMasked, ipHash, m.country, m.city, m.region,
+    couponCode.slice(0,80), String(tracking.session_id || "").slice(0,80),
+    String(tracking.utm_source || "").slice(0,120), String(tracking.utm_medium || "").slice(0,120),
+    String(tracking.utm_campaign || "").slice(0,180), String(tracking.utm_content || "").slice(0,180),
+    String(tracking.utm_term || "").slice(0,180), String(tracking.fbclid || "").slice(0,300),
+    String(tracking.gclid || "").slice(0,300), String(tracking.first_utm_source || "").slice(0,120),
+    String(tracking.first_utm_medium || "").slice(0,120), String(tracking.first_utm_campaign || "").slice(0,180),
+    String(tracking.first_utm_content || "").slice(0,180), String(tracking.first_utm_term || "").slice(0,180),
+    m.ip, m.ipMasked, ipHash, m.country, m.city, m.region,
     m.postalCode, m.latitude, m.longitude, m.asn, m.asOrg.slice(0,160), m.ua.slice(0,300),
     m.ref.slice(0,300), created, created)];
   for (const item of cleanItems) {
@@ -292,9 +335,12 @@ async function handleOrder(req, env) {
     ).bind(orderId, item.sku, item.title, item.image, item.unitPrice, item.quantity, item.lineTotal));
   }
   await env.DB.batch(statements);
-  await logEvent(env, { vid, code: linkCode, type: "order", req,
-    details: { ...(b.tracking || {}), cart_total: totalMin, shipping_fee: shipping.fee,
-      shipping_zone: shipping.zone, delivery_estimate: shipping.delivery } });
+  for (const item of cleanItems) {
+    await logEvent(env, { vid, code: linkCode, type: "order", sku:item.sku, req,
+      details: { ...tracking, order_id:orderId, qty:item.quantity, price:item.unitPrice,
+        cart_total:totalMin, product_title:item.title, product_img:item.image,
+        shipping_fee:shipping.fee, shipping_zone:shipping.zone, delivery_estimate:shipping.delivery } });
+  }
   return json({ ok:true, order_id:orderId, subtotal, discount, shipping_fee:shipping.fee,
     shipping_fee_min:shippingMin, shipping_fee_max:shippingMax, shipping_zone:shipping.zone,
     delivery_estimate:shipping.delivery, total, total_min:totalMin, total_max:totalMax }, 201,
@@ -430,9 +476,179 @@ async function handleAdmin(req, env, url) {
   if (sub === "cart-visitors" && req.method === "GET") {
     const since = Number(url.searchParams.get("since")) || now() - 30 * 864e5;
     const rows = await env.DB.prepare(
-      `SELECT * FROM events WHERE type='addcart' AND ts>=? ORDER BY ts DESC LIMIT 500`
+      `SELECT * FROM events
+       WHERE type='addcart' AND ts>=? AND qty>0 AND cart_total>0
+       ORDER BY ts DESC LIMIT 500`
     ).bind(since).all();
-    return json({ ok: true, events: rows.results || [] });
+    const legacy = await env.DB.prepare(
+      `SELECT COUNT(*) count FROM events
+       WHERE type='addcart' AND ts>=? AND (qty<=0 OR cart_total<=0)`
+    ).bind(since).first();
+    return json({ ok: true, events: rows.results || [], filtered_invalid: Number(legacy?.count) || 0 });
+  }
+
+  if (sub === "product-analytics" && req.method === "GET") {
+    const sku = String(url.searchParams.get("sku") || "").slice(0, 100);
+    if (!sku) return json({ error: "sku_required" }, 400);
+    const days = Math.max(1, Math.min(365, Number(url.searchParams.get("days")) || 30));
+    const since = now() - days * 864e5;
+
+    const summary = await env.DB.prepare(
+      `WITH target_sessions AS (
+         SELECT DISTINCT session_id FROM events
+         WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>''
+       ), target_events AS (
+         SELECT e.* FROM events e JOIN target_sessions t ON t.session_id=e.session_id
+         WHERE e.ts>=? AND e.is_bot=0
+       )
+       SELECT
+         (SELECT COUNT(*) FROM target_sessions) visitors,
+         COUNT(DISTINCT CASE WHEN type='view' AND sku=? THEN session_id END) product_viewers,
+         COUNT(DISTINCT CASE WHEN type='addcart' AND sku=? THEN session_id END) addcart_visitors,
+         COALESCE(SUM(CASE WHEN type='addcart' AND sku=? THEN qty ELSE 0 END),0) addcart_units,
+         COUNT(DISTINCT CASE WHEN type='whatsapp' THEN session_id END) whatsapp_sessions,
+         COUNT(DISTINCT CASE WHEN type='checkout_start' AND sku=? THEN session_id END) checkout_sessions,
+         COUNT(DISTINCT CASE WHEN type='order' AND sku=? THEN session_id END) tracked_order_sessions,
+         COUNT(DISTINCT CASE WHEN type='color_select' AND sku=? THEN session_id END) color_sessions,
+         COUNT(DISTINCT CASE WHEN type='tier_select' AND sku=? THEN session_id END) offer_sessions,
+         COUNT(DISTINCT CASE WHEN type='calculator_success' AND sku=? THEN session_id END) calculator_sessions,
+         COUNT(DISTINCT CASE WHEN type='review_open' AND sku=? THEN session_id END) review_sessions,
+         COUNT(DISTINCT CASE WHEN type='engagement' OR scroll_depth>=25 THEN session_id END) engaged_sessions,
+         COUNT(DISTINCT CASE WHEN sku=? AND (ip_full LIKE '2a03:2880:%' OR UPPER(as_org) LIKE '%META%' OR UPPER(as_org) LIKE '%FACEBOOK%') THEN session_id END) meta_network_visitors,
+         (SELECT ROUND(AVG(s.engaged_ms)/1000.0,1) FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id) avg_seconds,
+         (SELECT ROUND(AVG(s.max_scroll),1) FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id) avg_scroll
+       FROM target_events`
+    ).bind(sku, since, since, sku, sku, sku, sku, sku, sku, sku, sku, sku, sku).first();
+
+    const orderSummary = await env.DB.prepare(
+      `SELECT COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(oi.quantity),0) units,
+       COALESCE(SUM(oi.line_total),0) revenue
+       FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
+       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled'`
+    ).bind(sku, since).first();
+
+    const orderStatus = await env.DB.prepare(
+      `SELECT o.status,COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(oi.quantity),0) units,
+       COALESCE(SUM(oi.line_total),0) revenue
+       FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
+       WHERE oi.sku=? AND o.created_at>=? GROUP BY o.status ORDER BY orders DESC`
+    ).bind(sku, since).all();
+
+    const channels = await env.DB.prepare(
+      `WITH target_sessions AS (
+         SELECT DISTINCT session_id FROM events
+         WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>''
+       )
+       SELECT COALESCE(NULLIF(s.utm_campaign,''),NULLIF(s.link_code,''),
+              NULLIF(s.utm_source,''),'直接访问') channel,
+         COUNT(*) sessions,SUM(s.converted_cart) carts,
+         SUM(s.converted_whatsapp) whatsapps,SUM(s.converted_order) orders,
+         ROUND(AVG(s.engaged_ms)/1000.0,1) avg_seconds,
+         ROUND(AVG(s.max_scroll),1) avg_scroll
+       FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id
+       WHERE s.started_at>=? AND s.is_bot=0
+       GROUP BY channel ORDER BY sessions DESC LIMIT 30`
+    ).bind(sku, since, since).all();
+
+    const costs = await env.DB.prepare(
+      `SELECT campaign,SUM(spend) spend,SUM(impressions) impressions,SUM(ad_clicks) ad_clicks
+       FROM campaign_costs WHERE day>=date(?/1000,'unixepoch') GROUP BY campaign`
+    ).bind(since).all();
+    const costMap = Object.fromEntries((costs.results || []).map((x) => [x.campaign, x]));
+    const channelRevenue = await env.DB.prepare(
+      `SELECT CASE WHEN o.utm_campaign<>'' THEN o.utm_campaign WHEN o.link_code<>'' THEN o.link_code
+       WHEN o.utm_source<>'' THEN o.utm_source WHEN o.session_id<>'' THEN '直接访问' ELSE '未归因订单' END channel,
+       COUNT(DISTINCT o.order_id) actual_orders,COALESCE(SUM(oi.line_total),0) revenue
+       FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
+       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled' GROUP BY channel`
+    ).bind(sku, since).all();
+    const revenueMap = Object.fromEntries((channelRevenue.results || []).map((x) => [x.channel, x]));
+    const unattributedOrders = revenueMap["未归因订单"] || { actual_orders:0, revenue:0 };
+    for (const row of channels.results || []) {
+      const c = costMap[row.channel] || {};
+      const sales = revenueMap[row.channel] || {};
+      row.spend = Number(c.spend) || 0;
+      row.impressions = Number(c.impressions) || 0;
+      row.ad_clicks = Number(c.ad_clicks) || 0;
+      row.cost_per_cart = row.carts ? row.spend / row.carts : 0;
+      row.actual_orders = Number(sales.actual_orders) || 0;
+      row.revenue = Number(sales.revenue) || 0;
+      row.cost_per_order = row.actual_orders ? row.spend / row.actual_orders : 0;
+      row.roas = row.spend ? row.revenue / row.spend : 0;
+    }
+
+    const daily = await env.DB.prepare(
+      `SELECT date((ts/1000)-14400,'unixepoch') day,
+       COUNT(DISTINCT CASE WHEN type='view' THEN session_id END) visitors,
+       COUNT(DISTINCT CASE WHEN type='addcart' THEN session_id END) addcarts,
+       COALESCE(SUM(CASE WHEN type='addcart' THEN qty ELSE 0 END),0) units
+       FROM events WHERE sku=? AND ts>=? AND is_bot=0
+       GROUP BY day ORDER BY day ASC`
+    ).bind(sku, since).all();
+
+    const colors = await env.DB.prepare(
+      `SELECT selected_color color,
+       COUNT(DISTINCT CASE WHEN type='color_select' THEN session_id END) selectors,
+       COUNT(DISTINCT CASE WHEN type='addcart' THEN session_id END) carts,
+       COALESCE(SUM(CASE WHEN type='addcart' THEN qty ELSE 0 END),0) units
+       FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND selected_color<>''
+       GROUP BY selected_color ORDER BY carts DESC,selectors DESC`
+    ).bind(sku, since).all();
+    const addSources = await env.DB.prepare(
+      `SELECT COALESCE(NULLIF(source_section,''),'未标记') source,
+       COUNT(DISTINCT session_id) sessions,COUNT(*) actions,COALESCE(SUM(qty),0) units
+       FROM events WHERE sku=? AND type='addcart' AND ts>=? AND is_bot=0
+       GROUP BY source ORDER BY sessions DESC`
+    ).bind(sku, since).all();
+    const offers = await env.DB.prepare(
+      `SELECT offer_qty quantity,COUNT(DISTINCT session_id) sessions
+       FROM events WHERE sku=? AND type='tier_select' AND ts>=? AND is_bot=0 AND offer_qty>0
+       GROUP BY offer_qty ORDER BY quantity`
+    ).bind(sku, since).all();
+    const devices = await env.DB.prepare(
+      `WITH target_sessions AS (SELECT DISTINCT session_id FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'')
+       SELECT COALESCE(NULLIF(s.device_type,''),'未知') device,COUNT(*) sessions,SUM(s.converted_cart) carts,
+       SUM(s.converted_whatsapp) whatsapps,SUM(s.converted_order) orders,ROUND(AVG(s.engaged_ms)/1000.0,1) avg_seconds
+       FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id GROUP BY device ORDER BY sessions DESC`
+    ).bind(sku, since).all();
+    const regions = await env.DB.prepare(
+      `SELECT COALESCE(NULLIF(region,''),NULLIF(city,''),'未知') region,COUNT(DISTINCT session_id) sessions,
+       COUNT(DISTINCT CASE WHEN type='addcart' THEN session_id END) carts,
+       COUNT(DISTINCT CASE WHEN type='whatsapp' THEN session_id END) whatsapps
+       FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'' GROUP BY region ORDER BY sessions DESC LIMIT 15`
+    ).bind(sku, since).all();
+    const quality = await env.DB.prepare(
+      `WITH target AS (SELECT session_id,COUNT(DISTINCT vid) vids FROM events
+       WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'' GROUP BY session_id)
+       SELECT COUNT(*) sessions,SUM(vids>1) multi_vid_sessions,COALESCE(SUM(vids-1),0) extra_vids,
+       (SELECT COUNT(*) FROM events WHERE sku=? AND type='addcart' AND ts>=? AND is_bot=0 AND cart_total<=0) addcarts_without_total
+       FROM target`
+    ).bind(sku, since, sku, since).first();
+
+    const dailyOrders = await env.DB.prepare(
+      `SELECT date((o.created_at/1000)-14400,'unixepoch') day,
+       COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(oi.quantity),0) units,
+       COALESCE(SUM(oi.line_total),0) revenue
+       FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
+       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled'
+       GROUP BY day ORDER BY day ASC`
+    ).bind(sku, since).all();
+
+    const recent = await env.DB.prepare(
+      `SELECT ts,vid,type,qty,price,cart_total,ip_full,ip_masked,city,region,as_org,
+       device_type,utm_source,utm_campaign,code,session_id,source_section,selected_color,offer_qty,
+       gallery_index,review_index,calculated_qty,wall_width,wall_height,order_id
+       FROM events WHERE sku=? AND ts>=? AND is_bot=0
+       AND type NOT IN ('scroll','engagement','section_view')
+       ORDER BY ts DESC LIMIT 100`
+    ).bind(sku, since).all();
+
+    return json({ ok:true, sku, days, summary:{ ...(summary || {}), ...(orderSummary || {}) },
+      channels:channels.results || [], daily:daily.results || [],
+      daily_orders:dailyOrders.results || [], order_status:orderStatus.results || [],
+      colors:colors.results || [], add_sources:addSources.results || [], offers:offers.results || [],
+      devices:devices.results || [], regions:regions.results || [], quality:quality || {},
+      unattributed_orders:unattributedOrders, recent:recent.results || [] });
   }
 
   if (sub === "analytics" && req.method === "GET") {

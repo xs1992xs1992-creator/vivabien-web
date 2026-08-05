@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VivaBien｜最新 15 张商品图上架审核</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--blue:#2563D9;--orange:#FF6B4A;--ink:#172033;--muted:#6D7A8D;--line:#E3E9F2;--bg:#F5F7FB;--green:#16864B;--red:#C53C36}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    button,input{font:inherit}.topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .topbar-inner,.page{width:min(1180px,calc(100% - 32px));margin:auto}.topbar-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:8px;background:var(--blue);color:#fff;font-size:20px}
+    .selection{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}.selection b{color:var(--ink);font-size:17px}.copy-btn{border:0;border-radius:7px;background:var(--blue);color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}
+    .page{padding:30px 0 64px}.intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:22px}.intro h1{margin:0 0 7px;font-size:30px;line-height:1.15}.intro p{margin:0;color:var(--muted);line-height:1.6}
+    .summary{display:grid;grid-template-columns:repeat(3,112px);gap:8px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}.metric b,.metric span{display:block}.metric b{font-size:23px}.metric span{font-size:11px;color:var(--muted);margin-top:4px}
+    .notice{margin:0 0 22px;padding:14px 16px;border:1px solid #F1C96A;background:#FFF9E8;border-radius:8px;color:#6B4B08;font-size:13px;line-height:1.55}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.filter{border:1px solid var(--line);background:#fff;color:#526075;padding:9px 13px;border-radius:7px;font-weight:800;cursor:pointer}.filter.on{background:var(--ink);border-color:var(--ink);color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.product{position:relative;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:.18s ease}.product:hover{border-color:#B8C6DA;box-shadow:0 8px 24px rgba(32,55,92,.08)}.product.off{opacity:.58}.product.off .media:after{content:"暂不上架";position:absolute;inset:0;display:grid;place-items:center;background:rgba(17,25,39,.52);color:#fff;font-size:20px;font-weight:900}
+    .media{position:relative;aspect-ratio:1/1;background:#EEF1F5;overflow:hidden}.media img{width:100%;height:100%;display:block;object-fit:cover}.media.contain img{object-fit:contain;background:#fff}.index{position:absolute;left:10px;top:10px;padding:5px 8px;border-radius:6px;background:rgba(23,32,51,.86);color:#fff;font-size:11px;font-weight:900}.group{position:absolute;right:10px;top:10px;max-width:70%;padding:5px 8px;border-radius:6px;background:#FFF4DF;color:#8A5900;font-size:10px;font-weight:900;text-align:right}
+    .body{padding:14px}.title-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.title-row h2{margin:0;font-size:15px;line-height:1.35}.price{white-space:nowrap;color:var(--orange);font-size:19px;font-weight:900}.meta{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.tag{padding:4px 6px;border-radius:5px;background:#EEF4FF;color:#2A5DB5;font-size:10px;font-weight:800}.tag.warn{background:#FFF0ED;color:#B64A36}.detail{min-height:38px;margin:0;color:var(--muted);font-size:12px;line-height:1.5}.actions{display:flex;align-items:center;justify-content:space-between;margin-top:13px;padding-top:12px;border-top:1px solid #EDF1F6}.sku{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#7B8798}.toggle{border:1px solid #BAD4C5;background:#EDFAF2;color:var(--green);border-radius:7px;padding:8px 11px;font-size:12px;font-weight:900;cursor:pointer}.product.off .toggle{border-color:#E5BDB9;background:#FFF0EF;color:var(--red)}
+    .recommendation{margin-top:28px;background:#fff;border:1px solid var(--line);padding:20px;border-radius:8px}.recommendation h2{margin:0 0 12px;font-size:19px}.recommendation-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.rec{padding:13px;border-left:3px solid var(--blue);background:#F7F9FD}.rec b,.rec span{display:block}.rec b{font-size:13px}.rec span{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.45}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#172033;color:#fff;padding:11px 16px;border-radius:7px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.intro{grid-template-columns:1fr}.summary{grid-template-columns:repeat(3,1fr)}.recommendation-grid{grid-template-columns:1fr}.topbar-inner{min-height:62px}.selection span{display:none}}
+    @media(max-width:520px){.topbar-inner,.page{width:min(100% - 20px,1180px)}.page{padding-top:20px}.intro h1{font-size:24px}.grid{grid-template-columns:1fr}.summary{gap:6px}.metric{padding:10px}.metric b{font-size:20px}.copy-btn{padding:9px 11px}.product .media{aspect-ratio:4/3}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner">
+    <div class="brand"><span class="brand-mark">V</span><span>VivaBien 商品审核</span></div>
+    <div class="selection"><span>准备上架</span><b id="selectedCount">15</b><span>/ 15 张</span><button class="copy-btn" id="copyBtn">复制选择结果</button></div>
+  </div></header>
+  <main class="page">
+    <section class="intro">
+      <div><h1>最新 15 张商品图</h1><p>按桌面“商品”文件夹的最新时间排序。标题已改成适合网站搜索的西班牙语草稿，价格严格采用图片标价。</p></div>
+      <div class="summary"><div class="metric"><b>15</b><span>最新图片</span></div><div class="metric"><b>9</b><span>建议独立商品</span></div><div class="metric"><b>3</b><span>建议合并组</span></div></div>
+    </section>
+    <div class="notice"><b>审核发现：</b>15 张图中存在同款不同颜色和同款多角度图。若全部作为独立商品上架，会造成搜索结果重复；更合理的是整理成 9 个商品，并在详情页内切换颜色或查看多图。</div>
+    <nav class="filters"><button class="filter on" data-filter="all">全部 15 张</button><button class="filter" data-filter="single">独立商品</button><button class="filter" data-filter="grouped">建议合并</button><button class="filter" data-filter="selected">准备上架</button></nav>
+    <section class="grid" id="grid"></section>
+    <section class="recommendation"><h2>建议最终整理为 9 个商品</h2><div class="recommendation-grid">
+      <div class="rec"><b>床头柜 · 1 个商品 / 3 个颜色</b><span>producto_361 灰色、369 白色、371 木色，价格均为 RD$1,440。</span></div>
+      <div class="rec"><b>转角置物架 · 1 个商品 / 2 个颜色</b><span>producto_363 黑色、364 白色，价格均为 RD$1,455。</span></div>
+      <div class="rec"><b>白色墙面置物架 · 1 个商品 / 4 张图</b><span>producto_365–368 是同款的产品角度、实拍和场景图，价格 RD$895。</span></div>
+    </section>
+  </main>
+  <div class="toast" id="toast">已复制</div>
+  <script>
+    const base='assets/latest15/';
+    const items=[
+      {n:360,title:'Lámpara LED hexagonal modular para techo',price:415,cat:'Iluminación',note:'吸顶式模块灯；原图为店内实际安装场景。',fit:'cover'},
+      {n:361,title:'Mesa de noche moderna con 2 cajones · Gris',price:1440,cat:'Dormitorio',group:'床头柜 3 色',note:'建议与 369、371 合并为颜色选项。'},
+      {n:362,title:'Mesa de noche blanca con 2 cajones y repisa',price:1695,cat:'Dormitorio',note:'尺寸 40 × 34 × 66 cm，带上层收纳空间。'},
+      {n:363,title:'Estante esquinero de pared de 5 niveles · Negro',price:1455,cat:'Organización',group:'转角架 2 色',note:'建议与 364 合并为黑色/白色选项。'},
+      {n:364,title:'Estante esquinero de pared de 5 niveles · Blanco',price:1455,cat:'Organización',group:'转角架 2 色',note:'建议与 363 合并为黑色/白色选项。'},
+      {n:365,title:'Estante mural blanco de 5 niveles · Vista lateral',price:895,cat:'Organización',group:'墙架 4 张图',note:'同款多角度图，建议作为详情补充图。',fit:'contain'},
+      {n:366,title:'Estante mural blanco de 5 niveles · Vista frontal',price:895,cat:'Organización',group:'墙架 4 张图',note:'同款正面结构图，建议作为详情补充图。',fit:'contain'},
+      {n:367,title:'Estante mural blanco de 5 niveles · Foto real',price:895,cat:'Organización',group:'墙架 4 张图',note:'同款店内实拍，适合作为真实性补充图。'},
+      {n:368,title:'Estante mural blanco de 5 niveles · Ambiente',price:895,cat:'Organización',group:'墙架 4 张图',note:'建议作为该商品首图，其余三张进入图集。'},
+      {n:369,title:'Mesa de noche moderna con 2 cajones · Blanca',price:1440,cat:'Dormitorio',group:'床头柜 3 色',note:'建议与 361、371 合并为颜色选项。'},
+      {n:370,title:'Mueble auxiliar de cocina con puertas y estantes',price:2365,cat:'Cocina',note:'尺寸 80 × 30 × 80 cm，橡木色搭配白色。'},
+      {n:371,title:'Mesa de noche moderna con 2 cajones · Madera',price:1440,cat:'Dormitorio',group:'床头柜 3 色',note:'建议与 361、369 合并为颜色选项。'},
+      {n:372,title:'Aparador blanco de cocina con puertas y cajones',price:2365,cat:'Cocina',note:'白色多功能收纳柜，带开放层、抽屉和柜门。'},
+      {n:373,title:'Escritorio blanco moderno con cajonera y estantes',price:3375,cat:'Oficina',note:'桌面约 120 × 50 cm，带侧面收纳与抽屉。'},
+      {n:374,title:'Escritorio blanco con estantería superior',price:3450,cat:'Oficina',note:'图片主款为 120 × 50 × 103 cm；建议不要把 140 cm 变体混入价格。'}
+    ];
+    let selected=new Set(items.map(x=>x.n)),filter='all';
+    const grid=document.getElementById('grid'),count=document.getElementById('selectedCount');
+    function money(v){return new Intl.NumberFormat('es-DO').format(v)}
+    function visible(x){if(filter==='selected')return selected.has(x.n);if(filter==='grouped')return !!x.group;if(filter==='single')return !x.group;return true}
+    function render(){grid.innerHTML=items.filter(visible).map(x=>`<article class="product ${selected.has(x.n)?'':'off'}" data-n="${x.n}" data-group="${x.group?'grouped':'single'}"><div class="media ${x.fit==='contain'?'contain':''}"><img src="${base}producto_${x.n}.jpg" alt="${x.title}"><span class="index">#${x.n}</span>${x.group?`<span class="group">${x.group}</span>`:''}</div><div class="body"><div class="title-row"><h2>${x.title}</h2><strong class="price">RD$${money(x.price)}</strong></div><div class="meta"><span class="tag">${x.cat}</span>${x.group?'<span class="tag warn">建议合并</span>':'<span class="tag">独立商品</span>'}</div><p class="detail">${x.note}</p><div class="actions"><span class="sku">producto_${x.n}.jpg</span><button class="toggle" data-toggle="${x.n}">${selected.has(x.n)?'准备上架':'暂不上架'}</button></div></div></article>`).join('');count.textContent=selected.size}
+    grid.addEventListener('click',e=>{const b=e.target.closest('[data-toggle]');if(!b)return;const n=Number(b.dataset.toggle);selected.has(n)?selected.delete(n):selected.add(n);render()});
+    document.querySelector('.filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('on',x===b));render()});
+    document.getElementById('copyBtn').onclick=async()=>{const yes=items.filter(x=>selected.has(x.n)).map(x=>`#${x.n} ${x.title} — RD$${money(x.price)}`);const no=items.filter(x=>!selected.has(x.n)).map(x=>`#${x.n}`);const text=`准备上架（${yes.length} 张）：\n${yes.join('\n')}\n\n暂不上架：${no.join('、')||'无'}\n\n建议按页面标注合并为颜色/多图商品。`;try{await navigator.clipboard.writeText(text)}catch(e){prompt('复制以下结果：',text)}const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)};
+    render();
+  </script>
+</body>
+</html>

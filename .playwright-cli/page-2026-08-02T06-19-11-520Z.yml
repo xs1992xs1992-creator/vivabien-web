@@ -1,0 +1,98 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]: BORRADOR INTERACTIVO · NO ES LA PÁGINA REAL
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e5]: V
+      - text: VivaBien
+    - button "Carrito" [ref=f1e6]: ▣
+  - main [ref=f1e7]:
+    - button "← Seguir comprando" [ref=f1e8]
+    - heading "Tu compra" [level=1] [ref=f1e9]
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: Productos
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: 🛍️
+        - generic [ref=f1e14]:
+          - generic [ref=f1e15]: Producto seleccionado
+          - generic [ref=f1e16]: 1 unidad
+        - strong [ref=f1e17]: RD$ 1,280
+    - generic [ref=f1e18]:
+      - generic [ref=f1e19]: 🚚 Datos de entrega
+      - generic [ref=f1e20]:
+        - generic [ref=f1e21]:
+          - generic [ref=f1e22]: Nombre completo *
+          - textbox "Tu nombre" [ref=f1e23]
+        - generic [ref=f1e24]:
+          - generic [ref=f1e25]: Teléfono / WhatsApp *
+          - textbox "809 000 0000" [ref=f1e26]
+      - generic [ref=f1e27]:
+        - generic [ref=f1e28]: Provincia *
+        - combobox [ref=f1e29]:
+          - option "Santiago"
+          - option "Distrito Nacional (Santo Domingo)" [selected]
+          - option "Santo Domingo (provincia)"
+          - option "San Pedro de Macorís"
+      - generic [ref=f1e30]:
+        - generic [ref=f1e31]:
+          - generic [ref=f1e32]: Sector / Zona *
+          - combobox [ref=f1e33]:
+            - option "Selecciona tu sector" [selected]
+            - option "Zona Colonial"
+            - option "Piantini"
+            - option "Santo Domingo Este"
+            - option "Santo Domingo Norte"
+            - option "Santo Domingo Oeste"
+        - generic [ref=f1e34]:
+          - generic [ref=f1e35]: Dirección (calle, número y referencia) *
+          - 'textbox "Ej: Calle Duarte No. 24, residencial Azul, apto. 3B" [ref=f1e36]'
+        - generic [ref=f1e37]:
+          - generic [ref=f1e38]:
+            - generic [ref=f1e39]: 📍
+            - generic [ref=f1e40]:
+              - generic [ref=f1e41]: Ubicación exacta de Google Maps *
+              - paragraph [ref=f1e42]: Ayuda al mensajero a encontrar la entrada correcta sin llamarte varias veces.
+          - generic [ref=f1e43]:
+            - textbox "Pega aquí el enlace de Google Maps" [ref=f1e44]
+            - button "Pegar enlace" [ref=f1e45]
+          - button "¿Cómo compartir mi ubicación? ＋" [ref=f1e46]:
+            - generic [ref=f1e47]: ¿Cómo compartir mi ubicación?
+            - generic [ref=f1e48]: ＋
+          - generic [ref=f1e49]:
+            - heading "¿Cuándo prefieres recibir tu pedido? *" [level=3] [ref=f1e50]
+            - paragraph [ref=f1e51]: Selecciona una fecha y un horario preferido.
+            - generic [ref=f1e52]:
+              - button "Lo antes posible Primera ruta disponible" [ref=f1e53]:
+                - text: Lo antes posible
+                - generic [ref=f1e54]: Primera ruta disponible
+              - button "Mañana 3 de agosto" [ref=f1e55]:
+                - text: Mañana
+                - generic [ref=f1e56]: 3 de agosto
+              - button "Otra fecha Elegir en calendario" [ref=f1e57]:
+                - text: Otra fecha
+                - generic [ref=f1e58]: Elegir en calendario
+            - generic [ref=f1e59]:
+              - button "9:00 AM – 12:00 PM" [ref=f1e60]
+              - button "12:00 PM – 3:00 PM" [ref=f1e61]
+              - button "3:00 PM – 6:00 PM" [ref=f1e62]
+              - button "Cualquier horario" [ref=f1e63]
+            - generic [ref=f1e64]:
+              - generic [ref=f1e65]: ℹ️
+              - generic [ref=f1e66]: Este es tu horario preferido. Te confirmaremos la hora exacta por WhatsApp antes de la entrega.
+      - generic [ref=f1e67]:
+        - generic [ref=f1e68]: Nota (opcional)
+        - textbox "Piso, apartamento, color de la casa..." [ref=f1e69]
+    - generic [ref=f1e70]:
+      - generic [ref=f1e71]:
+        - generic [ref=f1e72]: Subtotal
+        - generic [ref=f1e73]: RD$ 1,280
+      - generic [ref=f1e74]:
+        - generic [ref=f1e75]: Envío
+        - generic [ref=f1e76]: RD$ 200
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: Total
+        - strong [ref=f1e79]: RD$ 1,480
+  - generic [ref=f1e81]:
+    - generic [ref=f1e82]:
+      - generic [ref=f1e83]: Total
+      - strong [ref=f1e84]: RD$ 1,480
+    - button "Confirmar pedido" [ref=f1e85]

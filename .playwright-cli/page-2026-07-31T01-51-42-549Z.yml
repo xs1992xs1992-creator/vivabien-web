@@ -1,0 +1,439 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "V VivaBien" [ref=e5] [cursor=pointer]:
+          - /url: ./
+          - generic [ref=e6]: V
+          - text: VivaBien
+        - generic [ref=e7]:
+          - link "Colores" [ref=e8] [cursor=pointer]:
+            - /url: "#colores"
+          - link "Medidas" [ref=e9] [cursor=pointer]:
+            - /url: "#medidas"
+          - link "Calculadora" [ref=e10] [cursor=pointer]:
+            - /url: "#calculadora"
+          - link "Preguntas" [ref=e11] [cursor=pointer]:
+            - /url: "#preguntas"
+        - generic [ref=e12]:
+          - link "Carrito" [ref=e13] [cursor=pointer]:
+            - /url: carrito
+          - link "COMPRAR" [ref=e17] [cursor=pointer]:
+            - /url: "#colores"
+    - banner [ref=e18]:
+      - img "Sala moderna con pared de panel decorativo ZT-104 de cuatro relieves estrechos" [ref=e19]
+    - generic [ref=e21]:
+      - generic [ref=e22]: 290 cm de largo
+      - generic [ref=e23]: 17 cm de ancho
+      - generic [ref=e24]: Asesoría por WhatsApp
+    - generic [ref=e25]:
+      - heading "Transforma tu pared. Transforma tu espacio." [level=1] [ref=e26]
+      - paragraph [ref=e27]: Panel rígido ranurado · 290 × 17 cm · ZT-104
+      - generic [ref=e28]: RD$ 495
+      - generic [ref=e29]: PRECIO POR PANEL
+      - generic [ref=e30]:
+        - link "ELEGIR COLOR" [ref=e31] [cursor=pointer]:
+          - /url: "#colores"
+        - link "CALCULAR" [ref=e32] [cursor=pointer]:
+          - /url: "#calculadora"
+    - main [ref=e33]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - text: Colección ZT
+          - heading "Elige el color" [level=2] [ref=e37]
+          - paragraph [ref=e38]: Todos los recortes tienen el mismo tamaño para comparar mejor. El SKU aparece debajo de cada muestra.
+        - generic [ref=e39]:
+          - button "Panel decorativo ZT-104 Tono lino claro ZT-104 Tono lino claro RD$ 495" [pressed] [ref=e40] [cursor=pointer]:
+            - img "Panel decorativo ZT-104 Tono lino claro" [ref=e42]
+            - generic [ref=e43]:
+              - generic [ref=e44]: ZT-104
+              - generic [ref=e45]: Tono lino claro
+              - strong [ref=e46]: RD$ 495
+          - button "Panel decorativo ZT-105 Madera caoba ZT-105 Madera caoba RD$ 495" [ref=e47] [cursor=pointer]:
+            - img "Panel decorativo ZT-105 Madera caoba" [ref=e49]
+            - generic [ref=e50]:
+              - generic [ref=e51]: ZT-105
+              - generic [ref=e52]: Madera caoba
+              - strong [ref=e53]: RD$ 495
+          - button "Panel decorativo ZT-001 Blanco plateado ZT-001 Blanco plateado RD$ 495" [ref=e54] [cursor=pointer]:
+            - img "Panel decorativo ZT-001 Blanco plateado" [ref=e56]
+            - generic [ref=e57]:
+              - generic [ref=e58]: ZT-001
+              - generic [ref=e59]: Blanco plateado
+              - strong [ref=e60]: RD$ 495
+          - button "Panel decorativo ZT-004 Nogal oscuro ZT-004 Nogal oscuro RD$ 495" [ref=e61] [cursor=pointer]:
+            - img "Panel decorativo ZT-004 Nogal oscuro" [ref=e63]
+            - generic [ref=e64]:
+              - generic [ref=e65]: ZT-004
+              - generic [ref=e66]: Nogal oscuro
+              - strong [ref=e67]: RD$ 495
+          - button "Panel decorativo ZT-032 Gris grafito ZT-032 Gris grafito RD$ 495" [ref=e68] [cursor=pointer]:
+            - img "Panel decorativo ZT-032 Gris grafito" [ref=e70]
+            - generic [ref=e71]:
+              - generic [ref=e72]: ZT-032
+              - generic [ref=e73]: Gris grafito
+              - strong [ref=e74]: RD$ 495
+          - button "Panel decorativo ZT-046 Azul turquesa ZT-046 Azul turquesa RD$ 495" [ref=e75] [cursor=pointer]:
+            - img "Panel decorativo ZT-046 Azul turquesa" [ref=e77]
+            - generic [ref=e78]:
+              - generic [ref=e79]: ZT-046
+              - generic [ref=e80]: Azul turquesa
+              - strong [ref=e81]: RD$ 495
+          - button "Panel decorativo ZT-072 Gris textil ZT-072 Gris textil RD$ 495" [ref=e82] [cursor=pointer]:
+            - img "Panel decorativo ZT-072 Gris textil" [ref=e84]
+            - generic [ref=e85]:
+              - generic [ref=e86]: ZT-072
+              - generic [ref=e87]: Gris textil
+              - strong [ref=e88]: RD$ 495
+          - button "Panel decorativo ZT-073 Beige claro ZT-073 Beige claro RD$ 495" [ref=e89] [cursor=pointer]:
+            - img "Panel decorativo ZT-073 Beige claro" [ref=e91]
+            - generic [ref=e92]:
+              - generic [ref=e93]: ZT-073
+              - generic [ref=e94]: Beige claro
+              - strong [ref=e95]: RD$ 495
+          - button "Panel decorativo ZT-076 Marfil ZT-076 Marfil RD$ 495" [ref=e96] [cursor=pointer]:
+            - img "Panel decorativo ZT-076 Marfil" [ref=e98]
+            - generic [ref=e99]:
+              - generic [ref=e100]: ZT-076
+              - generic [ref=e101]: Marfil
+              - strong [ref=e102]: RD$ 495
+          - button "Panel decorativo ZT-079 Madera natural ZT-079 Madera natural RD$ 495" [ref=e103] [cursor=pointer]:
+            - img "Panel decorativo ZT-079 Madera natural" [ref=e105]
+            - generic [ref=e106]:
+              - generic [ref=e107]: ZT-079
+              - generic [ref=e108]: Madera natural
+              - strong [ref=e109]: RD$ 495
+          - button "Panel decorativo ZT-091 Caoba suave ZT-091 Caoba suave RD$ 495" [ref=e110] [cursor=pointer]:
+            - img "Panel decorativo ZT-091 Caoba suave" [ref=e112]
+            - generic [ref=e113]:
+              - generic [ref=e114]: ZT-091
+              - generic [ref=e115]: Caoba suave
+              - strong [ref=e116]: RD$ 495
+          - button "Panel decorativo ZT-099 Café profundo ZT-099 Café profundo RD$ 495" [ref=e117] [cursor=pointer]:
+            - img "Panel decorativo ZT-099 Café profundo" [ref=e119]
+            - generic [ref=e120]:
+              - generic [ref=e121]: ZT-099
+              - generic [ref=e122]: Café profundo
+              - strong [ref=e123]: RD$ 495
+          - button "Panel decorativo ZT-101 Roble dorado ZT-101 Roble dorado RD$ 495" [ref=e124] [cursor=pointer]:
+            - img "Panel decorativo ZT-101 Roble dorado" [ref=e126]
+            - generic [ref=e127]:
+              - generic [ref=e128]: ZT-101
+              - generic [ref=e129]: Roble dorado
+              - strong [ref=e130]: RD$ 495
+          - button "Panel decorativo ZT-102 Azul acero ZT-102 Azul acero RD$ 495" [ref=e131] [cursor=pointer]:
+            - img "Panel decorativo ZT-102 Azul acero" [ref=e133]
+            - generic [ref=e134]:
+              - generic [ref=e135]: ZT-102
+              - generic [ref=e136]: Azul acero
+              - strong [ref=e137]: RD$ 495
+          - button "Panel decorativo ZT-108 Blanco mineral ZT-108 Blanco mineral RD$ 495" [ref=e138] [cursor=pointer]:
+            - img "Panel decorativo ZT-108 Blanco mineral" [ref=e140]
+            - generic [ref=e141]:
+              - generic [ref=e142]: ZT-108
+              - generic [ref=e143]: Blanco mineral
+              - strong [ref=e144]: RD$ 495
+          - button "Panel decorativo ZT-110 Mármol negro ZT-110 Mármol negro RD$ 495" [ref=e145] [cursor=pointer]:
+            - img "Panel decorativo ZT-110 Mármol negro" [ref=e147]
+            - generic [ref=e148]:
+              - generic [ref=e149]: ZT-110
+              - generic [ref=e150]: Mármol negro
+              - strong [ref=e151]: RD$ 495
+          - button "Panel decorativo ZT-111 Nogal medio ZT-111 Nogal medio RD$ 495" [ref=e152] [cursor=pointer]:
+            - img "Panel decorativo ZT-111 Nogal medio" [ref=e154]
+            - generic [ref=e155]:
+              - generic [ref=e156]: ZT-111
+              - generic [ref=e157]: Nogal medio
+              - strong [ref=e158]: RD$ 495
+          - button "Panel decorativo ZT-113 Mármol blanco ZT-113 Mármol blanco RD$ 495" [ref=e159] [cursor=pointer]:
+            - img "Panel decorativo ZT-113 Mármol blanco" [ref=e161]
+            - generic [ref=e162]:
+              - generic [ref=e163]: ZT-113
+              - generic [ref=e164]: Mármol blanco
+              - strong [ref=e165]: RD$ 495
+          - button "Panel decorativo ZT-120 Taupe ZT-120 Taupe RD$ 495" [ref=e166] [cursor=pointer]:
+            - img "Panel decorativo ZT-120 Taupe" [ref=e168]
+            - generic [ref=e169]:
+              - generic [ref=e170]: ZT-120
+              - generic [ref=e171]: Taupe
+              - strong [ref=e172]: RD$ 495
+          - button "Panel decorativo ZT-121 Terracota ZT-121 Terracota RD$ 495" [ref=e173] [cursor=pointer]:
+            - img "Panel decorativo ZT-121 Terracota" [ref=e175]
+            - generic [ref=e176]:
+              - generic [ref=e177]: ZT-121
+              - generic [ref=e178]: Terracota
+              - strong [ref=e179]: RD$ 495
+          - button "Panel decorativo ZT-125 Gris madera ZT-125 Gris madera RD$ 495" [ref=e180] [cursor=pointer]:
+            - img "Panel decorativo ZT-125 Gris madera" [ref=e182]
+            - generic [ref=e183]:
+              - generic [ref=e184]: ZT-125
+              - generic [ref=e185]: Gris madera
+              - strong [ref=e186]: RD$ 495
+          - button "Panel decorativo ZT-126 Nogal cálido ZT-126 Nogal cálido RD$ 495" [ref=e187] [cursor=pointer]:
+            - img "Panel decorativo ZT-126 Nogal cálido" [ref=e189]
+            - generic [ref=e190]:
+              - generic [ref=e191]: ZT-126
+              - generic [ref=e192]: Nogal cálido
+              - strong [ref=e193]: RD$ 495
+          - button "Panel decorativo ZT-128 Madera rojiza ZT-128 Madera rojiza RD$ 495" [ref=e194] [cursor=pointer]:
+            - img "Panel decorativo ZT-128 Madera rojiza" [ref=e196]
+            - generic [ref=e197]:
+              - generic [ref=e198]: ZT-128
+              - generic [ref=e199]: Madera rojiza
+              - strong [ref=e200]: RD$ 495
+          - button "Panel decorativo ZT-129 Cobre ZT-129 Cobre RD$ 495" [ref=e201] [cursor=pointer]:
+            - img "Panel decorativo ZT-129 Cobre" [ref=e203]
+            - generic [ref=e204]:
+              - generic [ref=e205]: ZT-129
+              - generic [ref=e206]: Cobre
+              - strong [ref=e207]: RD$ 495
+          - button "Panel decorativo ZT-131 Gris veta ZT-131 Gris veta RD$ 495" [ref=e208] [cursor=pointer]:
+            - img "Panel decorativo ZT-131 Gris veta" [ref=e210]
+            - generic [ref=e211]:
+              - generic [ref=e212]: ZT-131
+              - generic [ref=e213]: Gris veta
+              - strong [ref=e214]: RD$ 495
+          - button "Panel decorativo ZT-134 Caoba intensa ZT-134 Caoba intensa RD$ 495" [ref=e215] [cursor=pointer]:
+            - img "Panel decorativo ZT-134 Caoba intensa" [ref=e217]
+            - generic [ref=e218]:
+              - generic [ref=e219]: ZT-134
+              - generic [ref=e220]: Caoba intensa
+              - strong [ref=e221]: RD$ 495
+          - button "Panel decorativo ZT-135 Rojo madera ZT-135 Rojo madera RD$ 495" [ref=e222] [cursor=pointer]:
+            - img "Panel decorativo ZT-135 Rojo madera" [ref=e224]
+            - generic [ref=e225]:
+              - generic [ref=e226]: ZT-135
+              - generic [ref=e227]: Rojo madera
+              - strong [ref=e228]: RD$ 495
+          - button "Panel decorativo ZT-143 Azul profundo ZT-143 Azul profundo RD$ 495" [ref=e229] [cursor=pointer]:
+            - img "Panel decorativo ZT-143 Azul profundo" [ref=e231]
+            - generic [ref=e232]:
+              - generic [ref=e233]: ZT-143
+              - generic [ref=e234]: Azul profundo
+              - strong [ref=e235]: RD$ 495
+          - button "Panel decorativo ZT-168 Gris humo ZT-168 Gris humo RD$ 495" [ref=e236] [cursor=pointer]:
+            - img "Panel decorativo ZT-168 Gris humo" [ref=e238]
+            - generic [ref=e239]:
+              - generic [ref=e240]: ZT-168
+              - generic [ref=e241]: Gris humo
+              - strong [ref=e242]: RD$ 495
+          - button "Panel decorativo ZT-169 Terrazo gris ZT-169 Terrazo gris RD$ 495" [ref=e243] [cursor=pointer]:
+            - img "Panel decorativo ZT-169 Terrazo gris" [ref=e245]
+            - generic [ref=e246]:
+              - generic [ref=e247]: ZT-169
+              - generic [ref=e248]: Terrazo gris
+              - strong [ref=e249]: RD$ 495
+          - button "Panel decorativo ZT-171 Fresno claro ZT-171 Fresno claro RD$ 495" [ref=e250] [cursor=pointer]:
+            - img "Panel decorativo ZT-171 Fresno claro" [ref=e252]
+            - generic [ref=e253]:
+              - generic [ref=e254]: ZT-171
+              - generic [ref=e255]: Fresno claro
+              - strong [ref=e256]: RD$ 495
+          - button "Panel decorativo ZT-180 Roble natural ZT-180 Roble natural RD$ 495" [ref=e257] [cursor=pointer]:
+            - img "Panel decorativo ZT-180 Roble natural" [ref=e259]
+            - generic [ref=e260]:
+              - generic [ref=e261]: ZT-180
+              - generic [ref=e262]: Roble natural
+              - strong [ref=e263]: RD$ 495
+          - button "Panel decorativo ZT-200 Caoba clásica ZT-200 Caoba clásica RD$ 495" [ref=e264] [cursor=pointer]:
+            - img "Panel decorativo ZT-200 Caoba clásica" [ref=e266]
+            - generic [ref=e267]:
+              - generic [ref=e268]: ZT-200
+              - generic [ref=e269]: Caoba clásica
+              - strong [ref=e270]: RD$ 495
+          - button "Panel decorativo ZT-201 Miel ZT-201 Miel RD$ 495" [ref=e271] [cursor=pointer]:
+            - img "Panel decorativo ZT-201 Miel" [ref=e273]
+            - generic [ref=e274]:
+              - generic [ref=e275]: ZT-201
+              - generic [ref=e276]: Miel
+              - strong [ref=e277]: RD$ 495
+          - button "Panel decorativo ZT-203 Plata ZT-203 Plata RD$ 495" [ref=e278] [cursor=pointer]:
+            - img "Panel decorativo ZT-203 Plata" [ref=e280]
+            - generic [ref=e281]:
+              - generic [ref=e282]: ZT-203
+              - generic [ref=e283]: Plata
+              - strong [ref=e284]: RD$ 495
+      - generic [ref=e286]:
+        - generic [ref=e287]:
+          - img "Panel decorativo ZT-104 Tono lino claro" [ref=e288]
+          - generic [ref=e289]: ZT-104 · Tono lino claro
+        - generic [ref=e290]:
+          - generic [ref=e291]: Vista del acabado real
+          - heading "Tono lino claro" [level=3] [ref=e292]
+          - generic [ref=e293]: RD$ 495
+          - generic [ref=e294]:
+            - button "ZT-104" [pressed] [ref=e295] [cursor=pointer]
+            - button "ZT-105" [ref=e296] [cursor=pointer]
+            - button "ZT-001" [ref=e297] [cursor=pointer]
+            - button "ZT-004" [ref=e298] [cursor=pointer]
+            - button "ZT-032" [ref=e299] [cursor=pointer]
+            - button "ZT-046" [ref=e300] [cursor=pointer]
+            - button "ZT-072" [ref=e301] [cursor=pointer]
+            - button "ZT-073" [ref=e302] [cursor=pointer]
+            - button "ZT-076" [ref=e303] [cursor=pointer]
+            - button "ZT-079" [ref=e304] [cursor=pointer]
+            - button "ZT-091" [ref=e305] [cursor=pointer]
+            - button "ZT-099" [ref=e306] [cursor=pointer]
+            - button "ZT-101" [ref=e307] [cursor=pointer]
+            - button "ZT-102" [ref=e308] [cursor=pointer]
+            - button "ZT-108" [ref=e309] [cursor=pointer]
+            - button "ZT-110" [ref=e310] [cursor=pointer]
+            - button "ZT-111" [ref=e311] [cursor=pointer]
+            - button "ZT-113" [ref=e312] [cursor=pointer]
+            - button "ZT-120" [ref=e313] [cursor=pointer]
+            - button "ZT-121" [ref=e314] [cursor=pointer]
+            - button "ZT-125" [ref=e315] [cursor=pointer]
+            - button "ZT-126" [ref=e316] [cursor=pointer]
+            - button "ZT-128" [ref=e317] [cursor=pointer]
+            - button "ZT-129" [ref=e318] [cursor=pointer]
+            - button "ZT-131" [ref=e319] [cursor=pointer]
+            - button "ZT-134" [ref=e320] [cursor=pointer]
+            - button "ZT-135" [ref=e321] [cursor=pointer]
+            - button "ZT-143" [ref=e322] [cursor=pointer]
+            - button "ZT-168" [ref=e323] [cursor=pointer]
+            - button "ZT-169" [ref=e324] [cursor=pointer]
+            - button "ZT-171" [ref=e325] [cursor=pointer]
+            - button "ZT-180" [ref=e326] [cursor=pointer]
+            - button "ZT-200" [ref=e327] [cursor=pointer]
+            - button "ZT-201" [ref=e328] [cursor=pointer]
+            - button "ZT-203" [ref=e329] [cursor=pointer]
+          - button "AGREGAR AL CARRITO" [ref=e330] [cursor=pointer]
+      - generic [ref=e335]:
+        - generic [ref=e336]:
+          - text: Comentarios públicos
+          - heading "Lo que más valoran en paneles similares" [level=2] [ref=e337]
+          - paragraph [ref=e338]: Resumen editorial de opiniones públicas sobre productos comparables; no son reseñas verificadas de pedidos de VivaBien.
+        - generic [ref=e339]:
+          - article [ref=e340]:
+            - text: El cambio visual se nota rápido
+            - paragraph [ref=e341]: Compradores destacan que una pared sencilla se ve más terminada y cálida después de instalar paneles ranurados.
+          - article [ref=e342]:
+            - text: Medir y alinear hace la diferencia
+            - paragraph [ref=e343]: La recomendación más repetida es presentar las piezas primero y mantener la primera perfectamente nivelada.
+          - article [ref=e344]:
+            - text: Conviene revisar el tono con la luz real
+            - paragraph [ref=e345]: El acabado puede verse más claro u oscuro según la pantalla, la iluminación y el ángulo del espacio.
+          - article [ref=e346]:
+            - text: Hay que revisar bordes al recibir
+            - paragraph [ref=e347]: Algunas opiniones de paneles comparables mencionan golpes de transporte; revisa las piezas antes de instalar.
+        - paragraph [ref=e348]: Síntesis basada en opiniones públicas de productos similares de Home Depot, WoodUpp y Naturewall. No atribuimos prestaciones acústicas, impermeabilidad ni material sin ficha técnica confirmada.
+      - generic [ref=e350]:
+        - generic [ref=e351]:
+          - text: Detalles visuales
+          - heading "Compara ambiente, textura y acabados" [level=2] [ref=e352]
+        - generic [ref=e353]:
+          - figure "Resultado en un ambiente Referencia visual para una pared protagonista." [ref=e354]:
+            - img "Sala con panel decorativo ranurado" [ref=e355]
+            - generic [ref=e356]:
+              - generic [ref=e357]: Resultado en un ambiente
+              - text: Referencia visual para una pared protagonista.
+          - figure "Roble dorado · ZT-101 Acercamiento uniforme de la textura." [ref=e358]:
+            - img "Textura ZT-101" [ref=e359]
+            - generic [ref=e360]:
+              - generic [ref=e361]: Roble dorado · ZT-101
+              - text: Acercamiento uniforme de la textura.
+          - figure "Terrazo gris · ZT-169 Una alternativa fría para espacios modernos." [ref=e362]:
+            - img "Textura ZT-169" [ref=e363]
+            - generic [ref=e364]:
+              - generic [ref=e365]: Terrazo gris · ZT-169
+              - text: Una alternativa fría para espacios modernos.
+          - figure "Rojo madera · ZT-135 Una opción más cálida y marcada." [ref=e366]:
+            - img "Textura ZT-135" [ref=e367]
+            - generic [ref=e368]:
+              - generic [ref=e369]: Rojo madera · ZT-135
+              - text: Una opción más cálida y marcada.
+      - generic [ref=e373]:
+        - generic [ref=e374]:
+          - text: Medidas confirmadas
+          - heading "Una pieza larga para una pared más limpia" [level=2] [ref=e375]
+          - paragraph [ref=e376]: La cantidad depende del ancho de tu pared. Si la altura supera el largo del panel, te ayudamos a revisar el proyecto.
+        - generic [ref=e377]:
+          - generic [ref=e378]:
+            - generic [ref=e379]: 290 cm
+            - text: de largo
+          - generic [ref=e380]:
+            - generic [ref=e381]: 17 cm
+            - text: de ancho
+        - generic [ref=e382]:
+          - generic [ref=e383]:
+            - generic [ref=e384]: "1"
+            - generic [ref=e385]:
+              - generic [ref=e386]: Relieve decorativo
+              - paragraph [ref=e387]: Frente ranurado con cuatro líneas elevadas visibles.
+          - generic [ref=e388]:
+            - generic [ref=e389]: "2"
+            - generic [ref=e390]:
+              - generic [ref=e391]: Tonos combinables
+              - paragraph [ref=e392]: Opciones claras, cálidas y blancas para distintos ambientes.
+          - generic [ref=e393]:
+            - generic [ref=e394]: "3"
+            - generic [ref=e395]:
+              - generic [ref=e396]: Medición sencilla
+              - paragraph [ref=e397]: Usa la calculadora para obtener una cantidad inicial.
+      - generic [ref=e400]:
+        - generic [ref=e401]:
+          - text: Calculadora
+          - heading "¿Cuántos paneles necesitas?" [level=2] [ref=e402]
+          - paragraph [ref=e403]: Calculamos una instalación vertical usando paneles de 17 cm de ancho y 290 cm de largo.
+        - generic [ref=e404]:
+          - generic [ref=e405]:
+            - generic [ref=e406]:
+              - generic [ref=e407]: Ancho de la pared
+              - generic [ref=e408]:
+                - spinbutton "Ancho de la pared" [ref=e409]
+                - generic [ref=e410]: cm
+            - generic [ref=e411]:
+              - generic [ref=e412]: Alto de la pared
+              - generic [ref=e413]:
+                - spinbutton "Alto de la pared" [ref=e414]
+                - generic [ref=e415]: cm
+          - button "CALCULAR CANTIDAD" [ref=e416] [cursor=pointer]
+      - generic [ref=e418]:
+        - generic [ref=e419]:
+          - text: Cómo comenzar
+          - heading "Renueva tu espacio en pocos pasos" [level=2] [ref=e420]
+        - generic [ref=e421]:
+          - article [ref=e422]:
+            - text: PASO 01
+            - heading "Mide tu pared" [level=3] [ref=e423]
+            - paragraph [ref=e424]: Toma el ancho y el alto en centímetros.
+          - article [ref=e425]:
+            - text: PASO 02
+            - heading "Elige tu tono" [level=3] [ref=e426]
+            - paragraph [ref=e427]: Selecciona el modelo ZT que combine con tu espacio.
+          - article [ref=e428]:
+            - text: PASO 03
+            - heading "Confirma tu pedido" [level=3] [ref=e429]
+            - paragraph [ref=e430]: Agrega la cantidad o escríbenos para revisar tus medidas.
+      - generic [ref=e432]:
+        - generic [ref=e433]:
+          - text: Información útil
+          - heading "Preguntas frecuentes" [level=2] [ref=e434]
+        - group [ref=e435]:
+          - generic "¿Cuál es el tamaño de cada panel?" [ref=e436] [cursor=pointer]
+        - group [ref=e437]:
+          - generic "¿Cómo sé cuántos paneles necesito?" [ref=e438] [cursor=pointer]
+        - group [ref=e439]:
+          - generic "¿Los colores de las fotos son reales?" [ref=e440] [cursor=pointer]
+        - group [ref=e441]:
+          - generic "¿Cómo puedo comprar?" [ref=e442] [cursor=pointer]
+        - group [ref=e443]:
+          - generic "¿Hacen envíos?" [ref=e444] [cursor=pointer]
+    - generic [ref=e445]:
+      - img "Detalle de panel decorativo ZT" [ref=e446]
+      - generic [ref=e447]:
+        - heading "Tu pared puede tener un acabado diferente." [level=2] [ref=e448]
+        - paragraph [ref=e449]: Elige tu tono y calcula la cantidad que necesitas.
+        - generic [ref=e450]:
+          - link "VER COLORES" [ref=e451] [cursor=pointer]:
+            - /url: "#colores"
+          - link "HABLAR POR WHATSAPP" [ref=e452] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20paneles%20decorativos%20ZT.
+  - contentinfo [ref=e453]:
+    - generic [ref=e454]:
+      - link "Garantía y devoluciones" [ref=e455] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e456] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e457]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

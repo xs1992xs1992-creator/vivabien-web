@@ -1,0 +1,168 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic "Comparar diseños" [ref=f1e3]:
+      - link "Versión 1" [ref=f1e4] [cursor=pointer]:
+        - /url: panel-autoadhesivo-v1.html
+      - link "Versión 2" [ref=f1e5] [cursor=pointer]:
+        - /url: panel-autoadhesivo-v2.html
+      - link "Versión 3" [ref=f1e6] [cursor=pointer]:
+        - /url: panel-autoadhesivo-v3.html
+    - navigation [ref=f1e7]:
+      - generic [ref=f1e8]:
+        - link "V VivaBien" [ref=f1e9] [cursor=pointer]:
+          - /url: ./
+          - generic [ref=f1e10]: V
+          - text: VivaBien
+        - generic [ref=f1e11]:
+          - link "Detalles" [ref=f1e12] [cursor=pointer]:
+            - /url: "#detalles"
+          - link "Calculadora" [ref=f1e13] [cursor=pointer]:
+            - /url: "#calculadora"
+          - link "Opiniones" [ref=f1e14] [cursor=pointer]:
+            - /url: "#opiniones"
+        - link "Carrito" [ref=f1e15] [cursor=pointer]:
+          - /url: carrito
+    - banner [ref=f1e19]:
+      - img "Ambiente moderno con pared decorativa de listones finos efecto madera" [ref=f1e20]
+    - generic [ref=f1e22]:
+      - generic [ref=f1e23]:
+        - generic [ref=f1e24]: Panel flexible autoadhesivo
+        - heading "Panel autoadhesivo efecto madera" [level=1] [ref=f1e25]
+        - paragraph [ref=f1e26]: 60 × 300 cm · 1.8 m² · Roble natural
+      - generic [ref=f1e27]: RD$ 1,180
+      - generic [ref=f1e28]:
+        - link "AGREGAR AL CARRITO" [ref=f1e29] [cursor=pointer]:
+          - /url: "#comprar"
+        - link "Consultar por WhatsApp" [ref=f1e30] [cursor=pointer]:
+          - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Panel%20autoadhesivo%20efecto%20madera%20%28VB-ROLL-001%29.
+    - generic [ref=f1e33]:
+      - generic [ref=f1e34]:
+        - generic [ref=f1e35]: 🚚 Envíos a todo RD
+        - generic [ref=f1e36]: Costo según tu zona
+      - generic [ref=f1e37]:
+        - generic [ref=f1e38]: 💵 Pago al recibir
+        - generic [ref=f1e39]: Gran Santo Domingo
+      - generic [ref=f1e40]:
+        - generic [ref=f1e41]: ↩️ Garantía 7 días
+        - generic [ref=f1e42]: Compra con tranquilidad
+    - generic [ref=f1e44]:
+      - generic [ref=f1e45]:
+        - generic [ref=f1e46]: Mira el acabado
+        - heading "Textura, respaldo y cambio visual" [level=2] [ref=f1e47]
+        - paragraph [ref=f1e48]: Imágenes de referencia de productos comparables para ayudarte a entender el formato. El color final puede variar según la luz y la pantalla.
+      - generic [ref=f1e49]:
+        - figure [ref=f1e50]:
+          - img "Comparación de pared antes y después de aplicar panel flexible" [ref=f1e51]
+          - generic [ref=f1e52]: Antes / después de referencia
+        - figure [ref=f1e53]:
+          - img "Detalle cercano de textura acanalada efecto madera" [ref=f1e54]
+          - generic [ref=f1e55]: Textura de referencia
+        - figure [ref=f1e56]:
+          - img "Respaldo adhesivo de un panel flexible comparable" [ref=f1e57]
+          - generic [ref=f1e58]: Respaldo autoadhesivo
+      - paragraph [ref=f1e59]: Estas imágenes explicativas pertenecen a productos comparables. Antes de publicar la versión final sustituiremos las que no correspondan exactamente al lote de VivaBien.
+    - generic [ref=f1e61]:
+      - generic [ref=f1e62]:
+        - generic [ref=f1e63]: Antes de instalar
+        - heading "Tres cosas que debes comprobar" [level=2] [ref=f1e64]
+        - paragraph [ref=f1e65]: La preparación de la pared es la parte que más influye en el resultado.
+      - generic [ref=f1e66]:
+        - article [ref=f1e67]:
+          - img "Textura de panel flexible" [ref=f1e68]
+          - generic [ref=f1e69]:
+            - heading "Revisa el tono" [level=3] [ref=f1e70]
+            - paragraph [ref=f1e71]: Comprueba el color con la luz real del espacio antes de cubrir toda la pared.
+        - article [ref=f1e72]:
+          - img "Instalación de panel decorativo" [ref=f1e73]
+          - generic [ref=f1e74]:
+            - heading "Alinea primero" [level=3] [ref=f1e75]
+            - paragraph [ref=f1e76]: Mide y presenta el rollo antes de retirar completamente el protector.
+        - article [ref=f1e77]:
+          - img "Superficies aptas y no aptas para panel autoadhesivo" [ref=f1e78]
+          - generic [ref=f1e79]:
+            - heading "Pared lisa y seca" [level=3] [ref=f1e80]
+            - paragraph [ref=f1e81]: Polvo, humedad y textura marcada pueden reducir la adherencia.
+    - generic [ref=f1e83]:
+      - generic [ref=f1e84]:
+        - generic [ref=f1e85]: Calculadora rápida
+        - heading "¿Cuántos rollos necesitas?" [level=2] [ref=f1e86]
+        - paragraph [ref=f1e87]: Calculamos el área y añadimos 10% estimado para cortes. Cada rollo cubre 1.8 m².
+      - generic [ref=f1e88]:
+        - generic [ref=f1e89]:
+          - generic [ref=f1e90]:
+            - generic [ref=f1e91]: Ancho de la pared
+            - generic [ref=f1e92]:
+              - spinbutton "Ej. 240" [ref=f1e93]
+              - generic [ref=f1e94]: cm
+          - generic [ref=f1e95]:
+            - generic [ref=f1e96]: Alto de la pared
+            - generic [ref=f1e97]:
+              - spinbutton "Ej. 260" [ref=f1e98]
+              - generic [ref=f1e99]: cm
+        - button "CALCULAR ROLLOS" [ref=f1e100] [cursor=pointer]
+    - generic [ref=f1e102]:
+      - generic [ref=f1e103]:
+        - generic [ref=f1e104]: Lo que dicen compradores
+        - heading "Opiniones verificadas de productos comparables" [level=2] [ref=f1e105]
+        - paragraph [ref=f1e106]: No son todavía reseñas de clientes de VivaBien. Las mostramos como referencia transparente de lo que compradores reales valoran y de los problemas que debemos evitar.
+      - generic [ref=f1e107]:
+        - article [ref=f1e108]:
+          - generic "5 de 5 estrellas" [ref=f1e109]: ★★★★★
+          - blockquote [ref=f1e110]: “Finalmente recibí el producto antes de lo previsto. Tiene un aspecto muy bonito y combinará perfectamente con el fondo de mi mueble para TV.”
+          - generic [ref=f1e111]: de***27 · Filipinas · Compra verificada
+        - article [ref=f1e112]:
+          - generic "5 de 5 estrellas" [ref=f1e113]: ★★★★★
+          - blockquote [ref=f1e114]: “El material se siente bien al tacto y es grueso. El adhesivo parece lo suficientemente fuerte. El diseño es excelente.”
+          - generic [ref=f1e115]: Ja***on · Australia · Compra verificada
+        - article [ref=f1e116]:
+          - generic "5 de 5 estrellas" [ref=f1e117]: ★★★★★
+          - blockquote [ref=f1e118]: “Se veía hermoso, pero después aparecieron burbujas y comenzó a despegarse.” Esta experiencia refuerza la importancia de limpiar, secar y probar primero una sección.
+          - generic [ref=f1e119]: Judith M. · Colombia · Compra verificada
+      - paragraph [ref=f1e120]: "Fuente de referencia: reseñas visibles en Temu para artículos similares. Texto resumido y traducido cuando correspondía."
+    - generic [ref=f1e122]:
+      - generic [ref=f1e123]:
+        - generic [ref=f1e124]: Evita burbujas y desprendimientos
+        - heading "La pared importa tanto como el producto." [level=2] [ref=f1e125]
+      - generic [ref=f1e126]:
+        - paragraph [ref=f1e127]: "Antes de instalar todo el rollo:"
+        - list [ref=f1e128]:
+          - listitem [ref=f1e129]: Retira polvo, grasa y humedad.
+          - listitem [ref=f1e130]: No lo apliques sobre pintura suelta o textura profunda.
+          - listitem [ref=f1e131]: Haz una prueba pequeña y espera antes de continuar.
+          - listitem [ref=f1e132]: Presiona por secciones, sin retirar todo el protector de una vez.
+    - generic [ref=f1e134]:
+      - img "Rollo de panel autoadhesivo efecto madera" [ref=f1e136]
+      - generic [ref=f1e137]:
+        - generic [ref=f1e138]: Listo para pedir
+        - heading "Panel autoadhesivo efecto madera" [level=2] [ref=f1e139]
+        - paragraph [ref=f1e140]: SKU VB-ROLL-001 · 60 × 300 cm · 1.8 m² por rollo
+        - generic [ref=f1e141]: RD$ 1,180
+        - generic [ref=f1e142]:
+          - generic [ref=f1e143]: Cantidad de rollos
+          - generic [ref=f1e144]:
+            - button "Reducir cantidad" [ref=f1e145]: −
+            - status [ref=f1e146]: "1"
+            - button "Aumentar cantidad" [ref=f1e147]: +
+        - generic [ref=f1e148]:
+          - link "Consultar por WhatsApp" [ref=f1e149] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Panel%20autoadhesivo%20efecto%20madera%20%28VB-ROLL-001%29.
+          - button "AGREGAR AL CARRITO" [ref=f1e152] [cursor=pointer]
+        - paragraph [ref=f1e156]: Envíos a todo el país. El costo y el tiempo se calculan según tu zona.
+    - generic [ref=f1e158]:
+      - generic [ref=f1e159]:
+        - generic [ref=f1e160]: Información clara
+        - heading "Preguntas frecuentes" [level=2] [ref=f1e161]
+      - group [ref=f1e162]:
+        - generic "¿Qué tamaño tiene?" [ref=f1e163] [cursor=pointer]
+      - group [ref=f1e164]:
+        - generic "¿En qué pared se puede colocar?" [ref=f1e165] [cursor=pointer]
+      - group [ref=f1e166]:
+        - generic "¿Cómo calculo la cantidad?" [ref=f1e167] [cursor=pointer]
+  - contentinfo [ref=f1e168]:
+    - generic [ref=f1e169]:
+      - link "Garantía y devoluciones" [ref=f1e170] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=f1e171] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f1e172]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

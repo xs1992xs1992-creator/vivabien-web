@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: BORRADOR INTERACTIVO · NO ES LA PÁGINA REAL
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: V
+      - text: VivaBien
+    - button "Carrito" [ref=e6]: ▣
+  - main [ref=e7]:
+    - button "← Seguir comprando" [ref=e8]
+    - heading "Tu compra" [level=1] [ref=e9]
+    - generic [ref=e10]:
+      - generic [ref=e11]: Productos
+      - generic [ref=e12]:
+        - generic [ref=e13]: 🛍️
+        - generic [ref=e14]:
+          - generic [ref=e15]: Producto seleccionado
+          - generic [ref=e16]: 1 unidad
+        - strong [ref=e17]: RD$ 1,280
+    - generic [ref=e18]:
+      - generic [ref=e19]: 🚚 Datos de entrega
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Nombre completo *
+          - textbox "Tu nombre" [ref=e23]
+        - generic [ref=e24]:
+          - generic [ref=e25]: Teléfono / WhatsApp *
+          - textbox "809 000 0000" [ref=e26]
+      - generic [ref=e27]:
+        - generic [ref=e28]: Provincia *
+        - combobox [ref=e29]:
+          - option "Santiago" [selected]
+          - option "Distrito Nacional (Santo Domingo)"
+          - option "Santo Domingo (provincia)"
+          - option "San Pedro de Macorís"
+      - generic [ref=e52]:
+        - generic [ref=e53]: Nota (opcional)
+        - textbox "Piso, apartamento, color de la casa..." [ref=e54]
+    - generic [ref=e75]:
+      - generic [ref=e76]:
+        - generic [ref=e77]: Subtotal
+        - generic [ref=e78]: RD$ 1,280
+      - generic [ref=e79]:
+        - generic [ref=e80]: Envío
+        - generic [ref=e81]: RD$ 200
+      - generic [ref=e82]:
+        - generic [ref=e83]: Total
+        - strong [ref=e84]: RD$ 1,480
+  - generic [ref=e86]:
+    - generic [ref=e87]:
+      - generic [ref=e88]: Total
+      - strong [ref=e89]: RD$ 1,480
+    - button "Confirmar pedido" [ref=e90]

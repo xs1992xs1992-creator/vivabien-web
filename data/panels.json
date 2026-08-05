@@ -1,0 +1,254 @@
+{
+  "title": "Transforma tu pared. Transforma tu espacio.",
+  "subtitle": "Paneles decorativos modernos para renovar salas, dormitorios y oficinas.",
+  "hero_image": "panels/hero-zt104-room.jpg",
+  "hero_alt": "Sala moderna con pared de panel decorativo ZT-104 de cuatro relieves estrechos",
+  "shipping_faq": "El costo y el tiempo de entrega se confirman según tu ubicación.",
+  "products": [
+    {
+      "sku": "ZT-104",
+      "name": "Tono lino claro",
+      "price": 495,
+      "image": "panels/ZT-104.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-105",
+      "name": "Madera caoba",
+      "price": 495,
+      "image": "panels/ZT-105.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-001",
+      "name": "Blanco plateado",
+      "price": 495,
+      "image": "panels/swatches/ZT-001.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-004",
+      "name": "Nogal oscuro",
+      "price": 495,
+      "image": "panels/swatches/ZT-004.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-032",
+      "name": "Gris grafito",
+      "price": 495,
+      "image": "panels/swatches/ZT-032.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-046",
+      "name": "Azul turquesa",
+      "price": 495,
+      "image": "panels/swatches/ZT-046.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-072",
+      "name": "Gris textil",
+      "price": 495,
+      "image": "panels/swatches/ZT-072.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-073",
+      "name": "Beige claro",
+      "price": 495,
+      "image": "panels/swatches/ZT-073.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-076",
+      "name": "Marfil",
+      "price": 495,
+      "image": "panels/swatches/ZT-076.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-079",
+      "name": "Madera natural",
+      "price": 495,
+      "image": "panels/swatches/ZT-079.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-091",
+      "name": "Caoba suave",
+      "price": 495,
+      "image": "panels/swatches/ZT-091.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-099",
+      "name": "Café profundo",
+      "price": 495,
+      "image": "panels/swatches/ZT-099.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-101",
+      "name": "Roble dorado",
+      "price": 495,
+      "image": "panels/swatches/ZT-101.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-102",
+      "name": "Azul acero",
+      "price": 495,
+      "image": "panels/swatches/ZT-102.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-108",
+      "name": "Blanco mineral",
+      "price": 495,
+      "image": "panels/swatches/ZT-108.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-110",
+      "name": "Mármol negro",
+      "price": 495,
+      "image": "panels/swatches/ZT-110.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-111",
+      "name": "Nogal medio",
+      "price": 495,
+      "image": "panels/swatches/ZT-111.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-113",
+      "name": "Mármol blanco",
+      "price": 495,
+      "image": "panels/swatches/ZT-113.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-120",
+      "name": "Taupe",
+      "price": 495,
+      "image": "panels/swatches/ZT-120.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-121",
+      "name": "Terracota",
+      "price": 495,
+      "image": "panels/swatches/ZT-121.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-125",
+      "name": "Gris madera",
+      "price": 495,
+      "image": "panels/swatches/ZT-125.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-126",
+      "name": "Nogal cálido",
+      "price": 495,
+      "image": "panels/swatches/ZT-126.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-128",
+      "name": "Madera rojiza",
+      "price": 495,
+      "image": "panels/swatches/ZT-128.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-129",
+      "name": "Cobre",
+      "price": 495,
+      "image": "panels/swatches/ZT-129.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-131",
+      "name": "Gris veta",
+      "price": 495,
+      "image": "panels/swatches/ZT-131.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-134",
+      "name": "Caoba intensa",
+      "price": 495,
+      "image": "panels/swatches/ZT-134.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-135",
+      "name": "Rojo madera",
+      "price": 495,
+      "image": "panels/swatches/ZT-135.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-143",
+      "name": "Azul profundo",
+      "price": 495,
+      "image": "panels/swatches/ZT-143.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-168",
+      "name": "Gris humo",
+      "price": 495,
+      "image": "panels/swatches/ZT-168.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-169",
+      "name": "Terrazo gris",
+      "price": 495,
+      "image": "panels/swatches/ZT-169.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-171",
+      "name": "Fresno claro",
+      "price": 495,
+      "image": "panels/swatches/ZT-171.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-180",
+      "name": "Roble natural",
+      "price": 495,
+      "image": "panels/swatches/ZT-180.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-200",
+      "name": "Caoba clásica",
+      "price": 495,
+      "image": "panels/swatches/ZT-200.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-201",
+      "name": "Miel",
+      "price": 495,
+      "image": "panels/swatches/ZT-201.jpg",
+      "available": true
+    },
+    {
+      "sku": "ZT-203",
+      "name": "Plata",
+      "price": 495,
+      "image": "panels/swatches/ZT-203.jpg",
+      "available": true
+    }
+  ]
+}

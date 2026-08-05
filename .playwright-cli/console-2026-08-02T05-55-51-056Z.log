@@ -1,0 +1,2 @@
+[     133ms] [ERROR] Access to fetch at 'https://vivabien.xyz/api/track' from origin 'http://127.0.0.1:8771' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header has a value 'https://vivabien.xyz' that is not equal to the supplied origin. Have the server send the header with a valid value. @ http://127.0.0.1:8771/producto/florero-jarr-n-blanco-cer-mico-dise-o-calado-38cm.html:0
+[     133ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://vivabien.xyz/api/track:0

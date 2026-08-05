@@ -1,0 +1,274 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e3]:
+      - generic [ref=e4]:
+        - link "Volver" [ref=e5] [cursor=pointer]:
+          - /url: ./
+          - text: ‹
+        - link "V VivaBien" [ref=e6] [cursor=pointer]:
+          - /url: ./
+          - generic [ref=e7]: V
+          - text: VivaBien
+        - link "Buscar" [ref=e8] [cursor=pointer]:
+          - /url: buscar
+          - text: ⌕
+        - link "Carrito" [ref=e9] [cursor=pointer]:
+          - /url: carrito
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - figure [ref=e15]:
+            - img "Ambiente decorado con panel flexible efecto madera" [ref=e16]
+          - figure [ref=e17]:
+            - img "Ambiente moderno con panel decorativo efecto madera" [ref=e18]
+          - figure [ref=e19]:
+            - img "Rollo de panel decorativo y colores de referencia" [ref=e20]
+          - figure [ref=e21]:
+            - img "Detalle de textura de un producto comparable" [ref=e22]
+          - figure [ref=e23]:
+            - img "Respaldo autoadhesivo de un producto comparable" [ref=e24]
+          - figure [ref=e25]:
+            - img "Antes y después de referencia" [ref=e26]
+        - generic [ref=e27]: 1 / 6
+      - generic [ref=e28]:
+        - button "Ver imagen 1" [ref=e29]
+        - button "Ver imagen 2" [ref=e30]
+        - button "Ver imagen 3" [ref=e31]
+        - button "Ver imagen 4" [ref=e32]
+        - button "Ver imagen 5" [ref=e33]
+        - button "Ver imagen 6" [ref=e34]
+      - generic [ref=e35]:
+        - text: ✓ Envíos a todo RD
+        - generic [ref=e36]: "|"
+        - text: ✓ Compra protegida
+      - generic [ref=e37]:
+        - heading "Panel decorativo autoadhesivo efecto madera" [level=1] [ref=e38]
+        - paragraph [ref=e39]: SKU VB-ROLL-001 · Panel flexible en rollo · 60 × 300 cm
+        - generic [ref=e40]:
+          - text: Antes
+          - deletion [ref=e41]: RD$ 1,995
+        - generic [ref=e42]:
+          - strong [ref=e43]: RD$ 1,280
+          - generic [ref=e44]: por rollo · 1.8 m²
+        - generic [ref=e45]:
+          - button "Compra 2 rollos Antes RD$ 2,560 · Ahorras RD$ 360 RD$ 2,200" [ref=e46]:
+            - generic [ref=e47]:
+              - generic [ref=e48]: Compra 2 rollos
+              - generic [ref=e49]: Antes RD$ 2,560 · Ahorras RD$ 360
+            - strong [ref=e50]: RD$ 2,200
+          - button "Compra 3 rollos Antes RD$ 3,840 · Ahorras RD$ 540 RD$ 3,300" [ref=e51]:
+            - generic [ref=e52]:
+              - generic [ref=e53]: Compra 3 rollos
+              - generic [ref=e54]: Antes RD$ 3,840 · Ahorras RD$ 540
+            - strong [ref=e55]: RD$ 3,300
+        - generic [ref=e56]: PRECIO CONFIRMADO
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - text: Elige el color
+          - generic [ref=e59]: "Seleccionado: Nogal oscuro"
+        - generic [ref=e60]:
+          - button "Color Caoba cálido Caoba cálido" [ref=e260]:
+            - img "Color Caoba cálido" [ref=e63]
+            - generic [ref=e64]: Caoba cálido
+          - button "Color Blanco Blanco" [ref=e65]:
+            - img "Color Blanco" [ref=e67]
+            - generic [ref=e68]: Blanco
+          - button "Color Gris ceniza Gris ceniza" [ref=e69]:
+            - img "Color Gris ceniza" [ref=e71]
+            - generic [ref=e72]: Gris ceniza
+          - button "Color Nogal oscuro Nogal oscuro ✓" [active] [pressed] [ref=e261]:
+            - img "Color Nogal oscuro" [ref=e75]
+            - generic [ref=e76]: Nogal oscuro
+            - text: ✓
+          - button "Color Roble claro Roble claro" [ref=e77]:
+            - img "Color Roble claro" [ref=e79]
+            - generic [ref=e80]: Roble claro
+          - button "Color Roble dorado Roble dorado" [ref=e81]:
+            - img "Color Roble dorado" [ref=e83]
+            - generic [ref=e84]: Roble dorado
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - text: Cantidad
+          - generic [ref=e87]: Rollo de 60 × 300 cm
+        - generic [ref=e88]:
+          - button "Reducir cantidad" [ref=e89]: −
+          - status [ref=e90]: "1"
+          - button "Aumentar cantidad" [ref=e91]: +
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - heading "Fotos de compradores" [level=2] [ref=e94]
+          - generic [ref=e95]:
+            - button "Foto anterior" [ref=e96]: ‹
+            - button "Foto siguiente" [ref=e97]: ›
+        - generic [ref=e98]:
+          - article [ref=e99]:
+            - button "Ampliar foto de 08***07" [ref=e100]:
+              - img "Instalación compartida por comprador de panel similar"
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - generic [ref=e103]: 08***07
+                - generic [ref=e104]: Compra verificada
+              - generic [ref=e105]: ★★★★☆
+              - paragraph [ref=e106]: Se ve genial, pero al abrirlo noté que algunas partes tenían burbujas y tuve que reemplazarlo.
+              - generic [ref=e107]:
+                - strong [ref=e108]: RD$ 1,280
+                - button "Añadir al carrito" [ref=e109]
+          - article [ref=e110]:
+            - button "Ampliar foto de Alexandra Davis" [ref=e111]:
+              - img "Pared decorada compartida por compradora de panel similar"
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e114]: Alexandra Davis
+                - generic [ref=e115]: Compra verificada
+              - generic [ref=e116]: ★★★★★
+              - paragraph [ref=e117]: Un cambio absolutamente increíble que transforma completamente la dinámica de la habitación.
+              - generic [ref=e118]:
+                - strong [ref=e119]: RD$ 1,280
+                - button "Añadir al carrito" [ref=e120]
+          - article [ref=e121]:
+            - button "Ampliar foto de da***20" [ref=e122]:
+              - img "Isla de cocina decorada con panel efecto madera"
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: da***20
+                - generic [ref=e126]: Foto de comprador
+              - generic [ref=e127]: ★★★★☆
+              - paragraph [ref=e128]: Es fácil de instalar y le da un aspecto muy bonito.
+              - generic [ref=e129]:
+                - strong [ref=e130]: RD$ 1,280
+                - button "Añadir al carrito" [ref=e131]
+          - article [ref=e132]:
+            - button "Ampliar foto de Lucy Juniper" [ref=e133]:
+              - img "Habitación con panel gris compartida por compradora"
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - generic [ref=e136]: Lucy Juniper
+                - generic [ref=e137]: Compra verificada
+              - generic [ref=e138]: ★★★★★
+              - paragraph [ref=e139]: Es muy fácil de usar, pero hay que tener cuidado al cortar el rollo porque puede agrietarse.
+              - generic [ref=e140]:
+                - strong [ref=e141]: RD$ 1,280
+                - button "Añadir al carrito" [ref=e142]
+          - article [ref=e143]:
+            - button "Ampliar foto de Sarah Ristagno" [ref=e144]:
+              - img "Pared de televisión decorada compartida por compradora"
+            - generic [ref=e145]:
+              - generic [ref=e146]:
+                - generic [ref=e147]: Sarah Ristagno
+                - generic [ref=e148]: Foto de comprador
+              - generic [ref=e149]: ★★★★☆
+              - paragraph [ref=e150]: Foto compartida después de instalar un panel similar en la pared del televisor.
+              - generic [ref=e151]:
+                - strong [ref=e152]: RD$ 1,280
+                - button "Añadir al carrito" [ref=e153]
+          - article [ref=e154]:
+            - button "Ampliar foto de Paula Barbosa" [ref=e155]:
+              - img "Pared de baño decorada con panel efecto madera"
+            - generic [ref=e156]:
+              - generic [ref=e157]:
+                - generic [ref=e158]: Paula Barbosa
+                - generic [ref=e159]: Foto de comprador
+              - generic [ref=e160]: ★★★★★
+              - paragraph [ref=e161]: Excelente. Justo lo que imaginé. Hay que colocarlo con cuidado para evitar doblarlo.
+              - generic [ref=e162]:
+                - strong [ref=e163]: RD$ 1,280
+                - button "Añadir al carrito" [ref=e164]
+        - paragraph [ref=e165]: Fotos y opiniones de compradores de productos similares; las medidas mostradas en las capturas pueden ser diferentes.
+      - generic [ref=e166]:
+        - generic [ref=e167]:
+          - generic [ref=e168]: 🚚 Envíos
+          - generic [ref=e169]: Todo el país
+        - generic [ref=e170]:
+          - generic [ref=e171]: 💵 Contra entrega
+          - generic [ref=e172]: Gran Santo Domingo
+        - generic [ref=e173]:
+          - generic [ref=e174]: ↩️ Garantía
+          - generic [ref=e175]: 7 días
+      - generic [ref=e176]:
+        - heading "Detalles del producto" [level=2] [ref=e177]
+        - paragraph [ref=e178]: Un revestimiento flexible con efecto de listones finos para renovar paredes sin el volumen de un panel rígido.
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - generic [ref=e181]: 60 cm
+            - generic [ref=e182]: Ancho
+          - generic [ref=e183]:
+            - generic [ref=e184]: 300 cm
+            - generic [ref=e185]: Largo
+          - generic [ref=e186]:
+            - generic [ref=e187]: 1.8 m²
+            - generic [ref=e188]: Por rollo
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - generic [ref=e191]:
+              - img "Comedor con pared lisa antes de la renovación" [ref=e192]
+              - generic [ref=e193]: ANTES
+            - generic [ref=e194]:
+              - img "Comedor con panel decorativo marrón instalado" [ref=e195]
+              - generic [ref=e196]: DESPUÉS
+          - paragraph [ref=e197]: Visualización del mismo ambiente. La imagen “Antes” fue recreada con IA para mostrar el cambio de pared; confirma el tono real en las fotos del producto.
+        - generic "Detalles visuales del panel" [ref=e198]:
+          - figure "Resultado completo Referencia de cómo el listón fino cambia una pared." [ref=e199]:
+            - img "Panel flexible marrón aplicado en una pared moderna" [ref=e200]
+            - generic [ref=e201]:
+              - generic [ref=e202]: Resultado completo
+              - text: Referencia de cómo el listón fino cambia una pared.
+          - figure "Formato flexible El producto se presenta en rollo para facilitar el manejo." [ref=e203]:
+            - img "Rollo de panel flexible marrón junto a una pared" [ref=e204]
+            - generic [ref=e205]:
+              - generic [ref=e206]: Formato flexible
+              - text: El producto se presenta en rollo para facilitar el manejo.
+          - figure "Respaldo autoadhesivo Retira el protector poco a poco durante la aplicación." [ref=e207]:
+            - img "Parte trasera adhesiva de un panel flexible comparable" [ref=e208]
+            - generic [ref=e209]:
+              - generic [ref=e210]: Respaldo autoadhesivo
+              - text: Retira el protector poco a poco durante la aplicación.
+          - figure "Textura de cerca Las líneas finas crean profundidad sin ocupar mucho espacio." [ref=e211]:
+            - img "Detalle cercano de textura y líneas del panel" [ref=e212]
+            - generic [ref=e213]:
+              - generic [ref=e214]: Textura de cerca
+              - text: Las líneas finas crean profundidad sin ocupar mucho espacio.
+        - generic [ref=e215]:
+          - figure "Una pared deteriorada puede convertirse en un punto focal más cálido." [ref=e216]:
+            - img "Antes y después de una pared renovada con panel decorativo"
+          - figure "Referencia de uso en sala, comedor y dormitorio." [ref=e218]:
+            - img "Panel decorativo usado en comedor, sala y dormitorio"
+        - generic [ref=e220]:
+          - text: Antes de instalar
+          - list [ref=e221]:
+            - listitem [ref=e222]: Elimina polvo, grasa y humedad.
+            - listitem [ref=e223]: No lo apliques sobre pintura suelta o textura profunda.
+            - listitem [ref=e224]: Prueba una sección pequeña antes de cubrir toda la pared.
+            - listitem [ref=e225]: Avanza por secciones para reducir burbujas.
+      - generic [ref=e226]:
+        - heading "Calcula cuántos rollos necesitas" [level=2] [ref=e227]
+        - paragraph [ref=e228]: Añadimos 10% estimado para cortes y ajustes.
+        - generic [ref=e229]:
+          - generic [ref=e230]:
+            - generic [ref=e231]:
+              - generic [ref=e232]: Ancho de la pared
+              - generic [ref=e233]:
+                - spinbutton "240" [ref=e234]
+                - generic [ref=e235]: cm
+            - generic [ref=e236]:
+              - generic [ref=e237]: Alto de la pared
+              - generic [ref=e238]:
+                - spinbutton "260" [ref=e239]
+                - generic [ref=e240]: cm
+          - button "CALCULAR" [ref=e241]
+      - generic [ref=e242]:
+        - heading "¿Necesitas ayuda antes de pedir?" [level=2] [ref=e243]
+        - paragraph [ref=e244]: Envíanos una foto de tu pared y sus medidas. Te ayudamos a confirmar la cantidad y si la superficie es adecuada.
+        - link "CONSULTAR POR WHATSAPP" [ref=e245] [cursor=pointer]:
+          - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Panel%20autoadhesivo%20efecto%20madera%20%28VB-ROLL-001%29.
+    - generic [ref=e250]:
+      - generic [ref=e251]:
+        - generic [ref=e252]: Total del producto
+        - strong [ref=e253]: RD$ 1,280
+      - button "¡AGRÉGALO AHORA!" [ref=e254]
+  - contentinfo [ref=e255]:
+    - generic [ref=e256]:
+      - link "Garantía y devoluciones" [ref=e257] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e258] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e259]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

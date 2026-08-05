@@ -1,0 +1,9 @@
+- generic [ref=e2]:
+  - generic [ref=e3]: V
+  - heading "VivaBien 商品管理" [level=2] [ref=e4]
+  - paragraph [ref=e5]: 请输入后台密码
+  - textbox [active] [ref=e6]
+  - generic [ref=e7] [cursor=pointer]:
+    - checkbox "显示密码" [ref=e8]
+    - text: 显示密码
+  - button "登录" [ref=e9] [cursor=pointer]

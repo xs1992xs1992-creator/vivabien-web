@@ -1,9 +1,9 @@
 [
   {
     "title": "Espacios Verdes",
-    "subtitle": "",
+    "subtitle": "Plantas decorativas para dar vida a cada rincón.",
     "cta": "",
-    "image": "",
+    "image": "VB2F699645_scene.jpg",
     "active": true,
     "order": 0,
     "skus": [
@@ -24,5 +24,38 @@
       "VB2A7E1E01"
     ],
     "slug": "estilo-botanico"
+  },
+  {
+    "title": "Paneles Decorativos",
+    "subtitle": "Colores ZT para transformar paredes y espacios.",
+    "cta": "Ver paneles",
+    "image": "panels/home-feature-panel.jpg",
+    "active": true,
+    "order": 1,
+    "landing": "paneles-decorativos.html",
+    "skus": [],
+    "slug": "paneles-decorativos"
+  },
+  {
+    "title": "Panel Autoadhesivo",
+    "subtitle": "Revestimiento flexible efecto madera en rollo de 60 × 300 cm.",
+    "cta": "Ver colores",
+    "image": "panel-autoadhesivo/hero-ai-v2.jpg",
+    "active": true,
+    "order": 2,
+    "landing": "panel-autoadhesivo-temu.html",
+    "skus": [],
+    "slug": "panel-autoadhesivo"
+  },
+  {
+    "title": "Espejos",
+    "subtitle": "Una nueva colección para renovar tus espacios.",
+    "cta": "Ver colección",
+    "image": "VBC690E309.jpg",
+    "active": true,
+    "order": 3,
+    "coming_soon": true,
+    "skus": [],
+    "slug": "espejos"
   }
 ]

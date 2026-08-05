@@ -1,0 +1,279 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: V
+        - generic [ref=e6]: VivaBien 商品审核
+      - generic [ref=e7]:
+        - generic [ref=e9]: "14"
+        - button "复制选择结果" [ref=e11] [cursor=pointer]
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "最新 15 张商品图" [level=1] [ref=e15]
+        - paragraph [ref=e16]: 按桌面“商品”文件夹的最新时间排序。标题已改成适合网站搜索的西班牙语草稿，价格严格采用图片标价。
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: "15"
+          - generic [ref=e20]: 最新图片
+        - generic [ref=e21]:
+          - generic [ref=e22]: "9"
+          - generic [ref=e23]: 建议独立商品
+        - generic [ref=e24]:
+          - generic [ref=e25]: "3"
+          - generic [ref=e26]: 建议合并组
+    - generic [ref=e27]: 审核发现：15 张图中存在同款不同颜色和同款多角度图。若全部作为独立商品上架，会造成搜索结果重复；更合理的是整理成 9 个商品，并在详情页内切换颜色或查看多图。
+    - navigation [ref=e28]:
+      - button "全部 15 张" [ref=e29] [cursor=pointer]
+      - button "独立商品" [ref=e30] [cursor=pointer]
+      - button "建议合并" [ref=e31] [cursor=pointer]
+      - button "准备上架" [ref=e32] [cursor=pointer]
+    - generic [ref=e33]:
+      - article [ref=e280]:
+        - generic [ref=e281]:
+          - img "Lámpara LED hexagonal modular para techo" [ref=e282]
+          - generic [ref=e283]: "#360"
+          - text: 暂不上架
+        - generic [ref=e284]:
+          - generic [ref=e285]:
+            - heading "Lámpara LED hexagonal modular para techo" [level=2] [ref=e286]
+            - strong [ref=e287]: RD$415
+          - generic [ref=e288]:
+            - generic [ref=e289]: Iluminación
+            - generic [ref=e290]: 独立商品
+          - paragraph [ref=e291]: 吸顶式模块灯；原图为店内实际安装场景。
+          - generic [ref=e292]:
+            - generic [ref=e293]: producto_360.jpg
+            - button "暂不上架" [ref=e294] [cursor=pointer]
+      - article [ref=e295]:
+        - generic [ref=e296]:
+          - img "Mesa de noche moderna con 2 cajones · Gris" [ref=e297]
+          - generic [ref=e298]: "#361"
+          - generic [ref=e299]: 床头柜 3 色
+        - generic [ref=e300]:
+          - generic [ref=e301]:
+            - heading "Mesa de noche moderna con 2 cajones · Gris" [level=2] [ref=e302]
+            - strong [ref=e303]: RD$1,440
+          - generic [ref=e304]:
+            - generic [ref=e305]: Dormitorio
+            - generic [ref=e306]: 建议合并
+          - paragraph [ref=e307]: 建议与 369、371 合并为颜色选项。
+          - generic [ref=e308]:
+            - generic [ref=e309]: producto_361.jpg
+            - button "准备上架" [ref=e310] [cursor=pointer]
+      - article [ref=e311]:
+        - generic [ref=e312]:
+          - img "Mesa de noche blanca con 2 cajones y repisa" [ref=e313]
+          - generic [ref=e314]: "#362"
+        - generic [ref=e315]:
+          - generic [ref=e316]:
+            - heading "Mesa de noche blanca con 2 cajones y repisa" [level=2] [ref=e317]
+            - strong [ref=e318]: RD$1,695
+          - generic [ref=e319]:
+            - generic [ref=e320]: Dormitorio
+            - generic [ref=e321]: 独立商品
+          - paragraph [ref=e322]: 尺寸 40 × 34 × 66 cm，带上层收纳空间。
+          - generic [ref=e323]:
+            - generic [ref=e324]: producto_362.jpg
+            - button "准备上架" [ref=e325] [cursor=pointer]
+      - article [ref=e326]:
+        - generic [ref=e327]:
+          - img "Estante esquinero de pared de 5 niveles · Negro" [ref=e328]
+          - generic [ref=e329]: "#363"
+          - generic [ref=e330]: 转角架 2 色
+        - generic [ref=e331]:
+          - generic [ref=e332]:
+            - heading "Estante esquinero de pared de 5 niveles · Negro" [level=2] [ref=e333]
+            - strong [ref=e334]: RD$1,455
+          - generic [ref=e335]:
+            - generic [ref=e336]: Organización
+            - generic [ref=e337]: 建议合并
+          - paragraph [ref=e338]: 建议与 364 合并为黑色/白色选项。
+          - generic [ref=e339]:
+            - generic [ref=e340]: producto_363.jpg
+            - button "准备上架" [ref=e341] [cursor=pointer]
+      - article [ref=e342]:
+        - generic [ref=e343]:
+          - img "Estante esquinero de pared de 5 niveles · Blanco" [ref=e344]
+          - generic [ref=e345]: "#364"
+          - generic [ref=e346]: 转角架 2 色
+        - generic [ref=e347]:
+          - generic [ref=e348]:
+            - heading "Estante esquinero de pared de 5 niveles · Blanco" [level=2] [ref=e349]
+            - strong [ref=e350]: RD$1,455
+          - generic [ref=e351]:
+            - generic [ref=e352]: Organización
+            - generic [ref=e353]: 建议合并
+          - paragraph [ref=e354]: 建议与 363 合并为黑色/白色选项。
+          - generic [ref=e355]:
+            - generic [ref=e356]: producto_364.jpg
+            - button "准备上架" [ref=e357] [cursor=pointer]
+      - article [ref=e358]:
+        - generic [ref=e359]:
+          - img "Estante mural blanco de 5 niveles · Vista lateral" [ref=e360]
+          - generic [ref=e361]: "#365"
+          - generic [ref=e362]: 墙架 4 张图
+        - generic [ref=e363]:
+          - generic [ref=e364]:
+            - heading "Estante mural blanco de 5 niveles · Vista lateral" [level=2] [ref=e365]
+            - strong [ref=e366]: RD$895
+          - generic [ref=e367]:
+            - generic [ref=e368]: Organización
+            - generic [ref=e369]: 建议合并
+          - paragraph [ref=e370]: 同款多角度图，建议作为详情补充图。
+          - generic [ref=e371]:
+            - generic [ref=e372]: producto_365.jpg
+            - button "准备上架" [ref=e373] [cursor=pointer]
+      - article [ref=e374]:
+        - generic [ref=e375]:
+          - img "Estante mural blanco de 5 niveles · Vista frontal" [ref=e376]
+          - generic [ref=e377]: "#366"
+          - generic [ref=e378]: 墙架 4 张图
+        - generic [ref=e379]:
+          - generic [ref=e380]:
+            - heading "Estante mural blanco de 5 niveles · Vista frontal" [level=2] [ref=e381]
+            - strong [ref=e382]: RD$895
+          - generic [ref=e383]:
+            - generic [ref=e384]: Organización
+            - generic [ref=e385]: 建议合并
+          - paragraph [ref=e386]: 同款正面结构图，建议作为详情补充图。
+          - generic [ref=e387]:
+            - generic [ref=e388]: producto_366.jpg
+            - button "准备上架" [ref=e389] [cursor=pointer]
+      - article [ref=e390]:
+        - generic [ref=e391]:
+          - img "Estante mural blanco de 5 niveles · Foto real" [ref=e392]
+          - generic [ref=e393]: "#367"
+          - generic [ref=e394]: 墙架 4 张图
+        - generic [ref=e395]:
+          - generic [ref=e396]:
+            - heading "Estante mural blanco de 5 niveles · Foto real" [level=2] [ref=e397]
+            - strong [ref=e398]: RD$895
+          - generic [ref=e399]:
+            - generic [ref=e400]: Organización
+            - generic [ref=e401]: 建议合并
+          - paragraph [ref=e402]: 同款店内实拍，适合作为真实性补充图。
+          - generic [ref=e403]:
+            - generic [ref=e404]: producto_367.jpg
+            - button "准备上架" [ref=e405] [cursor=pointer]
+      - article [ref=e406]:
+        - generic [ref=e407]:
+          - img "Estante mural blanco de 5 niveles · Ambiente" [ref=e408]
+          - generic [ref=e409]: "#368"
+          - generic [ref=e410]: 墙架 4 张图
+        - generic [ref=e411]:
+          - generic [ref=e412]:
+            - heading "Estante mural blanco de 5 niveles · Ambiente" [level=2] [ref=e413]
+            - strong [ref=e414]: RD$895
+          - generic [ref=e415]:
+            - generic [ref=e416]: Organización
+            - generic [ref=e417]: 建议合并
+          - paragraph [ref=e418]: 建议作为该商品首图，其余三张进入图集。
+          - generic [ref=e419]:
+            - generic [ref=e420]: producto_368.jpg
+            - button "准备上架" [ref=e421] [cursor=pointer]
+      - article [ref=e422]:
+        - generic [ref=e423]:
+          - img "Mesa de noche moderna con 2 cajones · Blanca" [ref=e424]
+          - generic [ref=e425]: "#369"
+          - generic [ref=e426]: 床头柜 3 色
+        - generic [ref=e427]:
+          - generic [ref=e428]:
+            - heading "Mesa de noche moderna con 2 cajones · Blanca" [level=2] [ref=e429]
+            - strong [ref=e430]: RD$1,440
+          - generic [ref=e431]:
+            - generic [ref=e432]: Dormitorio
+            - generic [ref=e433]: 建议合并
+          - paragraph [ref=e434]: 建议与 361、371 合并为颜色选项。
+          - generic [ref=e435]:
+            - generic [ref=e436]: producto_369.jpg
+            - button "准备上架" [ref=e437] [cursor=pointer]
+      - article [ref=e438]:
+        - generic [ref=e439]:
+          - img "Mueble auxiliar de cocina con puertas y estantes" [ref=e440]
+          - generic [ref=e441]: "#370"
+        - generic [ref=e442]:
+          - generic [ref=e443]:
+            - heading "Mueble auxiliar de cocina con puertas y estantes" [level=2] [ref=e444]
+            - strong [ref=e445]: RD$2,365
+          - generic [ref=e446]:
+            - generic [ref=e447]: Cocina
+            - generic [ref=e448]: 独立商品
+          - paragraph [ref=e449]: 尺寸 80 × 30 × 80 cm，橡木色搭配白色。
+          - generic [ref=e450]:
+            - generic [ref=e451]: producto_370.jpg
+            - button "准备上架" [ref=e452] [cursor=pointer]
+      - article [ref=e453]:
+        - generic [ref=e454]:
+          - img "Mesa de noche moderna con 2 cajones · Madera" [ref=e455]
+          - generic [ref=e456]: "#371"
+          - generic [ref=e457]: 床头柜 3 色
+        - generic [ref=e458]:
+          - generic [ref=e459]:
+            - heading "Mesa de noche moderna con 2 cajones · Madera" [level=2] [ref=e460]
+            - strong [ref=e461]: RD$1,440
+          - generic [ref=e462]:
+            - generic [ref=e463]: Dormitorio
+            - generic [ref=e464]: 建议合并
+          - paragraph [ref=e465]: 建议与 361、369 合并为颜色选项。
+          - generic [ref=e466]:
+            - generic [ref=e467]: producto_371.jpg
+            - button "准备上架" [ref=e468] [cursor=pointer]
+      - article [ref=e469]:
+        - generic [ref=e470]:
+          - img "Aparador blanco de cocina con puertas y cajones" [ref=e471]
+          - generic [ref=e472]: "#372"
+        - generic [ref=e473]:
+          - generic [ref=e474]:
+            - heading "Aparador blanco de cocina con puertas y cajones" [level=2] [ref=e475]
+            - strong [ref=e476]: RD$2,365
+          - generic [ref=e477]:
+            - generic [ref=e478]: Cocina
+            - generic [ref=e479]: 独立商品
+          - paragraph [ref=e480]: 白色多功能收纳柜，带开放层、抽屉和柜门。
+          - generic [ref=e481]:
+            - generic [ref=e482]: producto_372.jpg
+            - button "准备上架" [ref=e483] [cursor=pointer]
+      - article [ref=e484]:
+        - generic [ref=e485]:
+          - img "Escritorio blanco moderno con cajonera y estantes" [ref=e486]
+          - generic [ref=e487]: "#373"
+        - generic [ref=e488]:
+          - generic [ref=e489]:
+            - heading "Escritorio blanco moderno con cajonera y estantes" [level=2] [ref=e490]
+            - strong [ref=e491]: RD$3,375
+          - generic [ref=e492]:
+            - generic [ref=e493]: Oficina
+            - generic [ref=e494]: 独立商品
+          - paragraph [ref=e495]: 桌面约 120 × 50 cm，带侧面收纳与抽屉。
+          - generic [ref=e496]:
+            - generic [ref=e497]: producto_373.jpg
+            - button "准备上架" [ref=e498] [cursor=pointer]
+      - article [ref=e499]:
+        - generic [ref=e500]:
+          - img "Escritorio blanco con estantería superior" [ref=e501]
+          - generic [ref=e502]: "#374"
+        - generic [ref=e503]:
+          - generic [ref=e504]:
+            - heading "Escritorio blanco con estantería superior" [level=2] [ref=e505]
+            - strong [ref=e506]: RD$3,450
+          - generic [ref=e507]:
+            - generic [ref=e508]: Oficina
+            - generic [ref=e509]: 独立商品
+          - paragraph [ref=e510]: 图片主款为 120 × 50 × 103 cm；建议不要把 140 cm 变体混入价格。
+          - generic [ref=e511]:
+            - generic [ref=e512]: producto_374.jpg
+            - button "准备上架" [ref=e513] [cursor=pointer]
+    - generic [ref=e268]:
+      - heading "建议最终整理为 9 个商品" [level=2] [ref=e269]
+      - generic [ref=e270]:
+        - generic [ref=e271]:
+          - generic [ref=e272]: 床头柜 · 1 个商品 / 3 个颜色
+          - generic [ref=e273]: producto_361 灰色、369 白色、371 木色，价格均为 RD$1,440。
+        - generic [ref=e274]:
+          - generic [ref=e275]: 转角置物架 · 1 个商品 / 2 个颜色
+          - generic [ref=e276]: producto_363 黑色、364 白色，价格均为 RD$1,455。
+        - generic [ref=e277]:
+          - generic [ref=e278]: 白色墙面置物架 · 1 个商品 / 4 张图
+          - generic [ref=e279]: producto_365–368 是同款的产品角度、实拍和场景图，价格 RD$895。
+  - generic: 已复制

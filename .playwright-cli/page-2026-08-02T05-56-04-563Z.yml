@@ -1,0 +1,108 @@
+- generic [active] [ref=f14e1]:
+  - generic [ref=f14e3]:
+    - link "V VivaBien" [ref=f14e4] [cursor=pointer]:
+      - /url: ../
+      - generic [ref=f14e5]: V
+      - text: VivaBien
+    - generic [ref=f14e6]:
+      - link "WhatsApp" [ref=f14e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=f14e10] [cursor=pointer]:
+        - /url: ../?buscar=1
+      - link "Carrito" [ref=f14e14] [cursor=pointer]:
+        - /url: ../carrito
+        - generic [ref=f14e18]: "3"
+  - generic [ref=f14e19]:
+    - link "VivaBien" [ref=f14e20] [cursor=pointer]:
+      - /url: ../
+    - text: /
+    - link "Belleza y Salud" [ref=f14e21] [cursor=pointer]:
+      - /url: ../categoria/belleza-y-salud
+    - text: / Uñas
+  - generic [ref=f14e22]:
+    - img "Pegamento para uñas / Gel adhesivo 30ml secado rápido" [ref=f14e24]
+    - generic [ref=f14e26]:
+      - heading "Pegamento para uñas / Gel adhesivo 30ml secado rápido" [level=1] [ref=f14e27]
+      - generic [ref=f14e28]: RD$ 180
+      - generic [ref=f14e29]:
+        - generic [ref=f14e30]:
+          - generic [ref=f14e31]: 🚚
+          - text: Entrega24-72 horas
+        - generic [ref=f14e32]:
+          - generic [ref=f14e33]: 💵
+          - text: Pagasal recibir
+        - generic [ref=f14e34]:
+          - generic [ref=f14e35]: ↩️
+          - text: Garantíade 7 días
+      - generic [ref=f14e36]:
+        - generic [ref=f14e37]:
+          - generic [ref=f14e38]: ✅
+          - generic [ref=f14e39]:
+            - generic [ref=f14e40]: Disponible
+            - text: Existencia registrada; confirmaremos antes del despacho.
+        - generic [ref=f14e41]:
+          - generic [ref=f14e42]: 📏
+          - generic [ref=f14e43]:
+            - generic [ref=f14e44]: Tamaño / presentación
+            - text: 30ml
+        - generic [ref=f14e45]:
+          - generic [ref=f14e46]: 🚚
+          - generic [ref=f14e47]:
+            - generic [ref=f14e48]: Tiempo estimado
+            - text: 1-2 días laborables en Gran Santo Domingo; 1-7 días en el resto del país, según la zona.
+      - generic [ref=f14e49]: Descripción
+      - generic [ref=f14e50]: "Pegamento para uñas / Gel adhesivo 30ml secado rápido📦 Características:• 30ml• Curado rápido• Empaque negro✨ Estado: Nuevo🚚 Disponible para entrega o recogida🛒 VivaBien — Tu tienda de confianza en República Dominicana"
+      - generic [ref=f14e51]:
+        - generic [ref=f14e52]: ⭐ +120 clientes satisfechos en toda RD
+        - generic [ref=f14e53]:
+          - link "←" [ref=f14e54] [cursor=pointer]:
+            - /url: ../
+          - link "WhatsApp" [ref=f14e55] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%21%20Me%20interesa%3A%20Pegamento%20para%20u%C3%B1as%20/%20Gel%20adhesivo%2030ml%20secado%20r%C3%A1pido
+          - button "Agregar al carrito" [ref=f14e58] [cursor=pointer]
+        - generic [ref=f14e62]:
+          - generic [ref=f14e63]: 🛡️ Pago 100% seguro
+          - generic [ref=f14e64]: 👀 Puedes verificar tu producto antes de pagar
+  - generic [ref=f14e65]:
+    - heading "También te puede gustar" [level=2] [ref=f14e66]
+    - generic [ref=f14e67]:
+      - link "Líquido Acrílico para Uñas 500ml RD$ 650" [ref=f14e68] [cursor=pointer]:
+        - /url: l-quido-acr-lico-para-u-as-500ml
+        - generic [ref=f14e70]: Líquido Acrílico para Uñas 500ml
+        - generic [ref=f14e71]: RD$ 650
+      - link "Pintura acrílica líquida / acrílico líquido 53ml morado RD$ 110" [ref=f14e72] [cursor=pointer]:
+        - /url: pintura-acr-lica-l-quida-acr-lico-l-quido-53ml-morado
+        - generic [ref=f14e74]: Pintura acrílica líquida / acrílico líquido 53ml morado
+        - generic [ref=f14e75]: RD$ 110
+      - link "Uñas postizas / tips rosados con pegamento LED 7 días RD$ 105" [ref=f14e76] [cursor=pointer]:
+        - /url: u-as-postizas-tips-rosados-con-pegamento-led-7-d-as
+        - generic [ref=f14e78]: Uñas postizas / tips rosados con pegamento LED 7 días
+        - generic [ref=f14e79]: RD$ 105
+      - link "Herramienta para uñas / empujador / removedor doble cabezal RD$ 95" [ref=f14e80] [cursor=pointer]:
+        - /url: herramienta-para-u-as-empujador-removedor-doble-cabezal
+        - generic [ref=f14e82]: Herramienta para uñas / empujador / removedor doble cabezal
+        - generic [ref=f14e83]: RD$ 95
+      - link "Acetona 100% pura 4oz / quitaesmalte RD$ 70" [ref=f14e84] [cursor=pointer]:
+        - /url: acetona-100-pura-4oz-quitaesmalte
+        - generic [ref=f14e86]: Acetona 100% pura 4oz / quitaesmalte
+        - generic [ref=f14e87]: RD$ 70
+      - link "Esmalte endurecedor de uñas / Fortalecedor 15ml con vitamina E RD$ 80" [ref=f14e88] [cursor=pointer]:
+        - /url: esmalte-endurecedor-de-u-as-fortalecedor-15ml-con-vitamina-e
+        - generic [ref=f14e90]: Esmalte endurecedor de uñas / Fortalecedor 15ml con vitamina E
+        - generic [ref=f14e91]: RD$ 80
+      - link "Piedras brillantes para uñas / Cristales decorativos uñas RD$ 110" [ref=f14e92] [cursor=pointer]:
+        - /url: piedras-brillantes-para-u-as-cristales-decorativos-u-as
+        - generic [ref=f14e94]: Piedras brillantes para uñas / Cristales decorativos uñas
+        - generic [ref=f14e95]: RD$ 110
+      - link "Uñas postizas / uñas acrílicas azul leopardo 12 piezas RD$ 90" [ref=f14e96] [cursor=pointer]:
+        - /url: u-as-postizas-u-as-acr-licas-azul-leopardo-12-piezas
+        - generic [ref=f14e98]: Uñas postizas / uñas acrílicas azul leopardo 12 piezas
+        - generic [ref=f14e99]: RD$ 90
+  - contentinfo [ref=f14e100]:
+    - generic [ref=f14e101]:
+      - link "Garantía y devoluciones" [ref=f14e102] [cursor=pointer]:
+        - /url: ../garantia
+      - link "Contacto" [ref=f14e103] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f14e104]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

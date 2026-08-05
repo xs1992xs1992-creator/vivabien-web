@@ -1,0 +1,127 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e3]:
+    - link "V VivaBien" [ref=f11e4] [cursor=pointer]:
+      - /url: ../
+      - generic [ref=f11e5]: V
+      - text: VivaBien
+    - generic [ref=f11e6]:
+      - link "WhatsApp" [ref=f11e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=f11e10] [cursor=pointer]:
+        - /url: ../?buscar=1
+      - link "Carrito" [ref=f11e14] [cursor=pointer]:
+        - /url: ../carrito
+        - generic [ref=f11e18]: "3"
+  - generic [ref=f11e19]:
+    - link "VivaBien" [ref=f11e20] [cursor=pointer]:
+      - /url: ../
+    - text: /
+    - link "Hogar" [ref=f11e21] [cursor=pointer]:
+      - /url: ../categoria/hogar
+    - text: / Adornos Decorativos
+  - generic [ref=f11e22]:
+    - generic [ref=f11e25]:
+      - img "Florero / jarrón blanco cerámico diseño calado 38cm" [ref=f11e27]
+      - img "Florero / jarrón blanco cerámico diseño calado 38cm" [ref=f11e29]
+      - img "Florero / jarrón blanco cerámico diseño calado 38cm" [ref=f11e31]
+    - generic [ref=f11e37]:
+      - heading "Florero / jarrón blanco cerámico diseño calado 38cm" [level=1] [ref=f11e38]
+      - generic [ref=f11e39]:
+        - generic [ref=f11e40]: SKU VBDBF1E46E
+        - generic [ref=f11e41]: Adornos Decorativos
+      - generic [ref=f11e42]: RD$ 1,995
+      - generic [ref=f11e43]:
+        - generic [ref=f11e44]: ✓ Envíos a todo RD
+        - generic [ref=f11e46]: ✓ Compra protegida
+      - generic [ref=f11e47]:
+        - generic [ref=f11e48]:
+          - generic [ref=f11e49]: Cantidad
+          - generic [ref=f11e50]: Selecciona cuántas unidades necesitas
+        - generic [ref=f11e51]:
+          - button "Reducir cantidad" [ref=f11e52] [cursor=pointer]: −
+          - status [ref=f11e53]: "1"
+          - button "Aumentar cantidad" [ref=f11e54] [cursor=pointer]: +
+      - generic [ref=f11e55]:
+        - generic [ref=f11e56]: 💬
+        - generic [ref=f11e57]:
+          - strong [ref=f11e58]: ¿Tienes dudas antes de comprar?
+          - text: Confirma existencia, tamaño o entrega por WhatsApp.
+      - generic [ref=f11e59]:
+        - generic [ref=f11e60]:
+          - generic [ref=f11e61]: 🚚
+          - text: Entrega24-72 horas
+        - generic [ref=f11e62]:
+          - generic [ref=f11e63]: 💵
+          - text: Pagasal recibir
+        - generic [ref=f11e64]:
+          - generic [ref=f11e65]: ↩️
+          - text: Garantíade 7 días
+      - generic [ref=f11e66]:
+        - generic [ref=f11e67]:
+          - generic [ref=f11e68]: ✅
+          - generic [ref=f11e69]:
+            - generic [ref=f11e70]: Disponible
+            - text: Existencia registrada; confirmaremos antes del despacho.
+        - generic [ref=f11e71]:
+          - generic [ref=f11e72]: 📏
+          - generic [ref=f11e73]:
+            - generic [ref=f11e74]: Tamaño / presentación
+            - text: 38cm
+        - generic [ref=f11e75]:
+          - generic [ref=f11e76]: 🚚
+          - generic [ref=f11e77]:
+            - generic [ref=f11e78]: Tiempo estimado
+            - text: 1-2 días laborables en Gran Santo Domingo; 1-7 días en el resto del país, según la zona.
+      - generic [ref=f11e79]: Descripción
+      - generic [ref=f11e80]: "Florero / jarrón blanco cerámico diseño calado 38cm📦 Características:• Blanco• Cerámica• diseño calado✨ Estado: Nuevo🚚 Disponible para entrega o recogida🛒 VivaBien — Tu tienda de confianza en República Dominicana"
+      - generic [ref=f11e81]:
+        - generic [ref=f11e82]:
+          - generic [ref=f11e83]: Total del producto
+          - strong [ref=f11e84]: RD$ 1,995
+        - generic [ref=f11e85]:
+          - link "WhatsApp" [ref=f11e86] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%21%20Me%20interesa%3A%20Florero%20/%20jarr%C3%B3n%20blanco%20cer%C3%A1mico%20dise%C3%B1o%20calado%2038cm
+          - button "Agregar al carrito" [ref=f11e89] [cursor=pointer]
+  - generic [ref=f11e93]:
+    - heading "También te puede gustar" [level=2] [ref=f11e94]
+    - generic [ref=f11e95]:
+      - link "Decoración adhesiva / pegatinas coloridas para pared 1 set RD$ 90" [ref=f11e96] [cursor=pointer]:
+        - /url: decoraci-n-adhesiva-pegatinas-coloridas-para-pared-1-set
+        - generic [ref=f11e98]: Decoración adhesiva / pegatinas coloridas para pared 1 set
+        - generic [ref=f11e99]: RD$ 90
+      - link "Adorno decorativo dorado con cristales para sala u oficina RD$ 215" [ref=f11e100] [cursor=pointer]:
+        - /url: adorno-decorativo-dorado-con-cristales-para-sala-u-oficina
+        - generic [ref=f11e102]: Adorno decorativo dorado con cristales para sala u oficina
+        - generic [ref=f11e103]: RD$ 215
+      - link "Letras decorativas negras para pared 1 set RD$ 295" [ref=f11e104] [cursor=pointer]:
+        - /url: letras-decorativas-negras-para-pared-1-set
+        - generic [ref=f11e106]: Letras decorativas negras para pared 1 set
+        - generic [ref=f11e107]: RD$ 295
+      - link "Adorno manzana verde vidrio con hoja metálica RD$ 195" [ref=f11e108] [cursor=pointer]:
+        - /url: adorno-manzana-verde-vidrio-con-hoja-met-lica
+        - generic [ref=f11e110]: Adorno manzana verde vidrio con hoja metálica
+        - generic [ref=f11e111]: RD$ 195
+      - link "Decoración madera LOVE con borlas / adorno beis RD$ 210" [ref=f11e112] [cursor=pointer]:
+        - /url: decoraci-n-madera-love-con-borlas-adorno-beis
+        - generic [ref=f11e114]: Decoración madera LOVE con borlas / adorno beis
+        - generic [ref=f11e115]: RD$ 210
+      - link "Decoración dorada / adorno dorado para mesa RD$ 215" [ref=f11e116] [cursor=pointer]:
+        - /url: decoraci-n-dorada-adorno-dorado-para-mesa
+        - generic [ref=f11e118]: Decoración dorada / adorno dorado para mesa
+        - generic [ref=f11e119]: RD$ 215
+      - link "Florero / lámpara de cristal decorativo RD$ 475" [ref=f11e120] [cursor=pointer]:
+        - /url: florero-l-mpara-de-cristal-decorativo
+        - generic [ref=f11e122]: Florero / lámpara de cristal decorativo
+        - generic [ref=f11e123]: RD$ 475
+      - link "Decoración letras madera 4 piezas blanco y negro RD$ 250" [ref=f11e124] [cursor=pointer]:
+        - /url: decoraci-n-letras-madera-4-piezas-blanco-y-negro
+        - generic [ref=f11e126]: Decoración letras madera 4 piezas blanco y negro
+        - generic [ref=f11e127]: RD$ 250
+  - contentinfo [ref=f11e128]:
+    - generic [ref=f11e129]:
+      - link "Garantía y devoluciones" [ref=f11e130] [cursor=pointer]:
+        - /url: ../garantia
+      - link "Contacto" [ref=f11e131] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f11e132]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

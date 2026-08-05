@@ -1,0 +1,2 @@
+[     115ms] [ERROR] Access to fetch at 'https://vivabien.xyz/api/track' from origin 'http://localhost:8766' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header has a value 'https://vivabien.xyz' that is not equal to the supplied origin. Have the server send the header with a valid value. @ http://localhost:8766/panel-autoadhesivo-v2.html:0
+[     115ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://vivabien.xyz/api/track:0

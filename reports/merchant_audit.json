@@ -1,0 +1,14 @@
+{
+  "generated_on": "2026-08-04",
+  "catalog_products": 1072,
+  "eligible_before_identifier_review": 1012,
+  "selected_candidates": 100,
+  "excluded_counts": {
+    "adult_category": 18,
+    "missing_price": 7,
+    "unknown_stock": 35,
+    "missing_image": 0,
+    "short_description": 9
+  },
+  "publish_blocker": "Confirm brand, GTIN or MPN for each candidate before creating the Merchant Center feed."
+}

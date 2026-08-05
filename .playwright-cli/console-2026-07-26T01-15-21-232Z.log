@@ -1,0 +1,2 @@
+[      60ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:8765/preview/panel-autoadhesivo-v1.html:0
+[     113ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:8765/favicon.ico:0

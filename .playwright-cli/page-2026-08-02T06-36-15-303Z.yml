@@ -1,0 +1,30 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - link "V VivaBien" [ref=f1e4] [cursor=pointer]:
+      - /url: ./
+      - generic [ref=f1e5]: V
+      - text: VivaBien
+    - generic [ref=f1e6]:
+      - link "WhatsApp" [ref=f1e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=f1e10] [cursor=pointer]:
+        - /url: "?buscar=1"
+      - link "Carrito" [ref=f1e14] [cursor=pointer]:
+        - /url: carrito
+  - generic [ref=f1e124]:
+    - generic [ref=f1e125]: ✓
+    - heading "¡Pedido confirmado!" [level=2] [ref=f1e126]
+    - paragraph [ref=f1e127]: Tu pedido VB-ZXP8V quedó registrado correctamente.Te contactaremos para coordinar la entrega.
+    - generic [ref=f1e128]:
+      - link "Continuar por WhatsApp" [ref=f1e129] [cursor=pointer]:
+        - /url: https://wa.me/18092811992?text=%F0%9F%9B%92%20*Pedido%20VB-ZXP8V*%0A1x%20Producto%20de%20prueba%20(TEST-001)%20%E2%80%94%20RD%24%201%2C280%0ASector%3A%20Zona%20Colonial%0A%F0%9F%9A%9A%20Env%C3%ADo%3A%20RD%24%20200%20(Entrega%20el%20mismo%20d%C3%ADa)%0A*Total%3A%20RD%24%201%2C480*%0A%E2%80%94%E2%80%94%0A%F0%9F%91%A4%20Prueba%20VivaBien%0A%F0%9F%93%9E%208095550101%0A%F0%9F%93%8D%20Distrito%20Nacional%20(Santo%20Domingo)%20%C2%B7%20Zona%20Colonial%0A%F0%9F%8F%A0%20Calle%20de%20prueba%20123%0A%F0%9F%97%BA%EF%B8%8F%20Ubicaci%C3%B3n%3A%20https%3A%2F%2Fwaze.com%2Ful%3Fll%3D18.4861%2C-69.9312%0A%F0%9F%95%92%20Preferencia%3A%202026-08-02%20%C2%B7%2015%3A00-19%3A00%0A%F0%9F%92%B3%20Pago%3A%20Contra%20entrega%20(efectivo)
+      - link "Seguir comprando" [ref=f1e130] [cursor=pointer]:
+        - /url: ./
+  - contentinfo [ref=f1e78]:
+    - generic [ref=f1e79]:
+      - link "Garantía y devoluciones" [ref=f1e80] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=f1e81] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f1e82]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

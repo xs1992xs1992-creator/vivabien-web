@@ -1,0 +1,140 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - navigation [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - link "V VivaBien" [ref=f1e5] [cursor=pointer]:
+          - /url: ./
+          - generic [ref=f1e6]: V
+          - text: VivaBien
+        - link "Carrito" [ref=f1e7] [cursor=pointer]:
+          - /url: carrito
+    - banner [ref=f1e11]:
+      - img "Sala con pared decorativa de listones y rollo autoadhesivo" [ref=f1e12]
+      - generic [ref=f1e13]:
+        - generic [ref=f1e14]: Panel flexible · Autoadhesivo · Efecto madera
+        - heading "Renueva tu pared sin una obra grande." [level=1] [ref=f1e15]
+        - paragraph [ref=f1e16]: Un panel decorativo en rollo que aporta textura y calidez. Corta, despega y aplica sobre una superficie limpia, lisa y seca.
+        - generic [ref=f1e17]:
+          - strong [ref=f1e18]: RD$ 1,180
+          - generic [ref=f1e19]: por rollo · 60 × 300 cm
+        - generic [ref=f1e20]:
+          - link "COMPRAR AHORA" [ref=f1e21] [cursor=pointer]:
+            - /url: "#comprar"
+          - link "VER CÓMO SE INSTALA" [ref=f1e22] [cursor=pointer]:
+            - /url: "#instalacion"
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]:
+        - generic [ref=f1e26]: 🚚 Envíos a todo RD
+        - generic [ref=f1e27]: Costo según tu zona
+      - generic [ref=f1e28]:
+        - generic [ref=f1e29]: 💵 Pago al recibir
+        - generic [ref=f1e30]: En Gran Santo Domingo
+      - generic [ref=f1e31]:
+        - generic [ref=f1e32]: ↩️ Garantía 7 días
+        - generic [ref=f1e33]: Compra con tranquilidad
+    - generic [ref=f1e35]:
+      - generic [ref=f1e36]:
+        - img "Rollo de panel decorativo autoadhesivo efecto madera" [ref=f1e37]
+        - generic [ref=f1e38]: Vista del producto y tonos de referencia
+      - generic [ref=f1e39]:
+        - text: El producto real, de cerca
+        - heading "Textura visual de madera en formato flexible" [level=2] [ref=f1e40]
+        - paragraph [ref=f1e41]: El formato en rollo permite cubrir paredes y acompañar curvas suaves. Las líneas oscuras crean profundidad sin ocupar el espacio de un panel rígido.
+        - generic [ref=f1e42]:
+          - generic [ref=f1e43]:
+            - generic [ref=f1e44]: 60 cm
+            - generic [ref=f1e45]: de ancho
+          - generic [ref=f1e46]:
+            - generic [ref=f1e47]: 300 cm
+            - generic [ref=f1e48]: de largo
+          - generic [ref=f1e49]:
+            - generic [ref=f1e50]: 1.8 m²
+            - generic [ref=f1e51]: por rollo
+    - generic [ref=f1e53]:
+      - generic [ref=f1e54]:
+        - text: Instalación sencilla
+        - heading "De una pared simple a un acabado con textura" [level=2] [ref=f1e55]
+        - paragraph [ref=f1e56]: Prepara bien la superficie y trabaja poco a poco para mantener las líneas derechas.
+      - generic [ref=f1e57]:
+        - img "Aplicación del panel decorativo flexible sobre una pared" [ref=f1e59]
+        - generic [ref=f1e60]:
+          - article [ref=f1e61]:
+            - text: "01"
+            - heading "Limpia y mide" [level=3] [ref=f1e62]
+            - paragraph [ref=f1e63]: La pared debe estar limpia, completamente seca, lisa y libre de polvo o grasa.
+          - article [ref=f1e64]:
+            - text: "02"
+            - heading "Corta a la medida" [level=3] [ref=f1e65]
+            - paragraph [ref=f1e66]: Marca el tramo que necesitas y comprueba la posición antes de retirar el protector.
+          - article [ref=f1e67]:
+            - text: "03"
+            - heading "Despega y presiona" [level=3] [ref=f1e68]
+            - paragraph [ref=f1e69]: Avanza por secciones, presionando de forma uniforme para evitar desalineaciones.
+    - generic [ref=f1e70]:
+      - img "Panel decorativo en rollo adaptándose a una superficie curva" [ref=f1e71]
+      - generic [ref=f1e72]:
+        - generic [ref=f1e73]: Flexible por diseño
+        - heading "También acompaña curvas suaves y detalles del espacio." [level=2] [ref=f1e74]
+        - paragraph [ref=f1e75]: Antes de cubrir una superficie completa, prueba una pequeña sección para confirmar adherencia, acabado y dirección del patrón.
+    - generic [ref=f1e77]:
+      - generic [ref=f1e78]:
+        - generic [ref=f1e79]: Calculadora rápida
+        - heading "¿Cuántos rollos necesitas?" [level=2] [ref=f1e80]
+        - paragraph [ref=f1e81]: Ingresa las medidas de la superficie. Añadimos un 10% estimado para cortes y ajustes.
+      - generic [ref=f1e82]:
+        - generic [ref=f1e83]:
+          - generic [ref=f1e84]:
+            - generic [ref=f1e85]: Ancho de la pared
+            - generic [ref=f1e86]:
+              - spinbutton "Ej. 240" [ref=f1e87]
+              - generic [ref=f1e88]: cm
+          - generic [ref=f1e89]:
+            - generic [ref=f1e90]: Alto de la pared
+            - generic [ref=f1e91]:
+              - spinbutton "Ej. 260" [ref=f1e92]
+              - generic [ref=f1e93]: cm
+        - button "CALCULAR ROLLOS" [ref=f1e94] [cursor=pointer]
+    - generic [ref=f1e96]:
+      - img "Rollo de panel autoadhesivo color roble natural" [ref=f1e98]
+      - generic [ref=f1e99]:
+        - text: Listo para transformar tu espacio
+        - heading "Panel autoadhesivo efecto madera" [level=2] [ref=f1e100]
+        - paragraph [ref=f1e101]: "Color: Roble natural · Rollo de 60 × 300 cm"
+        - generic [ref=f1e102]: RD$ 1,180
+        - generic [ref=f1e103]:
+          - generic [ref=f1e104]: Cantidad de rollos
+          - generic [ref=f1e105]:
+            - button "Reducir cantidad" [ref=f1e106] [cursor=pointer]: −
+            - status [ref=f1e107]: "1"
+            - button "Aumentar cantidad" [ref=f1e108] [cursor=pointer]: +
+        - generic [ref=f1e109]:
+          - link "Consultar por WhatsApp" [ref=f1e110] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Panel%20autoadhesivo%20efecto%20madera%20%28VB-ROLL-001%29.
+          - button "AGREGAR AL CARRITO" [ref=f1e113] [cursor=pointer]
+        - paragraph [ref=f1e117]: Envíos a todo el país. El costo y el tiempo se calculan según tu zona.
+    - generic [ref=f1e119]:
+      - generic [ref=f1e120]:
+        - text: Antes de pedir
+        - heading "Preguntas frecuentes" [level=2] [ref=f1e121]
+      - group [ref=f1e122]:
+        - generic "¿Qué tamaño tiene cada rollo?" [ref=f1e123] [cursor=pointer]
+      - group [ref=f1e124]:
+        - generic "¿Necesita pegamento adicional?" [ref=f1e125] [cursor=pointer]
+      - group [ref=f1e126]:
+        - generic "¿Sirve para paredes con textura?" [ref=f1e127] [cursor=pointer]
+      - group [ref=f1e128]:
+        - generic "¿Cómo calculo la cantidad?" [ref=f1e129] [cursor=pointer]
+      - group [ref=f1e130]:
+        - generic "¿Hacen envíos?" [ref=f1e131] [cursor=pointer]
+    - generic [ref=f1e132]:
+      - strong [ref=f1e133]: RD$ 1,180
+      - link "COMPRAR AHORA" [ref=f1e134] [cursor=pointer]:
+        - /url: "#comprar"
+  - contentinfo [ref=f1e135]:
+    - generic [ref=f1e136]:
+      - link "Garantía y devoluciones" [ref=f1e137] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=f1e138] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f1e139]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

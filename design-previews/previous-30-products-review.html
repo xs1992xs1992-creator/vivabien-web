@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VivaBien｜前推 30 张商品图上架审核</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{--blue:#2563D9;--orange:#FF6B4A;--ink:#172033;--muted:#69778A;--line:#E1E8F1;--bg:#F5F7FB;--green:#16864B;--red:#C53C36}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    button{font:inherit}.topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .topbar-inner,.page{width:min(1220px,calc(100% - 32px));margin:auto}.topbar-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:8px;background:var(--blue);color:#fff;font-size:20px}
+    .selection{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px}.selection b{color:var(--ink);font-size:17px}.copy-btn{border:0;border-radius:7px;background:var(--blue);color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}
+    .page{padding:28px 0 64px}.intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:20px}.intro h1{margin:0 0 7px;font-size:30px}.intro p{margin:0;color:var(--muted);line-height:1.6}
+    .summary{display:grid;grid-template-columns:repeat(3,112px);gap:8px}.metric{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}.metric b,.metric span{display:block}.metric b{font-size:23px}.metric span{margin-top:4px;color:var(--muted);font-size:11px}
+    .notice{margin:0 0 18px;padding:14px 16px;border:1px solid #EBC76A;border-radius:8px;background:#FFF9E8;color:#684B0A;font-size:13px;line-height:1.6}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.filter{border:1px solid var(--line);background:#fff;color:#526075;padding:9px 13px;border-radius:7px;font-weight:800;cursor:pointer}.filter.on{background:var(--ink);border-color:var(--ink);color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.product{position:relative;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.product.off{opacity:.58}.product.off .media:after{content:"暂不上架";position:absolute;inset:0;display:grid;place-items:center;background:rgba(17,25,39,.54);color:#fff;font-size:20px;font-weight:900}
+    .media{position:relative;aspect-ratio:1;background:#EEF1F5;overflow:hidden}.media img{width:100%;height:100%;display:block;object-fit:cover}.index{position:absolute;left:10px;top:10px;padding:5px 8px;border-radius:6px;background:rgba(23,32,51,.88);color:#fff;font-size:11px;font-weight:900}.group{position:absolute;right:10px;top:10px;max-width:72%;padding:5px 8px;border-radius:6px;background:#FFF3D9;color:#825700;font-size:10px;font-weight:900;text-align:right}
+    .body{padding:14px}.title-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.title-row h2{margin:0;font-size:15px;line-height:1.35}.price{white-space:nowrap;color:var(--orange);font-size:18px;font-weight:900}.meta{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.tag{padding:4px 6px;border-radius:5px;background:#EEF4FF;color:#2A5DB5;font-size:10px;font-weight:800}.tag.warn{background:#FFF0ED;color:#B64A36}.detail{min-height:38px;margin:0;color:var(--muted);font-size:12px;line-height:1.5}.actions{display:flex;align-items:center;justify-content:space-between;margin-top:13px;padding-top:12px;border-top:1px solid #EDF1F6}.sku{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#7B8798}.toggle{border:1px solid #BAD4C5;background:#EDFAF2;color:var(--green);border-radius:7px;padding:8px 11px;font-size:12px;font-weight:900;cursor:pointer}.product.off .toggle{border-color:#E5BDB9;background:#FFF0EF;color:var(--red)}
+    .recommendation{margin-top:28px;background:#fff;border:1px solid var(--line);padding:20px;border-radius:8px}.recommendation h2{margin:0 0 12px;font-size:19px}.rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.rec{padding:13px;border-left:3px solid var(--blue);background:#F7F9FD}.rec b,.rec span{display:block}.rec b{font-size:13px}.rec span{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.5}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#172033;color:#fff;padding:11px 16px;border-radius:7px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:860px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.intro{grid-template-columns:1fr}.summary{grid-template-columns:repeat(3,1fr)}.rec-grid{grid-template-columns:1fr}.selection span{display:none}}
+    @media(max-width:540px){.topbar-inner,.page{width:min(100% - 20px,1220px)}.page{padding-top:20px}.intro h1{font-size:24px}.grid{grid-template-columns:1fr}.media{aspect-ratio:4/3}.metric{padding:10px}.metric b{font-size:20px}.copy-btn{padding:9px 10px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark">V</span><span>VivaBien 商品审核</span></div><div class="selection"><span>准备上架</span><b id="selectedCount">30</b><span>/ 30 张</span><button class="copy-btn" id="copyBtn">复制选择结果</button></div></div></header>
+  <main class="page">
+    <section class="intro"><div><h1>再往前 30 张商品图</h1><p>范围：producto_330–359。所有名称和价格均重新对照原图，当前只用于审核，不会写入正式网站。</p></div><div class="summary"><div class="metric"><b>30</b><span>待审图片</span></div><div class="metric"><b>26</b><span>建议商品数</span></div><div class="metric"><b>4</b><span>重复合并组</span></div></div></section>
+    <div class="notice"><b>重要：</b>原清单有多处 OCR 价格错误。本页以图片上的醒目标价为准；重复图保留给你查看，但正式上架时会合并，避免搜索结果出现同一商品两次。</div>
+    <nav class="filters"><button class="filter on" data-filter="all">全部 30 张</button><button class="filter" data-filter="tables">桌子 / 家具</button><button class="filter" data-filter="kids">儿童桌</button><button class="filter" data-filter="lighting">灯具 / 风扇</button><button class="filter" data-filter="selected">准备上架</button></nav>
+    <section class="grid" id="grid"></section>
+    <section class="recommendation"><h2>建议合并的 4 组</h2><div class="rec-grid">
+      <div class="rec"><b>#330 + #338</b><span>同一套灰白纹圆形组合茶几，两张图片完全相同，建议只保留一张。</span></div>
+      <div class="rec"><b>#331 + #336</b><span>同一套黑色大理石纹组合茶几，两张图片完全相同，价格 RD$2,495。</span></div>
+      <div class="rec"><b>#332 + #339</b><span>同一套银色压纹玻璃组合茶几，两张图片完全相同，价格按原图 RD$4,190。</span></div>
+      <div class="rec"><b>#334 + #335</b><span>同一套黄色玉石纹组合茶几的不同角度，合成一个商品图集，价格 RD$2,500。</span></div>
+    </section>
+  </main>
+  <div class="toast" id="toast">已复制</div>
+  <script>
+    const base='assets/latest30/';
+    const items=[
+      {n:330,title:'Juego de mesas de centro redondas · Gris y blanco',price:3415,cat:'tables',label:'Mesas',group:'#330 / #338 重复',note:'灰白纹圆形组合茶几；建议与 #338 合并，只保留一张主图。'},
+      {n:331,title:'Juego de mesas nido efecto mármol negro',price:2495,cat:'tables',label:'Mesas',group:'#331 / #336 重复',note:'黑色大理石纹、金色金属架；建议与 #336 合并。'},
+      {n:332,title:'Juego de mesas redondas de vidrio texturizado',price:4190,cat:'tables',label:'Mesas',group:'#332 / #339 重复',note:'银色压纹玻璃组合茶几；图片标签价 RD$4,190。'},
+      {n:333,title:'Juego de mesas nido efecto mármol marrón',price:2500,cat:'tables',label:'Mesas',note:'棕色大理石纹圆形组合茶几，图片标价 RD$2,500。'},
+      {n:334,title:'Juego de mesas nido efecto ónix amarillo · Vista general',price:2500,cat:'tables',label:'Mesas',group:'#334 / #335 同款',note:'建议作为同一商品的主图或补充图。'},
+      {n:335,title:'Juego de mesas nido efecto ónix amarillo · Vista lateral',price:2500,cat:'tables',label:'Mesas',group:'#334 / #335 同款',note:'与 #334 同款不同角度，正式上架时合并成图集。'},
+      {n:336,title:'Juego de mesas nido efecto mármol negro · Duplicada',price:2495,cat:'tables',label:'Mesas',group:'#331 / #336 重复',note:'与 #331 完全相同，正式上架时不单独建商品。'},
+      {n:337,title:'Juego de mesas redondas efecto mármol blanco',price:3370,cat:'tables',label:'Mesas',note:'白色大理石纹双圆桌，原图贴纸标价 RD$3,370。'},
+      {n:338,title:'Juego de mesas de centro redondas · Duplicada',price:3415,cat:'tables',label:'Mesas',group:'#330 / #338 重复',note:'与 #330 完全相同，正式上架时不单独建商品。'},
+      {n:339,title:'Juego de mesas de vidrio texturizado · Duplicada',price:4190,cat:'tables',label:'Mesas',group:'#332 / #339 重复',note:'与 #332 完全相同，正式上架时不单独建商品。'},
+      {n:340,title:'Mesa de centro rectangular de vidrio con diseño floral',price:1000,cat:'tables',label:'Mesas',note:'白色边框玻璃茶几；采用图片上的促销价 RD$1,000。'},
+      {n:341,title:'Escritorio infantil con silla · Patrulla Canina',price:2745,cat:'kids',label:'Niños',note:'蓝色儿童学习桌椅，带书架、杯架和时钟。'},
+      {n:342,title:'Escritorio infantil con silla · Hello Kitty',price:2055,cat:'kids',label:'Niños',note:'粉色儿童学习桌椅，图片型号 N003-46。'},
+      {n:343,title:'Escritorio infantil con silla · Stitch',price:1920,cat:'kids',label:'Niños',note:'粉蓝色 Stitch 图案儿童桌椅，图片标价 RD$1,920。'},
+      {n:344,title:'Escritorio infantil con silla · Avión',price:1995,cat:'kids',label:'Niños',note:'飞机主题儿童学习桌椅，原图贴纸标价 RD$1,995。'},
+      {n:345,title:'Mesa infantil con silla · Stitch azul y rosa',price:1225,cat:'kids',label:'Niños',note:'Stitch 图案小号儿童桌椅，原图贴纸标价 RD$1,225。'},
+      {n:346,title:'Mesa de centro negra de vidrio con diseño floral',price:1500,cat:'tables',label:'Mesas',note:'黑色长方形玻璃茶几，白色花纹装饰。'},
+      {n:347,title:'Mesa de centro ovalada azul',price:1000,cat:'tables',label:'Mesas',note:'蓝色椭圆形双层茶几，图片标价 RD$1,000。'},
+      {n:348,title:'Mesa de centro negra de vidrio con diseño geométrico',price:1200,cat:'tables',label:'Mesas',note:'黑色长方形玻璃茶几；采用图片上的促销价 RD$1,200。'},
+      {n:349,title:'Silla colgante tipo huevo con cojín',price:1500,cat:'tables',label:'Muebles',note:'棕色藤编吊椅配坐垫，图片标签价 RD$1,500。'},
+      {n:350,title:'Cortinas blancas translúcidas',price:535,cat:'tables',label:'Textiles',note:'白色透光窗帘；图片未注明尺寸，上架时不猜测。'},
+      {n:351,title:'Ventilador de techo retráctil con luz · EA102',price:4795,cat:'lighting',label:'Ventilación',note:'红铜色隐形扇叶吊扇灯，型号 EA102。'},
+      {n:352,title:'Ventilador de techo con luz y Bluetooth · EA101',price:4920,cat:'lighting',label:'Ventilación',note:'红铜色隐形扇叶吊扇灯，支持 Bluetooth，型号 EA101。'},
+      {n:353,title:'Lámpara de techo moderna de 8 luces · VT680016',price:1255,cat:'lighting',label:'Iluminación',note:'黑色多臂吸顶灯，8 个球形灯头。'},
+      {n:354,title:'Ventilador de techo retráctil con luz · EA071',price:4735,cat:'lighting',label:'Ventilación',note:'黑色网格环形灯体、透明隐形扇叶，型号 EA071。'},
+      {n:355,title:'Ventilador de techo retráctil con luz · EA066',price:4550,cat:'lighting',label:'Ventilación',note:'黑色双环灯体、透明隐形扇叶，型号 EA066。'},
+      {n:356,title:'Ventilador de techo retráctil dorado · EA057',price:4735,cat:'lighting',label:'Ventilación',note:'金色装饰环形灯体、白色隐形扇叶，型号 EA057。'},
+      {n:357,title:'Ventilador de techo retráctil plateado · EA001',price:4550,cat:'lighting',label:'Ventilación',note:'银色三环灯体、透明隐形扇叶，型号 EA001。'},
+      {n:358,title:'Tocador blanco con espejo iluminado y cajones',price:14250,cat:'tables',label:'Dormitorio',note:'带灯镜、侧柜和多抽屉的白色梳妆台。'},
+      {n:359,title:'Sistema de luces LED hexagonales para techo',price:250,cat:'lighting',label:'Iluminación',uncertain:true,note:'图片没有清楚显示整套总价；清单识别为 RD$250，上架前需要你确认这是单根还是整套价格。'}
+    ];
+    let selected=new Set(items.map(x=>x.n)),filter='all';const grid=document.getElementById('grid'),count=document.getElementById('selectedCount');
+    function money(v){return new Intl.NumberFormat('es-DO').format(v)}function visible(x){if(filter==='selected')return selected.has(x.n);if(filter==='all')return true;return x.cat===filter}
+    function render(){grid.innerHTML=items.filter(visible).map(x=>`<article class="product ${selected.has(x.n)?'':'off'}"><div class="media"><img src="${base}producto_${x.n}.jpg" alt="${x.title}"><span class="index">#${x.n}</span>${x.group?`<span class="group">${x.group}</span>`:''}</div><div class="body"><div class="title-row"><h2>${x.title}</h2><strong class="price">RD$${money(x.price)}</strong></div><div class="meta"><span class="tag">${x.label}</span>${x.group?'<span class="tag warn">建议合并</span>':'<span class="tag">独立商品</span>'}${x.uncertain?'<span class="tag warn">价格需确认</span>':''}</div><p class="detail">${x.note}</p><div class="actions"><span class="sku">producto_${x.n}.jpg</span><button class="toggle" data-toggle="${x.n}">${selected.has(x.n)?'准备上架':'暂不上架'}</button></div></div></article>`).join('');count.textContent=selected.size}
+    grid.onclick=e=>{const b=e.target.closest('[data-toggle]');if(!b)return;const n=Number(b.dataset.toggle);selected.has(n)?selected.delete(n):selected.add(n);render()};document.querySelector('.filters').onclick=e=>{const b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('on',x===b));render()};
+    document.getElementById('copyBtn').onclick=async()=>{const yes=items.filter(x=>selected.has(x.n)).map(x=>`#${x.n} ${x.title} — RD$${money(x.price)}`),no=items.filter(x=>!selected.has(x.n)).map(x=>`#${x.n}`),text=`准备上架（${yes.length} 张）：\n${yes.join('\n')}\n\n暂不上架：${no.join('、')||'无'}\n\n重复组按审核页建议合并。`;try{await navigator.clipboard.writeText(text)}catch(e){prompt('复制以下结果：',text)}const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)};render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "V VivaBien" [ref=e4] [cursor=pointer]:
+      - /url: ./
+      - generic [ref=e5]: V
+      - text: VivaBien
+    - generic [ref=e6]:
+      - link "WhatsApp" [ref=e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=e10] [cursor=pointer]:
+        - /url: "?buscar=1"
+      - link "Carrito" [ref=e14] [cursor=pointer]:
+        - /url: carrito
+  - generic [ref=e18]:
+    - heading "Tu compra" [level=1] [ref=e19]
+    - generic [ref=e21]:
+      - text: Tu carrito está vacío.
+      - link "← Ver productos" [ref=e22] [cursor=pointer]:
+        - /url: ./
+  - contentinfo [ref=e23]:
+    - generic [ref=e24]:
+      - link "Garantía y devoluciones" [ref=e25] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e26] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e27]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

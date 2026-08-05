@@ -1,0 +1,147 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "V VivaBien" [ref=e5] [cursor=pointer]:
+          - /url: ./
+          - generic [ref=e6]: V
+          - text: VivaBien
+        - generic [ref=e7]:
+          - link "Producto" [ref=e8] [cursor=pointer]:
+            - /url: "#producto"
+          - link "Instalación" [ref=e9] [cursor=pointer]:
+            - /url: "#instalacion"
+          - link "Calculadora" [ref=e10] [cursor=pointer]:
+            - /url: "#calculadora"
+          - link "Preguntas" [ref=e11] [cursor=pointer]:
+            - /url: "#preguntas"
+        - link "Carrito" [ref=e12] [cursor=pointer]:
+          - /url: carrito
+        - link "COMPRAR" [ref=e16] [cursor=pointer]:
+          - /url: "#comprar"
+    - banner [ref=e17]:
+      - img "Sala con pared decorativa de listones y rollo autoadhesivo" [ref=e18]
+      - generic [ref=e19]:
+        - generic [ref=e20]: Panel flexible · Autoadhesivo · Efecto madera
+        - heading "Renueva tu pared sin una obra grande." [level=1] [ref=e21]
+        - paragraph [ref=e22]: Un panel decorativo en rollo que aporta textura y calidez. Corta, despega y aplica sobre una superficie limpia, lisa y seca.
+        - generic [ref=e23]:
+          - strong [ref=e24]: RD$ 1,280
+          - generic [ref=e25]: por rollo · 60 × 300 cm
+        - generic [ref=e26]:
+          - link "COMPRAR AHORA" [ref=e27] [cursor=pointer]:
+            - /url: "#comprar"
+          - link "VER CÓMO SE INSTALA" [ref=e28] [cursor=pointer]:
+            - /url: "#instalacion"
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e32]: 🚚 Envíos a todo RD
+        - generic [ref=e33]: Costo según tu zona
+      - generic [ref=e34]:
+        - generic [ref=e35]: 💵 Pago al recibir
+        - generic [ref=e36]: En Gran Santo Domingo
+      - generic [ref=e37]:
+        - generic [ref=e38]: ↩️ Garantía 7 días
+        - generic [ref=e39]: Compra con tranquilidad
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - img "Rollo de panel decorativo autoadhesivo efecto madera" [ref=e43]
+        - generic [ref=e44]: Vista del producto y tonos de referencia
+      - generic [ref=e45]:
+        - text: El producto real, de cerca
+        - heading "Textura visual de madera en formato flexible" [level=2] [ref=e46]
+        - paragraph [ref=e47]: El formato en rollo permite cubrir paredes y acompañar curvas suaves. Las líneas oscuras crean profundidad sin ocupar el espacio de un panel rígido.
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: 60 cm
+            - generic [ref=e51]: de ancho
+          - generic [ref=e52]:
+            - generic [ref=e53]: 300 cm
+            - generic [ref=e54]: de largo
+          - generic [ref=e55]:
+            - generic [ref=e56]: 1.8 m²
+            - generic [ref=e57]: por rollo
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - text: Instalación sencilla
+        - heading "De una pared simple a un acabado con textura" [level=2] [ref=e61]
+        - paragraph [ref=e62]: Prepara bien la superficie y trabaja poco a poco para mantener las líneas derechas.
+      - generic [ref=e63]:
+        - img "Aplicación del panel decorativo flexible sobre una pared" [ref=e65]
+        - generic [ref=e66]:
+          - article [ref=e67]:
+            - text: "01"
+            - heading "Limpia y mide" [level=3] [ref=e68]
+            - paragraph [ref=e69]: La pared debe estar limpia, completamente seca, lisa y libre de polvo o grasa.
+          - article [ref=e70]:
+            - text: "02"
+            - heading "Corta a la medida" [level=3] [ref=e71]
+            - paragraph [ref=e72]: Marca el tramo que necesitas y comprueba la posición antes de retirar el protector.
+          - article [ref=e73]:
+            - text: "03"
+            - heading "Despega y presiona" [level=3] [ref=e74]
+            - paragraph [ref=e75]: Avanza por secciones, presionando de forma uniforme para evitar desalineaciones.
+    - generic [ref=e76]:
+      - img "Panel decorativo en rollo adaptándose a una superficie curva" [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]: Flexible por diseño
+        - heading "También acompaña curvas suaves y detalles del espacio." [level=2] [ref=e80]
+        - paragraph [ref=e81]: Antes de cubrir una superficie completa, prueba una pequeña sección para confirmar adherencia, acabado y dirección del patrón.
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - generic [ref=e85]: Calculadora rápida
+        - heading "¿Cuántos rollos necesitas?" [level=2] [ref=e86]
+        - paragraph [ref=e87]: Ingresa las medidas de la superficie. Añadimos un 10% estimado para cortes y ajustes.
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]: Ancho de la pared
+            - generic [ref=e92]:
+              - spinbutton "Ej. 240" [ref=e93]
+              - generic [ref=e94]: cm
+          - generic [ref=e95]:
+            - generic [ref=e96]: Alto de la pared
+            - generic [ref=e97]:
+              - spinbutton "Ej. 260" [ref=e98]
+              - generic [ref=e99]: cm
+        - button "CALCULAR ROLLOS" [ref=e100] [cursor=pointer]
+    - generic [ref=e102]:
+      - img "Rollo de panel autoadhesivo color roble natural" [ref=e104]
+      - generic [ref=e105]:
+        - text: Listo para transformar tu espacio
+        - heading "Panel autoadhesivo efecto madera" [level=2] [ref=e106]
+        - paragraph [ref=e107]: "Color: Roble natural · Rollo de 60 × 300 cm"
+        - generic [ref=e108]: RD$ 1,280
+        - generic [ref=e109]:
+          - generic [ref=e110]: Cantidad de rollos
+          - generic [ref=e111]:
+            - button "Reducir cantidad" [ref=e112] [cursor=pointer]: −
+            - status [ref=e113]: "1"
+            - button "Aumentar cantidad" [ref=e114] [cursor=pointer]: +
+        - generic [ref=e115]:
+          - link "Consultar por WhatsApp" [ref=e116] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Panel%20autoadhesivo%20efecto%20madera%20%28VB-ROLL-001%29.
+          - button "AGREGAR AL CARRITO" [ref=e119] [cursor=pointer]
+        - paragraph [ref=e123]: Envíos a todo el país. El costo y el tiempo se calculan según tu zona.
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - text: Antes de pedir
+        - heading "Preguntas frecuentes" [level=2] [ref=e127]
+      - group [ref=e128]:
+        - generic "¿Qué tamaño tiene cada rollo?" [ref=e129] [cursor=pointer]
+      - group [ref=e130]:
+        - generic "¿Necesita pegamento adicional?" [ref=e131] [cursor=pointer]
+      - group [ref=e132]:
+        - generic "¿Sirve para paredes con textura?" [ref=e133] [cursor=pointer]
+      - group [ref=e134]:
+        - generic "¿Cómo calculo la cantidad?" [ref=e135] [cursor=pointer]
+      - group [ref=e136]:
+        - generic "¿Hacen envíos?" [ref=e137] [cursor=pointer]
+  - contentinfo [ref=e138]:
+    - generic [ref=e139]:
+      - link "Garantía y devoluciones" [ref=e140] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e141] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e142]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

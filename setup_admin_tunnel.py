@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-一键给后台开公网地址 admin.vivabien.xyz
+一键给商品后台开公网地址 shop-admin.vivabien.xyz
 用法: cd ~/vivabien-web && python3 setup_admin_tunnel.py
 做三件事:
- 1. 注册 DNS: admin.vivabien.xyz → 你的隧道
- 2. 修改 ~/.cloudflared/config.yml，把 admin.vivabien.xyz 指到本机 8765 端口
+ 1. 注册 DNS: shop-admin.vivabien.xyz → 你的隧道
+ 2. 修改 ~/.cloudflared/config.yml，把 shop-admin.vivabien.xyz 指到本机 8766 端口
  3. 告诉你下一步怎么启动
 改动前会自动备份原配置为 config.yml.bak
 """
@@ -13,8 +13,8 @@ import os, re, shutil, subprocess, sys
 
 TUNNEL   = "vivabien-review"
 TUNNEL_ID = "8e017a14-0c22-4174-9585-a2504a225a47"
-HOSTNAME = "admin.vivabien.xyz"
-SERVICE  = "http://localhost:8765"
+HOSTNAME = "shop-admin.vivabien.xyz"
+SERVICE  = "http://localhost:8766"
 CFG_DIR  = os.path.expanduser("~/.cloudflared")
 CFG      = os.path.join(CFG_DIR, "config.yml")
 
@@ -72,8 +72,8 @@ ingress:
       cloudflared tunnel run vivabien-review
  2. 另开一个终端窗口，启动后台：
       cd ~/vivabien-web && python3 admin.py
- 3. 然后告诉 Claude，他去 Cloudflare 设置邮箱验证码登录。
-    （在登录设置好之前，先不要把 admin.vivabien.xyz 告诉任何人）
+ 3. 打开 https://shop-admin.vivabien.xyz，使用商品后台密码登录。
+    （后台已有密码保护，不要把地址和密码发给无关人员）
 ====================================""")
 
 if __name__ == "__main__":
