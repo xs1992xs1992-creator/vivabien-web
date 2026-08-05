@@ -2079,17 +2079,27 @@ class H(BaseHTTPRequestHandler):
                                    capture_output=True, text=True, timeout=300)
                 if r.returncode != 0:
                     return self.send(500, "构建失败:\n" + (r.stdout + r.stderr).strip())
-                steps = [["git", "add", "-A"],
-                         ["git", "commit", "-m", "后台更新商品"],
-                         ["git", "push"]]
+                # 1) git 留档（失败不阻断部署）  2) wrangler 真正部署到 Cloudflare
                 logtxt = ["✅ 构建完成"]
-                for cmd in steps:
+                for cmd in (["git", "add", "-A"],
+                            ["git", "commit", "-m", "后台更新商品"],
+                            ["git", "push"]):
                     g = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
                     out = (g.stdout + g.stderr).strip()
-                    if g.returncode != 0 and "nothing to commit" not in out:
-                        return self.send(500, "\n".join(logtxt) + f"\n❌ {' '.join(cmd)} 失败:\n{out}")
-                    logtxt.append(f"✓ {' '.join(cmd)}")
-                return self.send(200, "\n".join(logtxt) + "\n🚀 已推送，Cloudflare 正在部署")
+                    if g.returncode == 0 or "nothing to commit" in out:
+                        logtxt.append(f"✓ {' '.join(cmd)}")
+                    else:
+                        logtxt.append(f"⚠️ {' '.join(cmd)} 跳过: {out.splitlines()[-1][:80] if out else ''}")
+                d = subprocess.run(["npx", "wrangler", "deploy"],
+                                   capture_output=True, text=True, timeout=900)
+                dout = (d.stdout + d.stderr).strip()
+                if d.returncode != 0:
+                    return self.send(500, "\n".join(logtxt) + "\n❌ wrangler deploy 失败:\n" + dout[-1500:])
+                ver = re.search(r"Current Version ID:\s*(\S+)", dout)
+                logtxt.append("✓ npx wrangler deploy")
+                return self.send(200, "\n".join(logtxt)
+                                 + (f"\n版本: {ver.group(1)}" if ver else "")
+                                 + "\n🚀 已部署到 vivabien.xyz（1-2 分钟内全球生效）")
         except Exception as e:
             return self.send(500, f"错误: {e}")
         self.send(404, "not found")
