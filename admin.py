@@ -1585,6 +1585,43 @@ def restart_admin():
 
 WORKER_STAMP = ".worker_deployed"
 
+# LaunchAgent 启动的进程 PATH 很精简（常常只有 /usr/bin:/bin），
+# 找不到 Homebrew/nvm 装的 npx、node、git。这里主动补齐。
+_EXTRA_BIN_DIRS = [
+    "/opt/homebrew/bin", "/usr/local/bin", "/opt/homebrew/opt/node/bin",
+    os.path.expanduser("~/.volta/bin"), os.path.expanduser("~/.bun/bin"),
+    "/usr/bin", "/bin",
+]
+def _bin_dirs():
+    import glob as _glob
+    dirs = list(_EXTRA_BIN_DIRS)
+    for pat in (os.path.expanduser("~/.nvm/versions/node/*/bin"),
+                "/opt/homebrew/opt/node@*/bin",
+                "/usr/local/opt/node@*/bin"):
+        dirs.extend(sorted(_glob.glob(pat), reverse=True))
+    return [d for d in dirs if os.path.isdir(d)]
+
+def cmd_env():
+    """给子进程一个能找到 npx/node/git 的 PATH"""
+    env = os.environ.copy()
+    parts = [d for d in _bin_dirs()]
+    for d in (env.get("PATH") or "").split(":"):
+        if d and d not in parts:
+            parts.append(d)
+    env["PATH"] = ":".join(parts)
+    return env
+
+def find_bin(name):
+    """先按当前 PATH 找，再到常见安装目录找，返回绝对路径或 None"""
+    p = shutil.which(name, path=cmd_env()["PATH"])
+    if p:
+        return p
+    for d in _bin_dirs():
+        cand = os.path.join(d, name)
+        if os.path.isfile(cand) and os.access(cand, os.X_OK):
+            return cand
+    return None
+
 def worker_needs_deploy():
     """worker 源码是否比上次部署新"""
     src = "worker/src/index.js"
@@ -1596,7 +1633,12 @@ def worker_needs_deploy():
 
 def deploy_worker():
     """部署边缘接口 Worker（短链/埋点/优惠券/统计）"""
-    r = subprocess.run(["npx", "wrangler", "deploy"], cwd="worker",
+    npx = find_bin("npx")
+    if not npx:
+        return False, ("找不到 npx（Node.js）。后台由系统服务启动时环境变量较少，"
+                       "已尝试 Homebrew / nvm / volta 常见路径仍未找到。\n"
+                       "解决：确认已安装 Node.js；或在终端执行 `which npx` 把路径告诉我。")
+    r = subprocess.run([npx, "wrangler", "deploy"], cwd="worker", env=cmd_env(),
                        capture_output=True, text=True, timeout=900)
     out = (r.stdout + r.stderr).strip()
     if r.returncode == 0:
@@ -1703,6 +1745,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a href="/wallpaper-stats">墙纸广告</a>
 <a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button onclick="deployWorker(this)">⚡ 部署接口</button>
+<button onclick="envCheck(this)">🔎 环境自检</button>
 <button onclick="restartAdmin(this)">🔄 重启后台</button>
 </div>
 </div>
@@ -1991,6 +2034,12 @@ async function restartAdmin(btn){{
   try{{var r=await fetch('/ping',{{cache:'no-store'}});if(r.ok){{clearInterval(t);location.reload()}}}}catch(e){{}}
   if(tries>25){{clearInterval(t);location.reload()}}
  }},800);
+}}
+async function envCheck(btn){{
+ btn.disabled=true;
+ const r=await fetch('/env_check',{{method:'POST'}});
+ btn.disabled=false;
+ log(await r.text());
 }}
 async function deployWorker(btn){{
  if(!confirm('部署接口服务（Worker）？\\n\\n短链、埋点、优惠券、统计都靠它。约 20 秒。'))return;
@@ -2419,6 +2468,17 @@ class H(BaseHTTPRequestHandler):
                 threading.Timer(0.25, restart_admin).start()
                 threading.Timer(0.9, lambda: os._exit(0)).start()
                 return
+            if p == "/env_check":
+                lines = ["🔎 部署环境自检", ""]
+                for name in ("npx", "node", "git", "launchctl"):
+                    path = find_bin(name)
+                    lines.append(f"{'✓' if path else '❌'} {name}: {path or '找不到'}")
+                lines.append("")
+                lines.append(f"由系统服务托管: {'是' if _launchd_managed() else '否'}")
+                lines.append(f"Worker 待部署: {'是' if worker_needs_deploy() else '否（已是最新）'}")
+                lines.append("")
+                lines.append("PATH: " + cmd_env()["PATH"][:300])
+                return self.send(200, "\n".join(lines))
             if p == "/deploy_worker":
                 ok, out = deploy_worker()
                 ver = re.search(r"Current Version ID:\s*(\S+)", out)
@@ -2445,16 +2505,27 @@ class H(BaseHTTPRequestHandler):
                     else:
                         logtxt.append("⚠️ 接口 Worker 部署失败（网站仍会继续发布）:\n   "
                                       + outw[-400:].replace("\n", "\n   "))
-                for cmd in (["git", "add", "-A"],
-                            ["git", "commit", "-m", "后台更新商品"],
-                            ["git", "push"]):
-                    g = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-                    out = (g.stdout + g.stderr).strip()
-                    if g.returncode == 0 or "nothing to commit" in out:
-                        logtxt.append(f"✓ {' '.join(cmd)}")
-                    else:
-                        logtxt.append(f"⚠️ {' '.join(cmd)} 跳过: {out.splitlines()[-1][:80] if out else ''}")
-                d = subprocess.run(["npx", "wrangler", "deploy"],
+                git = find_bin("git") or "git"
+                for cmd in ([git, "add", "-A"],
+                            [git, "commit", "-m", "后台更新商品"],
+                            [git, "push"]):
+                    try:
+                        g = subprocess.run(cmd, env=cmd_env(), capture_output=True,
+                                           text=True, timeout=300)
+                        out = (g.stdout + g.stderr).strip()
+                        ok = g.returncode == 0 or "nothing to commit" in out
+                    except Exception as e:
+                        out, ok = str(e), False
+                    label = "git " + cmd[1]
+                    logtxt.append(f"✓ {label}" if ok else
+                                  f"⚠️ {label} 跳过: {(out.splitlines() or [''])[-1][:80]}")
+                npx = find_bin("npx")
+                if not npx:
+                    return self.send(500, "\n".join(logtxt) +
+                                     "\n❌ 找不到 npx（Node.js）。后台由系统服务启动时环境变量较少，"
+                                     "已尝试 Homebrew / nvm / volta 常见路径仍未找到。\n"
+                                     "请在终端执行 `which npx`，把结果告诉我。")
+                d = subprocess.run([npx, "wrangler", "deploy"], env=cmd_env(),
                                    capture_output=True, text=True, timeout=900)
                 dout = (d.stdout + d.stderr).strip()
                 if d.returncode != 0:
