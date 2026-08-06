@@ -505,18 +505,6 @@ function mk(){
 function cp(t){navigator.clipboard.writeText(t);}
 function tog(code){fetch('/coupon_toggle',{method:'POST',headers:{'Content-Type':'application/json'},
  body:JSON.stringify({code:code})}).then(function(){location.reload()});}
-function welOn(code,vtxt,cond){
- if(!confirm('把 '+code+' 设为落地页 /enlaces 的欢迎券？\n\n客人打开推广页会弹出「恭喜获得 '+vtxt+'」，\n点击后券码自动带进购物车。\n\n（改完要重新构建+发布才生效）'))return;
- fetch('/coupon_welcome',{method:'POST',headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({code:code,valor_texto:vtxt,condicion:cond})})
- .then(function(r){return r.json()}).then(function(d){
-  if(d.ok){alert('✅ 已设为落地页欢迎券\n\n下一步：回商品页点「🚀 发布」让它生效');location.reload()}
-  else alert('失败：'+(d.error||''))});
-}
-function welOff(){
- if(!confirm('关闭落地页的优惠券弹窗？'))return;
- fetch('/coupon_welcome_off',{method:'POST'}).then(function(){location.reload()});
-}
 </script>"""
 
 _STATS_JS = """<script>
@@ -625,6 +613,38 @@ def coupons_page():
     return sub_shell("优惠券", "coupons", inner)
 
 _MARKETING_JS = """<script>
+// ---- 落地页 /enlaces 欢迎券 ----
+(function(){
+ var sel=document.getElementById('welCode');
+ if(!sel)return;
+ function autofill(){
+  var o=sel.selectedOptions[0];if(!o||!o.value)return;
+  var v=Number(o.dataset.v||0),k=o.dataset.k,min=Number(o.dataset.min||0);
+  var t=document.getElementById('welText'),c=document.getElementById('welCond');
+  t.value=k==='percent'?(v+'% OFF'):('RD$'+v.toLocaleString('en-US')+' OFF');
+  c.value=min>0?('En compras desde RD$'+min.toLocaleString('en-US')):'Sin monto mínimo';
+ }
+ sel.addEventListener('change',autofill);
+})();
+function welSave(btn){
+ var code=(document.getElementById('welCode')||{}).value||'';
+ if(!code){alert('先选一张优惠券');return}
+ var txt=document.getElementById('welText').value.trim();
+ if(!confirm('把 '+code+' 设为落地页欢迎券？\\n\\n客人打开推广页会弹出「'+(txt||code)+'」。\\n改完要回商品页点「🚀 发布」才生效。'))return;
+ btn.disabled=true;
+ fetch('/coupon_welcome',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({code:code,valor_texto:txt,
+   condicion:document.getElementById('welCond').value.trim(),
+   nota_pie:document.getElementById('welFoot').value.trim()})})
+ .then(function(r){return r.json()}).then(function(d){
+  btn.disabled=false;
+  if(d.ok){alert('✅ 已启用\\n\\n下一步：回商品页点「🚀 发布」');location.reload()}
+  else alert('失败：'+(d.error||''))}).catch(function(){btn.disabled=false;alert('网络错误')});
+}
+function welOff(){
+ if(!confirm('关闭落地页的优惠券弹窗？'))return;
+ fetch('/coupon_welcome_off',{method:'POST'}).then(function(){location.reload()});
+}
 var LAST_CAMPAIGN=null;
 function money(v){return 'RD$ '+Number(v||0).toLocaleString('es-DO',{maximumFractionDigits:0})}
 function discountLabel(d){return d.kind==='percent'?Number(d.value)+'% de descuento':money(d.value)+' de descuento'}
@@ -708,6 +728,53 @@ def marketing_page():
     def stat(v, label):
         return f'<div class="stat"><div class="v">{v}</div><div class="l">{label}</div></div>'
     warn = _warn(links_err or coupons_err or overview_err)
+
+    # ---- 落地页 /enlaces 欢迎券配置卡 ----
+    social_cup = {}
+    if os.path.isfile("data/social.json"):
+        try:
+            with open("data/social.json", encoding="utf-8") as f:
+                social_cup = json.load(f).get("cupon", {}) or {}
+        except Exception:
+            social_cup = {}
+    wel_code = (social_cup.get("codigo") or "").strip().upper()
+    wel_on = bool(social_cup.get("activo") and wel_code)
+    def _cup_option(c):
+        code = c.get("code", "")
+        val = c.get("value", 0) or 0
+        mino = c.get("min_order", 0) or 0
+        label = f"{val:g}%" if c.get("kind") == "percent" else f"RD${val:,.0f}"
+        if mino:
+            label += f" · mín RD${mino:,.0f}"
+        sel = " selected" if code.strip().upper() == wel_code else ""
+        return (f'<option value="{esc(code)}" data-v="{esc(str(val))}" '
+                f'data-k="{esc(c.get("kind", "percent"))}" data-min="{esc(str(mino))}"{sel}>'
+                f'{esc(code)} — {esc(label)}</option>')
+    cup_opts = "".join(_cup_option(c) for c in (coupons_data or {}).get("coupons", []))
+    _no_cup = "<option value=''>（还没有优惠券，先在上面生成）</option>"
+    _off_btn = ('<button class="wa-btn" style="background:#8a93a2" onclick="welOff()">关闭弹窗</button>'
+                if wel_on else "")
+    welcome_card = (
+        '<div class="cardp" style="margin-top:18px"><div class="frm">'
+        '<b style="font-size:15px">🎁 推广落地页欢迎券</b>'
+        f'<div class="funnel-note" style="margin:6px 0 12px">客人打开 <a href="{SITE_URL}/enlaces.html" target="_blank">'
+        f'{SITE_URL}/enlaces.html</a> 时弹出「恭喜获得优惠券」，点击后券码自动带进购物车。'
+        '券必须是下面列表里真实存在且启用的，否则客人结算会提示无效。</div>'
+        + (f'<div class="tag on" style="display:inline-block;margin-bottom:10px">当前启用：{esc(wel_code)}</div>'
+           if wel_on else '<div class="tag off" style="display:inline-block;margin-bottom:10px">当前未启用弹窗</div>')
+        + '<label>选择优惠券</label>'
+        f'<select id="welCode">{cup_opts or _no_cup}</select>'
+        '<div class="row2"><div><label>弹窗大字（客人看到的）</label>'
+        f'<input id="welText" placeholder="RD$100 OFF" value="{esc(social_cup.get("valor_texto",""))}"></div>'
+        '<div><label>使用条件（西语）</label>'
+        f'<input id="welCond" placeholder="En compras desde RD$1,000" value="{esc(social_cup.get("condicion",""))}"></div></div>'
+        '<label>底部小字</label>'
+        f'<input id="welFoot" placeholder="Válido por 15 días" value="{esc(social_cup.get("nota_pie",""))}">'
+        '<div class="copy-actions" style="margin-top:12px">'
+        '<button class="copy-btn" onclick="welSave(this)">保存并启用弹窗</button>'
+        + _off_btn
+        + '</div><div class="funnel-note">改完要回商品页点「🚀 发布」才会生效。</div>'
+        '</div></div>')
     inner = (f'{warn}<style>'
              '.mk-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;align-items:start}'
              '.mk-result{display:none;background:#F4FBF7;border:1px solid #CFE9DA;border-radius:14px;padding:14px;margin-top:14px}'
@@ -742,7 +809,8 @@ def marketing_page():
              '<div class="mk-result" id="campaignResult"><div id="resultCodes" class="result-codes"></div></div>'
              '<textarea id="copyOut" style="width:100%;min-height:240px;border:1.5px solid #E5EAF2;border-radius:12px;padding:13px;font:13px/1.65 inherit;margin-top:12px"></textarea>'
              '<div class="copy-actions"><button class="copy-btn" onclick="copyText()">复制文案</button>'
-             '<button class="wa-btn" onclick="shareWA()">WhatsApp 发送</button></div></div></div></div>'
+             '<button class="wa-btn" onclick="shareWA()">WhatsApp 发送</button></div></div>'
+             + welcome_card + '</div></div>'
              '<h1 style="margin-top:26px">营销活动表现</h1><div class="campaign-table"><table><thead><tr>'
              '<th>客户/活动</th><th>优惠码</th><th>点击</th><th>访客</th><th>加购</th><th>结账</th><th>核销</th><th>点击→加购</th><th></th>'
              '</tr></thead><tbody>' + (rows or '<tr><td colspan="9" class="empty">还没有营销活动</td></tr>')
