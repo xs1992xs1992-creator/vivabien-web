@@ -1588,18 +1588,30 @@ WORKER_STAMP = ".worker_deployed"
 # LaunchAgent 启动的进程 PATH 很精简（常常只有 /usr/bin:/bin），
 # 找不到 Homebrew/nvm 装的 npx、node、git。这里主动补齐。
 _EXTRA_BIN_DIRS = [
+    os.path.expanduser("~/.hermes/node/bin"),   # 本机 Node 实际位置（2026-08 实测）
     "/opt/homebrew/bin", "/usr/local/bin", "/opt/homebrew/opt/node/bin",
     os.path.expanduser("~/.volta/bin"), os.path.expanduser("~/.bun/bin"),
+    os.path.expanduser("~/.local/bin"), os.path.expanduser("~/node/bin"),
     "/usr/bin", "/bin",
 ]
 def _bin_dirs():
     import glob as _glob
     dirs = list(_EXTRA_BIN_DIRS)
     for pat in (os.path.expanduser("~/.nvm/versions/node/*/bin"),
+                os.path.expanduser("~/.hermes/*/bin"),
+                os.path.expanduser("~/.fnm/node-versions/*/installation/bin"),
                 "/opt/homebrew/opt/node@*/bin",
                 "/usr/local/opt/node@*/bin"):
         dirs.extend(sorted(_glob.glob(pat), reverse=True))
-    return [d for d in dirs if os.path.isdir(d)]
+    # 环境变量兜底：VIVABIEN_NODE_BIN=/自定义/路径/bin
+    custom = os.environ.get("VIVABIEN_NODE_BIN", "").strip()
+    if custom:
+        dirs.insert(0, custom)
+    seen, out = set(), []
+    for d in dirs:
+        if d and d not in seen and os.path.isdir(d):
+            seen.add(d); out.append(d)
+    return out
 
 def cmd_env():
     """给子进程一个能找到 npx/node/git 的 PATH"""
