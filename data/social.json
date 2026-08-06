@@ -43,7 +43,7 @@
   "cupon": {
     "_nota": "落地页欢迎券弹窗。codigo 必须是后台『🎟️ 优惠券』页生成的真实券码，否则客人结算时会提示无效。activo=false 则不弹窗。",
     "activo": true,
-    "codigo": "BIENVENIDA100",
+    "codigo": "MHDIGSLE",
     "titulo": "¡Felicidades!",
     "subtitulo": "Ganaste un cupón de bienvenida",
     "valor_texto": "RD$100 OFF",
