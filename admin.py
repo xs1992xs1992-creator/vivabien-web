@@ -645,6 +645,36 @@ function welOff(){
  if(!confirm('关闭落地页的优惠券弹窗？'))return;
  fetch('/coupon_welcome_off',{method:'POST'}).then(function(){location.reload()});
 }
+// 用当前选中的券，一键生成可追踪的落地页推广链接 + 西语文案
+async function welLink(btn){
+ var code=(document.getElementById('welCode')||{}).value||'';
+ if(!code){alert('先选一张优惠券');return}
+ var val=document.getElementById('welText').value.trim();
+ var cond=document.getElementById('welCond').value.trim();
+ btn.disabled=true;btn.textContent='生成中…';
+ try{
+  var r=await fetch('/enlaces_link',{method:'POST',headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({code:code,valor_texto:val,condicion:cond,
+    audience:document.getElementById('welAudience').value.trim()})});
+  var d=await r.json();
+  if(!r.ok||!d.url)throw new Error(d.error||'生成失败');
+  document.getElementById('welResult').style.display='block';
+  document.getElementById('welCodes').innerHTML='<b>券码 '+d.coupon+'</b>'
+   +'<a href="'+d.url+'" target="_blank">'+d.url+'</a>'
+   +'<button class="cp" onclick="navigator.clipboard.writeText(\\''+d.url+'\\')">复制链接</button>';
+  document.getElementById('welCopy').value=
+   '¡Hola! 🎁 Tenemos un regalo para ti en VivaBien\\n\\n'
+   +'Cupón '+d.coupon+(val?' — '+val:'')+(cond?'\\n'+cond:'')
+   +'\\n\\nÁbrelo aquí 👇\\n'+d.url
+   +'\\n\\n🛍️ Tienda online · 📢 Canal de WhatsApp · 📸 Instagram — todo en un solo enlace.'
+   +'\\n🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo';
+  btn.textContent='✓ 已生成';
+  document.getElementById('welResult').scrollIntoView({behavior:'smooth',block:'nearest'});
+ }catch(e){alert(e.message);btn.textContent='🔗 生成推广链接'}
+ finally{btn.disabled=false}
+}
+function welCopyText(){var t=document.getElementById('welCopy');t.select();navigator.clipboard.writeText(t.value)}
+function welShareWA(){var t=document.getElementById('welCopy').value;if(t)window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')}
 var LAST_CAMPAIGN=null;
 function money(v){return 'RD$ '+Number(v||0).toLocaleString('es-DO',{maximumFractionDigits:0})}
 function discountLabel(d){return d.kind==='percent'?Number(d.value)+'% de descuento':money(d.value)+' de descuento'}
@@ -719,7 +749,10 @@ def marketing_page():
         kind = c.get("kind", "percent")
         days = meta.get("days", "0")
         template = meta.get("template", "postpurchase")
-        rows += (f'<tr><td><b>{esc(meta.get("audience") or l.get("note", ""))}</b><br><code>{esc(l.get("code",""))}</code></td>'
+        is_enl = template == "enlaces" or "enlaces" in str(l.get("target", ""))
+        badge = ' <span class="tag on" style="font-size:10px">📣 落地页</span>' if is_enl else ""
+        rows += (f'<tr><td><b>{esc(meta.get("audience") or l.get("note", ""))}</b>{badge}'
+                 f'<br><code>{esc(l.get("code",""))}</code></td>'
                  f'<td><code>{esc(coupon_code or "—")}</code></td><td class="n">{clicks}</td><td class="n">{visitors}</td>'
                  f'<td class="n">{addcarts}</td><td class="n">{checkouts}</td><td class="n">{uses}</td><td class="n">{rate}</td>'
                  f'<td><button class="cp row-copy" data-template="{esc(template)}" data-kind="{esc(kind)}" '
@@ -771,11 +804,21 @@ def marketing_page():
         f'<input id="welCond" placeholder="En compras desde RD$1,000" value="{esc(social_cup.get("condicion",""))}"></div></div>'
         '<label>底部小字</label>'
         f'<input id="welFoot" placeholder="Válido por 15 días" value="{esc(social_cup.get("nota_pie",""))}">'
+        '<label>发给谁（备注，可选）</label>'
+        '<input id="welAudience" placeholder="例：WhatsApp 群发 8月 / 客户 María">'
         '<div class="copy-actions" style="margin-top:12px">'
-        '<button class="copy-btn" onclick="welSave(this)">保存并启用弹窗</button>'
+        '<button class="copy-btn" style="background:#FF6B4A" onclick="welLink(this)">🔗 生成推广链接</button>'
+        '<button class="wa-btn" style="background:#2563D9" onclick="welSave(this)">设为默认弹窗券</button>'
         + _off_btn
-        + '</div><div class="funnel-note">这是「没带活动券的人」直接打开落地页时看到的默认券。'
-        '用上面表单生成活动链接时，会自动带上该活动自己的券，覆盖这里的默认值。改完要回商品页点「🚀 发布」才生效。</div>'
+        + '</div>'
+        '<div class="mk-result" id="welResult"><div id="welCodes" class="result-codes"></div>'
+        '<textarea id="welCopy" style="width:100%;min-height:150px;border:1px solid #D7E7DE;border-radius:10px;'
+        'padding:12px;font:13px/1.6 inherit;margin:10px 0;resize:vertical"></textarea>'
+        '<div class="copy-actions"><button class="copy-btn" onclick="welCopyText()">复制文案</button>'
+        '<button class="wa-btn" onclick="welShareWA()">WhatsApp 发送</button></div></div>'
+        '<div class="funnel-note"><b>🔗 生成推广链接</b>：用这张券生成一条可追踪的落地页短链，'
+        '客人打开就弹这张券，点击行为会显示在下面的「推广落地页行为」里。发给不同人可各生成一条，分别看数据。<br>'
+        '<b>设为默认弹窗券</b>：直接访问 /enlaces（比如从 Instagram 主页点进来、没带链接参数）的人看到的券，改完需「🚀 发布」。</div>'
         '</div></div>')
 
     # ---- 落地页行为轨迹（近30天）----
@@ -2151,6 +2194,27 @@ class H(BaseHTTPRequestHandler):
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(cfg, f, ensure_ascii=False, indent=2)
                 return self.send(200, json.dumps({"ok": True, "code": code}), "application/json")
+            if p == "/enlaces_link":
+                # 用已有优惠券生成一条「推广落地页」短链（不新建券）
+                b = json.loads(body.decode("utf-8") or "{}")
+                code = (b.get("code") or "").strip().upper()
+                if not code:
+                    return self.send(400, json.dumps({"error": "先选一张优惠券"}), "application/json")
+                target = f"enlaces.html?coupon={quote(code)}"
+                val = (b.get("valor_texto") or "").strip()
+                cond = (b.get("condicion") or "").strip()
+                if val:
+                    target += f"&val={quote(val)}"
+                if cond:
+                    target += f"&cond={quote(cond)}"
+                audience = str(b.get("audience") or "").replace("|", " ").strip() or "落地页推广"
+                note = f"campaign|coupon={code}|template=enlaces|days=0|audience={audience}"
+                link, err = worker_call("link/create", "POST", {"target": target, "note": note})
+                if not link or not link.get("url"):
+                    return self.send(502, json.dumps({"error": err or (link or {}).get("error", "链接创建失败")}),
+                                     "application/json")
+                return self.send(200, json.dumps({"ok": True, "url": link["url"],
+                                                  "code": link.get("code", ""), "coupon": code}), "application/json")
             if p == "/coupon_welcome_off":
                 path = "data/social.json"
                 if os.path.isfile(path):
