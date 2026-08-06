@@ -651,6 +651,55 @@ async function handleAdmin(req, env, url) {
       unattributed_orders:unattributedOrders, recent:recent.results || [] });
   }
 
+  // 推广落地页 /enlaces 行为统计：整体 + 按活动短链拆分
+  if (sub === "enlaces" && req.method === "GET") {
+    const days = Math.max(1, Math.min(365, Number(url.searchParams.get("days")) || 30));
+    const since = now() - days * 864e5;
+    const code = (url.searchParams.get("code") || "").trim();
+    const codeSql = code ? " AND code=?" : "";
+    const bind = (base) => code ? base.bind(since, code) : base.bind(since);
+
+    // 各入口点击（source_section 由前端 lkTrack 传入：principal/whatsapp/instagram/producto/ver_todo/wa_cta）
+    const sections = await bind(env.DB.prepare(
+      `SELECT COALESCE(NULLIF(source_section,''),'otro') seccion,
+       COUNT(*) clicks, COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions
+       FROM events WHERE type='enlaces_click' AND ts>=? AND is_bot=0${codeSql}
+       GROUP BY seccion ORDER BY clicks DESC`)).all();
+
+    // 点了哪些商品
+    const productos = await bind(env.DB.prepare(
+      `SELECT sku, COUNT(*) clicks, COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions
+       FROM events WHERE type='enlaces_click' AND sku<>'' AND ts>=? AND is_bot=0${codeSql}
+       GROUP BY sku ORDER BY clicks DESC LIMIT 20`)).all();
+
+    // 优惠券弹窗：看到 vs 领取
+    const cupon = await bind(env.DB.prepare(
+      `SELECT
+       COUNT(DISTINCT CASE WHEN type='cupon_view' THEN COALESCE(NULLIF(session_id,''),vid) END) vistos,
+       COUNT(DISTINCT CASE WHEN type='cupon_claim' THEN COALESCE(NULLIF(session_id,''),vid) END) reclamados
+       FROM events WHERE ts>=? AND is_bot=0${codeSql}`)).first();
+
+    // 落地页访问数（浏览 /enlaces 的会话）
+    const visitas = await bind(env.DB.prepare(
+      `SELECT COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions
+       FROM events WHERE ts>=? AND is_bot=0 AND type IN ('view','enlaces_click','cupon_view')
+       AND (path LIKE '%enlaces%' OR type IN ('enlaces_click','cupon_view'))${codeSql}`)).first();
+
+    // 最近轨迹
+    const recent = await bind(env.DB.prepare(
+      `SELECT ts, COALESCE(NULLIF(session_id,''),vid) sid, type, source_section, sku, code, city, device_type
+       FROM events WHERE ts>=? AND is_bot=0
+       AND type IN ('enlaces_click','cupon_view','cupon_claim')${codeSql}
+       ORDER BY ts DESC LIMIT 60`)).all();
+
+    return json({ ok: true, days, code,
+      visitas: (visitas || {}).sessions || 0,
+      cupon: cupon || {},
+      sections: sections.results || [],
+      productos: productos.results || [],
+      recent: recent.results || [] });
+  }
+
   if (sub === "analytics" && req.method === "GET") {
     const days = Math.max(1, Math.min(365, Number(url.searchParams.get("days")) || 30));
     const since = now() - days * 864e5;

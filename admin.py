@@ -698,6 +698,7 @@ def marketing_page():
     links_data, links_err = worker_call("links")
     coupons_data, coupons_err = worker_call("coupons")
     overview_data, overview_err = worker_call("overview")
+    enl_data, _enl_err = worker_call("enlaces?days=30")
     prods = products()
     opts = "".join(f'<option value="producto/{esc(p["handle"])}.html">{esc(p["title"][:52])}</option>'
                    for p in prods)
@@ -773,8 +774,44 @@ def marketing_page():
         '<div class="copy-actions" style="margin-top:12px">'
         '<button class="copy-btn" onclick="welSave(this)">保存并启用弹窗</button>'
         + _off_btn
-        + '</div><div class="funnel-note">改完要回商品页点「🚀 发布」才会生效。</div>'
+        + '</div><div class="funnel-note">这是「没带活动券的人」直接打开落地页时看到的默认券。'
+        '用上面表单生成活动链接时，会自动带上该活动自己的券，覆盖这里的默认值。改完要回商品页点「🚀 发布」才生效。</div>'
         '</div></div>')
+
+    # ---- 落地页行为轨迹（近30天）----
+    enl = enl_data or {}
+    SEC_NAME = {"principal": "🛍️ 进网站", "whatsapp": "📢 进 WhatsApp 频道",
+                "instagram": "📸 进 Instagram", "producto": "🖼️ 点了商品图",
+                "ver_todo": "📋 看全部商品", "wa_cta": "💬 底部 WhatsApp 咨询",
+                "otro": "其他"}
+    prod_titles = {p["sku"]: p["title"] for p in prods if p.get("sku")}
+    sec_rows = "".join(
+        f'<tr><td>{esc(SEC_NAME.get(s.get("seccion",""), s.get("seccion","")))}</td>'
+        f'<td class="n">{s.get("clicks",0)}</td><td class="n">{s.get("sessions",0)}</td></tr>'
+        for s in enl.get("sections", []))
+    prod_rows = "".join(
+        f'<tr><td>{esc(prod_titles.get(p.get("sku",""), p.get("sku","")))[:44]}</td>'
+        f'<td class="n">{p.get("clicks",0)}</td><td class="n">{p.get("sessions",0)}</td></tr>'
+        for p in enl.get("productos", []))
+    cup_st = enl.get("cupon", {}) or {}
+    vistos, reclam = cup_st.get("vistos", 0) or 0, cup_st.get("reclamados", 0) or 0
+    tasa = f"{(reclam / vistos * 100):.0f}%" if vistos else "—"
+    enlaces_card = (
+        '<h1 style="margin-top:26px">📣 推广落地页行为 <span class="sub">近30天 · /enlaces</span></h1>'
+        '<div class="stats">'
+        + stat(enl.get("visitas", 0), "打开落地页")
+        + stat(vistos, "看到优惠券")
+        + stat(reclam, "领取优惠券")
+        + stat(tasa, "领取率")
+        + '</div>'
+        '<div class="mk-grid"><div class="cardp"><b>客户点了哪里</b>'
+        '<table style="margin-top:10px"><thead><tr><th>入口</th><th>点击</th><th>人数</th></tr></thead><tbody>'
+        + (sec_rows or '<tr><td colspan="3" class="empty">还没有数据（发出链接后就会有）</td></tr>')
+        + '</tbody></table></div>'
+        '<div class="cardp"><b>点了哪些商品</b>'
+        '<table style="margin-top:10px"><thead><tr><th>商品</th><th>点击</th><th>人数</th></tr></thead><tbody>'
+        + (prod_rows or '<tr><td colspan="3" class="empty">还没有数据</td></tr>')
+        + '</tbody></table></div></div>')
     inner = (f'{warn}<style>'
              '.mk-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;align-items:start}'
              '.mk-result{display:none;background:#F4FBF7;border:1px solid #CFE9DA;border-radius:14px;padding:14px;margin-top:14px}'
@@ -795,7 +832,9 @@ def marketing_page():
              '<option value="welcome">新客户欢迎 + 首单优惠</option><option value="winback">沉睡客户召回</option>'
              '<option value="vip">VIP 专属优惠</option></select>'
              '<label>客户 / 分组备注</label><input id="mkAudience" placeholder="例：客户 María / 7月已购客户">'
-             '<label>专属链接目标</label><select id="mkTarget"><option value="/">网站首页</option><option value="carrito.html">购物车</option>'
+             '<label>专属链接目标</label><select id="mkTarget">'
+             '<option value="enlaces.html">📣 推广落地页（券弹窗+三入口+商品，推荐）</option>'
+             '<option value="/">网站首页</option><option value="carrito.html">购物车</option>'
              + opts + '</select><input id="mkTargetCustom" style="margin-top:8px" placeholder="或粘贴自定义链接">'
              '<label>优惠方式</label><div class="seg"><label><input type="radio" name="mkKind" value="percent" checked onchange="kindUI()"> 百分比</label>'
              '<label><input type="radio" name="mkKind" value="amount" onchange="kindUI()"> 固定金额</label></div>'
@@ -814,7 +853,7 @@ def marketing_page():
              '<h1 style="margin-top:26px">营销活动表现</h1><div class="campaign-table"><table><thead><tr>'
              '<th>客户/活动</th><th>优惠码</th><th>点击</th><th>访客</th><th>加购</th><th>结账</th><th>核销</th><th>点击→加购</th><th></th>'
              '</tr></thead><tbody>' + (rows or '<tr><td colspan="9" class="empty">还没有营销活动</td></tr>')
-             + '</tbody></table></div>' + _MARKETING_JS)
+             + '</tbody></table></div>' + enlaces_card + _MARKETING_JS)
     return sub_shell("营销留存", "marketing", inner)
 
 _ANALYTICS_JS = """<script>
@@ -2142,6 +2181,13 @@ class H(BaseHTTPRequestHandler):
                 target = (b.get("target") or "/").strip()
                 joiner = "&" if "?" in target else "?"
                 target = f"{target}{joiner}coupon={quote(coupon_code)}"
+                # 落地页：把券的面值/门槛也带上，弹窗直接显示这张活动券
+                if target.startswith("enlaces.html"):
+                    kind = "amount" if b.get("kind") == "amount" else "percent"
+                    val_txt = (f"RD${value:,.0f} OFF" if kind == "amount" else f"{value:g}% OFF")
+                    mino = float(b.get("min_order") or 0)
+                    cond = (f"En compras desde RD${mino:,.0f}" if mino else "Sin monto mínimo")
+                    target += f"&val={quote(val_txt)}&cond={quote(cond)}"
                 note = (f'campaign|coupon={coupon_code}|template={b.get("template","postpurchase")}'
                         f'|days={days}|audience={str(b.get("audience") or "").replace("|", " ")}')
                 link, link_err = worker_call("link/create", "POST", {"target": target, "note": note})

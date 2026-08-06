@@ -2327,7 +2327,9 @@ a{text-decoration:none;color:inherit}img{display:block}
 .lk-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 @media(min-width:460px){.lk-grid{grid-template-columns:repeat(3,1fr)}}
 .lk-card{background:#fff;border:1px solid #EAEFF7;border-radius:15px;overflow:hidden;box-shadow:0 4px 14px rgba(20,40,80,.06)}
+.lk-imgw{position:relative}
 .lk-card img{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}
+.lk-tag{position:absolute;top:7px;left:7px;z-index:2;background:#FF6B4A;color:#fff;font-size:9.5px;font-weight:800;padding:4px 9px;border-radius:99px;letter-spacing:.02em;box-shadow:0 3px 9px rgba(232,72,42,.35)}
 .lk-card .lk-nm{font-size:11.5px;font-weight:700;line-height:1.32;height:30px;overflow:hidden;padding:9px 10px 0}
 .lk-card .lk-pr{font-size:14px;font-weight:800;padding:4px 10px 11px}
 .lk-card .lk-pr small{display:block;font-size:10px;color:#8A93A2;font-weight:700;text-decoration:line-through}
@@ -2396,6 +2398,8 @@ def enlaces_page(products):
             if p["sku"] not in seen and p["price"] is not None:
                 picks.append(p); seen.add(p["sku"])
 
+    # 可选标签（如 Más vendido / Nuevo），配置在 destacados_labels: {"SKU": "Más vendido"}
+    labels = cfg.get("destacados_labels", {}) or {}
     cards = ""
     for p in picks[:6]:
         old = p.get("old_price")
@@ -2403,9 +2407,12 @@ def enlaces_page(products):
                  + (f'<small>{fmt_price(old)}</small>' if old and p["price"] and old > p["price"] else "")
                  ) if p["price"] is not None else "Consultar"
         href = p.get("url") or f'producto/{quote(p["handle"])}.html'
+        tag = str(labels.get(p["sku"], "")).strip()
+        tag_html = f'<span class="lk-tag">{esc(tag)}</span>' if tag else ""
         cards += (f'<a class="lk-card" href="{esc(href)}" onclick="lkTrack(\'producto\',\'{esc(p["sku"])}\')">'
+                  f'<div class="lk-imgw">{tag_html}'
                   f'<img src="images/{esc(p["img"])}" alt="{esc(p["title"])}" loading="lazy" '
-                  f'onerror="this.style.opacity=0">'
+                  f'onerror="this.style.opacity=0"></div>'
                   f'<div class="lk-nm">{esc(p["title"])}</div>'
                   f'<div class="lk-pr">{price}</div></a>')
 
@@ -2433,6 +2440,19 @@ def enlaces_page(products):
 <script>
 (function(){{
  var CODE='{esc(code)}',ONCE={"true" if once else "false"},KEY='vb_enlaces_cupon';
+ // 营销活动可用 ?coupon=XXX&val=RD$150+OFF&cond=... 覆盖默认券（每个活动一张专属券）
+ try{{
+  var qs=new URLSearchParams(location.search);
+  var qc=(qs.get('coupon')||'').trim().toUpperCase();
+  if(qc){{
+   CODE=qc;KEY='vb_enlaces_cupon_'+qc;
+   var el=document.querySelector('.cp-code');if(el)el.textContent=qc;
+   var v=qs.get('val'),c=qs.get('cond');
+   if(v){{var ev=document.querySelector('.cp-val');if(ev)ev.textContent=v}}
+   if(c){{var ec=document.querySelector('.cp-cond');if(ec){{ec.textContent=c;ec.style.display=''}}}}
+   var b=document.getElementById('cpBadge');if(b&&v)b.textContent='🎁 Tu cupón '+v;
+  }}
+ }}catch(e){{}}
  var mask=document.getElementById('cpMask'),badge=document.getElementById('cpBadge');
  function save(){{try{{localStorage.setItem('vb_campaign_coupon',CODE);
    localStorage.setItem(KEY,'1')}}catch(e){{}}}}
