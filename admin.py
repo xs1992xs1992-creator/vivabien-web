@@ -1498,8 +1498,29 @@ def product_preview_page(p):
 <img class="main" src="/images/{esc(photos[0] if photos else p.get("img", ""))}" alt="{esc(p["title"])}">
 <div class="gallery">{gallery}</div></div><div><h1>{esc(p["title"])}</h1><div class="price">{price_html}</div><div class="label">Descripción</div><div class="desc">{body}</div></div></div></main></body></html>'''
 
+LAUNCH_LABEL = os.environ.get("VIVABIEN_LAUNCH_LABEL", "com.vivabien.shop-admin")
+
+def _launchd_managed():
+    """当前后台是否由 macOS LaunchAgent 常驻托管"""
+    try:
+        r = subprocess.run(["launchctl", "print", f"gui/{os.getuid()}/{LAUNCH_LABEL}"],
+                           capture_output=True, timeout=6)
+        return r.returncode == 0
+    except Exception:
+        return False
+
 def restart_admin():
-    """后台自重启：等待旧进程释放端口后，再启动新的后台进程。"""
+    """后台自重启：LaunchAgent 托管时交给 launchd，否则自己拉起新进程。"""
+    if _launchd_managed():
+        # launchd 会 kill 当前进程并按 KeepAlive 重新拉起，端口不会冲突
+        try:
+            subprocess.Popen(["launchctl", "kickstart", "-k",
+                              f"gui/{os.getuid()}/{LAUNCH_LABEL}"],
+                             start_new_session=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return
+        except Exception:
+            pass  # 掉到自启逻辑兜底
     script = os.path.abspath(sys.argv[0])
     cwd = os.getcwd()
     helper = (
@@ -1512,6 +1533,27 @@ def restart_admin():
     subprocess.Popen([sys.executable, "-c", helper, script, cwd],
                      cwd=cwd, start_new_session=True,
                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+WORKER_STAMP = ".worker_deployed"
+
+def worker_needs_deploy():
+    """worker 源码是否比上次部署新"""
+    src = "worker/src/index.js"
+    if not os.path.isfile(src):
+        return False
+    if not os.path.isfile(WORKER_STAMP):
+        return True
+    return os.path.getmtime(src) > os.path.getmtime(WORKER_STAMP)
+
+def deploy_worker():
+    """部署边缘接口 Worker（短链/埋点/优惠券/统计）"""
+    r = subprocess.run(["npx", "wrangler", "deploy"], cwd="worker",
+                       capture_output=True, text=True, timeout=900)
+    out = (r.stdout + r.stderr).strip()
+    if r.returncode == 0:
+        with open(WORKER_STAMP, "w") as f:
+            f.write(str(time.time()))
+    return r.returncode == 0, out
 
 def page_html():
     prods = products()
@@ -1611,6 +1653,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a href="/stats">📊 数据</a>
 <a href="/wallpaper-stats">墙纸广告</a>
 <a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
+<button onclick="deployWorker(this)">⚡ 部署接口</button>
 <button onclick="restartAdmin(this)">🔄 重启后台</button>
 </div>
 </div>
@@ -1889,10 +1932,24 @@ async function publish(btn){{
  log(t+'\\n\\n（Cloudflare 构建约需 2-3 分钟生效）');
 }}
 async function restartAdmin(btn){{
- if(!confirm('确认重启后台？当前页面会短暂断开，然后自动重新加载。'))return;
+ if(!confirm('确认重启后台？\\n\\n用来加载新功能。页面会断开几秒后自动回来。'))return;
  btn.disabled=true;btn.textContent='⏳ 重启中…';
  try{{await fetch('/restart',{{method:'POST'}})}}catch(e){{}}
- setTimeout(()=>location.reload(),2200);
+ // 轮询等后台起来，起来了立刻刷新（比死等更快更稳）
+ var tries=0;
+ var t=setInterval(async function(){{
+  tries++;
+  try{{var r=await fetch('/ping',{{cache:'no-store'}});if(r.ok){{clearInterval(t);location.reload()}}}}catch(e){{}}
+  if(tries>25){{clearInterval(t);location.reload()}}
+ }},800);
+}}
+async function deployWorker(btn){{
+ if(!confirm('部署接口服务（Worker）？\\n\\n短链、埋点、优惠券、统计都靠它。约 20 秒。'))return;
+ btn.disabled=true;btn.textContent='⚡ 部署中…';
+ const r=await fetch('/deploy_worker',{{method:'POST'}});
+ const t=await r.text();
+ btn.disabled=false;btn.textContent='⚡ 部署接口';
+ log(t);
 }}
 const focusH=new URLSearchParams(location.search).get('focus');
 if(focusH){{
@@ -2010,6 +2067,8 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         p = unquote(self.path.split("?")[0])
         qs = parse_qs(self.path.partition("?")[2])
+        if p == "/ping":          # 重启后前端轮询探活，不需要登录
+            return self.send(200, "ok", "text/plain; charset=utf-8")
         if not check_cookie(self.headers):
             return self.send(200, LOGIN_HTML.replace("__ERR__", ""))
         if p == "/":
@@ -2306,10 +2365,18 @@ class H(BaseHTTPRequestHandler):
                 save_collections(colls)
                 return self.send(200, json.dumps({"ok": True}), "application/json")
             if p == "/restart":
-                self.send(200, "后台正在重启，请稍候…")
+                mode = "由系统服务托管，正在重启" if _launchd_managed() else "正在重启"
+                self.send(200, f"后台{mode}，约 3 秒后自动刷新…")
                 threading.Timer(0.25, restart_admin).start()
-                threading.Timer(0.55, lambda: os._exit(0)).start()
+                threading.Timer(0.9, lambda: os._exit(0)).start()
                 return
+            if p == "/deploy_worker":
+                ok, out = deploy_worker()
+                ver = re.search(r"Current Version ID:\s*(\S+)", out)
+                if ok:
+                    return self.send(200, "✅ 接口 Worker 已部署"
+                                     + (f"\n版本: {ver.group(1)}" if ver else ""))
+                return self.send(500, "❌ 接口 Worker 部署失败:\n" + out[-1200:])
             if p == "/build":
                 r = subprocess.run([sys.executable, "build.py"],
                                    capture_output=True, text=True, timeout=300)
@@ -2320,8 +2387,15 @@ class H(BaseHTTPRequestHandler):
                                    capture_output=True, text=True, timeout=300)
                 if r.returncode != 0:
                     return self.send(500, "构建失败:\n" + (r.stdout + r.stderr).strip())
-                # 1) git 留档（失败不阻断部署）  2) wrangler 真正部署到 Cloudflare
+                # 1) git 留档（失败不阻断）2) 接口 Worker（有改动才部署）3) 静态站
                 logtxt = ["✅ 构建完成"]
+                if worker_needs_deploy():
+                    okw, outw = deploy_worker()
+                    if okw:
+                        logtxt.append("✓ 接口 Worker 已更新")
+                    else:
+                        logtxt.append("⚠️ 接口 Worker 部署失败（网站仍会继续发布）:\n   "
+                                      + outw[-400:].replace("\n", "\n   "))
                 for cmd in (["git", "add", "-A"],
                             ["git", "commit", "-m", "后台更新商品"],
                             ["git", "push"]):
