@@ -224,7 +224,9 @@ async function handleTrack(req, env) {
   const type = body.type;
   if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll", "search", "filter", "shipping_quote",
         "gallery_view", "color_select", "tier_select", "quantity_change", "review_open", "calculator_success",
-        "section_view", "cart_update", "cart_remove", "checkout_start", "checkout_error"].includes(type))
+        "section_view", "cart_update", "cart_remove", "checkout_start", "checkout_error",
+        // 推广落地页 /enlaces
+        "enlaces_view", "enlaces_click", "cupon_view", "cupon_claim"].includes(type))
     return json({ ok: false }, 400);
 
   const clientId = String(body.client_id || "").slice(0, 80);
@@ -679,24 +681,52 @@ async function handleAdmin(req, env, url) {
        COUNT(DISTINCT CASE WHEN type='cupon_claim' THEN COALESCE(NULLIF(session_id,''),vid) END) reclamados
        FROM events WHERE ts>=? AND is_bot=0${codeSql}`)).first();
 
-    // 落地页访问数（浏览 /enlaces 的会话）
+    // 落地页访问数 + 平均停留
     const visitas = await bind(env.DB.prepare(
-      `SELECT COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions
-       FROM events WHERE ts>=? AND is_bot=0 AND type IN ('view','enlaces_click','cupon_view')
-       AND (path LIKE '%enlaces%' OR type IN ('enlaces_click','cupon_view'))${codeSql}`)).first();
-
-    // 最近轨迹
-    const recent = await bind(env.DB.prepare(
-      `SELECT ts, COALESCE(NULLIF(session_id,''),vid) sid, type, source_section, sku, code, city, device_type
+      `SELECT COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions,
+       ROUND(AVG(NULLIF(duration_ms,0))/1000.0,1) avg_seconds
        FROM events WHERE ts>=? AND is_bot=0
-       AND type IN ('enlaces_click','cupon_view','cupon_claim')${codeSql}
-       ORDER BY ts DESC LIMIT 60`)).all();
+       AND type IN ('enlaces_view','enlaces_click','cupon_view')${codeSql}`)).first();
+
+    // 设备 / 地区
+    const devices = await bind(env.DB.prepare(
+      `SELECT COALESCE(NULLIF(device_type,''),'desconocido') device,
+       COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions
+       FROM events WHERE type IN ('enlaces_view','enlaces_click') AND ts>=? AND is_bot=0${codeSql}
+       GROUP BY device ORDER BY sessions DESC`)).all();
+    const regions = await bind(env.DB.prepare(
+      `SELECT COALESCE(NULLIF(city,''),'—') city, COALESCE(NULLIF(region,''),'') region,
+       COUNT(DISTINCT COALESCE(NULLIF(session_id,''),vid)) sessions
+       FROM events WHERE type IN ('enlaces_view','enlaces_click') AND ts>=? AND is_bot=0${codeSql}
+       GROUP BY city,region ORDER BY sessions DESC LIMIT 12`)).all();
+
+    // 每条活动短链的表现
+    const porLink = await bind(env.DB.prepare(
+      `SELECT COALESCE(NULLIF(code,''),'（直接访问）') link,
+       COUNT(DISTINCT CASE WHEN type='enlaces_view' THEN COALESCE(NULLIF(session_id,''),vid) END) visitas,
+       COUNT(DISTINCT CASE WHEN type='cupon_claim' THEN COALESCE(NULLIF(session_id,''),vid) END) cupones,
+       SUM(CASE WHEN type='enlaces_click' THEN 1 ELSE 0 END) clicks
+       FROM events WHERE ts>=? AND is_bot=0
+       AND type IN ('enlaces_view','enlaces_click','cupon_claim')${codeSql}
+       GROUP BY link ORDER BY visitas DESC LIMIT 20`)).all();
+
+    // 最近轨迹（含目标地址 category、城市、设备）
+    const recent = await bind(env.DB.prepare(
+      `SELECT ts, COALESCE(NULLIF(session_id,''),vid) sid, type, source_section, sku, code,
+       category destino, city, region, device_type, duration_ms
+       FROM events WHERE ts>=? AND is_bot=0
+       AND type IN ('enlaces_view','enlaces_click','cupon_view','cupon_claim')${codeSql}
+       ORDER BY ts DESC LIMIT 80`)).all();
 
     return json({ ok: true, days, code,
       visitas: (visitas || {}).sessions || 0,
+      avg_seconds: (visitas || {}).avg_seconds || 0,
       cupon: cupon || {},
       sections: sections.results || [],
       productos: productos.results || [],
+      devices: devices.results || [],
+      regions: regions.results || [],
+      por_link: porLink.results || [],
       recent: recent.results || [] });
   }
 

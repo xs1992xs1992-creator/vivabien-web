@@ -839,6 +839,36 @@ def marketing_page():
     cup_st = enl.get("cupon", {}) or {}
     vistos, reclam = cup_st.get("vistos", 0) or 0, cup_st.get("reclamados", 0) or 0
     tasa = f"{(reclam / vistos * 100):.0f}%" if vistos else "—"
+    avg_s = enl.get("avg_seconds", 0) or 0
+    dev_rows = "".join(
+        f'<tr><td>{esc(d.get("device","") or "—")}</td><td class="n">{d.get("sessions",0)}</td></tr>'
+        for d in enl.get("devices", []))
+    reg_rows = "".join(
+        f'<tr><td>{esc(r.get("city","") or "—")}'
+        + (f' <span style="color:#8a93a2">{esc(r.get("region",""))}</span>' if r.get("region") else "")
+        + f'</td><td class="n">{r.get("sessions",0)}</td></tr>'
+        for r in enl.get("regions", []))
+    link_rows = "".join(
+        f'<tr><td><code>{esc(l.get("link",""))}</code></td><td class="n">{l.get("visitas",0)}</td>'
+        f'<td class="n">{l.get("clicks",0)}</td><td class="n">{l.get("cupones",0)}</td></tr>'
+        for l in enl.get("por_link", []))
+    TYPE_NAME = {"enlaces_view": "打开页面", "enlaces_click": "点击",
+                 "cupon_view": "看到券", "cupon_claim": "领了券"}
+    rec_rows = ""
+    for e in enl.get("recent", [])[:40]:
+        ts = e.get("ts", 0)
+        when = time.strftime("%m-%d %H:%M", time.localtime(ts / 1000)) if ts else "—"
+        sec = SEC_NAME.get(e.get("source_section", ""), e.get("source_section", "") or "")
+        dest = (e.get("destino") or "")[:40]
+        who = (e.get("sid", "") or "")[-6:]
+        loc = e.get("city", "") or ""
+        rec_rows += (f'<tr><td style="white-space:nowrap">{when}</td>'
+                     f'<td><code>{esc(who)}</code></td>'
+                     f'<td>{esc(TYPE_NAME.get(e.get("type",""), e.get("type","")))}'
+                     + (f' · {esc(sec)}' if sec else "") + '</td>'
+                     f'<td style="font-size:11px;color:#68758a">{esc(dest)}</td>'
+                     f'<td style="font-size:11px">{esc(loc)}</td>'
+                     f'<td style="font-size:11px">{esc(e.get("device_type","") or "")}</td></tr>')
     enlaces_card = (
         '<h1 style="margin-top:26px">📣 推广落地页行为 <span class="sub">近30天 · /enlaces</span></h1>'
         '<div class="stats">'
@@ -846,6 +876,7 @@ def marketing_page():
         + stat(vistos, "看到优惠券")
         + stat(reclam, "领取优惠券")
         + stat(tasa, "领取率")
+        + stat(f"{avg_s:g}s" if avg_s else "—", "平均停留")
         + '</div>'
         '<div class="mk-grid"><div class="cardp"><b>客户点了哪里</b>'
         '<table style="margin-top:10px"><thead><tr><th>入口</th><th>点击</th><th>人数</th></tr></thead><tbody>'
@@ -854,6 +885,24 @@ def marketing_page():
         '<div class="cardp"><b>点了哪些商品</b>'
         '<table style="margin-top:10px"><thead><tr><th>商品</th><th>点击</th><th>人数</th></tr></thead><tbody>'
         + (prod_rows or '<tr><td colspan="3" class="empty">还没有数据</td></tr>')
+        + '</tbody></table></div></div>'
+        '<div class="mk-grid" style="margin-top:14px"><div class="cardp"><b>每条推广链接的表现</b>'
+        '<table style="margin-top:10px"><thead><tr><th>短码</th><th>打开</th><th>点击</th><th>领券</th></tr></thead><tbody>'
+        + (link_rows or '<tr><td colspan="4" class="empty">还没有数据</td></tr>')
+        + '</tbody></table></div>'
+        '<div class="cardp"><b>设备 / 城市</b>'
+        '<table style="margin-top:10px"><thead><tr><th>设备</th><th>人数</th></tr></thead><tbody>'
+        + (dev_rows or '<tr><td colspan="2" class="empty">—</td></tr>')
+        + '</tbody></table>'
+        '<table style="margin-top:10px"><thead><tr><th>城市</th><th>人数</th></tr></thead><tbody>'
+        + (reg_rows or '<tr><td colspan="2" class="empty">—</td></tr>')
+        + '</tbody></table></div></div>'
+        '<div class="cardp" style="margin-top:14px"><b>最近的客户轨迹</b>'
+        '<div class="funnel-note">同一个访客用后 6 位编号区分，可以看出一个人先点了什么、再点了什么。</div>'
+        '<div class="campaign-table"><table style="margin-top:10px"><thead><tr>'
+        '<th>时间</th><th>访客</th><th>动作</th><th>去了哪里</th><th>城市</th><th>设备</th>'
+        '</tr></thead><tbody>'
+        + (rec_rows or '<tr><td colspan="6" class="empty">还没有数据</td></tr>')
         + '</tbody></table></div></div>')
     inner = (f'{warn}<style>'
              '.mk-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;align-items:start}'

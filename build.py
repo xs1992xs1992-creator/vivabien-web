@@ -2379,7 +2379,7 @@ def enlaces_page(products):
         estilo = str(l.get("estilo", "")).strip()
         ext = ' target="_blank" rel="noopener"' if not url.startswith(site) else ""
         links += (f'<a class="lk-btn {esc(estilo)}" href="{esc(url)}"{ext} '
-                  f'onclick="lkTrack(\'{esc(estilo or "link")}\')">'
+                  f'onclick="lkTrack(\'{esc(estilo or "link")}\',\'\',\'{esc(url[:150])}\')">'
                   f'<span class="lk-ic">{esc(l.get("icono", "🔗"))}</span>'
                   f'<span class="lk-tx"><b>{esc(l.get("titulo", ""))}</b>'
                   f'<span>{esc(l.get("detalle", ""))}</span></span>'
@@ -2409,7 +2409,8 @@ def enlaces_page(products):
         href = p.get("url") or f'producto/{quote(p["handle"])}.html'
         tag = str(labels.get(p["sku"], "")).strip()
         tag_html = f'<span class="lk-tag">{esc(tag)}</span>' if tag else ""
-        cards += (f'<a class="lk-card" href="{esc(href)}" onclick="lkTrack(\'producto\',\'{esc(p["sku"])}\')">'
+        cards += (f'<a class="lk-card" href="{esc(href)}" '
+                  f'onclick="lkTrack(\'producto\',\'{esc(p["sku"])}\',\'{esc(p["title"][:80])}\')">'
                   f'<div class="lk-imgw">{tag_html}'
                   f'<img src="images/{esc(p["img"])}" alt="{esc(p["title"])}" loading="lazy" '
                   f'onerror="this.style.opacity=0"></div>'
@@ -2495,8 +2496,35 @@ def enlaces_page(products):
 </div>
 {cup_html}
 <script>
-function lkTrack(t,s){{try{{vbTrack('enlaces_click',s||'',{{source_section:t}})}}catch(e){{}}
- try{{fbq('track','Contact')}}catch(e){{}}}}
+// 落地页埋点：进页面记一次 + 每个出口记一次（含目标地址、停留时长、活动短链）
+(function(){{
+ var t0=Date.now();
+ function ctx(){{
+  var qs=new URLSearchParams(location.search);
+  return {{path:'/enlaces.html',
+   code:qs.get('c')||qs.get('code')||'',
+   duration_ms:Date.now()-t0,
+   utm_source:qs.get('utm_source')||'',utm_campaign:qs.get('utm_campaign')||''}};
+ }}
+ window.lkCtx=ctx;
+ try{{vbTrack('enlaces_view','',ctx())}}catch(e){{}}
+ // 页面关闭时补一条停留时长
+ addEventListener('pagehide',function(){{
+  try{{vbTrack('enlaces_view','',Object.assign(ctx(),{{source_section:'salida'}}))}}catch(e){{}}
+ }});
+}})();
+// t=入口类型  s=SKU  extra={{category:目标地址}}
+function lkTrack(t,s,dest){{
+ var d=Object.assign(window.lkCtx?window.lkCtx():{{}},{{source_section:t}});
+ if(dest)d.category=dest;
+ try{{vbTrack('enlaces_click',s||'',d)}}catch(e){{}}
+ try{{
+  if(t==='whatsapp'||t==='wa_cta')fbq('track','Contact',{{content_name:t}});
+  else if(t==='instagram')fbq('trackCustom','InstagramClick');
+  else if(t==='producto')fbq('track','ViewContent',{{content_ids:[s],content_type:'product'}});
+  else fbq('trackCustom','EnlacesClick',{{seccion:t}});
+ }}catch(e){{}}
+}}
 </script>"""
     return f"""<!DOCTYPE html>
 <html lang="es"><head>
