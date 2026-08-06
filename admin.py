@@ -16,6 +16,7 @@ from socketserver import ThreadingMixIn
 from urllib.parse import parse_qs, unquote, quote
 
 PORT     = int(os.environ.get("VIVABIEN_ADMIN_PORT", "8766"))
+PROC_START = time.time()          # 本次进程启动时间，用于「后台是不是刚崩过」自检
 CSV_PATH = "data/products.csv"
 IMG_DIR  = "images"
 
@@ -1558,6 +1559,108 @@ def _launchd_managed():
     except Exception:
         return False
 
+BOOT_LOG = os.path.expanduser("~/Library/Logs/VivaBien/shop-admin-boot.log")
+
+def record_boot():
+    """每次启动记一行。后台再'打不开'时，看这个文件就知道它什么时候掉过、掉了几次。"""
+    try:
+        os.makedirs(os.path.dirname(BOOT_LOG), exist_ok=True)
+        with open(BOOT_LOG, "a", encoding="utf-8") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')}  启动 pid={os.getpid()} port={PORT}\n")
+    except Exception:
+        pass
+
+def _boot_history(n=8):
+    try:
+        return open(BOOT_LOG, encoding="utf-8", errors="replace").read().splitlines()[-n:]
+    except Exception:
+        return []
+
+def _launchd_print():
+    """launchctl print 原文（含 state / last exit / KeepAlive / 日志路径），失败返回 ''"""
+    try:
+        r = subprocess.run(["launchctl", "print", f"gui/{os.getuid()}/{LAUNCH_LABEL}"],
+                           capture_output=True, text=True, timeout=6)
+        return r.stdout if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+def _fmt_dur(sec):
+    sec = int(max(0, sec)); d, sec = divmod(sec, 86400)
+    h, sec = divmod(sec, 3600); m, s = divmod(sec, 60)
+    if d: return f"{d} 天 {h} 小时 {m} 分"
+    if h: return f"{h} 小时 {m} 分"
+    return f"{m} 分 {s} 秒"
+
+def _log_paths(pr=""):
+    """从 launchctl print 里取标准输出/错误日志路径，取不到就用约定位置"""
+    paths = re.findall(r"std(?:out|err) path\s*=\s*(\S+)", pr)
+    paths.append(os.path.expanduser("~/Library/Logs/VivaBien/shop-admin-error.log"))
+    seen, out = set(), []
+    for p in paths:
+        if p not in seen and os.path.isfile(p):
+            seen.add(p); out.append(p)
+    return out
+
+def health_report():
+    """一键体检：后台活了多久、上次是怎么退出的、日志里报了什么、隧道通不通。
+    后台'打不开'时，这份报告能直接看出是进程崩了还是隧道断了。"""
+    L = ["🩺 后台健康自检", ""]
+    L.append(f"本次进程启动: {time.strftime('%m-%d %H:%M:%S', time.localtime(PROC_START))}"
+             f"（已连续运行 {_fmt_dur(time.time() - PROC_START)}）")
+    if time.time() - PROC_START < 600:
+        L.append("⚠️ 运行不到 10 分钟 —— 后台刚刚重启过（崩溃或手动重启），下面的退出码和日志能说明原因")
+
+    pr = _launchd_print()
+    if pr:
+        st  = re.search(r"state\s*=\s*(\S+)", pr)
+        ec  = re.search(r"last exit (?:code|status)\s*=\s*(\S+)", pr)
+        sig = re.search(r"last exit reason.*?=\s*(.+)", pr)
+        ka  = "KeepAlive" in pr or "keepalive" in pr
+        L.append(f"系统服务托管: 是（{LAUNCH_LABEL}）")
+        L.append(f"当前状态: {st.group(1) if st else '未知'}"
+                 f" · 上次退出码: {ec.group(1) if ec else '无记录'}"
+                 + (f" · {sig.group(1).strip()[:60]}" if sig else ""))
+        L.append(f"崩溃自动拉起(KeepAlive): {'开启 ✓' if ka else '⚠️ 未开启 —— 崩了不会自己起来'}")
+    else:
+        L.append("系统服务托管: 否 ⚠️ —— 后台不是常驻服务，关掉终端或崩溃后不会自动恢复")
+
+    hist = _boot_history()
+    if hist:
+        L.append("")
+        L.append(f"启动记录（最近 {len(hist)} 次）:")
+        L += ["  " + x for x in hist]
+
+    logs = _log_paths(pr)
+    if logs:
+        L.append(""); L.append("最近日志（末尾 12 行）:")
+        for lp in logs[:2]:
+            try:
+                tail = open(lp, encoding="utf-8", errors="replace").read().splitlines()[-12:]
+            except Exception as e:
+                tail = [f"(读取失败: {e})"]
+            L.append(f"— {os.path.basename(lp)} —")
+            L += ["  " + x[:160] for x in tail] or ["  (空)"]
+    else:
+        L.append(""); L.append("最近日志: 没找到日志文件（服务可能没配置日志输出）")
+
+    L.append("")
+    cfg = os.path.expanduser("~/.cloudflared/config.yml")
+    if os.path.isfile(cfg):
+        try:
+            txt = open(cfg, encoding="utf-8", errors="replace").read()
+        except Exception:
+            txt = ""
+        L.append(f"隧道配置含 shop-admin: {'是 ✓' if 'shop-admin' in txt else '⚠️ 否 —— 公网地址会打不开'}")
+    else:
+        L.append("隧道配置: 找不到 ~/.cloudflared/config.yml")
+    try:
+        r = subprocess.run(["pgrep", "-fl", "cloudflared"], capture_output=True, text=True, timeout=6)
+        L.append("cloudflared 进程: " + ("运行中 ✓" if r.stdout.strip() else "⚠️ 没在跑 —— 公网地址会打不开，本机 localhost:%d 仍可用" % PORT))
+    except Exception:
+        L.append("cloudflared 进程: 检测失败")
+    return "\n".join(L)
+
 def restart_admin():
     """后台自重启：LaunchAgent 托管时交给 launchd，否则自己拉起新进程。"""
     if _launchd_managed():
@@ -1757,7 +1860,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a href="/wallpaper-stats">墙纸广告</a>
 <a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button onclick="deployWorker(this)">⚡ 部署接口</button>
-<button onclick="envCheck(this)">🔎 环境自检</button>
+<button onclick="envCheck(this)">🩺 体检 · 环境自检</button>
 <button onclick="restartAdmin(this)">🔄 重启后台</button>
 </div>
 </div>
@@ -2490,7 +2593,12 @@ class H(BaseHTTPRequestHandler):
                 lines.append(f"Worker 待部署: {'是' if worker_needs_deploy() else '否（已是最新）'}")
                 lines.append("")
                 lines.append("PATH: " + cmd_env()["PATH"][:300])
+                lines.append("")
+                lines.append("─" * 28)
+                lines.append(health_report())
                 return self.send(200, "\n".join(lines))
+            if p == "/health":
+                return self.send(200, health_report())
             if p == "/deploy_worker":
                 ok, out = deploy_worker()
                 ver = re.search(r"Current Version ID:\s*(\S+)", out)
@@ -2554,6 +2662,7 @@ class H(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     if not os.path.isfile(CSV_PATH):
         print(f"❌ 找不到 {CSV_PATH}，请在 vivabien-web 目录里运行"); sys.exit(1)
+    record_boot()
     print(f"🛠️  商品管理后台已启动: http://localhost:{PORT}")
     print("   按 Ctrl+C 停止")
     if os.environ.get("VIVABIEN_NO_BROWSER") != "1":
