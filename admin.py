@@ -505,6 +505,18 @@ function mk(){
 function cp(t){navigator.clipboard.writeText(t);}
 function tog(code){fetch('/coupon_toggle',{method:'POST',headers:{'Content-Type':'application/json'},
  body:JSON.stringify({code:code})}).then(function(){location.reload()});}
+function welOn(code,vtxt,cond){
+ if(!confirm('把 '+code+' 设为落地页 /enlaces 的欢迎券？\n\n客人打开推广页会弹出「恭喜获得 '+vtxt+'」，\n点击后券码自动带进购物车。\n\n（改完要重新构建+发布才生效）'))return;
+ fetch('/coupon_welcome',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({code:code,valor_texto:vtxt,condicion:cond})})
+ .then(function(r){return r.json()}).then(function(d){
+  if(d.ok){alert('✅ 已设为落地页欢迎券\n\n下一步：回商品页点「🚀 发布」让它生效');location.reload()}
+  else alert('失败：'+(d.error||''))});
+}
+function welOff(){
+ if(!confirm('关闭落地页的优惠券弹窗？'))return;
+ fetch('/coupon_welcome_off',{method:'POST'}).then(function(){location.reload()});
+}
 </script>"""
 
 _STATS_JS = """<script>
@@ -563,15 +575,32 @@ def links_page():
 
 def coupons_page():
     data, err = worker_call("coupons")
+    social = {}
+    if os.path.isfile("data/social.json"):
+        try:
+            with open("data/social.json", encoding="utf-8") as f:
+                social = json.load(f).get("cupon", {}) or {}
+        except Exception:
+            social = {}
+    wel = (social.get("codigo") or "").strip().upper() if social.get("activo") else ""
     rows = ""
     for c in (data or {}).get("coupons", []):
         val = f'{c["value"]:g}%' if c["kind"] == "percent" else f'RD$ {c["value"]:,.0f}'
         act = bool(c.get("active"))
-        rows += (f'<tr><td><code>{esc(c["code"])}</code></td><td>{val}</td>'
+        code = esc(c["code"])
+        is_wel = c["code"].strip().upper() == wel
+        cond = (f'En compras desde RD${c.get("min_order"):,.0f}'
+                if c.get("min_order") else "Sin monto mínimo")
+        vtxt = (f'{c["value"]:g}% OFF' if c["kind"] == "percent" else f'RD${c["value"]:,.0f} OFF')
+        wel_btn = ('<span class="tag on" style="margin-left:6px">📣 落地页券</span>'
+                   '<button class="cp" onclick="welOff()">取消</button>' if is_wel else
+                   f'<button class="cp" onclick="welOn(\'{code}\',\'{esc(vtxt)}\',\'{esc(cond)}\')">设为落地页券</button>')
+        rows += (f'<tr><td><code>{code}</code>{" 📣" if is_wel else ""}</td><td>{val}</td>'
                  f'<td>{"百分比" if c["kind"]=="percent" else "固定金额"}</td>'
                  f'<td class="n">{c.get("used_count",0)}</td>'
                  f'<td><span class="tag {"on" if act else "off"}">{"启用" if act else "停用"}</span></td>'
-                 f'<td><button class="cp" onclick="tog(\'{esc(c["code"])}\')">{"停用" if act else "启用"}</button></td></tr>')
+                 f'<td><button class="cp" onclick="tog(\'{code}\')">{"停用" if act else "启用"}</button>'
+                 f'{wel_btn}</td></tr>')
     inner = (f'{_warn(err)}<h1>🎟️ 优惠券</h1>'
              '<div class="cardp"><div class="frm">'
              '<label>折扣方式</label>'
@@ -1990,6 +2019,40 @@ class H(BaseHTTPRequestHandler):
                 payload = json.loads(body.decode("utf-8") or "{}")
                 data, err = worker_call("coupon/toggle", "POST", payload)
                 return self.send(200, json.dumps(data or {"error": err}), "application/json")
+            if p == "/coupon_welcome":
+                # 把某张已存在的券设为 /enlaces 落地页的欢迎券弹窗
+                b = json.loads(body.decode("utf-8") or "{}")
+                code = (b.get("code") or "").strip().upper()
+                if not code:
+                    return self.send(400, json.dumps({"error": "缺少券码"}), "application/json")
+                path = "data/social.json"
+                cfg = {}
+                if os.path.isfile(path):
+                    with open(path, encoding="utf-8") as f:
+                        cfg = json.load(f)
+                cup = cfg.setdefault("cupon", {})
+                cup.update({
+                    "activo": True, "codigo": code,
+                    "valor_texto": b.get("valor_texto") or cup.get("valor_texto", ""),
+                    "condicion": b.get("condicion") or cup.get("condicion", ""),
+                    "nota_pie": b.get("nota_pie") or cup.get("nota_pie", ""),
+                })
+                cup.setdefault("titulo", "¡Felicidades!")
+                cup.setdefault("subtitulo", "Ganaste un cupón de bienvenida")
+                cup.setdefault("boton", "Usar mi cupón")
+                cup.setdefault("mostrar_una_vez", True)
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(cfg, f, ensure_ascii=False, indent=2)
+                return self.send(200, json.dumps({"ok": True, "code": code}), "application/json")
+            if p == "/coupon_welcome_off":
+                path = "data/social.json"
+                if os.path.isfile(path):
+                    with open(path, encoding="utf-8") as f:
+                        cfg = json.load(f)
+                    cfg.setdefault("cupon", {})["activo"] = False
+                    with open(path, "w", encoding="utf-8") as f:
+                        json.dump(cfg, f, ensure_ascii=False, indent=2)
+                return self.send(200, json.dumps({"ok": True}), "application/json")
             if p == "/campaign_create":
                 b = json.loads(body.decode("utf-8") or "{}")
                 value = float(b.get("value") or 0)

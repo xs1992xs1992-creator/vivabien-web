@@ -23,6 +23,7 @@ META_DOP_PER_USD = float(os.environ.get("VIVABIEN_META_DOP_PER_USD", "59.20"))
 REVIEWS_PATH = "data/reviews.json"
 FEATURED_PATH = "data/featured.json"
 HOME_PRIORITY_PATH = "data/home_priority.json"   # 首页商品网格优先展示的 SKU（运营可改）
+SOCIAL_PATH = "data/social.json"                 # 推广落地页 /enlaces.html 配置
 DETAIL_ROLLOUT_PATH = "data/product_detail_rollout.json"
 STORES_PATH = "data/stores.json"
 PANELS_PATH = "data/panels.json"
@@ -2298,6 +2299,202 @@ var io=new IntersectionObserver(function(es){if(es[0].isIntersecting&&all.length
             .replace("__CAT_SECTIONS__", "".join(cat_sections)).replace("__GROUP_OPTIONS__", group_options)
             .replace("__SUBS__", subs_json).replace("__BAG__", BAG_SVG))
 
+ENLACES_CSS = """
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:linear-gradient(180deg,#2563D9 0%,#1A47A6 42%,#F7F9FD 42%,#F7F9FD 100%);color:#16202E;min-height:100vh}
+a{text-decoration:none;color:inherit}img{display:block}
+.lk{max-width:520px;margin:0 auto;padding:30px 18px 46px}
+.lk-head{text-align:center;color:#fff;margin-bottom:22px}
+.lk-logo{width:76px;height:76px;border-radius:24px;background:#fff;color:#2563D9;font-weight:800;font-size:34px;display:flex;align-items:center;justify-content:center;margin:0 auto 13px;box-shadow:0 10px 30px rgba(10,25,60,.25)}
+.lk-head h1{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.lk-head p{font-size:13.5px;opacity:.92;margin-top:5px;font-weight:600}
+.lk-note{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:99px;padding:7px 15px;font-size:11.5px;font-weight:700;margin-top:13px}
+.lk-links{display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
+.lk-btn{display:flex;align-items:center;gap:13px;background:#fff;border-radius:17px;padding:15px 17px;box-shadow:0 8px 26px rgba(20,40,80,.13);transition:transform .13s}
+.lk-btn:active{transform:scale(.985)}
+.lk-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;background:#EAF0FB}
+.lk-btn.whatsapp .lk-ic{background:#E4F8EC}.lk-btn.instagram .lk-ic{background:#FDECF3}
+.lk-tx{min-width:0;flex:1}
+.lk-tx b{display:block;font-size:15px;font-weight:800;letter-spacing:-.01em}
+.lk-tx span{display:block;font-size:12px;color:#6B7688;font-weight:600;margin-top:2px}
+.lk-go{color:#B6C0D0;font-size:19px;font-weight:800;flex:none}
+.lk-btn.principal{background:#16202E;color:#fff}
+.lk-btn.principal .lk-ic{background:rgba(255,255,255,.14)}
+.lk-btn.principal .lk-tx span{color:#B9C4D6}.lk-btn.principal .lk-go{color:#6C7A90}
+.lk-sec-head{margin-bottom:12px}
+.lk-sec-head h2{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.lk-sec-head p{font-size:12.5px;color:#7C8798;font-weight:600;margin-top:3px}
+.lk-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(min-width:460px){.lk-grid{grid-template-columns:repeat(3,1fr)}}
+.lk-card{background:#fff;border:1px solid #EAEFF7;border-radius:15px;overflow:hidden;box-shadow:0 4px 14px rgba(20,40,80,.06)}
+.lk-card img{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}
+.lk-card .lk-nm{font-size:11.5px;font-weight:700;line-height:1.32;height:30px;overflow:hidden;padding:9px 10px 0}
+.lk-card .lk-pr{font-size:14px;font-weight:800;padding:4px 10px 11px}
+.lk-card .lk-pr small{display:block;font-size:10px;color:#8A93A2;font-weight:700;text-decoration:line-through}
+.lk-all{display:block;text-align:center;background:#fff;border:1.5px solid #D8E1F0;border-radius:15px;padding:14px;font-weight:800;font-size:13.5px;color:#2563D9;margin-top:13px}
+.lk-cta{text-align:center;background:#fff;border-radius:19px;padding:24px 18px;margin-top:24px;box-shadow:0 6px 20px rgba(20,40,80,.07)}
+.lk-cta b{font-size:15px;font-weight:800}
+.lk-cta a{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;font-weight:800;font-size:14.5px;padding:13px 26px;border-radius:99px;margin-top:13px}
+.lk-foot{text-align:center;font-size:11px;color:#98A2B3;margin-top:22px;line-height:1.7}
+/* 欢迎券弹窗 */
+.cp-mask{position:fixed;inset:0;background:rgba(10,20,40,.62);backdrop-filter:blur(3px);z-index:200;display:none;align-items:center;justify-content:center;padding:22px}
+.cp-mask.show{display:flex;animation:cpFade .22s ease}
+@keyframes cpFade{from{opacity:0}to{opacity:1}}
+.cp-box{position:relative;width:min(340px,92vw);background:linear-gradient(170deg,#FF6B4A,#E8482A 58%,#fff 58%,#fff 100%);border-radius:24px;padding:26px 22px 22px;text-align:center;box-shadow:0 26px 70px rgba(0,0,0,.4);animation:cpPop .34s cubic-bezier(.2,1.3,.4,1)}
+@keyframes cpPop{from{transform:scale(.72) translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.cp-x{position:absolute;top:11px;right:11px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;font-size:14px;cursor:pointer;line-height:1}
+.cp-emo{font-size:40px;line-height:1;animation:cpBounce 1.5s ease-in-out infinite}
+@keyframes cpBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.cp-box h3{color:#fff;font-size:22px;font-weight:800;margin:8px 0 3px;letter-spacing:-.02em}
+.cp-box .cp-sub{color:rgba(255,255,255,.94);font-size:12.5px;font-weight:600;margin-bottom:17px}
+.cp-ticket{background:#fff;border-radius:17px;padding:19px 16px 16px;box-shadow:0 10px 26px rgba(180,50,20,.22);position:relative}
+.cp-ticket:before,.cp-ticket:after{content:'';position:absolute;top:50%;width:17px;height:17px;background:#fff;border-radius:50%;transform:translateY(-50%)}
+.cp-ticket:before{left:-9px;box-shadow:inset -2px 0 3px rgba(0,0,0,.06)}
+.cp-ticket:after{right:-9px;box-shadow:inset 2px 0 3px rgba(0,0,0,.06)}
+.cp-val{font-size:40px;font-weight:800;color:#E8482A;letter-spacing:-.03em;line-height:1.05}
+.cp-cond{font-size:11.5px;color:#7C8798;font-weight:700;margin-top:5px}
+.cp-code{display:inline-block;margin-top:12px;background:#FFF3EF;border:1.5px dashed #FFB4A0;border-radius:10px;padding:8px 17px;font-size:15px;font-weight:800;letter-spacing:.09em;color:#E8482A}
+.cp-btn{display:block;width:100%;background:#16202E;color:#fff;border:0;border-radius:14px;padding:15px;font-size:15.5px;font-weight:800;cursor:pointer;margin-top:15px;font-family:inherit}
+.cp-btn:active{transform:scale(.985)}
+.cp-foot{font-size:11px;color:#98A2B3;font-weight:600;margin-top:10px}
+.cp-badge{position:fixed;right:15px;bottom:15px;z-index:190;display:none;align-items:center;gap:7px;background:#FF6B4A;color:#fff;font-size:12.5px;font-weight:800;padding:11px 16px;border-radius:99px;box-shadow:0 8px 24px rgba(232,72,42,.42);cursor:pointer;border:0;font-family:inherit}
+.cp-badge.show{display:flex}
+"""
+
+def enlaces_page(products):
+    """推广落地页（link-in-bio）：三个主入口 + 特色商品图片墙，图片直达商品页。"""
+    cfg = load_json(SOCIAL_PATH, {})
+    if not cfg:
+        return None
+    by_sku = {p["sku"]: p for p in products}
+    site = SITE_URL.rstrip("/")
+
+    links = ""
+    for l in cfg.get("enlaces", []):
+        url = str(l.get("url", "")).strip()
+        if not url:
+            continue
+        estilo = str(l.get("estilo", "")).strip()
+        ext = ' target="_blank" rel="noopener"' if not url.startswith(site) else ""
+        links += (f'<a class="lk-btn {esc(estilo)}" href="{esc(url)}"{ext} '
+                  f'onclick="lkTrack(\'{esc(estilo or "link")}\')">'
+                  f'<span class="lk-ic">{esc(l.get("icono", "🔗"))}</span>'
+                  f'<span class="lk-tx"><b>{esc(l.get("titulo", ""))}</b>'
+                  f'<span>{esc(l.get("detalle", ""))}</span></span>'
+                  f'<span class="lk-go">›</span></a>')
+
+    # 特色商品：先按配置的 SKU，缺的用首页优先位补齐
+    picks, seen = [], set()
+    for sku in cfg.get("destacados_skus", []):
+        p = by_sku.get(str(sku).strip())
+        if p and p["sku"] not in seen:
+            picks.append(p); seen.add(p["sku"])
+    if len(picks) < 6:
+        for p in products:
+            if len(picks) >= 6:
+                break
+            if p["sku"] not in seen and p["price"] is not None:
+                picks.append(p); seen.add(p["sku"])
+
+    cards = ""
+    for p in picks[:6]:
+        old = p.get("old_price")
+        price = (f'{fmt_price(p["price"])}'
+                 + (f'<small>{fmt_price(old)}</small>' if old and p["price"] and old > p["price"] else "")
+                 ) if p["price"] is not None else "Consultar"
+        href = p.get("url") or f'producto/{quote(p["handle"])}.html'
+        cards += (f'<a class="lk-card" href="{esc(href)}" onclick="lkTrack(\'producto\',\'{esc(p["sku"])}\')">'
+                  f'<img src="images/{esc(p["img"])}" alt="{esc(p["title"])}" loading="lazy" '
+                  f'onerror="this.style.opacity=0">'
+                  f'<div class="lk-nm">{esc(p["title"])}</div>'
+                  f'<div class="lk-pr">{price}</div></a>')
+
+    # 欢迎券弹窗：只有配置了真实券码才渲染（券码来自后台生成，绝不编造）
+    cup = cfg.get("cupon", {}) or {}
+    cup_html = ""
+    if cup.get("activo") and str(cup.get("codigo", "")).strip():
+        code = str(cup["codigo"]).strip().upper()
+        once = "1" if cup.get("mostrar_una_vez", True) else ""
+        cup_html = f"""
+<div class="cp-mask" id="cpMask" role="dialog" aria-modal="true" aria-label="Cupón de bienvenida">
+<div class="cp-box">
+<button class="cp-x" id="cpX" aria-label="Cerrar">✕</button>
+<div class="cp-emo">🎉</div>
+<h3>{esc(cup.get("titulo", "¡Felicidades!"))}</h3>
+<div class="cp-sub">{esc(cup.get("subtitulo", ""))}</div>
+<div class="cp-ticket">
+<div class="cp-val">{esc(cup.get("valor_texto", ""))}</div>
+{f'<div class="cp-cond">{esc(cup.get("condicion", ""))}</div>' if cup.get("condicion") else ""}
+<div class="cp-code">{esc(code)}</div>
+<button class="cp-btn" id="cpUse">{esc(cup.get("boton", "Usar mi cupón"))}</button>
+<div class="cp-foot">{esc(cup.get("nota_pie", ""))}</div>
+</div></div></div>
+<button class="cp-badge" id="cpBadge">🎁 Tu cupón {esc(cup.get("valor_texto", ""))}</button>
+<script>
+(function(){{
+ var CODE='{esc(code)}',ONCE={"true" if once else "false"},KEY='vb_enlaces_cupon';
+ var mask=document.getElementById('cpMask'),badge=document.getElementById('cpBadge');
+ function save(){{try{{localStorage.setItem('vb_campaign_coupon',CODE);
+   localStorage.setItem(KEY,'1')}}catch(e){{}}}}
+ function open_(){{mask.classList.add('show');document.body.style.overflow='hidden';
+   try{{vbTrack('cupon_view','',{{source_section:'enlaces',coupon:CODE}})}}catch(e){{}}}}
+ function close_(){{mask.classList.remove('show');document.body.style.overflow='';
+   badge.classList.add('show');save()}}
+ document.getElementById('cpX').onclick=close_;
+ mask.onclick=function(e){{if(e.target===mask)close_()}};
+ document.getElementById('cpUse').onclick=function(){{
+   save();
+   try{{navigator.clipboard&&navigator.clipboard.writeText(CODE)}}catch(e){{}}
+   try{{vbTrack('cupon_claim','',{{source_section:'enlaces',coupon:CODE}});
+     fbq('track','Lead',{{content_name:CODE}})}}catch(e){{}}
+   location.href='index.html?coupon='+encodeURIComponent(CODE);
+ }};
+ badge.onclick=open_;
+ var seen=false;try{{seen=ONCE&&localStorage.getItem(KEY)==='1'}}catch(e){{}}
+ if(seen){{badge.classList.add('show')}}else{{setTimeout(open_,900)}}
+}})();
+</script>"""
+
+    cta = cfg.get("cta_final", {})
+    body = f"""<div class="lk">
+<div class="lk-head">
+<div class="lk-logo">{esc(str(cfg.get("titulo", SITE_NAME))[:1])}</div>
+<h1>{esc(cfg.get("titulo", SITE_NAME))}</h1>
+<p>{esc(cfg.get("lema", ""))}</p>
+{f'<div class="lk-note">{esc(cfg.get("aviso", ""))}</div>' if cfg.get("aviso") else ""}
+</div>
+<div class="lk-links">{links}</div>
+<div class="lk-sec-head"><h2>{esc(cfg.get("destacados_titulo", "Lo más nuevo"))}</h2>
+<p>{esc(cfg.get("destacados_subtitulo", ""))}</p></div>
+<div class="lk-grid">{cards}</div>
+<a class="lk-all" href="index.html" onclick="lkTrack('ver_todo')">Ver todos los productos →</a>
+<div class="lk-cta"><b>{esc(cta.get("texto", "¿Buscas algo? Escríbenos"))}</b><br>
+<a href="https://wa.me/{WHATSAPP}" target="_blank" rel="noopener" onclick="lkTrack('wa_cta')">
+{WA_SVG} {esc(cta.get("boton", "Escribir por WhatsApp"))}</a></div>
+<div class="lk-foot">© {esc(SITE_NAME)} · RNC: 132888855<br>Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro</div>
+</div>
+{cup_html}
+<script>
+function lkTrack(t,s){{try{{vbTrack('enlaces_click',s||'',{{source_section:t}})}}catch(e){{}}
+ try{{fbq('track','Contact')}}catch(e){{}}}}
+</script>"""
+    return f"""<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{esc(cfg.get("titulo", SITE_NAME))} — Enlaces</title>
+<meta name="description" content="{esc(cfg.get("lema", ""))[:150]}">
+<link rel="canonical" href="{site}/enlaces.html">
+<meta property="og:title" content="{esc(cfg.get("titulo", SITE_NAME))}">
+<meta property="og:description" content="{esc(cfg.get("lema", ""))[:150]}">
+<meta property="og:type" content="website">
+{FONT}
+<style>{ENLACES_CSS}</style>
+{pixel()}
+{TRACK_JS}
+</head><body>
+{body}
+</body></html>"""
+
 def build():
     products = load_products()
     detail_rollout = load_json(DETAIL_ROLLOUT_PATH, {})
@@ -2348,6 +2545,24 @@ def build():
     with open(f"{OUT_DIR}/products-index.json", "w", encoding="utf-8") as f:
         json.dump(index_products, f, ensure_ascii=False, separators=(",", ":"))
     cards = [product_card(p) for p in products[:24]]
+
+    # ---- 推广落地页 /enlaces.html（link-in-bio）----
+    _enl_products = list(products)
+    _adh = load_json(ADHESIVE_PANEL_PATH, {})
+    if _adh.get("sku") and not any(p["sku"] == _adh["sku"] for p in _enl_products):
+        _c0 = (_adh.get("colors") or [{}])[0]
+        _enl_products.append({
+            "sku": _adh["sku"], "handle": _adh.get("handle", "panel-autoadhesivo"),
+            "title": _adh.get("short_name") or _adh.get("name", ""),
+            "price": _adh.get("price"), "old_price": _adh.get("old_price"),
+            "img": _c0.get("image") or _adh.get("image", ""),
+            "url": "panel-autoadhesivo.html", "group": "Hogar", "sub": "Paneles",
+        })
+    enlaces = enlaces_page(_enl_products)
+    if enlaces:
+        with open(f"{OUT_DIR}/enlaces.html", "w", encoding="utf-8") as f:
+            f.write(enlaces)
+        print(f"✅ 推广落地页: {OUT_DIR}/enlaces.html")
 
     # ---- 专题合集 ----
     by_sku = {p["sku"]: p for p in products}

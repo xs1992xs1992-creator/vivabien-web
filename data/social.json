@@ -1,0 +1,55 @@
+{
+  "_nota": "推广落地页 /enlaces.html 的配置。改这里再构建即可，不用改代码。",
+  "titulo": "VivaBien",
+  "lema": "Tu tienda online en República Dominicana",
+  "aviso": "🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo",
+  "enlaces": [
+    {
+      "icono": "🛍️",
+      "titulo": "Ver la tienda online",
+      "detalle": "Más de 1,000 productos con entrega rápida",
+      "url": "https://vivabien.xyz/",
+      "estilo": "principal"
+    },
+    {
+      "icono": "📢",
+      "titulo": "Canal de WhatsApp",
+      "detalle": "Ofertas y productos nuevos primero",
+      "url": "https://whatsapp.com/channel/0029Vb85HKV23n3icmPegE09",
+      "estilo": "whatsapp"
+    },
+    {
+      "icono": "📸",
+      "titulo": "Instagram",
+      "detalle": "@asiafactoryplus",
+      "url": "https://www.instagram.com/asiafactoryplus",
+      "estilo": "instagram"
+    }
+  ],
+  "destacados_titulo": "Lo más nuevo",
+  "destacados_subtitulo": "Toca cualquier producto para verlo en la tienda",
+  "destacados_skus": [
+    "VBD53AFA9D",
+    "VBFFED96B4",
+    "VB59D5443D",
+    "LC050-BEDSIDE-3C",
+    "VB-ROLL-001",
+    "LC050-CORNER-2C"
+  ],
+  "cta_final": {
+    "texto": "¿Buscas algo en específico? Escríbenos",
+    "boton": "Escribir por WhatsApp"
+  },
+  "cupon": {
+    "_nota": "落地页欢迎券弹窗。codigo 必须是后台『🎟️ 优惠券』页生成的真实券码，否则客人结算时会提示无效。activo=false 则不弹窗。",
+    "activo": true,
+    "codigo": "BIENVENIDA100",
+    "titulo": "¡Felicidades!",
+    "subtitulo": "Ganaste un cupón de bienvenida",
+    "valor_texto": "RD$100 OFF",
+    "condicion": "En compras desde RD$1,000",
+    "boton": "Usar mi cupón",
+    "nota_pie": "Válido por 15 días · Se aplica solo en tu carrito",
+    "mostrar_una_vez": true
+  }
+}
