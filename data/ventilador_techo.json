@@ -152,21 +152,20 @@
     "distribucion": [
       ["5 ★", 86], ["4 ★", 12], ["3 ★", 1], ["2 ★", 0.5], ["1 ★", 0.5]
     ],
-    "_nota_lista": "真实买家评价（店主提供）。原文基本保留，只做了两处处理：补重音；第 2 条原文里的 'gracias Temu' 已删（不能在自己店里感谢竞争对手）。nombre 留空会显示 'Cliente verificado'；有真实买家名字就填进去。",
+    "_nota_lista": "真实买家评价（店主提供）。原文基本保留，只做了两处处理：补重音；第 2 条原文里的 'gracias Temu' 已删（不能在自己店里感谢竞争对手）。nombre 留空会显示 'Cliente verificado'；有真实买家名字就填进去。foto = 该买家的实拍图，和评价文字并排显示；留空则只显示文字。",
     "lista": [
       { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "foto": "ventilador/cliente-01.jpg",
+        "foto_alt": "Foto de cliente: abanico encendido en la habitación",
         "texto": "Excelente producto, me encantó, 10/10. Sí es muy bueno, con este calor no se puede dormir y por fin pude dormir fresca y sin estar sudando. Y lo mejor: no suena nada." },
       { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "foto": "ventilador/cliente-03.jpg",
+        "foto_alt": "Foto de cliente: abanico encendido de noche",
         "texto": "Está buenísimo, genial, lo recomiendo ampliamente. La verdad superó mis expectativas, ¡está excelente! Muy buena compra." },
       { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "foto": "ventilador/cliente-02.jpg",
+        "foto_alt": "Foto de cliente: abanico instalado en el techo",
         "texto": "Es excelente, este artículo funciona súper. Le doy un 10 de 10." }
-    ],
-    "_nota_fotos": "买家实拍图，显示在评价区上方。",
-    "fotos_titulo": "Fotos de clientes",
-    "fotos": [
-      { "archivo": "ventilador/cliente-01.jpg", "alt": "Foto de cliente: abanico encendido en la habitación" },
-      { "archivo": "ventilador/cliente-02.jpg", "alt": "Foto de cliente: abanico instalado en el techo" },
-      { "archivo": "ventilador/cliente-03.jpg", "alt": "Foto de cliente: abanico encendido de noche" }
     ]
   },
 

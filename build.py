@@ -2699,12 +2699,12 @@ VENTILADOR_CSS = """
 /* 详情图：整幅堆叠，手机上占满宽度 */
 .vt-det{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .vt-det img{width:100%;border-radius:var(--vt-r);box-shadow:var(--vt-sh-sm);background:#fff}
-/* 买家实拍 */
-.vt-fotos{margin:0 0 24px}
-.vt-fotos>b{display:block;font-size:14px;font-weight:800;margin-bottom:10px;color:var(--vt-dark)}
-.vt-fotos-g{display:flex;gap:10px;flex-wrap:wrap}
-.vt-fotos-g img{width:112px;height:112px;object-fit:cover;border-radius:var(--vt-r-sm);
- border:1px solid var(--vt-bd);background:#fff}
+/* 评价卡里的买家实拍：图文并排 */
+.vt-rc-b{display:flex;gap:13px;align-items:flex-start}
+.vt-rc-b>div{min-width:0}
+/* 选择器要比上面的 .vt img{height:auto} 更具体，否则高度不生效 */
+.vt img.vt-rc-img{width:104px;height:104px;object-fit:cover;border-radius:var(--vt-r-sm);
+ border:1px solid var(--vt-bd);background:#f2f4f8;flex-shrink:0}
 .vt-faq{max-width:700px;margin:0 auto}
 .vt-fq{border-bottom:1px solid var(--vt-bd)}
 .vt-fq-q{padding:15px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
@@ -2837,22 +2837,18 @@ def ventilador_page(products=None):
         f'<div class="vt-rbar"><span>{esc(l)}</span><u><i style="width:{float(v)}%"></i></u>'
         f'<b>{float(v):g}%</b></div>'
         for l, v in (rs.get("distribucion") or []))
-    rcards = "".join(
-        f'<article class="vt-rc"><div class="vt-rc-h"><div class="vt-av">{esc(r.get("inicial") or "·")}</div>'
-        f'<div><b>{esc(r.get("nombre") or "Cliente verificado")}</b>'
-        f'<span>{esc(r.get("fecha") or "Compra verificada")}</span></div></div>'
-        f'<i>{"★" * int(r.get("estrellas") or 5)}</i><p>{esc(r.get("texto") or "")}</p></article>'
-        for r in (rs.get("lista") or []) if isinstance(r, dict))
+    def _rcard(r):
+        foto = str(r.get("foto") or "").lstrip("/")
+        img = (f'<img class="vt-rc-img" src="../images/{esc(foto)}" '
+               f'alt="{esc(r.get("foto_alt") or "Foto de cliente")}" loading="lazy">') if foto else ""
+        return (f'<article class="vt-rc"><div class="vt-rc-h">'
+                f'<div class="vt-av">{esc(r.get("inicial") or "·")}</div>'
+                f'<div><b>{esc(r.get("nombre") or "Cliente verificado")}</b>'
+                f'<span>{esc(r.get("fecha") or "Compra verificada")}</span></div></div>'
+                f'<div class="vt-rc-b">{img}<div><i>{"★" * int(r.get("estrellas") or 5)}</i>'
+                f'<p>{esc(r.get("texto") or "")}</p></div></div></article>')
 
-    # 买家实拍图（评价区上方）
-    fotos = [f for f in (rs.get("fotos") or []) if isinstance(f, dict) and f.get("archivo")]
-    fotos_html = ""
-    if fotos:
-        fotos_html = (f'<div class="vt-fotos"><b>{esc(rs.get("fotos_titulo") or "Fotos de clientes")}</b>'
-                      '<div class="vt-fotos-g">' + "".join(
-                          f'<img src="../images/{esc(str(f["archivo"]).lstrip("/"))}" '
-                          f'alt="{esc(f.get("alt") or "Foto de cliente")}" loading="lazy">'
-                          for f in fotos) + '</div></div>')
+    rcards = "".join(_rcard(r) for r in (rs.get("lista") or []) if isinstance(r, dict))
 
     # 详情图（整幅堆叠展示）
     det = [d for d in (cfg.get("imagenes_detalle") or []) if isinstance(d, dict) and d.get("archivo")]
@@ -2990,6 +2986,8 @@ def ventilador_page(products=None):
  </div>
 </div></section>
 
+{det_html}
+
 {f'<section class="vt-feat"><div class="vt-feat-in">{feats}</div></section>' if feats else ''}
 
 {f'''<section class="vt-sec"><div class="vt-sec-in">
@@ -2997,8 +2995,6 @@ def ventilador_page(products=None):
 <div class="vt-cards">{cards}</div></div></section>''' if cards else ''}
 
 {cmp_html}
-
-{det_html}
 
 {f'''<section class="vt-sec"><div class="vt-sec-in">
 <div class="vt-sh"><em>Ficha técnica</em><h2>Especificaciones</h2></div>
@@ -3009,7 +3005,6 @@ def ventilador_page(products=None):
 <div class="vt-rsum"><div class="vt-rnum"><b>{prom:g}</b><i>{stars}</i>
  <span>{esc(rs.get("total_texto") or "")} reseñas</span></div>
  <div class="vt-rbars">{bars}</div></div>
-{fotos_html}
 <div class="vt-rgrid">{rcards}</div></div></section>''' if rcards else ''}
 
 {f'''<section class="vt-sec"><div class="vt-sec-in">
