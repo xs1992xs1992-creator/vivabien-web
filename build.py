@@ -2543,6 +2543,518 @@ function lkTrack(t,s,dest){{
 {body}
 </body></html>"""
 
+# ============ 吸顶风扇（E27）站内商品详情页 ============
+# 唯一配置源: data/ventilador_techo.json，页面不写死任何文案/价格/图片。
+VENTILADOR_PATH = "data/ventilador_techo.json"
+
+VENTILADOR_CSS = """
+.vt *,.vt *::before,.vt *::after{box-sizing:border-box}
+.vt{--vt-blue-deep:#173a6b;--vt-blue:#2563D9;--vt-blue-lt:#e9f0fd;--vt-blue-glow:#4dabf7;
+ --vt-orange:#FF6B4A;--vt-orange-dk:#e2502f;--vt-green:#157A4E;--vt-dark:#16202E;--vt-mid:#5a6577;
+ --vt-light:#8a93a2;--vt-gray:#F7F9FD;--vt-bd:#E5EAF2;--vt-sh-sm:0 2px 8px rgba(22,32,46,.07);
+ --vt-sh-md:0 4px 20px rgba(22,32,46,.11);--vt-r:14px;--vt-r-sm:9px;--vt-t:.25s cubic-bezier(.4,0,.2,1);
+ color:var(--vt-dark);line-height:1.6}
+.vt img{display:block;max-width:100%;height:auto}
+.vt ul{list-style:none;margin:0;padding:0}
+.vt h1,.vt h2,.vt h3,.vt h4{margin:0}
+.vt-band{background:linear-gradient(90deg,var(--vt-orange),var(--vt-orange-dk));color:#fff;text-align:center;
+ padding:9px 16px;font-size:13px;font-weight:600;letter-spacing:.2px}
+.vt-band span{margin:0 10px;display:inline-block}
+.vt-hero{background:linear-gradient(135deg,var(--vt-blue-lt) 0%,#f2f7ff 50%,#fff 100%);padding:28px 20px 46px}
+.vt-hero-in{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.vt-gal{position:sticky;top:78px}
+.vt-gal-main{width:100%;aspect-ratio:1;background:#fff;border-radius:var(--vt-r);overflow:hidden;
+ box-shadow:var(--vt-sh-md);position:relative}
+.vt-gal-main img{width:100%;height:100%;object-fit:cover}
+.vt-tag-off{position:absolute;top:14px;left:14px;background:var(--vt-orange);color:#fff;padding:6px 13px;
+ border-radius:20px;font-size:13px;font-weight:800;box-shadow:0 2px 8px rgba(255,107,74,.4)}
+.vt-thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.vt-thumb{width:68px;height:68px;border-radius:var(--vt-r-sm);overflow:hidden;cursor:pointer;
+ border:2px solid transparent;transition:var(--vt-t);flex-shrink:0;padding:0;background:none}
+.vt-thumb img{width:100%;height:100%;object-fit:cover}
+.vt-thumb.on,.vt-thumb:hover{border-color:var(--vt-blue)}
+.vt-crumb{font-size:13px;color:var(--vt-light);margin-bottom:8px}
+.vt-crumb a{color:var(--vt-light);text-decoration:none}
+.vt-crumb a:hover{color:var(--vt-blue)}
+.vt-title{font-size:24px;font-weight:800;line-height:1.3;margin-bottom:10px}
+.vt-sub{font-size:14px;color:var(--vt-mid);margin-bottom:14px}
+.vt-rate{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;font-size:14px;color:var(--vt-mid)}
+.vt-stars{color:#ffc107;font-size:16px;letter-spacing:1px}
+.vt-rate b{color:var(--vt-blue-deep);font-size:17px}
+.vt-sold{color:var(--vt-light)}
+.vt-pbox{background:#fff;border-radius:var(--vt-r);padding:18px;margin-bottom:18px;box-shadow:var(--vt-sh-sm);
+ border:1px solid var(--vt-bd)}
+.vt-prow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.vt-price{font-size:34px;font-weight:800;color:var(--vt-orange);line-height:1}
+.vt-was{font-size:16px;color:var(--vt-light);text-decoration:line-through}
+.vt-off{background:var(--vt-orange);color:#fff;padding:3px 9px;border-radius:5px;font-size:12px;font-weight:700}
+.vt-pmeta{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;font-size:12px;color:var(--vt-mid)}
+.vt-pmeta b{color:var(--vt-green)}
+.vt-blk{margin-bottom:16px}
+.vt-lab{font-size:14px;font-weight:700;margin-bottom:8px}
+.vt-pills{display:flex;gap:10px;flex-wrap:wrap}
+.vt-pill{padding:11px 16px;border:2px solid var(--vt-bd);border-radius:var(--vt-r-sm);cursor:pointer;
+ font-size:14px;font-weight:600;transition:var(--vt-t);background:#fff;text-align:center;min-width:112px;position:relative}
+.vt-pill:hover{border-color:var(--vt-blue-glow)}
+.vt-pill.on{border-color:var(--vt-blue);background:var(--vt-blue-lt);color:var(--vt-blue)}
+.vt-pill i{display:block;font-size:17px;font-weight:800;color:var(--vt-orange);margin-top:4px;font-style:normal}
+.vt-pill s{display:block;font-size:11px;color:var(--vt-green);margin-top:2px;text-decoration:none}
+.vt-pill em{position:absolute;top:-10px;right:-6px;background:var(--vt-orange);color:#fff;font-size:10px;
+ font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;font-style:normal}
+.vt-color{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--vt-gray);
+ border-radius:var(--vt-r-sm);border:1px solid var(--vt-bd);font-size:14px;font-weight:600}
+.vt-sw{width:30px;height:30px;border-radius:50%;background:#f7f7f2;border:2px solid var(--vt-bd);flex-shrink:0}
+.vt-qty{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.vt-qc{display:flex;align-items:center;border:2px solid var(--vt-bd);border-radius:var(--vt-r-sm);overflow:hidden}
+.vt-qb{width:36px;height:36px;border:none;background:var(--vt-gray);font-size:18px;cursor:pointer;
+ display:flex;align-items:center;justify-content:center}
+.vt-qb:hover{background:var(--vt-blue-lt)}
+.vt-qi{width:46px;height:36px;text-align:center;border:none;font-size:15px;font-weight:700;outline:none}
+.vt-stock{font-size:13px;color:var(--vt-orange);font-weight:600}
+.vt-units{font-size:12px;color:var(--vt-light);margin-bottom:16px}
+.vt-cta{display:flex;gap:10px;margin-bottom:18px}
+.vt-btn{flex:1;padding:14px 18px;border:none;border-radius:var(--vt-r);font-size:15px;font-weight:800;
+ cursor:pointer;transition:var(--vt-t);text-align:center;display:flex;align-items:center;justify-content:center;
+ gap:7px;text-decoration:none;font-family:inherit}
+.vt-btn-cart{background:var(--vt-blue-lt);color:var(--vt-blue);border:2px solid var(--vt-blue)}
+.vt-btn-cart:hover{background:var(--vt-blue);color:#fff}
+.vt-btn-buy{background:linear-gradient(135deg,var(--vt-orange),var(--vt-orange-dk));color:#fff;
+ box-shadow:0 4px 15px rgba(255,107,74,.35)}
+.vt-btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,74,.45)}
+.vt-btn-wa{width:52px;flex:none;background:#fff;border:2px solid #25D366;color:#128C4A;font-size:20px}
+.vt-btn-wa:hover{background:#25D366;color:#fff}
+.vt-trust{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;background:#fff;
+ border-radius:var(--vt-r);box-shadow:var(--vt-sh-sm)}
+.vt-tb{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px}
+.vt-tb i{width:38px;height:38px;border-radius:50%;background:var(--vt-blue-lt);display:flex;
+ align-items:center;justify-content:center;font-size:18px;font-style:normal}
+.vt-tb span{font-size:11px;color:var(--vt-mid);font-weight:600;line-height:1.35}
+.vt-tb b{display:block;color:var(--vt-dark)}
+.vt-feat{background:var(--vt-blue-deep);padding:36px 20px;color:#fff}
+.vt-feat-in{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.vt-fc{text-align:center;padding:6px}
+.vt-fc i{width:54px;height:54px;margin:0 auto 11px;background:rgba(255,255,255,.13);border-radius:50%;
+ display:flex;align-items:center;justify-content:center;font-size:25px;font-style:normal;transition:var(--vt-t)}
+.vt-fc:hover i{background:rgba(255,255,255,.22);transform:scale(1.08)}
+.vt-fc b{font-size:16px;font-weight:800;display:block;margin-bottom:5px}
+.vt-fc span{font-size:13px;color:rgba(255,255,255,.82);line-height:1.45;max-width:220px;margin:0 auto;display:block}
+.vt-sec{padding:48px 20px}
+.vt-sec.alt{background:#fff}
+.vt-sec-in{max-width:1000px;margin:0 auto}
+.vt-sh{text-align:center;margin-bottom:30px}
+.vt-sh em{display:inline-block;background:var(--vt-orange);color:#fff;padding:4px 13px;border-radius:20px;
+ font-size:12px;font-weight:700;margin-bottom:10px;font-style:normal}
+.vt-sh h2{font-size:25px;font-weight:800}
+.vt-sh p{font-size:14px;color:var(--vt-light);margin-top:5px}
+.vt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.vt-card{background:#fff;border:1px solid var(--vt-bd);border-radius:var(--vt-r);padding:22px;
+ box-shadow:var(--vt-sh-sm);transition:var(--vt-t)}
+.vt-card:hover{box-shadow:var(--vt-sh-md);transform:translateY(-3px)}
+.vt-card em{display:inline-block;background:var(--vt-blue-lt);color:var(--vt-blue);padding:4px 11px;
+ border-radius:20px;font-size:12px;font-weight:700;margin-bottom:10px;font-style:normal}
+.vt-card h3{font-size:19px;font-weight:800;margin-bottom:8px;line-height:1.3}
+.vt-card>p{font-size:14px;color:var(--vt-mid);margin-bottom:13px;line-height:1.55}
+.vt-card li{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;font-size:13.5px}
+.vt-card li b{color:var(--vt-green);flex-shrink:0}
+.vt-hl{margin-top:14px;background:linear-gradient(135deg,var(--vt-blue-lt),#f2f7ff);border-radius:var(--vt-r-sm);
+ padding:13px 16px;border-left:4px solid var(--vt-blue)}
+.vt-hl b{font-size:26px;font-weight:800;color:var(--vt-blue);line-height:1;display:block}
+.vt-hl span{font-size:12.5px;color:var(--vt-mid);display:block;margin-top:3px}
+.vt-tbl{width:100%;border-collapse:collapse;border-radius:var(--vt-r);overflow:hidden;box-shadow:var(--vt-sh-sm);background:#fff}
+.vt-tbl th,.vt-tbl td{padding:13px 16px;text-align:center;border-bottom:1px solid var(--vt-bd);font-size:13.5px}
+.vt-tbl th{background:var(--vt-blue-deep);color:#fff;font-weight:700}
+.vt-tbl th.hi{background:var(--vt-blue)}
+.vt-tbl td{color:var(--vt-mid)}
+.vt-tbl td:first-child{text-align:left;font-weight:700;color:var(--vt-dark)}
+.vt-tbl td.hi{background:var(--vt-blue-lt);font-weight:700;color:var(--vt-blue-deep)}
+.vt-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-radius:var(--vt-r);overflow:hidden;
+ box-shadow:var(--vt-sh-sm);background:#fff}
+.vt-spc{padding:24px}
+.vt-spc h3{font-size:15px;font-weight:800;color:var(--vt-blue-deep);margin-bottom:14px;padding-bottom:9px;
+ border-bottom:2px solid var(--vt-blue-lt)}
+.vt-spc div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--vt-bd);font-size:13px}
+.vt-spc div:last-child{border-bottom:none}
+.vt-spc span{color:var(--vt-light)}
+.vt-spc b{color:var(--vt-dark);font-weight:600;text-align:right}
+.vt-rsum{display:flex;align-items:center;gap:36px;margin-bottom:28px;justify-content:center;flex-wrap:wrap}
+.vt-rnum{text-align:center}
+.vt-rnum b{font-size:52px;font-weight:800;color:var(--vt-orange);line-height:1;display:block}
+.vt-rnum i{color:#ffc107;font-size:18px;margin:5px 0;display:block;font-style:normal}
+.vt-rnum span{font-size:13px;color:var(--vt-light)}
+.vt-rbars{flex:1;min-width:270px;max-width:350px}
+.vt-rbar{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.vt-rbar span{font-size:12px;color:var(--vt-mid);width:40px}
+.vt-rbar u{flex:1;height:6px;background:#e3e8f0;border-radius:3px;overflow:hidden;text-decoration:none;display:block}
+.vt-rbar u i{display:block;height:100%;background:var(--vt-orange);border-radius:3px}
+.vt-rbar b{font-size:12px;color:var(--vt-light);width:38px;text-align:right;font-weight:500}
+.vt-rgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.vt-rc{background:#fff;border-radius:var(--vt-r);padding:18px;box-shadow:var(--vt-sh-sm);border:1px solid var(--vt-bd)}
+.vt-rc-h{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.vt-av{width:36px;height:36px;border-radius:50%;background:var(--vt-blue-lt);display:flex;align-items:center;
+ justify-content:center;font-size:15px;font-weight:800;color:var(--vt-blue);flex-shrink:0}
+.vt-rc-h b{font-size:13px;font-weight:700;display:block}
+.vt-rc-h span{font-size:11px;color:var(--vt-light)}
+.vt-rc i{color:#ffc107;font-size:13px;display:block;margin-bottom:7px;font-style:normal}
+.vt-rc p{font-size:13px;color:var(--vt-mid);line-height:1.55}
+.vt-faq{max-width:700px;margin:0 auto}
+.vt-fq{border-bottom:1px solid var(--vt-bd)}
+.vt-fq-q{padding:15px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+ font-size:15px;font-weight:700;gap:14px;transition:var(--vt-t);background:none;border:none;width:100%;
+ text-align:left;font-family:inherit;color:inherit}
+.vt-fq-q:hover{color:var(--vt-blue)}
+.vt-fq-q i{font-size:18px;color:var(--vt-blue);transition:var(--vt-t);font-style:normal;flex-shrink:0}
+.vt-fq-q.on i{transform:rotate(45deg)}
+.vt-fq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.vt-fq-a.on{max-height:340px}
+.vt-fq-a p{font-size:13.5px;color:var(--vt-mid);line-height:1.65;padding:0 0 15px}
+.vt-sticky{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(22,32,46,.12);
+ z-index:90;transform:translateY(105%);transition:transform .35s ease;padding:10px 18px;
+ padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+.vt-sticky.on{transform:translateY(0)}
+.vt-sticky-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.vt-sp{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.vt-sp img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+.vt-sp b{font-size:13px;font-weight:700;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vt-sp span{font-size:16px;font-weight:800;color:var(--vt-orange)}
+.vt-sp del{font-size:12px;color:var(--vt-light);font-weight:400;margin-left:5px}
+.vt-sticky .vt-btn{flex:none;padding:12px 20px;font-size:14px}
+.vt-rel{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.vt-rel a{background:#fff;border:1px solid var(--vt-bd);border-radius:var(--vt-r);overflow:hidden;
+ text-decoration:none;color:inherit;transition:var(--vt-t);display:block}
+.vt-rel a:hover{box-shadow:var(--vt-sh-md);transform:translateY(-3px)}
+.vt-rel img{width:100%;aspect-ratio:1;object-fit:cover;background:#f2f4f8}
+.vt-rel div{padding:10px 12px 13px}
+.vt-rel b{font-size:13px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;
+ -webkit-box-orient:vertical;overflow:hidden}
+.vt-rel span{font-size:15px;font-weight:800;color:var(--vt-orange);display:block;margin-top:6px}
+.vt-toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:rgba(22,32,46,.92);color:#fff;
+ padding:12px 26px;border-radius:30px;font-size:14px;font-weight:600;z-index:9999;opacity:0;
+ transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.vt-toast.on{opacity:1}
+/* 入场动画：默认可见，滚到视口才播放。JS 失效时内容照样显示，不会白屏 */
+.vt-fade.on{animation:vtIn .6s ease both}
+@keyframes vtIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.vt-fade.on{animation:none}}
+@media(max-width:900px){
+ .vt-hero-in{grid-template-columns:1fr;gap:24px}
+ .vt-gal{position:static}
+ .vt-cards{grid-template-columns:1fr}
+ .vt-feat-in{grid-template-columns:repeat(2,1fr);gap:18px}
+ .vt-rgrid{grid-template-columns:1fr}
+ .vt-specs{grid-template-columns:1fr}
+ .vt-title{font-size:20px}
+ .vt-trust{grid-template-columns:repeat(2,1fr)}
+ .vt-sp{display:none}
+ .vt-rel{grid-template-columns:repeat(2,1fr)}
+ .vt-pills{flex-direction:column}
+ .vt-pill{min-width:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left}
+ .vt-pill i{margin-top:0}
+ .vt-sticky .vt-btn{flex:1}
+}
+@media(max-width:500px){
+ .vt-feat-in{grid-template-columns:1fr}
+ .vt-trust{grid-template-columns:repeat(2,1fr)}
+ .vt-cta{flex-wrap:wrap}
+ .vt-btn-wa{width:100%;order:3}
+}
+"""
+
+
+def ventilador_page(products=None):
+    """吸顶风扇 E27 站内商品详情页。内容全部来自 data/ventilador_techo.json。"""
+    cfg = load_json(VENTILADOR_PATH, {})
+    if not isinstance(cfg, dict) or not cfg.get("activo") or not cfg.get("sku"):
+        return ""
+    sku = str(cfg["sku"]).strip()
+    handle = str(cfg.get("handle") or "abanico-de-techo-led").strip()
+    titulo = str(cfg.get("titulo") or "").strip()
+    corto = str(cfg.get("titulo_corto") or titulo).strip()
+    precio = float(cfg.get("precio") or 0)
+    antes = float(cfg.get("precio_antes") or 0)
+    if not titulo or precio <= 0:
+        return ""
+
+    imgs = [i for i in (cfg.get("imagenes") or []) if isinstance(i, dict) and i.get("archivo")]
+    if not imgs:
+        return ""
+    main_img = str(imgs[0]["archivo"]).lstrip("/")
+
+    paquetes = [p for p in (cfg.get("paquetes") or []) if isinstance(p, dict) and p.get("precio")]
+    if not paquetes:
+        paquetes = [{"unidades": 1, "precio": precio, "etiqueta": "x1 Unidad", "ahorro": 0}]
+
+    wa_url = (f"https://wa.me/{WHATSAPP}?text=" +
+              quote(f"Hola, quiero información sobre: {corto} ({sku})."))
+
+    # ---- 顶部滚动条 ----
+    avisos = [str(a) for a in (cfg.get("aviso_superior") or []) if str(a).strip()]
+    cd = int(cfg.get("cuenta_regresiva_segundos") or 0)
+    band_bits = []
+    for i, a in enumerate(avisos):
+        txt = esc(a)
+        if cd and "quedan" in a.lower():
+            txt += ' <b id="vtCd">--:--:--</b>'
+        band_bits.append(f"<span>{txt}</span>")
+    band = f'<div class="vt-band">{"·".join(band_bits)}</div>' if band_bits else ""
+
+    # ---- 相册 ----
+    thumbs = "".join(
+        f'<button class="vt-thumb{" on" if i == 0 else ""}" type="button" '
+        f'onclick="vtImg(this,\'{esc(str(im["archivo"]).lstrip("/"))}\')">'
+        f'<img src="../images/{esc(str(im["archivo"]).lstrip("/"))}" '
+        f'alt="{esc(im.get("alt") or corto)}" loading="lazy"></button>'
+        for i, im in enumerate(imgs)) if len(imgs) > 1 else ""
+    off_tag = (f'<span class="vt-tag-off">{esc(cfg.get("descuento_texto") or "")}</span>'
+               if cfg.get("descuento_texto") else "")
+
+    # ---- 套餐 ----
+    pills = ""
+    for i, p in enumerate(paquetes):
+        u = int(p.get("unidades") or 1)
+        pr = float(p["precio"])
+        ah = float(p.get("ahorro") or 0)
+        pills += (f'<button class="vt-pill{" on" if i == 0 else ""}" type="button" data-u="{u}" '
+                  f'data-p="{pr:g}" onclick="vtPack(this)">{esc(p.get("etiqueta") or f"x{u}")}'
+                  f'<i>{fmt_price(pr)}</i>'
+                  + (f'<s>Ahorras {fmt_price(ah)}</s>' if ah > 0 else "")
+                  + (f'<em>{esc(p.get("insignia"))}</em>' if p.get("insignia") else "")
+                  + '</button>')
+
+    # ---- 评价 ----
+    rs = cfg.get("resenas") or {}
+    prom = float(rs.get("promedio") or 0)
+    stars = "★" * int(round(prom)) + "☆" * (5 - int(round(prom))) if prom else ""
+    bars = "".join(
+        f'<div class="vt-rbar"><span>{esc(l)}</span><u><i style="width:{float(v)}%"></i></u>'
+        f'<b>{float(v):g}%</b></div>'
+        for l, v in (rs.get("distribucion") or []))
+    rcards = "".join(
+        f'<article class="vt-rc"><div class="vt-rc-h"><div class="vt-av">{esc(r.get("inicial") or "·")}</div>'
+        f'<div><b>{esc(r.get("nombre") or "")}</b><span>{esc(r.get("fecha") or "")}</span></div></div>'
+        f'<i>{"★" * int(r.get("estrellas") or 5)}</i><p>{esc(r.get("texto") or "")}</p></article>'
+        for r in (rs.get("lista") or []) if isinstance(r, dict))
+
+    # ---- 卖点 / 说明卡 / 对比 / 参数 / FAQ ----
+    feats = "".join(
+        f'<div class="vt-fc"><i>{esc(b.get("icono") or "•")}</i><b>{esc(b.get("titulo") or "")}</b>'
+        f'<span>{esc(b.get("texto") or "")}</span></div>'
+        for b in (cfg.get("beneficios") or []) if isinstance(b, dict))
+
+    cards = ""
+    for s in (cfg.get("secciones") or []):
+        if not isinstance(s, dict):
+            continue
+        pts = "".join(f'<li><b>✓</b><span>{esc(x)}</span></li>' for x in (s.get("puntos") or []))
+        hl = ""
+        if s.get("destaque_titulo"):
+            hl = (f'<div class="vt-hl"><b>{esc(s["destaque_titulo"])}</b>'
+                  f'<span>{esc(s.get("destaque_texto") or "")}</span></div>')
+        cards += (f'<article class="vt-card vt-fade">'
+                  + (f'<em>{esc(s.get("etiqueta"))}</em>' if s.get("etiqueta") else "")
+                  + f'<h3>{esc(s.get("titulo") or "")}</h3>'
+                  + (f'<p>{esc(s.get("texto"))}</p>' if s.get("texto") else "")
+                  + (f'<ul>{pts}</ul>' if pts else "") + hl + '</article>')
+
+    cmp_cfg = cfg.get("comparacion") or {}
+    cmp_html = ""
+    if cmp_cfg.get("filas"):
+        rows = "".join(
+            f'<tr><td>{esc(a)}</td><td class="hi">{esc(b)}</td><td>{esc(c)}</td></tr>'
+            for a, b, c in cmp_cfg["filas"])
+        cmp_html = f"""<section class="vt-sec alt"><div class="vt-sec-in">
+<div class="vt-sh"><em>Comparación</em><h2>{esc(cmp_cfg.get("titulo") or "")}</h2></div>
+<table class="vt-tbl"><thead><tr><th>Característica</th>
+<th class="hi">{esc(cmp_cfg.get("columna_nuestro") or "")}</th>
+<th>{esc(cmp_cfg.get("columna_otro") or "")}</th></tr></thead><tbody>{rows}</tbody></table>
+</div></section>"""
+
+    specs = "".join(
+        f'<div class="vt-spc"><h3>{esc(g.get("grupo") or "")}</h3>'
+        + "".join(f'<div><span>{esc(k)}</span><b>{esc(v)}</b></div>' for k, v in (g.get("datos") or []))
+        + '</div>'
+        for g in (cfg.get("ficha_tecnica") or []) if isinstance(g, dict))
+
+    faqs = "".join(
+        f'<div class="vt-fq"><button class="vt-fq-q" type="button" onclick="vtFaq(this)">'
+        f'<span>{esc(f.get("p") or "")}</span><i>+</i></button>'
+        f'<div class="vt-fq-a"><p>{esc(f.get("r") or "")}</p></div></div>'
+        for f in (cfg.get("faq") or []) if isinstance(f, dict))
+
+    trust = "".join(
+        f'<div class="vt-tb"><i>{esc(g.get("icono") or "✔")}</i>'
+        f'<span><b>{esc(g.get("titulo") or "")}</b>{esc(g.get("texto") or "")}</span></div>'
+        for g in (cfg.get("garantias") or []) if isinstance(g, dict))
+
+    # ---- 同类商品（站内真实商品，价格直接取自 CSV）----
+    rel_html = ""
+    rel = []
+    for p in (products or []):
+        t = (p.get("title") or "").lower()
+        if ("abanico" in t or "ventilador" in t) and p.get("price"):
+            rel.append(p)
+    # 优先推同类（吊扇/吸顶扇），再按价格接近本商品排序，避免只推几十块的小手持扇
+    rel = sorted(rel, key=lambda x: (0 if "techo" in (x.get("title") or "").lower() else 1,
+                                     abs(x["price"] - precio)))[:4]
+    if rel:
+        rel_html = ('<section class="vt-sec"><div class="vt-sec-in">'
+                    '<div class="vt-sh"><em>También te puede servir</em><h2>Otros abanicos en la tienda</h2></div>'
+                    '<div class="vt-rel">' + "".join(
+                        f'<a href="{esc(quote(p["handle"]))}"><img src="../images/{esc(quote(p["img"]))}" '
+                        f'alt="{esc(p["title"])}" loading="lazy">'
+                        f'<div><b>{esc(p["title"])}</b><span>{fmt_price(p["price"])}</span></div></a>'
+                        for p in rel) + '</div></div></section>')
+
+    product_json = json.dumps({
+        "sku": sku, "handle": handle, "title": corto, "img": main_img,
+        "price": precio,
+    }, ensure_ascii=False).replace("</", "<\\/")
+
+    body = f"""{header("../")}
+<div class="vt">
+{band}
+<section class="vt-hero"><div class="vt-hero-in">
+ <div class="vt-gal">
+  <div class="vt-gal-main"><img id="vtMain" src="../images/{esc(main_img)}"
+    alt="{esc(imgs[0].get("alt") or corto)}">{off_tag}</div>
+  {f'<div class="vt-thumbs">{thumbs}</div>' if thumbs else ''}
+ </div>
+ <div>
+  <div class="vt-crumb"><a href="../">Inicio</a> / {esc(cfg.get("categoria") or "")}</div>
+  <h1 class="vt-title">{esc(titulo)}</h1>
+  <p class="vt-sub">{esc(cfg.get("subtitulo") or "")}</p>
+  <div class="vt-rate"><span class="vt-stars">{stars}</span>
+   <span><b>{prom:g}</b> ({esc(rs.get("total_texto") or "")}+ reseñas)</span>
+   <span class="vt-sold">Vendidos: {esc(rs.get("total_texto") or "")}+</span></div>
+
+  <div class="vt-pbox">
+   <div class="vt-prow"><span class="vt-price">RD$ <span id="vtPrice">{precio:,.0f}</span></span>
+    {f'<span class="vt-was">{fmt_price(antes)}</span>' if antes > precio else ''}
+    {f'<span class="vt-off">{esc(cfg.get("descuento_texto"))}</span>' if cfg.get("descuento_texto") else ''}</div>
+   <div class="vt-pmeta"><span>✅ <b>Pago contra entrega</b> en el Gran Santo Domingo</span>
+    <span>✅ <b>Garantía de 7 días</b></span></div>
+  </div>
+
+  <div class="vt-blk"><div class="vt-lab">Color: {esc(cfg.get("color") or "")}</div>
+   <div class="vt-color"><span class="vt-sw"></span>{esc(cfg.get("color_nota") or cfg.get("color") or "")}</div></div>
+
+  <div class="vt-blk"><div class="vt-lab">Cantidad:</div><div class="vt-pills">{pills}</div></div>
+
+  <div class="vt-qty"><span class="vt-lab" style="margin:0">Llevar:</span>
+   <div class="vt-qc"><button class="vt-qb" type="button" onclick="vtQty(-1)" aria-label="Menos">−</button>
+    <input class="vt-qi" id="vtQty" type="number" value="1" min="1" max="99" onchange="vtSync()">
+    <button class="vt-qb" type="button" onclick="vtQty(1)" aria-label="Más">+</button></div>
+   {f'<span class="vt-stock">{esc(cfg.get("existencias_texto"))}</span>' if cfg.get("existencias_texto") else ''}
+  </div>
+  <div class="vt-units" id="vtUnits"></div>
+
+  <div class="vt-cta">
+   <button class="vt-btn vt-btn-cart" type="button" onclick="vtAdd(0)">🛒 Agregar al carrito</button>
+   <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">⚡ Comprar ahora</button>
+   <a class="vt-btn vt-btn-wa" href="{esc(wa_url)}" target="_blank" rel="noopener"
+      aria-label="Preguntar por WhatsApp" onclick="try{{vbTrack('whatsapp','{esc(sku)}')}}catch(e){{}}">💬</a>
+  </div>
+
+  <div class="vt-trust">{trust}</div>
+ </div>
+</div></section>
+
+{f'<section class="vt-feat"><div class="vt-feat-in">{feats}</div></section>' if feats else ''}
+
+{f'''<section class="vt-sec"><div class="vt-sec-in">
+<div class="vt-sh"><em>El producto</em><h2>Por dentro y por fuera</h2></div>
+<div class="vt-cards">{cards}</div></div></section>''' if cards else ''}
+
+{cmp_html}
+
+{f'''<section class="vt-sec"><div class="vt-sec-in">
+<div class="vt-sh"><em>Ficha técnica</em><h2>Especificaciones</h2></div>
+<div class="vt-specs">{specs}</div></div></section>''' if specs else ''}
+
+{f'''<section class="vt-sec alt"><div class="vt-sec-in">
+<div class="vt-sh"><em>Reseñas</em><h2>{esc(rs.get("subtitulo") or "")}</h2></div>
+<div class="vt-rsum"><div class="vt-rnum"><b>{prom:g}</b><i>{stars}</i>
+ <span>{esc(rs.get("total_texto") or "")} reseñas</span></div>
+ <div class="vt-rbars">{bars}</div></div>
+<div class="vt-rgrid">{rcards}</div></div></section>''' if rcards else ''}
+
+{f'''<section class="vt-sec"><div class="vt-sec-in">
+<div class="vt-sh"><em>FAQ</em><h2>Preguntas frecuentes</h2></div>
+<div class="vt-faq">{faqs}</div></div></section>''' if faqs else ''}
+
+{rel_html}
+
+<div class="vt-sticky" id="vtSticky"><div class="vt-sticky-in">
+ <div class="vt-sp"><img src="../images/{esc(main_img)}" alt="{esc(corto)}">
+  <div><b>{esc(corto)}</b><span>RD$ <span id="vtPrice2">{precio:,.0f}</span></span>
+   {f'<del>{fmt_price(antes)}</del>' if antes > precio else ''}</div></div>
+ <div style="display:flex;gap:10px;flex:1;justify-content:flex-end">
+  <button class="vt-btn vt-btn-cart" type="button" onclick="vtAdd(0)">Agregar</button>
+  <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">Comprar ahora</button></div>
+</div></div>
+</div>
+<script>
+var VT={product_json},vtU=1,vtP={precio:g};
+function vtFmt(n){{return Number(n).toLocaleString('en-US')}}
+function vtImg(b,src){{document.querySelectorAll('.vt-thumb').forEach(function(t){{t.classList.remove('on')}});
+ b.classList.add('on');document.getElementById('vtMain').src='../images/'+src;
+ try{{vbTrack('gallery_view',VT.sku,{{img:src}})}}catch(e){{}}}}
+function vtPack(b){{document.querySelectorAll('.vt-pill').forEach(function(p){{p.classList.remove('on')}});
+ b.classList.add('on');vtU=parseInt(b.dataset.u);vtP=parseFloat(b.dataset.p);
+ document.getElementById('vtPrice').textContent=vtFmt(vtP);
+ document.getElementById('vtPrice2').textContent=vtFmt(vtP);
+ vtSync();try{{vbTrack('tier_select',VT.sku,{{units:vtU,price:vtP}})}}catch(e){{}}}}
+function vtQty(d){{var i=document.getElementById('vtQty');var v=parseInt(i.value||1)+d;
+ i.value=v<1?1:(v>99?99:v);vtSync();
+ try{{vbTrack('quantity_change',VT.sku,{{qty:parseInt(i.value)}})}}catch(e){{}}}}
+function vtSync(){{var q=parseInt(document.getElementById('vtQty').value||1);
+ var el=document.getElementById('vtUnits');
+ el.textContent=(vtU>1||q>1)?('Total: '+(vtU*q)+' unidades · RD$ '+vtFmt(vtP*q)):'';}}
+function vtToast(m){{var t=document.createElement('div');t.className='vt-toast';t.textContent=m;
+ document.body.appendChild(t);setTimeout(function(){{t.classList.add('on')}},10);
+ setTimeout(function(){{t.classList.remove('on');setTimeout(function(){{t.remove()}},320)}},1900)}}
+function vtAdd(buy){{
+ var q=parseInt(document.getElementById('vtQty').value||1);
+ var sku=vtU>1?(VT.sku+'-P'+vtU):VT.sku;
+ var title=vtU>1?(VT.title+' (paquete de '+vtU+')'):VT.title;
+ var c=vbCart(),f=c.find(function(x){{return x.sku===sku}});
+ if(f){{f.qty+=q}}else{{c.push({{sku:sku,handle:VT.handle,title:title,price:vtP,img:VT.img,qty:q}})}}
+ vbSave(c);
+ try{{fbq('track','AddToCart',{{content_ids:[sku],content_type:'product',value:vtP*q,currency:'DOP'}})}}catch(e){{}}
+ try{{vbTrack('addcart',sku,{{qty:q,price:vtP,units:vtU*q,product_title:title,product_img:VT.img,
+  cart_total:c.reduce(function(a,x){{return a+x.price*x.qty}},0)}})}}catch(e){{}}
+ if(buy){{try{{fbq('track','InitiateCheckout',{{value:vtP*q,currency:'DOP'}})}}catch(e){{}}
+  location.href='../carrito';return}}
+ vtToast('✅ Agregado al carrito');
+}}
+function vtFaq(q){{var a=q.nextElementSibling,open=q.classList.contains('on');
+ document.querySelectorAll('.vt-fq-q').forEach(function(x){{x.classList.remove('on');
+  x.nextElementSibling.classList.remove('on')}});
+ if(!open){{q.classList.add('on');a.classList.add('on');
+  try{{vbTrack('review_open',VT.sku,{{pregunta:q.textContent.trim().slice(0,60)}})}}catch(e){{}}}}}}
+addEventListener('scroll',function(){{
+ var h=document.querySelector('.vt-hero');if(!h)return;
+ document.getElementById('vtSticky').classList.toggle('on',scrollY>h.offsetHeight+150)}});
+(function(){{var o=new IntersectionObserver(function(es){{es.forEach(function(e){{
+ if(e.isIntersecting)e.target.classList.add('on')}})}},{{threshold:.12}});
+ document.querySelectorAll('.vt-fade').forEach(function(el){{o.observe(el)}});}})();
+{f'''(function(){{var el=document.getElementById('vtCd');if(!el)return;var t={cd};
+ setInterval(function(){{t--;if(t<0)t={cd};
+  el.textContent=String(Math.floor(t/3600)).padStart(2,'0')+':'+
+   String(Math.floor(t%3600/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')}},1000)}})();''' if cd else ''}
+vtSync();
+</script>"""
+
+    return page(f"{corto} | {SITE_NAME}", body,
+                pixel_extra=(f"fbq('track','ViewContent',{{content_ids:['{sku}'],content_type:'product',"
+                             f"value:{precio:g},currency:'DOP'}});"),
+                desc=str(cfg.get("subtitulo") or titulo)[:160],
+                track_sku=sku, track_category=str(cfg.get("categoria") or ""),
+                track_title=corto, track_img=main_img,
+                extra_head=f"<style>{VENTILADOR_CSS}</style>",
+                canonical=public_url(f"producto/{handle}.html"),
+                og_image=public_url(f"images/{main_img}"), rel="../")
+
+
 def build():
     products = load_products()
     detail_rollout = load_json(DETAIL_ROLLOUT_PATH, {})
@@ -2590,6 +3102,23 @@ def build():
             "available": p["available"],
             "q": snorm(f"{title} panel pared paneles decorativos panel ranurado lambrin liston ZT {p['sku']}"),
         })
+    # 吸顶风扇专页也进搜索索引，让站内搜索/分类能找到它（页面本身由 ventilador_page 生成）
+    _vt = load_json(VENTILADOR_PATH, {})
+    if _vt.get("activo") and _vt.get("sku") and _vt.get("precio"):
+        _vt_img = ((_vt.get("imagenes") or [{}])[0].get("archivo") or "").lstrip("/")
+        index_products.append({
+            "i": len(index_products), "sku": _vt["sku"],
+            "handle": _vt.get("handle", "abanico-de-techo-led"),
+            "url": f'producto/{quote(_vt.get("handle", "abanico-de-techo-led"))}.html',
+            "title": _vt.get("titulo_corto") or _vt.get("titulo", ""),
+            "price": float(_vt["precio"]), "img": _vt_img,
+            "group": "Cocina y Electrohogar", "sub": "Climatización",
+            "old_price": (float(_vt["precio_antes"]) if _vt.get("precio_antes") else None),
+            "label": _vt.get("descuento_texto", ""), "available": True,
+            "q": snorm(f'{_vt.get("titulo","")} {_vt.get("subtitulo","")} abanico ventilador de techo '
+                       f'luz led lampara control remoto E27 climatizacion {_vt["sku"]}'),
+        })
+
     with open(f"{OUT_DIR}/products-index.json", "w", encoding="utf-8") as f:
         json.dump(index_products, f, ensure_ascii=False, separators=(",", ":"))
     cards = [product_card(p) for p in products[:24]]
@@ -2667,6 +3196,15 @@ def build():
         with open(f"{OUT_DIR}/producto/panel-decorativo.html", "w", encoding="utf-8") as f:
             f.write(panel_detail_html)
         print(f"✅ 格栅板多 SKU 详情: {OUT_DIR}/producto/panel-decorativo.html")
+
+    # ---- 吸顶风扇 E27 商品详情页 ----
+    ventilador_html = ventilador_page(products)
+    if ventilador_html:
+        _vt_handle = str(load_json(VENTILADOR_PATH, {}).get("handle") or "abanico-de-techo-led")
+        os.makedirs(f"{OUT_DIR}/producto", exist_ok=True)
+        with open(f"{OUT_DIR}/producto/{_vt_handle}.html", "w", encoding="utf-8") as f:
+            f.write(ventilador_html)
+        print(f"✅ 吸顶风扇详情页: {OUT_DIR}/producto/{_vt_handle}.html")
 
     # ---- 卷装自粘格栅贴面投流落地页 ----
     adhesive_panel_html = adhesive_panel_page()
@@ -2963,6 +3501,8 @@ function detailQty(delta){{
         sitemap_urls.append(public_url("producto/panel-decorativo.html"))
     if adhesive_panel_html:
         sitemap_urls.append(public_url("panel-autoadhesivo.html"))
+    if ventilador_html:
+        sitemap_urls.append(public_url(f"producto/{_vt_handle}.html"))
     sitemap_urls += category_urls
     sitemap_urls += [public_url(f"coleccion/{c['slug']}.html") for c in collections
                      if not c.get("landing") and
