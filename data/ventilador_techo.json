@@ -59,7 +59,7 @@
   "beneficios": [
     { "icono": "🔇", "titulo": "Motor silencioso",    "texto": "Funciona desde 30 dB — no molesta a la hora de dormir" },
     { "icono": "💡", "titulo": "Luz LED 3 tonos",     "texto": "Cálido / neutro / frío — se cambia con el control remoto" },
-    { "icono": "💨", "titulo": "6 velocidades",       "texto": "Desde brisa suave hasta ventilación máxima" },
+    { "icono": "💨", "titulo": "3 velocidades",       "texto": "Desde brisa suave hasta ventilación máxima" },
     { "icono": "🔩", "titulo": "Instalación fácil",   "texto": "Rosca E27 — se enrosca en el mismo bombillo, sin electricista" }
   ],
 
@@ -79,11 +79,11 @@
     {
       "etiqueta": "Tecnología DC",
       "titulo": "Silencioso y de bajo consumo",
-      "texto": "Motor DC de bajo consumo. 6 velocidades con control remoto y temporizador de hasta 4 horas.",
+      "texto": "Motor de bajo consumo. 3 velocidades con control remoto y apagado programado a 1 o 2 horas.",
       "puntos": [
-        "6 velocidades — de brisa suave a potencia máxima",
+        "3 velocidades — de brisa suave a potencia máxima",
         "Función reversible: verano (refresca) / invierno (calienta)",
-        "Temporizador programable de 1 a 4 horas"
+        "Brillo regulable de 5% a 100% desde el control remoto"
       ],
       "destaque_titulo": "30 dB",
       "destaque_texto": "Nivel de ruido mínimo — ideal para dormir"
@@ -109,11 +109,11 @@
     "filas": [
       ["Motor",             "DC silencioso",  "AC estándar"],
       ["Nivel de ruido",    "30-45 dB",       "55-65 dB"],
-      ["Velocidades",       "6 niveles",      "3 niveles"],
+      ["Brillo regulable",  "✓ 5-100%",       "✗"],
       ["Luz LED",           "✓ 3 tonos",      "✗"],
       ["Control remoto",    "✓ incluido",     "✗"],
       ["Reversible",        "✓",              "✗"],
-      ["Temporizador",      "✓ 1-4 h",        "✗"],
+      ["Apagado programado","✓ 1 y 2 h",      "✗"],
       ["Instalación",       "Rosca E27",      "Requiere cableado"]
     ]
   },
@@ -122,7 +122,7 @@
     { "grupo": "Motor y ventilación", "datos": [
       ["Tipo de motor", "DC (corriente continua)"],
       ["Potencia", "30W"],
-      ["Velocidades", "6 niveles"],
+      ["Velocidades", "3 niveles"],
       ["Ruido", "30-45 dB"],
       ["Reversible", "Sí (verano/invierno)"],
       ["Aspas", "6 aspas de ABS"]
