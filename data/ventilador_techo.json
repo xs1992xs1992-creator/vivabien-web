@@ -33,8 +33,10 @@
     "Envíos a todo el país · Garantía de 7 días"
   ],
 
+  "_nota_imagenes": "原稿里 3 张不重复的图都在这里了：01 是真实产品照；02 是从第二张 Temu 横幅里裁出来的产品图（已裁掉 Temu logo 和 Temu 价格）。第三张横幅裁出来的图与 01 是同一张，不重复放。想加图直接往数组里加一行即可。",
   "imagenes": [
-    { "archivo": "ventilador/abanico-e27-01.jpg", "alt": "Abanico de techo con luz LED y control remoto instalado en el techo" }
+    { "archivo": "ventilador/abanico-e27-01.jpg", "alt": "Abanico de techo con luz LED y control remoto instalado en el techo" },
+    { "archivo": "ventilador/abanico-e27-02.jpg", "alt": "Abanico de techo con luz LED encendido en una sala, con control remoto" }
   ],
 
   "video": {
