@@ -2696,6 +2696,15 @@ VENTILADOR_CSS = """
 .vt-rc-h span{font-size:11px;color:var(--vt-light)}
 .vt-rc i{color:#ffc107;font-size:13px;display:block;margin-bottom:7px;font-style:normal}
 .vt-rc p{font-size:13px;color:var(--vt-mid);line-height:1.55}
+/* 详情图：整幅堆叠，手机上占满宽度 */
+.vt-det{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.vt-det img{width:100%;border-radius:var(--vt-r);box-shadow:var(--vt-sh-sm);background:#fff}
+/* 买家实拍 */
+.vt-fotos{margin:0 0 24px}
+.vt-fotos>b{display:block;font-size:14px;font-weight:800;margin-bottom:10px;color:var(--vt-dark)}
+.vt-fotos-g{display:flex;gap:10px;flex-wrap:wrap}
+.vt-fotos-g img{width:112px;height:112px;object-fit:cover;border-radius:var(--vt-r-sm);
+ border:1px solid var(--vt-bd);background:#fff}
 .vt-faq{max-width:700px;margin:0 auto}
 .vt-fq{border-bottom:1px solid var(--vt-bd)}
 .vt-fq-q{padding:15px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
@@ -2830,9 +2839,32 @@ def ventilador_page(products=None):
         for l, v in (rs.get("distribucion") or []))
     rcards = "".join(
         f'<article class="vt-rc"><div class="vt-rc-h"><div class="vt-av">{esc(r.get("inicial") or "·")}</div>'
-        f'<div><b>{esc(r.get("nombre") or "")}</b><span>{esc(r.get("fecha") or "")}</span></div></div>'
+        f'<div><b>{esc(r.get("nombre") or "Cliente verificado")}</b>'
+        f'<span>{esc(r.get("fecha") or "Compra verificada")}</span></div></div>'
         f'<i>{"★" * int(r.get("estrellas") or 5)}</i><p>{esc(r.get("texto") or "")}</p></article>'
         for r in (rs.get("lista") or []) if isinstance(r, dict))
+
+    # 买家实拍图（评价区上方）
+    fotos = [f for f in (rs.get("fotos") or []) if isinstance(f, dict) and f.get("archivo")]
+    fotos_html = ""
+    if fotos:
+        fotos_html = (f'<div class="vt-fotos"><b>{esc(rs.get("fotos_titulo") or "Fotos de clientes")}</b>'
+                      '<div class="vt-fotos-g">' + "".join(
+                          f'<img src="../images/{esc(str(f["archivo"]).lstrip("/"))}" '
+                          f'alt="{esc(f.get("alt") or "Foto de cliente")}" loading="lazy">'
+                          for f in fotos) + '</div></div>')
+
+    # 详情图（整幅堆叠展示）
+    det = [d for d in (cfg.get("imagenes_detalle") or []) if isinstance(d, dict) and d.get("archivo")]
+    det_html = ""
+    if det:
+        det_html = (f'<section class="vt-sec alt"><div class="vt-sec-in">'
+                    f'<div class="vt-sh"><em>Detalles</em>'
+                    f'<h2>{esc(cfg.get("detalle_titulo") or "Detalles del producto")}</h2></div>'
+                    '<div class="vt-det">' + "".join(
+                        f'<img src="../images/{esc(str(d["archivo"]).lstrip("/"))}" '
+                        f'alt="{esc(d.get("alt") or corto)}" loading="lazy">'
+                        for d in det) + '</div></div></section>')
 
     # ---- 卖点 / 说明卡 / 对比 / 参数 / FAQ ----
     feats = "".join(
@@ -2966,6 +2998,8 @@ def ventilador_page(products=None):
 
 {cmp_html}
 
+{det_html}
+
 {f'''<section class="vt-sec"><div class="vt-sec-in">
 <div class="vt-sh"><em>Ficha técnica</em><h2>Especificaciones</h2></div>
 <div class="vt-specs">{specs}</div></div></section>''' if specs else ''}
@@ -2975,6 +3009,7 @@ def ventilador_page(products=None):
 <div class="vt-rsum"><div class="vt-rnum"><b>{prom:g}</b><i>{stars}</i>
  <span>{esc(rs.get("total_texto") or "")} reseñas</span></div>
  <div class="vt-rbars">{bars}</div></div>
+{fotos_html}
 <div class="vt-rgrid">{rcards}</div></div></section>''' if rcards else ''}
 
 {f'''<section class="vt-sec"><div class="vt-sec-in">

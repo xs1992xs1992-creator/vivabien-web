@@ -33,10 +33,21 @@
     "Envíos a todo el país · Garantía de 7 días"
   ],
 
-  "_nota_imagenes": "原稿里 3 张不重复的图都在这里了：01 是真实产品照；02 是从第二张 Temu 横幅里裁出来的产品图（已裁掉 Temu logo 和 Temu 价格）。第三张横幅裁出来的图与 01 是同一张，不重复放。想加图直接往数组里加一行即可。",
+  "_nota_imagenes": "相册图。02 已换成店主提供的高清原图（之前是从 Temu 横幅里裁出来的低清版）。加图直接往数组里加一行即可。",
   "imagenes": [
     { "archivo": "ventilador/abanico-e27-01.jpg", "alt": "Abanico de techo con luz LED y control remoto instalado en el techo" },
-    { "archivo": "ventilador/abanico-e27-02.jpg", "alt": "Abanico de techo con luz LED encendido en una sala, con control remoto" }
+    { "archivo": "ventilador/abanico-e27-02.jpg", "alt": "Abanico de techo con luz LED encendido en una sala, con control remoto" },
+    { "archivo": "ventilador/abanico-e27-03.jpg", "alt": "Funciones del abanico: 3 tonos de luz, velocidades, brillo regulable, silencioso y temporizador" },
+    { "archivo": "ventilador/abanico-e27-04.jpg", "alt": "Abanico de techo con luz LED, control remoto y kit de instalación" },
+    { "archivo": "ventilador/abanico-e27-05.jpg", "alt": "Abanico y lámpara 2 en 1 en sala, comedor y habitación" }
+  ],
+
+  "_nota_detalle": "详情图：在页面中部整幅展示（供应商详情图）。留空则不显示这一段。",
+  "detalle_titulo": "Detalles del producto",
+  "imagenes_detalle": [
+    { "archivo": "ventilador/abanico-e27-03.jpg", "alt": "3 tonos de luz, velocidades, brillo regulable, súper silencioso y apagado programado" },
+    { "archivo": "ventilador/abanico-e27-04.jpg", "alt": "Incluye control remoto y kit de instalación (las baterías AA no vienen incluidas)" },
+    { "archivo": "ventilador/abanico-e27-05.jpg", "alt": "Abanico y lámpara 2 en 1 con velocidades de viento para sala, comedor y habitación" }
   ],
 
   "video": {
@@ -141,11 +152,21 @@
     "distribucion": [
       ["5 ★", 86], ["4 ★", 12], ["3 ★", 1], ["2 ★", 0.5], ["1 ★", 0.5]
     ],
+    "_nota_lista": "真实买家评价（店主提供）。原文基本保留，只做了两处处理：补重音；第 2 条原文里的 'gracias Temu' 已删（不能在自己店里感谢竞争对手）。nombre 留空会显示 'Cliente verificado'；有真实买家名字就填进去。",
     "lista": [
-      { "inicial": "M", "nombre": "María G.", "fecha": "2026-07-28", "estrellas": 5,
-        "texto": "Excelente producto. El motor es bien silencioso y la luz LED con los 3 tonos está genial. El control remoto es súper cómodo. Lo recomiendo 100%." },
-      { "inicial": "C", "nombre": "Carlos R.", "fecha": "2026-07-25", "estrellas": 5,
-        "texto": "Compré 2 unidades, una para la sala y otra para la habitación. Instalación fácil, viene todo incluido. La función reversible es bien útil. La calidad supera el precio." }
+      { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "texto": "Excelente producto, me encantó, 10/10. Sí es muy bueno, con este calor no se puede dormir y por fin pude dormir fresca y sin estar sudando. Y lo mejor: no suena nada." },
+      { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "texto": "Está buenísimo, genial, lo recomiendo ampliamente. La verdad superó mis expectativas, ¡está excelente! Muy buena compra." },
+      { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "texto": "Es excelente, este artículo funciona súper. Le doy un 10 de 10." }
+    ],
+    "_nota_fotos": "买家实拍图，显示在评价区上方。",
+    "fotos_titulo": "Fotos de clientes",
+    "fotos": [
+      { "archivo": "ventilador/cliente-01.jpg", "alt": "Foto de cliente: abanico encendido en la habitación" },
+      { "archivo": "ventilador/cliente-02.jpg", "alt": "Foto de cliente: abanico instalado en el techo" },
+      { "archivo": "ventilador/cliente-03.jpg", "alt": "Foto de cliente: abanico encendido de noche" }
     ]
   },
 
