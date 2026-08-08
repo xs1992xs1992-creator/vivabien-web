@@ -182,6 +182,7 @@ def delete_product(handle):
                 for f in sku_photos_by_img(img):
                     try: os.remove(os.path.join(IMG_DIR, f))
                     except OSError: pass
+                img_index_reset()
             break
     kept = [rows[0]] + [r for r in rows[1:] if row_get(r, "handle") != handle]
     n = len(rows) - len(kept)
@@ -212,19 +213,49 @@ SLOT_SUFFIX = {"dim": "_dim", "scene": "_scene"}
 SLOT_LABEL  = {"main": "主图", "dim": "尺寸图", "scene": "场景图"}
 PHOTO_LIMIT = 10
 
+# images/ 目录索引缓存。
+# 之前 sku_photos_by_img() 每次都 os.listdir(images/) 再对 4000+ 个文件跑正则；
+# 首页要为 1000+ 个商品各调一次 → 400 多万次正则 + 1000 多次全目录扫描，
+# 后台首页因此要 8-20 秒才出得来，看起来就像"打不开"。改成整目录只扫一次并缓存。
+_IMG_INDEX = {"mtime": None, "files": frozenset(), "by_stem": {}}
+_IMG_NUM_RE = re.compile(r"(.+?)_(\d+)\.jpg\Z", re.I)
+
+def _img_index():
+    try:
+        mt = os.stat(IMG_DIR).st_mtime if os.path.isdir(IMG_DIR) else None
+    except OSError:
+        mt = None
+    if _IMG_INDEX["mtime"] != mt:
+        files, by_stem = set(), {}
+        for f in (os.listdir(IMG_DIR) if os.path.isdir(IMG_DIR) else []):
+            files.add(f)
+            m = _IMG_NUM_RE.match(f)
+            if m:
+                by_stem.setdefault(m.group(1), []).append((int(m.group(2)), f))
+        _IMG_INDEX.update({
+            "mtime": mt, "files": frozenset(files),
+            "by_stem": {k: [f for _, f in sorted(v)] for k, v in by_stem.items()},
+        })
+    return _IMG_INDEX
+
+def img_index_reset():
+    """增删图片后立即失效（目录 mtime 只有秒级精度，不能只靠它）"""
+    _IMG_INDEX["mtime"] = None
+
 def sku_photos_by_img(img):
     """按主图文件名列出该商品全部图片文件"""
     stem = img[:-4] if img.lower().endswith(".jpg") else img
+    idx = _img_index()
+    files = idx["files"]
     out = []
-    if os.path.isfile(os.path.join(IMG_DIR, img)):
+    if img in files:
         out.append(img)
     for suf in ("_scene.jpg", "_dim.jpg"):
         f = stem + suf
-        if os.path.isfile(os.path.join(IMG_DIR, f)): out.append(f)
+        if f in files: out.append(f)
     # 兼容旧的 _2..._9 命名，也允许后台以后使用到第 10 张。
-    for f in sorted(os.listdir(IMG_DIR) if os.path.isdir(IMG_DIR) else []):
-        if re.fullmatch(re.escape(stem) + r"_\d+\.jpg", f, re.I):
-            if f not in out: out.append(f)
+    for f in idx["by_stem"].get(stem, []):
+        if f not in out: out.append(f)
     return out
 
 def photo_label(img, fname):
@@ -257,6 +288,7 @@ def photo_add(img, slot, data):
         raise ValueError("图片文件太大，请压缩后再上传（最大 15 MB）")
     with open(os.path.join(IMG_DIR, fname), "wb") as f:
         f.write(data)
+    img_index_reset()
     return fname
 
 def photo_replace(img, fname, data):
@@ -2392,6 +2424,7 @@ class H(BaseHTTPRequestHandler):
                     os.replace(tmp, os.path.join(IMG_DIR, f))
                 else:
                     os.remove(os.path.join(IMG_DIR, f))
+                img_index_reset()
                 return self.send(200, "ok")
             if p == "/photo_add":
                 ct = self.headers.get("Content-Type", "")
