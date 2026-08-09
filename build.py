@@ -611,13 +611,13 @@ button{font-family:inherit}
 @media(min-width:760px){.dt{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:26px 18px 40px;align-items:start}}
 .dt .pic{background:#F0F3F8}
 @media(min-width:760px){.dt .pic{border-radius:22px;overflow:hidden;position:sticky;top:80px}}
-.dt .pic img.main{width:100%;aspect-ratio:1;object-fit:cover}
+.dt .pic img.main{width:100%;aspect-ratio:1;object-fit:contain}
 /* 大图画廊：整宽滑动 + 圆点指示器 */
 .galwrap{position:relative}
 .gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .gal::-webkit-scrollbar{display:none}
 .gal .gs{flex:none;width:100%;scroll-snap-align:center}
-.gal .gs img{width:100%;aspect-ratio:1;object-fit:cover;background:#F0F3F8}
+.gal .gs img{width:100%;aspect-ratio:1;object-fit:contain;background:#F0F3F8}
 .dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px;pointer-events:none}
 .dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:background .15s}
 .dots span.on{background:#fff}
@@ -675,7 +675,10 @@ button{font-family:inherit}
  .dt.commerce .panel h1{font-size:19px;margin-bottom:8px}
  .dt.commerce .detail-price{margin-bottom:12px}.dt.commerce .detail-price .price{font-size:29px}
  .dt.commerce .trust{margin-bottom:16px}
- .dt.commerce .bar{gap:9px}.dt.commerce .microtrust{display:none}
+ .dt.commerce .bar{gap:9px;max-width:100vw;overflow:hidden}.dt.commerce .microtrust{display:none}
+ .dt.commerce .commerce-bar-total{width:100%;min-width:0}
+ .dt.commerce .commerce-bar-total strong{min-width:0;max-width:58%;font-size:19px;white-space:nowrap;text-align:right}
+ .dt.commerce .bar-btns{min-width:0}.dt.commerce .btn-add{min-width:0;padding:0 9px;font-size:14px;white-space:nowrap}
  .dt.commerce .btn-back{display:none}.dt.commerce .btn-wa{width:50px}
 }
 @media(min-width:760px){
