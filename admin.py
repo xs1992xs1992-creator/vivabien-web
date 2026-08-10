@@ -695,12 +695,21 @@ async function welLink(btn){
   document.getElementById('welCodes').innerHTML='<b>券码 '+d.coupon+'</b>'
    +'<a href="'+d.url+'" target="_blank">'+d.url+'</a>'
    +'<button class="cp" onclick="navigator.clipboard.writeText(\\''+d.url+'\\')">复制链接</button>';
+  var opt=(document.getElementById('welCode')||{}).selectedOptions;
+  opt=opt&&opt[0];
+  var amount=Number((opt&&opt.dataset.v)||0),kind=(opt&&opt.dataset.k)||'amount';
+  var benefit=kind==='percent'
+   ?amount.toLocaleString('en-US')+'% de descuento'
+   :'RD$'+amount.toLocaleString('en-US')+' de descuento';
+  var condition=cond.replace(/^En compras/i,'Válido en compras');
   document.getElementById('welCopy').value=
-   '¡Hola! 🎁 Tenemos un regalo para ti en VivaBien\\n\\n'
-   +'Cupón '+d.coupon+(val?' — '+val:'')+(cond?'\\n'+cond:'')
-   +'\\n\\nÁbrelo aquí 👇\\n'+d.url
-   +'\\n\\n🛍️ Tienda online · 📢 Canal de WhatsApp · 📸 Instagram — todo en un solo enlace.'
-   +'\\n🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo';
+   '🎁 Gracias por comprar en VivaBien\\n\\n'
+   +'Tenemos un beneficio para tu próxima compra:\\n\\n'
+   +'💰 '+benefit+(condition?'\\n🛒 '+condition:'')
+   +'\\n🏷️ Código: '+d.coupon
+   +'\\n\\nY hay cosas nuevas que quizás todavía no has visto 👀'
+   +'\\n\\n👉 Ver novedades\\n'+d.url
+   +'\\n\\n🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo';
   btn.textContent='✓ 已生成';
   document.getElementById('welResult').scrollIntoView({behavior:'smooth',block:'nearest'});
  }catch(e){alert(e.message);btn.textContent='🔗 生成推广链接'}
