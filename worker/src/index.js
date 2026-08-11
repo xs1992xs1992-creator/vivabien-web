@@ -456,9 +456,15 @@ async function handleAdmin(req, env, url) {
     const orderRows = status ? await env.DB.prepare(base).bind(status).all() : await env.DB.prepare(base).all();
     const orders = orderRows.results || [];
     if (orders.length) {
-      const itemRows = await env.DB.prepare(
-        `SELECT * FROM order_items WHERE order_id IN (${orders.map(() => "?").join(",")}) ORDER BY id ASC`
-      ).bind(...orders.map((o) => o.order_id)).all();
+      const itemSql = `SELECT oi.* FROM order_items oi
+        INNER JOIN (
+          SELECT order_id FROM orders ${status ? "WHERE status=?" : ""}
+          ORDER BY created_at DESC LIMIT 300
+        ) selected_orders ON selected_orders.order_id=oi.order_id
+        ORDER BY oi.id ASC`;
+      const itemRows = status
+        ? await env.DB.prepare(itemSql).bind(status).all()
+        : await env.DB.prepare(itemSql).all();
       const grouped = {};
       for (const item of itemRows.results || []) (grouped[item.order_id] ||= []).push(item);
       for (const order of orders) order.items = grouped[order.order_id] || [];
