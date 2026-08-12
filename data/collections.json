@@ -210,7 +210,7 @@
     "cta": "Ver iluminación",
     "image": "VBAP289.jpg",
     "active": true,
-    "order": 4,
+    "order": 5,
     "skus": [
       "VBD53AFA9D",
       "VBFFED96B4",
@@ -237,12 +237,23 @@
     "slug": "iluminacion-para-el-hogar"
   },
   {
+    "title": "Abanico LED E27",
+    "subtitle": "Abanico de techo con luz LED, 6 aspas y control remoto por RD$950.",
+    "cta": "Ver abanico",
+    "image": "ventilador/abanico-e27-01.jpg",
+    "active": true,
+    "order": 4,
+    "landing": "producto/abanico-de-techo-led.html",
+    "skus": [],
+    "slug": "abanico-led-e27"
+  },
+  {
     "title": "Espejos",
     "subtitle": "Una nueva colección para renovar tus espacios.",
     "cta": "Ver colección",
     "image": "VBC690E309.jpg",
     "active": true,
-    "order": 5,
+    "order": 6,
     "coming_soon": true,
     "skus": [],
     "slug": "espejos"
