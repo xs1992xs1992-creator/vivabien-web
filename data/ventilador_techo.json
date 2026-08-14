@@ -93,50 +93,50 @@
   },
   "beneficios": [
     {
-      "icono": "🔇",
-      "titulo": "Motor silencioso",
-      "texto": "Funciona desde 30 dB — no molesta a la hora de dormir"
+      "icono": "🌀",
+      "titulo": "Abanico + lámpara LED",
+      "texto": "Dos funciones en un solo equipo"
     },
     {
-      "icono": "💡",
-      "titulo": "Luz LED 3 tonos",
-      "texto": "Cálido / neutro / frío — se cambia con el control remoto"
+      "icono": "🎛️",
+      "titulo": "Control remoto",
+      "texto": "Ajusta el funcionamiento desde tu sofá"
     },
     {
       "icono": "💨",
       "titulo": "3 velocidades",
-      "texto": "Desde brisa suave hasta ventilación máxima"
+      "texto": "Elige el nivel de ventilación que necesitas"
     },
     {
       "icono": "🔩",
       "titulo": "Instalación fácil",
-      "texto": "Rosca E27 — se enrosca en el mismo bombillo, sin electricista"
+      "texto": "Se enrosca en el socket E27, como un bombillo"
     }
   ],
   "secciones": [
     {
       "etiqueta": "Producto 2 en 1",
       "titulo": "Abanico + lámpara LED",
-      "texto": "Un solo producto para refrescar e iluminar tu casa. Motor silencioso y luz LED con 3 tonos de color.",
+      "texto": "Un solo producto para refrescar e iluminar tu casa, con luz LED de 3 tonos.",
       "puntos": [
-        "Luz LED cálida, neutra y fría (2700K / 4000K / 6500K)",
+        "Luz LED cálida, neutra y fría",
         "Luz regulable (dimeable) con el control remoto",
-        "Motor ultra silencioso desde 30 dB"
+        "Se enrosca en el socket E27, como un bombillo"
       ],
       "destaque_titulo": "2 en 1",
       "destaque_texto": "Abanico + lámpara LED en un solo producto"
     },
     {
-      "etiqueta": "Tecnología DC",
-      "titulo": "Silencioso y de bajo consumo",
-      "texto": "Motor de bajo consumo. 3 velocidades con control remoto y apagado programado a 1 o 2 horas.",
+      "etiqueta": "Control remoto",
+      "titulo": "Todo desde tu sofá",
+      "texto": "3 velocidades, tonos de luz y apagado programado, todo con el control remoto incluido.",
       "puntos": [
         "3 velocidades — de brisa suave a potencia máxima",
-        "Función reversible: verano (refresca) / invierno (calienta)",
-        "Brillo regulable de 5% a 100% desde el control remoto"
+        "Brillo regulable de 5% a 100%",
+        "Apagado programado a 2 o 4 horas"
       ],
-      "destaque_titulo": "30 dB",
-      "destaque_texto": "Nivel de ruido mínimo — ideal para dormir"
+      "destaque_titulo": "3 velocidades",
+      "destaque_texto": "Elige el nivel de ventilación que necesitas"
     },
     {
       "etiqueta": "Diseño moderno",
@@ -157,16 +157,6 @@
     "columna_otro": "Abanico común",
     "filas": [
       [
-        "Motor",
-        "DC silencioso",
-        "AC estándar"
-      ],
-      [
-        "Nivel de ruido",
-        "30-45 dB",
-        "55-65 dB"
-      ],
-      [
         "Brillo regulable",
         "✓ 5-100%",
         "✗"
@@ -182,13 +172,8 @@
         "✗"
       ],
       [
-        "Reversible",
-        "✓",
-        "✗"
-      ],
-      [
         "Apagado programado",
-        "✓ 1 y 2 h",
+        "✓ 2 y 4 h",
         "✗"
       ],
       [
@@ -200,31 +185,19 @@
   },
   "ficha_tecnica": [
     {
-      "grupo": "Motor y ventilación",
+      "grupo": "Ventilación",
       "datos": [
-        [
-          "Tipo de motor",
-          "DC (corriente continua)"
-        ],
-        [
-          "Potencia",
-          "30W"
-        ],
         [
           "Velocidades",
           "3 niveles"
         ],
         [
-          "Ruido",
-          "30-45 dB"
-        ],
-        [
-          "Reversible",
-          "Sí (verano/invierno)"
-        ],
-        [
           "Aspas",
           "6 aspas de ABS"
+        ],
+        [
+          "Apagado programado",
+          "2 y 4 horas"
         ]
       ]
     },
@@ -236,38 +209,18 @@
           "LED integrado"
         ],
         [
-          "Potencia LED",
-          "20W"
-        ],
-        [
-          "Tonos",
-          "2700K / 4000K / 6500K"
+          "Tonos de luz",
+          "3 (cálido / neutro / frío)"
         ],
         [
           "Regulable",
           "Sí (dimeable)"
-        ],
-        [
-          "Lúmenes",
-          "2000 lm"
-        ],
-        [
-          "Ángulo",
-          "140°"
         ]
       ]
     },
     {
       "grupo": "Medidas e instalación",
       "datos": [
-        [
-          "Diámetro",
-          "106 cm (42\")"
-        ],
-        [
-          "Altura",
-          "36 cm"
-        ],
         [
           "Color",
           "Blanco"
@@ -347,7 +300,7 @@
   "faq": [
     {
       "p": "¿El motor hace mucho ruido?",
-      "r": "No. Motor DC ultra silencioso: solo 30 dB en velocidad baja (como una biblioteca). En velocidad máxima no pasa de 45 dB."
+      "r": "No. El motor es silencioso y no molesta a la hora de dormir. Puedes verlo funcionando en el video de arriba."
     },
     {
       "p": "¿Cómo cambio los tonos de luz?",
@@ -430,5 +383,6 @@
       "texto": "Se instala en socket E27, como un bombillo.",
       "alt": "Video: el abanico enroscándose en el socket E27 del techo"
     }
-  ]
+  ],
+  "_nota_sin_verificar": "已移除没有产品资料支撑的参数：马达类型(DC)、噪音(30/30-45 dB)、功率(30W/20W)、流明(2000 lm)、光角(140°)、尺寸(直径106cm/高36cm)、色温开尔文值、正反转功能。保留的都是自家视频/详情图/实物遥控器能看到的：3档风速、3色温、5-100%调光、遥控器、E27螺口、6叶、白色、2h/4h定时。拿到正式产品资料后再往回加。"
 }
