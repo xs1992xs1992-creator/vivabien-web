@@ -1519,7 +1519,8 @@ def garantia_page():
     body = f"""{header()}
 <main class="policy"><h1>Garantía y devoluciones</h1>
 <p class="lead">Queremos que compres con tranquilidad. Si algo no está bien, escríbenos y buscaremos una solución clara y rápida.</p>
-<section><h2>Garantía de 7 días</h2><p>Tienes hasta 7 días calendario después de recibir tu pedido para reportar un producto con defecto, daño de transporte o diferencia con lo solicitado.</p></section>
+<section><h2>Garantía de 7 días</h2><p>Tienes hasta 7 días calendario después de recibir tu pedido para reportar un producto con defecto, daño de transporte o diferencia con lo solicitado.</p>
+<p><strong>Algunos productos tienen garantía extendida.</strong> Cuando un producto ofrece más de 7 días, lo indicamos claramente en su página. En esos casos aplica el plazo que aparece en la página del producto. Por ejemplo, el <a href="producto/abanico-de-techo-led">abanico de techo con luz LED</a> tiene <strong>garantía de 1 mes</strong>.</p></section>
 <section><h2>¿Qué necesitamos?</h2><ul><li>Número de pedido o teléfono usado en la compra.</li><li>Fotos o video donde se vea el problema.</li><li>El producto, empaque y accesorios en el estado en que fueron recibidos.</li></ul></section>
 <section><h2>Cambios y devoluciones</h2><p>Después de revisar el caso, podremos ofrecer cambio, crédito o devolución según corresponda. Por higiene, algunos productos de uso personal abiertos no admiten devolución, salvo defecto comprobado.</p></section>
 <section><h2>Entrega</h2><p>La mayoría de los pedidos llega entre 24 y 72 horas. El tiempo final depende de la zona, disponibilidad y transportista; verás la estimación disponible antes de confirmar.</p></section>
