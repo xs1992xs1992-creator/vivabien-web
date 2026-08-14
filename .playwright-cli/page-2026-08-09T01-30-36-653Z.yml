@@ -1,0 +1,166 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - link "V VivaBien" [ref=f1e4] [cursor=pointer]:
+      - /url: ../
+      - generic [ref=f1e5]: V
+      - text: VivaBien
+    - generic [ref=f1e6]:
+      - link "WhatsApp" [ref=f1e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=f1e10] [cursor=pointer]:
+        - /url: ../?buscar=1
+      - link "Carrito" [ref=f1e14] [cursor=pointer]:
+        - /url: ../carrito
+  - generic [ref=f1e18]:
+    - link "← Volver a la tienda" [ref=f1e19] [cursor=pointer]:
+      - /url: ../
+    - heading "Iluminación para tu Hogar" [level=2] [ref=f1e20]
+    - paragraph [ref=f1e21]: Lámparas modernas de pared, mesa, piso y techo para cada espacio.
+    - link "Ver iluminación →" [ref=f1e22] [cursor=pointer]:
+      - /url: "#cgrid"
+  - generic [ref=f1e23]:
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: 🚚 Envíos atodo el país
+      - generic [ref=f1e26]: 🤝 Contra entregaen Sto. Dgo.
+      - generic [ref=f1e27]: ✅ Productoverificado
+    - generic [ref=f1e28]:
+      - generic [ref=f1e29] [cursor=pointer]: Todos (12)
+      - generic [ref=f1e30] [cursor=pointer]: Iluminación · 11
+      - generic [ref=f1e31] [cursor=pointer]: Adaptadores y Controles · 1
+    - generic [ref=f1e32]: 12 productos
+    - generic [ref=f1e33]:
+      - article [ref=f1e34]:
+        - link "Lámpara de techo moderna de 8 bombillos · VT680016 Iluminación Lámpara de techo moderna de 8 bombillos · VT680016 RD$ 1,255" [ref=f1e35] [cursor=pointer]:
+          - /url: ../producto/lampara-de-techo-moderna-de-8-luces-vt680016
+          - generic [ref=f1e36]:
+            - img "Lámpara de techo moderna de 8 bombillos · VT680016" [ref=f1e37]
+            - generic [ref=f1e38]: Iluminación
+          - generic [ref=f1e39]:
+            - generic [ref=f1e40]: Lámpara de techo moderna de 8 bombillos · VT680016
+            - generic [ref=f1e41]: RD$ 1,255
+        - button "Agregar al carrito" [ref=f1e44] [cursor=pointer]
+      - article [ref=f1e48]:
+        - link "Lampara de pared recargable Iluminación Lampara de pared recargable RD$ 1,125" [ref=f1e49] [cursor=pointer]:
+          - /url: ../producto/lampara-de-pared-recargable
+          - generic [ref=f1e50]:
+            - img "Lampara de pared recargable" [ref=f1e51]
+            - generic [ref=f1e52]: Iluminación
+          - generic [ref=f1e53]:
+            - generic [ref=f1e54]: Lampara de pared recargable
+            - generic [ref=f1e55]: RD$ 1,125
+        - button "Agregar al carrito" [ref=f1e58] [cursor=pointer]
+      - article [ref=f1e62]:
+        - link "Luz LED modular adhesiva Iluminación Luz LED modular adhesiva RD$ 455" [ref=f1e63] [cursor=pointer]:
+          - /url: ../producto/luz-led-modular-adhesiva
+          - generic [ref=f1e64]:
+            - img "Luz LED modular adhesiva" [ref=f1e65]
+            - generic [ref=f1e66]: Iluminación
+          - generic [ref=f1e67]:
+            - generic [ref=f1e68]: Luz LED modular adhesiva
+            - generic [ref=f1e69]: RD$ 455
+        - button "Agregar al carrito" [ref=f1e72] [cursor=pointer]
+      - article [ref=f1e76]:
+        - link "Luz LED adhesiva con control remoto Adaptadores y Controles Luz LED adhesiva con control remoto RD$ 340" [ref=f1e77] [cursor=pointer]:
+          - /url: ../producto/luz-led-adhesiva-con-control-remoto
+          - generic [ref=f1e78]:
+            - img "Luz LED adhesiva con control remoto" [ref=f1e79]
+            - generic [ref=f1e80]: Adaptadores y Controles
+          - generic [ref=f1e81]:
+            - generic [ref=f1e82]: Luz LED adhesiva con control remoto
+            - generic [ref=f1e83]: RD$ 340
+        - button "Agregar al carrito" [ref=f1e86] [cursor=pointer]
+      - article [ref=f1e90]:
+        - link "Lámpara moderna para pared Iluminación Lámpara moderna para pared RD$ 2,975" [ref=f1e91] [cursor=pointer]:
+          - /url: ../producto/lampara-moderna-para-pared
+          - generic [ref=f1e92]:
+            - img "Lámpara moderna para pared" [ref=f1e93]
+            - generic [ref=f1e94]: Iluminación
+          - generic [ref=f1e95]:
+            - generic [ref=f1e96]: Lámpara moderna para pared
+            - generic [ref=f1e97]: RD$ 2,975
+        - button "Agregar al carrito" [ref=f1e100] [cursor=pointer]
+      - article [ref=f1e104]:
+        - link "Lámpara panal de 8 cavidades Iluminación Lámpara panal de 8 cavidades RD$ 5,850" [ref=f1e105] [cursor=pointer]:
+          - /url: ../producto/lampara-panal-de-8-cavidades
+          - generic [ref=f1e106]:
+            - img "Lámpara panal de 8 cavidades" [ref=f1e107]
+            - generic [ref=f1e108]: Iluminación
+          - generic [ref=f1e109]:
+            - generic [ref=f1e110]: Lámpara panal de 8 cavidades
+            - generic [ref=f1e111]: RD$ 5,850
+        - button "Agregar al carrito" [ref=f1e114] [cursor=pointer]
+      - article [ref=f1e118]:
+        - link "Lámpara LED tipo panal de 672 W Iluminación Lámpara LED tipo panal de 672 W RD$ 10,350" [ref=f1e119] [cursor=pointer]:
+          - /url: ../producto/lampara-led-tipo-panal-de-672-w
+          - generic [ref=f1e120]:
+            - img "Lámpara LED tipo panal de 672 W" [ref=f1e121]
+            - generic [ref=f1e122]: Iluminación
+          - generic [ref=f1e123]:
+            - generic [ref=f1e124]: Lámpara LED tipo panal de 672 W
+            - generic [ref=f1e125]: RD$ 10,350
+        - button "Agregar al carrito" [ref=f1e128] [cursor=pointer]
+      - article [ref=f1e132]:
+        - link "Lámpara de mesa Iluminación Lámpara de mesa RD$ 520" [ref=f1e133] [cursor=pointer]:
+          - /url: ../producto/lampara-de-mesa
+          - generic [ref=f1e134]:
+            - img "Lámpara de mesa" [ref=f1e135]
+            - generic [ref=f1e136]: Iluminación
+          - generic [ref=f1e137]:
+            - generic [ref=f1e138]: Lámpara de mesa
+            - generic [ref=f1e139]: RD$ 520
+        - button "Agregar al carrito" [ref=f1e142] [cursor=pointer]
+      - article [ref=f1e146]:
+        - link "Lámpara de pie simple Iluminación Lámpara de pie simple RD$ 2,240" [ref=f1e147] [cursor=pointer]:
+          - /url: ../producto/lampara-de-pie-simple
+          - generic [ref=f1e148]:
+            - img "Lámpara de pie simple" [ref=f1e149]
+            - generic [ref=f1e150]: Iluminación
+          - generic [ref=f1e151]:
+            - generic [ref=f1e152]: Lámpara de pie simple
+            - generic [ref=f1e153]: RD$ 2,240
+        - button "Agregar al carrito" [ref=f1e156] [cursor=pointer]
+      - article [ref=f1e160]:
+        - link "Lámpara de escritorio minimalista Iluminación Lámpara de escritorio minimalista RD$ 495" [ref=f1e161] [cursor=pointer]:
+          - /url: ../producto/lampara-de-escritorio-minimalista
+          - generic [ref=f1e162]:
+            - img "Lámpara de escritorio minimalista" [ref=f1e163]
+            - generic [ref=f1e164]: Iluminación
+          - generic [ref=f1e165]:
+            - generic [ref=f1e166]: Lámpara de escritorio minimalista
+            - generic [ref=f1e167]: RD$ 495
+        - button "Agregar al carrito" [ref=f1e170] [cursor=pointer]
+      - article [ref=f1e174]:
+        - link "Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012) Iluminación Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012) RD$ 1,685" [ref=f1e175] [cursor=pointer]:
+          - /url: ../producto/lampara-colgante-led-negra-de-tres-luces-estilo-nordico-moderno-lc-016-0
+          - generic [ref=f1e176]:
+            - img "Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012)" [ref=f1e177]
+            - generic [ref=f1e178]: Iluminación
+          - generic [ref=f1e179]:
+            - generic [ref=f1e180]: Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012)
+            - generic [ref=f1e181]: RD$ 1,685
+        - button "Agregar al carrito" [ref=f1e184] [cursor=pointer]
+      - article [ref=f1e188]:
+        - link "Lámpara colgante LED dorada moderna de tres luces Iluminación Lámpara colgante LED dorada moderna de tres luces RD$ 1,915" [ref=f1e189] [cursor=pointer]:
+          - /url: ../producto/lampara-colgante-led-dorada-moderna-de-tres-luces
+          - generic [ref=f1e190]:
+            - img "Lámpara colgante LED dorada moderna de tres luces" [ref=f1e191]
+            - generic [ref=f1e192]: Iluminación
+          - generic [ref=f1e193]:
+            - generic [ref=f1e194]: Lámpara colgante LED dorada moderna de tres luces
+            - generic [ref=f1e195]: RD$ 1,915
+        - button "Agregar al carrito" [ref=f1e198] [cursor=pointer]
+    - generic [ref=f1e202]:
+      - text: ¿No encuentras lo que buscas?
+      - paragraph [ref=f1e203]: Escríbenos y te ayudamos a encontrarlo
+      - link "Escríbenos por WhatsApp" [ref=f1e204] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+  - link "WhatsApp" [ref=f1e207] [cursor=pointer]:
+    - /url: https://wa.me/18092811992
+  - contentinfo [ref=f1e210]:
+    - generic [ref=f1e211]:
+      - link "Garantía y devoluciones" [ref=f1e212] [cursor=pointer]:
+        - /url: ../garantia
+      - link "Contacto" [ref=f1e213] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f1e214]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

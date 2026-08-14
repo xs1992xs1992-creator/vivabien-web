@@ -1,0 +1,425 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e3]:
+    - link "V VivaBien" [ref=f2e4] [cursor=pointer]:
+      - /url: ../
+      - generic [ref=f2e5]: V
+      - text: VivaBien
+    - generic [ref=f2e6]:
+      - link "WhatsApp" [ref=f2e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=f2e10] [cursor=pointer]:
+        - /url: ../?buscar=1
+      - link "Carrito" [ref=f2e14] [cursor=pointer]:
+        - /url: ../carrito
+  - generic [ref=f2e18]:
+    - generic [ref=f2e19]:
+      - generic [ref=f2e20]: 💰 Pago contra entrega en el Gran Santo Domingo
+      - text: ·
+      - generic [ref=f2e21]: 50% OFF · Oferta limitada — quedan --:--:--
+      - text: ·
+      - generic [ref=f2e22]: Envíos a todo el país · Garantía de 7 días
+    - generic [ref=f2e24]:
+      - generic [ref=f2e25]:
+        - generic [ref=f2e26]:
+          - img "Abanico de techo con luz LED y control remoto instalado en el techo" [ref=f2e27]
+          - generic [ref=f2e28]: "-50%"
+        - generic [ref=f2e29]:
+          - button [ref=f2e30] [cursor=pointer]:
+            - img "Abanico de techo con luz LED y control remoto instalado en el techo" [ref=f2e31]
+          - button [ref=f2e32] [cursor=pointer]:
+            - img "Abanico de techo con luz LED encendido en una sala, con control remoto" [ref=f2e33]
+          - button [ref=f2e34] [cursor=pointer]:
+            - 'img "Funciones del abanico: 3 tonos de luz, velocidades, brillo regulable, silencioso y temporizador" [ref=f2e35]'
+          - button [ref=f2e36] [cursor=pointer]:
+            - img "Abanico de techo con luz LED, control remoto y kit de instalación" [ref=f2e37]
+          - button [ref=f2e38] [cursor=pointer]:
+            - img "Abanico y lámpara 2 en 1 en sala, comedor y habitación" [ref=f2e39]
+      - generic [ref=f2e40]:
+        - generic [ref=f2e41]:
+          - link "Inicio" [ref=f2e42] [cursor=pointer]:
+            - /url: ../
+          - text: / Decoración del Hogar
+        - heading "Abanico de techo con luz LED — rosca E27, 6 aspas, control remoto" [level=1] [ref=f2e43]
+        - paragraph [ref=f2e44]: Abanico e iluminación 2 en 1 — ideal para sala, comedor y habitación
+        - generic [ref=f2e45]:
+          - generic [ref=f2e46]: ★★★★★
+          - generic [ref=f2e47]: 4.8 (12,860+ reseñas)
+          - generic [ref=f2e48]: "Vendidos: 12,860+"
+        - generic [ref=f2e49]:
+          - generic [ref=f2e50]:
+            - generic [ref=f2e51]: RD$ 950
+            - generic [ref=f2e52]: RD$ 1,900
+            - generic [ref=f2e53]: "-50%"
+          - generic [ref=f2e54]:
+            - generic [ref=f2e55]: ✅ Pago contra entrega en el Gran Santo Domingo
+            - generic [ref=f2e56]: ✅ Garantía de 7 días
+        - generic [ref=f2e57]:
+          - generic [ref=f2e58]: "Color: Blanco"
+          - generic [ref=f2e59]: Blanco (color único)
+        - generic [ref=f2e61]:
+          - generic [ref=f2e62]: "Cantidad:"
+          - generic [ref=f2e63]:
+            - button "x1 Unidad RD$ 950" [ref=f2e64] [cursor=pointer]:
+              - text: x1 Unidad
+              - generic [ref=f2e65]: RD$ 950
+            - button "x2 Unidades RD$ 1,650 Ahorras RD$ 250" [ref=f2e66] [cursor=pointer]:
+              - text: x2 Unidades
+              - generic [ref=f2e67]: RD$ 1,650
+              - generic [ref=f2e68]: Ahorras RD$ 250
+            - button "x3 Unidades RD$ 2,310 Ahorras RD$ 540 Más pedido" [ref=f2e69] [cursor=pointer]:
+              - text: x3 Unidades
+              - generic [ref=f2e70]: RD$ 2,310
+              - generic [ref=f2e71]: Ahorras RD$ 540
+              - emphasis [ref=f2e72]: Más pedido
+        - generic [ref=f2e73]:
+          - generic [ref=f2e74]: "Llevar:"
+          - generic [ref=f2e75]:
+            - button "Menos" [ref=f2e76] [cursor=pointer]: −
+            - spinbutton [ref=f2e77]: "1"
+            - button "Más" [ref=f2e78] [cursor=pointer]: +
+          - generic [ref=f2e79]: Solo 87 unidades disponibles
+        - generic [ref=f2e80]:
+          - button "🛒 Agregar al carrito" [ref=f2e81] [cursor=pointer]
+          - button "⚡ Comprar ahora" [ref=f2e82] [cursor=pointer]
+          - link "Preguntar por WhatsApp" [ref=f2e83] [cursor=pointer]:
+            - /url: https://wa.me/18092811992?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%3A%20Abanico%20de%20techo%20con%20luz%20LED%20%28VB-FAN-E27%29.
+            - text: 💬
+        - generic [ref=f2e84]:
+          - generic [ref=f2e85]:
+            - generic [ref=f2e86]: 💰
+            - generic [ref=f2e87]:
+              - generic [ref=f2e88]: Pago contra entrega
+              - text: En el Gran Santo Domingo
+          - generic [ref=f2e89]:
+            - generic [ref=f2e90]: 🚚
+            - generic [ref=f2e91]:
+              - generic [ref=f2e92]: Envíos
+              - text: A todo el país
+          - generic [ref=f2e93]:
+            - generic [ref=f2e94]: 🛡️
+            - generic [ref=f2e95]:
+              - generic [ref=f2e96]: Garantía de 7 días
+              - text: Cambio o devolución
+          - generic [ref=f2e97]:
+            - generic [ref=f2e98]: 🔒
+            - generic [ref=f2e99]:
+              - generic [ref=f2e100]: Compra segura
+              - text: Producto 100% original
+    - generic [ref=f2e102]:
+      - generic [ref=f2e103]:
+        - emphasis [ref=f2e104]: Detalles
+        - heading "Detalles del producto" [level=2] [ref=f2e105]
+      - generic [ref=f2e106]:
+        - img "3 tonos de luz, velocidades, brillo regulable, súper silencioso y apagado programado" [ref=f2e107]
+        - img "Incluye control remoto y kit de instalación (las baterías AA no vienen incluidas)" [ref=f2e108]
+        - img "Abanico y lámpara 2 en 1 con velocidades de viento para sala, comedor y habitación" [ref=f2e109]
+    - generic [ref=f2e111]:
+      - generic [ref=f2e112]:
+        - generic [ref=f2e113]: 🔇
+        - generic [ref=f2e114]: Motor silencioso
+        - generic [ref=f2e115]: Funciona desde 30 dB — no molesta a la hora de dormir
+      - generic [ref=f2e116]:
+        - generic [ref=f2e117]: 💡
+        - generic [ref=f2e118]: Luz LED 3 tonos
+        - generic [ref=f2e119]: Cálido / neutro / frío — se cambia con el control remoto
+      - generic [ref=f2e120]:
+        - generic [ref=f2e121]: 💨
+        - generic [ref=f2e122]: 3 velocidades
+        - generic [ref=f2e123]: Desde brisa suave hasta ventilación máxima
+      - generic [ref=f2e124]:
+        - generic [ref=f2e125]: 🔩
+        - generic [ref=f2e126]: Instalación fácil
+        - generic [ref=f2e127]: Rosca E27 — se enrosca en el mismo bombillo, sin electricista
+    - generic [ref=f2e129]:
+      - generic [ref=f2e130]:
+        - emphasis [ref=f2e131]: El producto
+        - heading "Por dentro y por fuera" [level=2] [ref=f2e132]
+      - generic [ref=f2e133]:
+        - article [ref=f2e134]:
+          - emphasis [ref=f2e135]: Producto 2 en 1
+          - heading "Abanico + lámpara LED" [level=3] [ref=f2e136]
+          - paragraph [ref=f2e137]: Un solo producto para refrescar e iluminar tu casa. Motor silencioso y luz LED con 3 tonos de color.
+          - list [ref=f2e138]:
+            - listitem [ref=f2e139]:
+              - generic [ref=f2e140]: ✓
+              - generic [ref=f2e141]: Luz LED cálida, neutra y fría (2700K / 4000K / 6500K)
+            - listitem [ref=f2e142]:
+              - generic [ref=f2e143]: ✓
+              - generic [ref=f2e144]: Luz regulable (dimeable) con el control remoto
+            - listitem [ref=f2e145]:
+              - generic [ref=f2e146]: ✓
+              - generic [ref=f2e147]: Motor ultra silencioso desde 30 dB
+          - generic [ref=f2e148]:
+            - generic [ref=f2e149]: 2 en 1
+            - generic [ref=f2e150]: Abanico + lámpara LED en un solo producto
+        - article [ref=f2e151]:
+          - emphasis [ref=f2e152]: Tecnología DC
+          - heading "Silencioso y de bajo consumo" [level=3] [ref=f2e153]
+          - paragraph [ref=f2e154]: Motor de bajo consumo. 3 velocidades con control remoto y apagado programado a 1 o 2 horas.
+          - list [ref=f2e155]:
+            - listitem [ref=f2e156]:
+              - generic [ref=f2e157]: ✓
+              - generic [ref=f2e158]: 3 velocidades — de brisa suave a potencia máxima
+            - listitem [ref=f2e159]:
+              - generic [ref=f2e160]: ✓
+              - generic [ref=f2e161]: "Función reversible: verano (refresca) / invierno (calienta)"
+            - listitem [ref=f2e162]:
+              - generic [ref=f2e163]: ✓
+              - generic [ref=f2e164]: Brillo regulable de 5% a 100% desde el control remoto
+          - generic [ref=f2e165]:
+            - generic [ref=f2e166]: 30 dB
+            - generic [ref=f2e167]: Nivel de ruido mínimo — ideal para dormir
+        - article [ref=f2e168]:
+          - emphasis [ref=f2e169]: Diseño moderno
+          - heading "Elegante y fácil de instalar" [level=3] [ref=f2e170]
+          - paragraph [ref=f2e171]: Diseño minimalista blanco que combina con cualquier decoración del hogar.
+          - list [ref=f2e172]:
+            - listitem [ref=f2e173]:
+              - generic [ref=f2e174]: ✓
+              - generic [ref=f2e175]: 6 aspas en forma de flor, acabado blanco mate
+            - listitem [ref=f2e176]:
+              - generic [ref=f2e177]: ✓
+              - generic [ref=f2e178]: Incluye control remoto — no hace falta cablear nada
+            - listitem [ref=f2e179]:
+              - generic [ref=f2e180]: ✓
+              - generic [ref=f2e181]: Diseño minimalista blanco, va bien en cualquier espacio
+          - generic [ref=f2e182]:
+            - generic [ref=f2e183]: 100% completo
+            - generic [ref=f2e184]: Abanico, control remoto y manual incluidos
+    - generic [ref=f2e186]:
+      - generic [ref=f2e187]:
+        - emphasis [ref=f2e188]: Comparación
+        - heading "¿Por qué elegir este abanico?" [level=2] [ref=f2e189]
+      - table [ref=f2e190]:
+        - rowgroup [ref=f2e191]:
+          - row [ref=f2e192]:
+            - columnheader "Característica" [ref=f2e193]
+            - columnheader "Este abanico" [ref=f2e194]
+            - columnheader "Abanico común" [ref=f2e195]
+        - rowgroup [ref=f2e196]:
+          - row [ref=f2e197]:
+            - cell "Motor" [ref=f2e198]
+            - cell "DC silencioso" [ref=f2e199]
+            - cell "AC estándar" [ref=f2e200]
+          - row [ref=f2e201]:
+            - cell "Nivel de ruido" [ref=f2e202]
+            - cell "30-45 dB" [ref=f2e203]
+            - cell "55-65 dB" [ref=f2e204]
+          - row [ref=f2e205]:
+            - cell "Brillo regulable" [ref=f2e206]
+            - cell "✓ 5-100%" [ref=f2e207]
+            - cell "✗" [ref=f2e208]
+          - row [ref=f2e209]:
+            - cell "Luz LED" [ref=f2e210]
+            - cell "✓ 3 tonos" [ref=f2e211]
+            - cell "✗" [ref=f2e212]
+          - row [ref=f2e213]:
+            - cell "Control remoto" [ref=f2e214]
+            - cell "✓ incluido" [ref=f2e215]
+            - cell "✗" [ref=f2e216]
+          - row [ref=f2e217]:
+            - cell "Reversible" [ref=f2e218]
+            - cell "✓" [ref=f2e219]
+            - cell "✗" [ref=f2e220]
+          - row [ref=f2e221]:
+            - cell "Apagado programado" [ref=f2e222]
+            - cell "✓ 1 y 2 h" [ref=f2e223]
+            - cell "✗" [ref=f2e224]
+          - row [ref=f2e225]:
+            - cell "Instalación" [ref=f2e226]
+            - cell "Rosca E27" [ref=f2e227]
+            - cell "Requiere cableado" [ref=f2e228]
+    - generic [ref=f2e230]:
+      - generic [ref=f2e231]:
+        - emphasis [ref=f2e232]: Ficha técnica
+        - heading "Especificaciones" [level=2] [ref=f2e233]
+      - generic [ref=f2e234]:
+        - generic [ref=f2e235]:
+          - heading "Motor y ventilación" [level=3] [ref=f2e236]
+          - generic [ref=f2e237]:
+            - generic [ref=f2e238]: Tipo de motor
+            - generic [ref=f2e239]: DC (corriente continua)
+          - generic [ref=f2e240]:
+            - generic [ref=f2e241]: Potencia
+            - generic [ref=f2e242]: 30W
+          - generic [ref=f2e243]:
+            - generic [ref=f2e244]: Velocidades
+            - generic [ref=f2e245]: 3 niveles
+          - generic [ref=f2e246]:
+            - generic [ref=f2e247]: Ruido
+            - generic [ref=f2e248]: 30-45 dB
+          - generic [ref=f2e249]:
+            - generic [ref=f2e250]: Reversible
+            - generic [ref=f2e251]: Sí (verano/invierno)
+          - generic [ref=f2e252]:
+            - generic [ref=f2e253]: Aspas
+            - generic [ref=f2e254]: 6 aspas de ABS
+        - generic [ref=f2e255]:
+          - heading "Luz LED" [level=3] [ref=f2e256]
+          - generic [ref=f2e257]:
+            - generic [ref=f2e258]: Tipo
+            - generic [ref=f2e259]: LED integrado
+          - generic [ref=f2e260]:
+            - generic [ref=f2e261]: Potencia LED
+            - generic [ref=f2e262]: 20W
+          - generic [ref=f2e263]:
+            - generic [ref=f2e264]: Tonos
+            - generic [ref=f2e265]: 2700K / 4000K / 6500K
+          - generic [ref=f2e266]:
+            - generic [ref=f2e267]: Regulable
+            - generic [ref=f2e268]: Sí (dimeable)
+          - generic [ref=f2e269]:
+            - generic [ref=f2e270]: Lúmenes
+            - generic [ref=f2e271]: 2000 lm
+          - generic [ref=f2e272]:
+            - generic [ref=f2e273]: Ángulo
+            - generic [ref=f2e274]: 140°
+        - generic [ref=f2e275]:
+          - heading "Medidas e instalación" [level=3] [ref=f2e276]
+          - generic [ref=f2e277]:
+            - generic [ref=f2e278]: Diámetro
+            - generic [ref=f2e279]: 106 cm (42")
+          - generic [ref=f2e280]:
+            - generic [ref=f2e281]: Altura
+            - generic [ref=f2e282]: 36 cm
+          - generic [ref=f2e283]:
+            - generic [ref=f2e284]: Color
+            - generic [ref=f2e285]: Blanco
+          - generic [ref=f2e286]:
+            - generic [ref=f2e287]: Voltaje
+            - generic [ref=f2e288]: 110V CA 50/60Hz
+          - generic [ref=f2e289]:
+            - generic [ref=f2e290]: Rosca
+            - generic [ref=f2e291]: E27 (socket de bombillo)
+          - generic [ref=f2e292]:
+            - generic [ref=f2e293]: Incluye
+            - generic [ref=f2e294]: Abanico + control remoto + manual
+    - generic [ref=f2e296]:
+      - generic [ref=f2e297]:
+        - emphasis [ref=f2e298]: Reseñas
+        - heading "12,860+ clientes satisfechos" [level=2] [ref=f2e299]
+      - generic [ref=f2e300]:
+        - generic [ref=f2e301]:
+          - generic [ref=f2e302]: "4.8"
+          - generic [ref=f2e303]: ★★★★★
+          - text: 12,860 reseñas
+        - generic [ref=f2e304]:
+          - generic [ref=f2e305]:
+            - generic [ref=f2e306]: 5 ★
+            - generic [ref=f2e309]: 86%
+          - generic [ref=f2e310]:
+            - generic [ref=f2e311]: 4 ★
+            - generic [ref=f2e314]: 12%
+          - generic [ref=f2e315]:
+            - generic [ref=f2e316]: 3 ★
+            - generic [ref=f2e319]: 1%
+          - generic [ref=f2e320]:
+            - generic [ref=f2e321]: 2 ★
+            - generic [ref=f2e324]: 0.5%
+          - generic [ref=f2e325]:
+            - generic [ref=f2e326]: 1 ★
+            - generic [ref=f2e329]: 0.5%
+      - generic [ref=f2e330]:
+        - article [ref=f2e331]:
+          - generic [ref=f2e332]:
+            - generic [ref=f2e333]: ✓
+            - generic [ref=f2e334]:
+              - generic [ref=f2e335]: Cliente verificado
+              - text: Compra verificada
+          - generic [ref=f2e336]:
+            - 'img "Foto de cliente: abanico encendido en la habitación" [ref=f2e337]'
+            - generic [ref=f2e338]:
+              - generic [ref=f2e339]: ★★★★★
+              - paragraph [ref=f2e340]: "Excelente producto, me encantó, 10/10. Sí es muy bueno, con este calor no se puede dormir y por fin pude dormir fresca y sin estar sudando. Y lo mejor: no suena nada."
+        - article [ref=f2e341]:
+          - generic [ref=f2e342]:
+            - generic [ref=f2e343]: ✓
+            - generic [ref=f2e344]:
+              - generic [ref=f2e345]: Cliente verificado
+              - text: Compra verificada
+          - generic [ref=f2e346]:
+            - 'img "Foto de cliente: abanico encendido de noche" [ref=f2e347]'
+            - generic [ref=f2e348]:
+              - generic [ref=f2e349]: ★★★★★
+              - paragraph [ref=f2e350]: Está buenísimo, genial, lo recomiendo ampliamente. La verdad superó mis expectativas, ¡está excelente! Muy buena compra.
+        - article [ref=f2e351]:
+          - generic [ref=f2e352]:
+            - generic [ref=f2e353]: ✓
+            - generic [ref=f2e354]:
+              - generic [ref=f2e355]: Cliente verificado
+              - text: Compra verificada
+          - generic [ref=f2e356]:
+            - 'img "Foto de cliente: abanico instalado en el techo" [ref=f2e357]'
+            - generic [ref=f2e358]:
+              - generic [ref=f2e359]: ★★★★★
+              - paragraph [ref=f2e360]: Es excelente, este artículo funciona súper. Le doy un 10 de 10.
+    - generic [ref=f2e362]:
+      - generic [ref=f2e363]:
+        - emphasis [ref=f2e364]: FAQ
+        - heading "Preguntas frecuentes" [level=2] [ref=f2e365]
+      - generic [ref=f2e366]:
+        - generic [ref=f2e367]:
+          - button "¿El motor hace mucho ruido? +" [ref=f2e368] [cursor=pointer]:
+            - generic [ref=f2e369]: ¿El motor hace mucho ruido?
+            - generic [ref=f2e370]: +
+          - paragraph [ref=f2e371]: "No. Motor DC ultra silencioso: solo 30 dB en velocidad baja (como una biblioteca). En velocidad máxima no pasa de 45 dB."
+        - generic [ref=f2e372]:
+          - button "¿Cómo cambio los tonos de luz? +" [ref=f2e373] [cursor=pointer]:
+            - generic [ref=f2e374]: ¿Cómo cambio los tonos de luz?
+            - generic [ref=f2e375]: +
+          - paragraph [ref=f2e376]: Con el botón del control remoto incluido. También puedes regular la intensidad (dimeable) desde el mismo control.
+        - generic [ref=f2e377]:
+          - button "¿Es difícil de instalar? +" [ref=f2e378] [cursor=pointer]:
+            - generic [ref=f2e379]: ¿Es difícil de instalar?
+            - generic [ref=f2e380]: +
+          - paragraph [ref=f2e381]: No. Se enrosca directo en el socket del bombillo (rosca E27), igual que una bombilla. No hace falta llamar a un electricista.
+        - generic [ref=f2e382]:
+          - button "¿Qué voltaje necesita? +" [ref=f2e383] [cursor=pointer]:
+            - generic [ref=f2e384]: ¿Qué voltaje necesita?
+            - generic [ref=f2e385]: +
+          - paragraph [ref=f2e386]: 110V CA 50/60Hz, el estándar en República Dominicana. No requiere transformador.
+        - generic [ref=f2e387]:
+          - button "¿Cómo pago? +" [ref=f2e388] [cursor=pointer]:
+            - generic [ref=f2e389]: ¿Cómo pago?
+            - generic [ref=f2e390]: +
+          - paragraph [ref=f2e391]: Contra entrega en el Gran Santo Domingo (pagas cuando lo recibes) o por transferencia bancaria. En el resto del país coordinamos el envío por WhatsApp.
+    - generic [ref=f2e393]:
+      - generic [ref=f2e394]:
+        - emphasis [ref=f2e395]: También te puede servir
+        - heading "Otros abanicos en la tienda" [level=2] [ref=f2e396]
+      - generic [ref=f2e397]:
+        - link "Abanico de techo / ventilador colgante 6 aspas Abanico de techo / ventilador colgante 6 aspas RD$ 505" [ref=f2e398] [cursor=pointer]:
+          - /url: abanico-de-techo-ventilador-colgante-6-aspas
+          - img "Abanico de techo / ventilador colgante 6 aspas" [ref=f2e399]
+          - generic [ref=f2e400]:
+            - generic [ref=f2e401]: Abanico de techo / ventilador colgante 6 aspas
+            - generic [ref=f2e402]: RD$ 505
+        - link "Abanico de techo negro con aspas retráctiles y luz LED · EA066 Abanico de techo negro con aspas retráctiles y luz LED · EA066 RD$ 4,550" [ref=f2e403] [cursor=pointer]:
+          - /url: ventilador-de-techo-retractil-con-luz-ea066
+          - img "Abanico de techo negro con aspas retráctiles y luz LED · EA066" [ref=f2e404]
+          - generic [ref=f2e405]:
+            - generic [ref=f2e406]: Abanico de techo negro con aspas retráctiles y luz LED · EA066
+            - generic [ref=f2e407]: RD$ 4,550
+        - link "Abanico de techo plateado con aspas retráctiles y luz LED · EA001 Abanico de techo plateado con aspas retráctiles y luz LED · EA001 RD$ 4,550" [ref=f2e408] [cursor=pointer]:
+          - /url: ventilador-de-techo-retractil-plateado-ea001
+          - img "Abanico de techo plateado con aspas retráctiles y luz LED · EA001" [ref=f2e409]
+          - generic [ref=f2e410]:
+            - generic [ref=f2e411]: Abanico de techo plateado con aspas retráctiles y luz LED · EA001
+            - generic [ref=f2e412]: RD$ 4,550
+        - link "Abanico de techo dorado con aspas retráctiles y luz LED · EA057 Abanico de techo dorado con aspas retráctiles y luz LED · EA057 RD$ 4,735" [ref=f2e413] [cursor=pointer]:
+          - /url: ventilador-de-techo-retractil-dorado-ea057
+          - img "Abanico de techo dorado con aspas retráctiles y luz LED · EA057" [ref=f2e414]
+          - generic [ref=f2e415]:
+            - generic [ref=f2e416]: Abanico de techo dorado con aspas retráctiles y luz LED · EA057
+            - generic [ref=f2e417]: RD$ 4,735
+    - generic [ref=f2e420]:
+      - button "Agregar" [ref=f2e421] [cursor=pointer]
+      - button "Comprar ahora" [ref=f2e422] [cursor=pointer]
+  - contentinfo [ref=f2e423]:
+    - generic [ref=f2e424]:
+      - link "Garantía y devoluciones" [ref=f2e425] [cursor=pointer]:
+        - /url: ../garantia
+      - link "Contacto" [ref=f2e426] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=f2e427]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

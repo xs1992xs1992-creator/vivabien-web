@@ -1,0 +1,496 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - link "V VivaBien" [ref=e4] [cursor=pointer]:
+      - /url: ./
+      - generic [ref=e5]: V
+      - text: VivaBien
+    - generic [ref=e6]:
+      - link "WhatsApp" [ref=e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=e10] [cursor=pointer]:
+        - /url: "?buscar=1"
+      - link "Carrito" [ref=e14] [cursor=pointer]:
+        - /url: carrito
+  - generic [ref=e18]:
+    - 'searchbox "¿Qué buscas hoy? Ej: audífonos, espejo…" [ref=e23]'
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - heading "Compra fácil, paga seguro" [level=1] [ref=e26]
+        - generic [ref=e27]: 🚚 Envíos a todo el país · 🤝 Contra entrega en Gran Santo Domingo
+      - generic "Compromisos de servicio" [ref=e28]:
+        - generic [ref=e29]: 🚚 Entrega 24-72 horas
+        - generic [ref=e30]: 💵 Pagas al recibir
+        - generic [ref=e31]: ↩️ Garantía de 7 días
+      - region "Colecciones destacadas" [ref=e32]:
+        - tablist [ref=e33]:
+          - tab "Espacios Verdes" [ref=e34] [cursor=pointer]
+          - tab "Paneles Decorativos" [ref=e35] [cursor=pointer]
+          - tab "Panel Autoadhesivo" [ref=e36] [cursor=pointer]
+          - tab "Muebles y Hogar" [ref=e37] [cursor=pointer]
+          - tab "Iluminación para tu Hogar" [active] [selected] [ref=e38] [cursor=pointer]
+          - tab "Espejos" [ref=e39] [cursor=pointer]
+        - link "Iluminación para tu Hogar Colección destacada Iluminación para tu Hogar Lámparas modernas de pared, mesa, piso y techo para cada espacio. Ver iluminación →" [ref=e640] [cursor=pointer]:
+          - /url: coleccion/iluminacion-para-el-hogar.html
+          - img "Iluminación para tu Hogar" [ref=e641]
+          - generic [ref=e642]:
+            - generic [ref=e643]: Colección destacada
+            - heading "Iluminación para tu Hogar" [level=3] [ref=e644]
+            - paragraph [ref=e645]: Lámparas modernas de pared, mesa, piso y techo para cada espacio.
+            - generic [ref=e646]: Ver iluminación →
+      - generic [ref=e48]:
+        - generic [ref=e49]: Categorías
+        - button "Ver todas →" [ref=e50] [cursor=pointer]
+      - generic [ref=e51]:
+        - generic [ref=e52] [cursor=pointer]:
+          - generic [ref=e53]: ✨
+          - generic [ref=e54]: Belleza y Salud
+        - generic [ref=e55] [cursor=pointer]:
+          - generic [ref=e56]: 🏠
+          - generic [ref=e57]: Hogar
+        - generic [ref=e58] [cursor=pointer]:
+          - generic [ref=e59]: 🍳
+          - generic [ref=e60]: Cocina y Electrohogar
+        - generic [ref=e61] [cursor=pointer]:
+          - generic [ref=e62]: 🔧
+          - generic [ref=e63]: Ferretería
+        - generic [ref=e64] [cursor=pointer]:
+          - generic [ref=e65]: 📱
+          - generic [ref=e66]: Tecnología
+        - generic [ref=e67] [cursor=pointer]:
+          - generic [ref=e68]: 🍼
+          - generic [ref=e69]: Bebés y Niños
+        - generic [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: 🛍️
+          - generic [ref=e72]: Más categorías
+      - generic [ref=e73]:
+        - generic [ref=e75]:
+          - heading "🔥 Más Vendidos" [level=2] [ref=e76]
+          - paragraph [ref=e77]: Los favoritos de nuestros clientes
+        - generic [ref=e78]:
+          - article [ref=e79]:
+            - link "Tocador con espejo LED y estantes Muebles Tocador con espejo LED y estantes RD$ 6,415" [ref=e80] [cursor=pointer]:
+              - /url: producto/tocador-con-espejo-led-y-estantes
+              - generic [ref=e81]:
+                - img "Tocador con espejo LED y estantes" [ref=e82]
+                - generic [ref=e83]: Muebles
+              - generic [ref=e84]:
+                - generic [ref=e85]: Tocador con espejo LED y estantes
+                - generic [ref=e86]: RD$ 6,415
+            - button "Agregar al carrito" [ref=e89] [cursor=pointer]
+          - article [ref=e93]:
+            - link "Mueble de TV blanco y negro Otros para el Hogar Mueble de TV blanco y negro RD$ 4,500" [ref=e94] [cursor=pointer]:
+              - /url: producto/mueble-de-tv-blanco-y-negro
+              - generic [ref=e95]:
+                - img "Mueble de TV blanco y negro" [ref=e96]
+                - generic [ref=e97]: Otros para el Hogar
+              - generic [ref=e98]:
+                - generic [ref=e99]: Mueble de TV blanco y negro
+                - generic [ref=e100]: RD$ 4,500
+            - button "Agregar al carrito" [ref=e103] [cursor=pointer]
+          - article [ref=e107]:
+            - link "Mesa de centro de vidrio Muebles Mesa de centro de vidrio RD$ 3,300" [ref=e108] [cursor=pointer]:
+              - /url: producto/mesa-de-centro-de-vidrio
+              - generic [ref=e109]:
+                - img "Mesa de centro de vidrio" [ref=e110]
+                - generic [ref=e111]: Muebles
+              - generic [ref=e112]:
+                - generic [ref=e113]: Mesa de centro de vidrio
+                - generic [ref=e114]: RD$ 3,300
+            - button "Agregar al carrito" [ref=e117] [cursor=pointer]
+          - article [ref=e121]:
+            - link "Escritorio gaming en L con patas en Z Muebles Escritorio gaming en L con patas en Z RD$ 3,120" [ref=e122] [cursor=pointer]:
+              - /url: producto/escritorio-gaming-en-l-con-patas-en-z
+              - generic [ref=e123]:
+                - img "Escritorio gaming en L con patas en Z" [ref=e124]
+                - generic [ref=e125]: Muebles
+              - generic [ref=e126]:
+                - generic [ref=e127]: Escritorio gaming en L con patas en Z
+                - generic [ref=e128]: RD$ 3,120
+            - button "Agregar al carrito" [ref=e131] [cursor=pointer]
+          - article [ref=e135]:
+            - link "Armario para comedor Organización Armario para comedor RD$ 5,995" [ref=e136] [cursor=pointer]:
+              - /url: producto/armario-para-comedor
+              - generic [ref=e137]:
+                - img "Armario para comedor" [ref=e138]
+                - generic [ref=e139]: Organización
+              - generic [ref=e140]:
+                - generic [ref=e141]: Armario para comedor
+                - generic [ref=e142]: RD$ 5,995
+            - button "Agregar al carrito" [ref=e145] [cursor=pointer]
+          - article [ref=e149]:
+            - link "Lámpara de mesa Iluminación Lámpara de mesa RD$ 520" [ref=e150] [cursor=pointer]:
+              - /url: producto/lampara-de-mesa
+              - generic [ref=e151]:
+                - img "Lámpara de mesa" [ref=e152]
+                - generic [ref=e153]: Iluminación
+              - generic [ref=e154]:
+                - generic [ref=e155]: Lámpara de mesa
+                - generic [ref=e156]: RD$ 520
+            - button "Agregar al carrito" [ref=e159] [cursor=pointer]
+          - article [ref=e163]:
+            - link "Lámpara de pie simple Iluminación Lámpara de pie simple RD$ 2,240" [ref=e164] [cursor=pointer]:
+              - /url: producto/lampara-de-pie-simple
+              - generic [ref=e165]:
+                - img "Lámpara de pie simple" [ref=e166]
+                - generic [ref=e167]: Iluminación
+              - generic [ref=e168]:
+                - generic [ref=e169]: Lámpara de pie simple
+                - generic [ref=e170]: RD$ 2,240
+            - button "Agregar al carrito" [ref=e173] [cursor=pointer]
+          - article [ref=e177]:
+            - link "Lámpara moderna para pared Iluminación Lámpara moderna para pared RD$ 2,975" [ref=e178] [cursor=pointer]:
+              - /url: producto/lampara-moderna-para-pared
+              - generic [ref=e179]:
+                - img "Lámpara moderna para pared" [ref=e180]
+                - generic [ref=e181]: Iluminación
+              - generic [ref=e182]:
+                - generic [ref=e183]: Lámpara moderna para pared
+                - generic [ref=e184]: RD$ 2,975
+            - button "Agregar al carrito" [ref=e187] [cursor=pointer]
+          - article [ref=e191]:
+            - link "Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012) Iluminación Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012) RD$ 1,685" [ref=e192] [cursor=pointer]:
+              - /url: producto/lampara-colgante-led-negra-de-tres-luces-estilo-nordico-moderno-lc-016-0
+              - generic [ref=e193]:
+                - img "Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012)" [ref=e194]
+                - generic [ref=e195]: Iluminación
+              - generic [ref=e196]:
+                - generic [ref=e197]: Lámpara colgante LED negra de tres luces, estilo nórdico moderno (LC-016-012)
+                - generic [ref=e198]: RD$ 1,685
+            - button "Agregar al carrito" [ref=e201] [cursor=pointer]
+          - article [ref=e205]:
+            - link "Lámpara colgante LED dorada moderna de tres luces Iluminación Lámpara colgante LED dorada moderna de tres luces RD$ 1,915" [ref=e206] [cursor=pointer]:
+              - /url: producto/lampara-colgante-led-dorada-moderna-de-tres-luces
+              - generic [ref=e207]:
+                - img "Lámpara colgante LED dorada moderna de tres luces" [ref=e208]
+                - generic [ref=e209]: Iluminación
+              - generic [ref=e210]:
+                - generic [ref=e211]: Lámpara colgante LED dorada moderna de tres luces
+                - generic [ref=e212]: RD$ 1,915
+            - button "Agregar al carrito" [ref=e215] [cursor=pointer]
+      - generic [ref=e219]:
+        - generic [ref=e221]:
+          - heading "Lo que dicen nuestros clientes" [level=2] [ref=e222]
+          - paragraph [ref=e223]: Experiencias de compra en República Dominicana
+        - generic [ref=e224]:
+          - article [ref=e225]:
+            - generic [ref=e226]:
+              - generic [ref=e227]: D
+              - generic [ref=e228]:
+                - generic [ref=e229]: Daniel Estrella
+                - generic [ref=e230]: Barahona
+              - generic "5 estrellas" [ref=e231]: ★★★★★
+            - paragraph [ref=e232]: “Por el precio esperaba peor calidad y la verdad me sorprendio para bien. Funciona de lujo, llego sin rayaduras ni nada. Muy buena compra, no me arrepiento.”
+          - article [ref=e233]:
+            - generic [ref=e234]:
+              - generic [ref=e235]: E
+              - generic [ref=e236]:
+                - generic [ref=e237]: Esther Mercedes Gómez
+                - generic [ref=e238]: Cotui
+              - generic "5 estrellas" [ref=e239]: ★★★★★
+            - paragraph [ref=e240]: “Me llego super rapido, no me lo esperaba. Es muy bonito y practico. Tuve una duda y me respondieron al instante. Muy buen servicio, 5 estrellas.”
+          - article [ref=e241]:
+            - generic [ref=e242]:
+              - generic [ref=e243]: A
+              - generic [ref=e244]:
+                - generic [ref=e245]: Ana María Peguero
+                - generic [ref=e246]: Bonao
+              - generic "5 estrellas" [ref=e247]: ★★★★★
+            - paragraph [ref=e248]: “Muy util para el dia a dia. El envio se demoro un poco mas de lo dicho pero valio la pena. El producto es tal cual la descripcion. Gracias por todo.”
+          - article [ref=e249]:
+            - generic [ref=e250]:
+              - generic [ref=e251]: P
+              - generic [ref=e252]:
+                - generic [ref=e253]: Paola Andrea Rojas
+                - generic [ref=e254]: Constanza
+              - generic "5 estrellas" [ref=e255]: ★★★★★
+            - paragraph [ref=e256]: “Es mas lindo en persona que en fotos! El color es precioso, la textura muy suave. Llegó en 3 dias hasta aqui por el frio. Super recomendada la compra.”
+          - article [ref=e257]:
+            - generic [ref=e258]:
+              - generic [ref=e259]: C
+              - generic [ref=e260]:
+                - generic [ref=e261]: Carmen Luz Núñez
+                - generic [ref=e262]: Boca Chica
+              - generic "5 estrellas" [ref=e263]: ★★★★★
+            - paragraph [ref=e264]: “Me fascino! Es super comodo y bonito. Llegó en solo 2 dias hasta aqui. Ya quiero comprar otro color. Muy buena tienda, atenta a todo.”
+          - article [ref=e265]:
+            - generic [ref=e266]:
+              - generic [ref=e267]: A
+              - generic [ref=e268]:
+                - generic [ref=e269]: Abigail Sánchez
+                - generic [ref=e270]: Baní
+              - generic "5 estrellas" [ref=e271]: ★★★★★
+            - paragraph [ref=e272]: “Super rapido el envio! Pedí el sabado y ya lo tenia el lunes. El articulo funciona perfecto, nada que objetar. 5 estrellas sin dudas.”
+    - generic [ref=e273]: 1277 productos
+    - generic [ref=e274]:
+      - article [ref=e275]:
+        - link "Abanico de techo con luz LED y Bluetooth · EA101 Climatización Abanico de techo con luz LED y Bluetooth · EA101 RD$ 4,920" [ref=e276] [cursor=pointer]:
+          - /url: producto/ventilador-de-techo-con-luz-y-bluetooth-ea101
+          - generic [ref=e277]:
+            - img "Abanico de techo con luz LED y Bluetooth · EA101" [ref=e278]
+            - generic [ref=e279]: Climatización
+          - generic [ref=e280]:
+            - generic [ref=e281]: Abanico de techo con luz LED y Bluetooth · EA101
+            - generic [ref=e282]: RD$ 4,920
+        - button "Agregar al carrito" [ref=e285] [cursor=pointer]
+      - article [ref=e289]:
+        - link "Abanico de techo con aspas retráctiles y luz LED · EA102 Climatización Abanico de techo con aspas retráctiles y luz LED · EA102 RD$ 4,795" [ref=e290] [cursor=pointer]:
+          - /url: producto/ventilador-de-techo-retractil-con-luz-ea102
+          - generic [ref=e291]:
+            - img "Abanico de techo con aspas retráctiles y luz LED · EA102" [ref=e292]
+            - generic [ref=e293]: Climatización
+          - generic [ref=e294]:
+            - generic [ref=e295]: Abanico de techo con aspas retráctiles y luz LED · EA102
+            - generic [ref=e296]: RD$ 4,795
+        - button "Agregar al carrito" [ref=e299] [cursor=pointer]
+      - article [ref=e303]:
+        - link "Abanico de techo dorado con aspas retráctiles y luz LED · EA057 Climatización Abanico de techo dorado con aspas retráctiles y luz LED · EA057 RD$ 4,735" [ref=e304] [cursor=pointer]:
+          - /url: producto/ventilador-de-techo-retractil-dorado-ea057
+          - generic [ref=e305]:
+            - img "Abanico de techo dorado con aspas retráctiles y luz LED · EA057" [ref=e306]
+            - generic [ref=e307]: Climatización
+          - generic [ref=e308]:
+            - generic [ref=e309]: Abanico de techo dorado con aspas retráctiles y luz LED · EA057
+            - generic [ref=e310]: RD$ 4,735
+        - button "Agregar al carrito" [ref=e313] [cursor=pointer]
+      - article [ref=e317]:
+        - link "Abanico de techo con aspas retráctiles y luz LED · EA071 Climatización Abanico de techo con aspas retráctiles y luz LED · EA071 RD$ 4,735" [ref=e318] [cursor=pointer]:
+          - /url: producto/ventilador-de-techo-retractil-con-luz-ea071
+          - generic [ref=e319]:
+            - img "Abanico de techo con aspas retráctiles y luz LED · EA071" [ref=e320]
+            - generic [ref=e321]: Climatización
+          - generic [ref=e322]:
+            - generic [ref=e323]: Abanico de techo con aspas retráctiles y luz LED · EA071
+            - generic [ref=e324]: RD$ 4,735
+        - button "Agregar al carrito" [ref=e327] [cursor=pointer]
+      - article [ref=e331]:
+        - link "Abanico de techo negro con aspas retráctiles y luz LED · EA066 Climatización Abanico de techo negro con aspas retráctiles y luz LED · EA066 RD$ 4,550" [ref=e332] [cursor=pointer]:
+          - /url: producto/ventilador-de-techo-retractil-con-luz-ea066
+          - generic [ref=e333]:
+            - img "Abanico de techo negro con aspas retráctiles y luz LED · EA066" [ref=e334]
+            - generic [ref=e335]: Climatización
+          - generic [ref=e336]:
+            - generic [ref=e337]: Abanico de techo negro con aspas retráctiles y luz LED · EA066
+            - generic [ref=e338]: RD$ 4,550
+        - button "Agregar al carrito" [ref=e341] [cursor=pointer]
+      - article [ref=e345]:
+        - link "Abanico de techo plateado con aspas retráctiles y luz LED · EA001 Climatización Abanico de techo plateado con aspas retráctiles y luz LED · EA001 RD$ 4,550" [ref=e346] [cursor=pointer]:
+          - /url: producto/ventilador-de-techo-retractil-plateado-ea001
+          - generic [ref=e347]:
+            - img "Abanico de techo plateado con aspas retráctiles y luz LED · EA001" [ref=e348]
+            - generic [ref=e349]: Climatización
+          - generic [ref=e350]:
+            - generic [ref=e351]: Abanico de techo plateado con aspas retráctiles y luz LED · EA001
+            - generic [ref=e352]: RD$ 4,550
+        - button "Agregar al carrito" [ref=e355] [cursor=pointer]
+      - article [ref=e359]:
+        - link "Lámpara de techo moderna de 8 bombillos · VT680016 Iluminación Lámpara de techo moderna de 8 bombillos · VT680016 RD$ 1,255" [ref=e360] [cursor=pointer]:
+          - /url: producto/lampara-de-techo-moderna-de-8-luces-vt680016
+          - generic [ref=e361]:
+            - img "Lámpara de techo moderna de 8 bombillos · VT680016" [ref=e362]
+            - generic [ref=e363]: Iluminación
+          - generic [ref=e364]:
+            - generic [ref=e365]: Lámpara de techo moderna de 8 bombillos · VT680016
+            - generic [ref=e366]: RD$ 1,255
+        - button "Agregar al carrito" [ref=e369] [cursor=pointer]
+      - article [ref=e373]:
+        - link "Escritorio blanco con estantería superior de 120 cm Muebles Escritorio blanco con estantería superior de 120 cm RD$ 3,450" [ref=e374] [cursor=pointer]:
+          - /url: producto/escritorio-estanteria-120cm
+          - generic [ref=e375]:
+            - img "Escritorio blanco con estantería superior de 120 cm" [ref=e376]
+            - generic [ref=e377]: Muebles
+          - generic [ref=e378]:
+            - generic [ref=e379]: Escritorio blanco con estantería superior de 120 cm
+            - generic [ref=e380]: RD$ 3,450
+        - button "Agregar al carrito" [ref=e383] [cursor=pointer]
+      - article [ref=e387]:
+        - link "Escritorio blanco moderno con cajonera y estantes Muebles Escritorio blanco moderno con cajonera y estantes RD$ 3,375" [ref=e388] [cursor=pointer]:
+          - /url: producto/escritorio-blanco-lc050-030
+          - generic [ref=e389]:
+            - img "Escritorio blanco moderno con cajonera y estantes" [ref=e390]
+            - generic [ref=e391]: Muebles
+          - generic [ref=e392]:
+            - generic [ref=e393]: Escritorio blanco moderno con cajonera y estantes
+            - generic [ref=e394]: RD$ 3,375
+        - button "Agregar al carrito" [ref=e397] [cursor=pointer]
+      - article [ref=e401]:
+        - link "Aparador blanco de cocina con puertas y cajones Muebles de Cocina Aparador blanco de cocina con puertas y cajones RD$ 2,365" [ref=e402] [cursor=pointer]:
+          - /url: producto/aparador-blanco-cocina-lc050-109
+          - generic [ref=e403]:
+            - img "Aparador blanco de cocina con puertas y cajones" [ref=e404]
+            - generic [ref=e405]: Muebles de Cocina
+          - generic [ref=e406]:
+            - generic [ref=e407]: Aparador blanco de cocina con puertas y cajones
+            - generic [ref=e408]: RD$ 2,365
+        - button "Agregar al carrito" [ref=e411] [cursor=pointer]
+      - article [ref=e415]:
+        - link "Mueble auxiliar de cocina con puertas y estantes Muebles de Cocina Mueble auxiliar de cocina con puertas y estantes RD$ 2,365" [ref=e416] [cursor=pointer]:
+          - /url: producto/mueble-auxiliar-cocina-lc050-108
+          - generic [ref=e417]:
+            - img "Mueble auxiliar de cocina con puertas y estantes" [ref=e418]
+            - generic [ref=e419]: Muebles de Cocina
+          - generic [ref=e420]:
+            - generic [ref=e421]: Mueble auxiliar de cocina con puertas y estantes
+            - generic [ref=e422]: RD$ 2,365
+        - button "Agregar al carrito" [ref=e425] [cursor=pointer]
+      - article [ref=e429]:
+        - link "Mesa de noche blanca con 2 cajones y repisa Muebles Mesa de noche blanca con 2 cajones y repisa RD$ 1,695" [ref=e430] [cursor=pointer]:
+          - /url: producto/mesa-noche-repisa-lc050-023
+          - generic [ref=e431]:
+            - img "Mesa de noche blanca con 2 cajones y repisa" [ref=e432]
+            - generic [ref=e433]: Muebles
+          - generic [ref=e434]:
+            - generic [ref=e435]: Mesa de noche blanca con 2 cajones y repisa
+            - generic [ref=e436]: RD$ 1,695
+        - button "Agregar al carrito" [ref=e439] [cursor=pointer]
+      - article [ref=e443]:
+        - link "Estante esquinero de pared de 5 niveles Muebles Estante esquinero de pared de 5 niveles RD$ 1,455" [ref=e444] [cursor=pointer]:
+          - /url: producto/estante-esquinero-5-niveles
+          - generic [ref=e445]:
+            - img "Estante esquinero de pared de 5 niveles" [ref=e446]
+            - generic [ref=e447]: Muebles
+          - generic [ref=e448]:
+            - generic [ref=e449]: Estante esquinero de pared de 5 niveles
+            - generic [ref=e450]: RD$ 1,455
+        - button "Agregar al carrito" [ref=e453] [cursor=pointer]
+      - article [ref=e457]:
+        - link "Mesa de noche moderna con 2 cajones Muebles Mesa de noche moderna con 2 cajones RD$ 1,440" [ref=e458] [cursor=pointer]:
+          - /url: producto/mesa-noche-2-cajones-3-colores
+          - generic [ref=e459]:
+            - img "Mesa de noche moderna con 2 cajones" [ref=e460]
+            - generic [ref=e461]: Muebles
+          - generic [ref=e462]:
+            - generic [ref=e463]: Mesa de noche moderna con 2 cajones
+            - generic [ref=e464]: RD$ 1,440
+        - button "Agregar al carrito" [ref=e467] [cursor=pointer]
+      - article [ref=e471]:
+        - link "Estante mural blanco de 5 niveles Muebles Estante mural blanco de 5 niveles RD$ 895" [ref=e472] [cursor=pointer]:
+          - /url: producto/estante-mural-blanco-5-niveles
+          - generic [ref=e473]:
+            - img "Estante mural blanco de 5 niveles" [ref=e474]
+            - generic [ref=e475]: Muebles
+          - generic [ref=e476]:
+            - generic [ref=e477]: Estante mural blanco de 5 niveles
+            - generic [ref=e478]: RD$ 895
+        - button "Agregar al carrito" [ref=e481] [cursor=pointer]
+      - article [ref=e485]:
+        - link "Cortinas blancas translúcidas para sala o cuarto Cortinas y Alfombras Cortinas blancas translúcidas para sala o cuarto RD$ 535" [ref=e486] [cursor=pointer]:
+          - /url: producto/cortinas-blancas-translucidas
+          - generic [ref=e487]:
+            - img "Cortinas blancas translúcidas para sala o cuarto" [ref=e488]
+            - generic [ref=e489]: Cortinas y Alfombras
+          - generic [ref=e490]:
+            - generic [ref=e491]: Cortinas blancas translúcidas para sala o cuarto
+            - generic [ref=e492]: RD$ 535
+        - button "Agregar al carrito" [ref=e495] [cursor=pointer]
+      - article [ref=e499]:
+        - link "Máquina manual para comida de bebé / procesador 1.5L Alimentación del Bebé Máquina manual para comida de bebé / procesador 1.5L RD$ 435" [ref=e500] [cursor=pointer]:
+          - /url: producto/m-quina-manual-para-comida-de-beb-procesador-1-5l
+          - generic [ref=e501]:
+            - img "Máquina manual para comida de bebé / procesador 1.5L" [ref=e502]
+            - generic [ref=e503]: Alimentación del Bebé
+          - generic [ref=e504]:
+            - generic [ref=e505]: Máquina manual para comida de bebé / procesador 1.5L
+            - generic [ref=e506]: RD$ 435
+        - button "Agregar al carrito" [ref=e509] [cursor=pointer]
+      - article [ref=e513]:
+        - link "Crema hidratante para bebé 15FL OZ / 443mL Baño y Cuidado del Bebé Crema hidratante para bebé 15FL OZ / 443mL RD$ 145" [ref=e514] [cursor=pointer]:
+          - /url: producto/crema-hidratante-para-beb-15fl-oz-443ml
+          - generic [ref=e515]:
+            - img "Crema hidratante para bebé 15FL OZ / 443mL" [ref=e516]
+            - generic [ref=e517]: Baño y Cuidado del Bebé
+          - generic [ref=e518]:
+            - generic [ref=e519]: Crema hidratante para bebé 15FL OZ / 443mL
+            - generic [ref=e520]: RD$ 145
+        - button "Agregar al carrito" [ref=e523] [cursor=pointer]
+      - article [ref=e527]:
+        - link "Talco para bebé / polvo corporal para bebé 200g 7.04oz Baño y Cuidado del Bebé Talco para bebé / polvo corporal para bebé 200g 7.04oz RD$ 90" [ref=e528] [cursor=pointer]:
+          - /url: producto/talco-para-beb-polvo-corporal-para-beb-200g-7-04oz
+          - generic [ref=e529]:
+            - img "Talco para bebé / polvo corporal para bebé 200g 7.04oz" [ref=e530]
+            - generic [ref=e531]: Baño y Cuidado del Bebé
+          - generic [ref=e532]:
+            - generic [ref=e533]: Talco para bebé / polvo corporal para bebé 200g 7.04oz
+            - generic [ref=e534]: RD$ 90
+        - button "Agregar al carrito" [ref=e537] [cursor=pointer]
+      - article [ref=e541]:
+        - link "Champú para bebé / shampoo bebé 100ml amarillo Baño y Cuidado del Bebé Champú para bebé / shampoo bebé 100ml amarillo RD$ 55" [ref=e542] [cursor=pointer]:
+          - /url: producto/champ-para-beb-shampoo-beb-100ml-amarillo
+          - generic [ref=e543]:
+            - img "Champú para bebé / shampoo bebé 100ml amarillo" [ref=e544]
+            - generic [ref=e545]: Baño y Cuidado del Bebé
+          - generic [ref=e546]:
+            - generic [ref=e547]: Champú para bebé / shampoo bebé 100ml amarillo
+            - generic [ref=e548]: RD$ 55
+        - button "Agregar al carrito" [ref=e551] [cursor=pointer]
+      - article [ref=e555]:
+        - link "Talco para bebé 120g / 4.22 FL.OZ Baño y Cuidado del Bebé Talco para bebé 120g / 4.22 FL.OZ RD$ 70" [ref=e556] [cursor=pointer]:
+          - /url: producto/talco-para-beb-120g-4-22-fl-oz
+          - generic [ref=e557]:
+            - img "Talco para bebé 120g / 4.22 FL.OZ" [ref=e558]
+            - generic [ref=e559]: Baño y Cuidado del Bebé
+          - generic [ref=e560]:
+            - generic [ref=e561]: Talco para bebé 120g / 4.22 FL.OZ
+            - generic [ref=e562]: RD$ 70
+        - button "Agregar al carrito" [ref=e565] [cursor=pointer]
+      - article [ref=e569]:
+        - link "Talco para bebé / polvo corporal 16oz 400g con vitamina E Baño y Cuidado del Bebé Talco para bebé / polvo corporal 16oz 400g con vitamina E RD$ 155" [ref=e570] [cursor=pointer]:
+          - /url: producto/talco-para-beb-polvo-corporal-16oz-400g-con-vitamina-e
+          - generic [ref=e571]:
+            - img "Talco para bebé / polvo corporal 16oz 400g con vitamina E" [ref=e572]
+            - generic [ref=e573]: Baño y Cuidado del Bebé
+          - generic [ref=e574]:
+            - generic [ref=e575]: Talco para bebé / polvo corporal 16oz 400g con vitamina E
+            - generic [ref=e576]: RD$ 155
+        - button "Agregar al carrito" [ref=e579] [cursor=pointer]
+      - article [ref=e583]:
+        - link "Shampoo para bebé 120ml / no irrita ojos / uso diario Baño y Cuidado del Bebé Shampoo para bebé 120ml / no irrita ojos / uso diario RD$ 105" [ref=e584] [cursor=pointer]:
+          - /url: producto/shampoo-para-beb-120ml-no-irrita-ojos-uso-diario
+          - generic [ref=e585]:
+            - img "Shampoo para bebé 120ml / no irrita ojos / uso diario" [ref=e586]
+            - generic [ref=e587]: Baño y Cuidado del Bebé
+          - generic [ref=e588]:
+            - generic [ref=e589]: Shampoo para bebé 120ml / no irrita ojos / uso diario
+            - generic [ref=e590]: RD$ 105
+        - button "Agregar al carrito" [ref=e593] [cursor=pointer]
+      - article [ref=e597]:
+        - link "Hisopos para bebé / bastoncillos 100% algodón 55 unidades Baño y Cuidado del Bebé Hisopos para bebé / bastoncillos 100% algodón 55 unidades RD$ 85" [ref=e598] [cursor=pointer]:
+          - /url: producto/hisopos-para-beb-bastoncillos-100-algod-n-55-unidades
+          - generic [ref=e599]:
+            - img "Hisopos para bebé / bastoncillos 100% algodón 55 unidades" [ref=e600]
+            - generic [ref=e601]: Baño y Cuidado del Bebé
+          - generic [ref=e602]:
+            - generic [ref=e603]: Hisopos para bebé / bastoncillos 100% algodón 55 unidades
+            - generic [ref=e604]: RD$ 85
+        - button "Agregar al carrito" [ref=e607] [cursor=pointer]
+    - button "Ver más productos" [ref=e611] [cursor=pointer]
+    - generic [ref=e612]:
+      - generic [ref=e614]:
+        - heading "Nuestras Tiendas" [level=2] [ref=e615]
+        - paragraph [ref=e616]: Tienda física real en San Pedro de Macorís · compra con confianza
+      - generic [ref=e617]:
+        - article [ref=e618]:
+          - generic [ref=e619]: 🏪Foto pendiente
+          - generic [ref=e620]:
+            - heading "VivaBien · Tienda 1" [level=3] [ref=e621]
+            - paragraph [ref=e622]: San Pedro de Macorís · dirección por confirmar
+            - paragraph [ref=e623]: Horario por confirmar
+            - link "📍 Cómo llegar" [ref=e624] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=San+Pedro+de+Macoris
+        - article [ref=e625]:
+          - generic [ref=e626]: 🏪Foto pendiente
+          - generic [ref=e627]:
+            - heading "VivaBien · Tienda 2" [level=3] [ref=e628]
+            - paragraph [ref=e629]: San Pedro de Macorís · dirección por confirmar
+            - paragraph [ref=e630]: Horario por confirmar
+            - link "📍 Cómo llegar" [ref=e631] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=San+Pedro+de+Macoris
+  - link "WhatsApp" [ref=e632] [cursor=pointer]:
+    - /url: https://wa.me/18092811992
+  - contentinfo [ref=e635]:
+    - generic [ref=e636]:
+      - link "Garantía y devoluciones" [ref=e637] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e638] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e639]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

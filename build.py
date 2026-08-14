@@ -796,6 +796,7 @@ button:focus-visible,.date-choice:focus-visible,.time-choice:focus-visible{outli
 .sub-note{text-align:center;font-size:11.5px;color:#9aa3b2;margin-top:10px}
 .ship-quote{background:#EEF7FF;border:1px solid #CFE2F7;border-radius:13px;padding:11px 12px;margin:8px 0 10px;display:grid;grid-template-columns:1fr auto;gap:4px 12px}
 .ship-quote span{font-size:11px;color:#5f7186;font-weight:700}.ship-quote b{font-size:14px}.ship-quote small{grid-column:1/-1;color:#68758a;font-size:10.5px}
+.ship-quote b.free{color:#157A4E;font-weight:800;letter-spacing:.3px}
 .pay-note{display:none;background:#FFF5E9;border:1px solid #F6DDB4;color:#8a5a12;border-radius:11px;padding:10px 12px;font-size:11.5px;font-weight:700;line-height:1.45;margin-bottom:9px}
 .pay-note.show{display:block}
 /* confirmación */
@@ -1030,11 +1031,13 @@ var DELIVERY_DATE='',DELIVERY_WINDOW='09:00-19:00',DELIVERY_MODE='today';
 var MONTHS_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 // 运费状态机：完全由 data/shipping_zones.json 驱动，JS 不硬编码任何 sector/价格
 // SHIP = null(未选) | {other:true}(Otro sector) | {price,eta,zone,sector}(精确报价)
-var ZONES=null, ZFAIL=false, DEF_NOTE='', SHIP=null;
+var ZONES=null, ZFAIL=false, DEF_NOTE='', SHIP=null, FREE=null;
 var OTHER_LABEL='Otro sector / No está en la lista';
 function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
 function isMetro(){return document.getElementById('sectorFld').style.display!=='none'}
-function shipFee(){return (SHIP&&SHIP.price!=null)?Number(SHIP.price):null}
+// 大圣多明哥包邮：运费已含在商品标价里，结账不再另收。开关在 data/shipping_zones.json
+function freeMetro(){return !!(FREE&&FREE.activo)&&isMetro()}
+function shipFee(){if(freeMetro())return 0;return (SHIP&&SHIP.price!=null)?Number(SHIP.price):null}
 function santoParts(){var ps=new Intl.DateTimeFormat('en-US',{timeZone:'America/Santo_Domingo',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',hourCycle:'h23'}).formatToParts(new Date()),o={};ps.forEach(function(x){if(x.type!=='literal')o[x.type]=Number(x.value)});return o}
 function localDate(p){return new Date(p.year,p.month-1,p.day)}
 function isoDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -1052,7 +1055,7 @@ function updateTimeAvailability(){var p=santoParts(),today=isoDate(localDate(p))
 function chooseTime(b){if(b.disabled)return;document.querySelectorAll('.time-choice').forEach(function(x){x.classList.remove('on')});b.classList.add('on');DELIVERY_WINDOW=b.dataset.value}
 function loadZones(){
  fetch('data/shipping_zones.json').then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
- .then(function(d){ZONES=d.zones||[];DEF_NOTE=d.default_note||'';buildSectorSelect();sectorUI()})
+ .then(function(d){ZONES=d.zones||[];DEF_NOTE=d.default_note||'';FREE=d.envio_gratis_metro||null;buildSectorSelect();sectorUI()})
  .catch(function(e){ZFAIL=true;console.warn('shipping_zones.json 加载失败，运费按 por confirmar 处理:',e);buildSectorSelect();sectorUI()});
 }
 function buildSectorSelect(){
@@ -1111,13 +1114,19 @@ function paintTotals(){
   document.getElementById('discCode').textContent=COUPON.code;
  }else{dl.style.display='none';}
  var tShip=document.getElementById('tShip'),eta=document.getElementById('shipEta');
- if(fee!=null){tShip.textContent=money(fee);eta.textContent=SHIP.eta||'';}
+ tShip.classList.remove('free');
+ if(freeMetro()){
+  // 不管有没有选 sector 都直接显示 GRATIS，价格不再"最后一步才揭晓"
+  tShip.textContent=(FREE&&FREE.etiqueta)||'GRATIS';tShip.classList.add('free');
+  eta.textContent=(SHIP&&SHIP.eta)||(FREE&&FREE.eta_default)||'';
+ }
+ else if(fee!=null){tShip.textContent=money(fee);eta.textContent=(SHIP&&SHIP.eta)||'';}
  else if(SHIP&&SHIP.other){tShip.textContent='por confirmar';eta.textContent='Te confirmamos el costo del envío por WhatsApp.';}
  else{tShip.textContent='Selecciona tu sector';eta.textContent='Verás el costo y el tiempo antes de confirmar.';}
  document.getElementById('tTot').textContent=money(tot);
- // 未选 sector（大圣多明各且分区数据正常时）→ 按钮置灰
+ // 包邮时按钮不再因为"没选 sector"而置灰；sector 仍是必填，改由提交时的字段校验提示
  var btn=document.getElementById('btnConf');
- var needSector=isMetro()&&!ZFAIL&&!SHIP;
+ var needSector=isMetro()&&!ZFAIL&&!SHIP&&!freeMetro();
  btn.disabled=needSector;
  btn.textContent=needSector?'Selecciona tu sector para calcular el envío'
   :'🛡️ Confirmar pedido · '+money(tot)+(fee==null?' + envío':'');
@@ -1211,7 +1220,9 @@ async function confirmar(){
  var sub=0,lines=c.map(function(it){var lineTotal=itemTotal(it);sub+=lineTotal;
    return it.qty+'x '+it.title+' ('+it.sku+') — '+money(lineTotal)});
  var disc=calcDiscount(sub),productTotal=sub-disc,tot=productTotal+(fee||0);
- var shippingText=fee!=null?money(fee)+(SHIP.eta?' ('+SHIP.eta+')':''):'por confirmar';
+ var shipEtaTxt=(SHIP&&SHIP.eta)||(freeMetro()&&FREE?FREE.eta_default:'')||'';
+ var shippingText=freeMetro()?('GRATIS'+(shipEtaTxt?' ('+shipEtaTxt+')':''))
+  :(fee!=null?money(fee)+(shipEtaTxt?' ('+shipEtaTxt+')':''):'por confirmar');
  var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
   +(disc>0?'\\n——\\nSubtotal: '+money(sub)+'\\n🏷️ Cupón '+COUPON.code+': - '+money(disc):'')
   +'\\nSector: '+zona
@@ -1233,7 +1244,7 @@ async function confirmar(){
     preferred_delivery_date:metro?DELIVERY_DATE:'',preferred_delivery_window:metro?DELIVERY_WINDOW:'',
     payment_method:pay,shipping_zone:(SHIP&&SHIP.zone)||(metro?'otro':'interior'),
     shipping_fee:fee||0,shipping_fee_min:fee||0,shipping_fee_max:fee||0,
-    delivery_estimate:(SHIP&&SHIP.eta)||'por confirmar',
+    delivery_estimate:shipEtaTxt||'por confirmar',
     subtotal:sub,discount:disc,total:tot,total_min:tot,total_max:tot,
     coupon_code:COUPON?COUPON.code:'',tracking:vbContext(),items:c.map(function(it){return {
      sku:it.sku,title:it.title,image:it.img,unit_price:effectiveUnit(it),quantity:it.qty}})})});
@@ -2598,6 +2609,9 @@ VENTILADOR_CSS = """
  border:1px solid var(--vt-bd)}
 .vt-prow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .vt-price{font-size:34px;font-weight:800;color:var(--vt-orange);line-height:1}
+.vt-unit{font-size:13px;color:var(--vt-light);font-weight:600}
+.vt-free{color:var(--vt-green);font-weight:700}
+.vt-sp small{display:block;font-size:11px;color:var(--vt-light);font-weight:600}
 .vt-was{font-size:16px;color:var(--vt-light);text-decoration:line-through}
 .vt-off{background:var(--vt-orange);color:#fff;padding:3px 9px;border-radius:5px;font-size:12px;font-weight:700}
 .vt-pmeta{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;font-size:12px;color:var(--vt-mid)}
@@ -2828,13 +2842,25 @@ def ventilador_page(products=None):
     off_tag = (f'<span class="vt-tag-off">{esc(cfg.get("descuento_texto") or "")}</span>'
                if cfg.get("descuento_texto") else "")
 
-    # ---- 套餐 ----
+    # ---- 价格框下面那排绿色对勾（含"包邮"）----
+    pmeta_cfg = [m for m in (cfg.get("precio_meta") or []) if isinstance(m, dict) and m.get("texto")]
+    if not pmeta_cfg:
+        pmeta_cfg = [{"texto": "Pago contra entrega", "cola": "en el Gran Santo Domingo"},
+                     {"texto": "Garantía de 7 días", "cola": ""}]
+    pmeta = "".join(
+        f'<span>✅ <b>{esc(m["texto"])}</b>{(" " + esc(m["cola"])) if m.get("cola") else ""}</span>'
+        for m in pmeta_cfg)
+
+    # ---- 套餐 ----（predeterminado=true 的档位默认选中，没标就选第一个）
+    def_i = next((i for i, p in enumerate(paquetes) if p.get("predeterminado")), 0)
+    def_u = int(paquetes[def_i].get("unidades") or 1)
+    def_p = float(paquetes[def_i]["precio"])
     pills = ""
     for i, p in enumerate(paquetes):
         u = int(p.get("unidades") or 1)
         pr = float(p["precio"])
         ah = float(p.get("ahorro") or 0)
-        pills += (f'<button class="vt-pill{" on" if i == 0 else ""}" type="button" data-u="{u}" '
+        pills += (f'<button class="vt-pill{" on" if i == def_i else ""}" type="button" data-u="{u}" '
                   f'data-p="{pr:g}" onclick="vtPack(this)">{esc(p.get("etiqueta") or f"x{u}")}'
                   f'<i>{fmt_price(pr)}</i>'
                   + (f'<s>Ahorras {fmt_price(ah)}</s>' if ah > 0 else "")
@@ -2967,11 +2993,11 @@ def ventilador_page(products=None):
    <span class="vt-sold">Vendidos: {esc(rs.get("total_texto") or "")}+</span></div>
 
   <div class="vt-pbox">
-   <div class="vt-prow"><span class="vt-price">RD$ <span id="vtPrice">{precio:,.0f}</span></span>
+   <div class="vt-prow"><span class="vt-price">RD$ {precio:,.0f}</span>
+    <span class="vt-unit">por unidad</span>
     {f'<span class="vt-was">{fmt_price(antes)}</span>' if antes > precio else ''}
     {f'<span class="vt-off">{esc(cfg.get("descuento_texto"))}</span>' if cfg.get("descuento_texto") else ''}</div>
-   <div class="vt-pmeta"><span>✅ <b>Pago contra entrega</b> en el Gran Santo Domingo</span>
-    <span>✅ <b>Garantía de 7 días</b></span></div>
+   <div class="vt-pmeta">{pmeta}</div>
   </div>
 
   <div class="vt-blk"><div class="vt-lab">Color: {esc(cfg.get("color") or "")}</div>
@@ -3027,30 +3053,34 @@ def ventilador_page(products=None):
 
 <div class="vt-sticky" id="vtSticky"><div class="vt-sticky-in">
  <div class="vt-sp"><img src="../images/{esc(main_img)}" alt="{esc(corto)}">
-  <div><b>{esc(corto)}</b><span>RD$ <span id="vtPrice2">{precio:,.0f}</span></span>
-   {f'<del>{fmt_price(antes)}</del>' if antes > precio else ''}</div></div>
+  <div><b>{esc(corto)}</b><span>RD$ <span id="vtPrice2">{def_p:,.0f}</span></span>
+   <small id="vtPackLbl">{esc(paquetes[def_i].get("etiqueta") or "")}</small></div></div>
  <div style="display:flex;gap:10px;flex:1;justify-content:flex-end">
   <button class="vt-btn vt-btn-cart" type="button" onclick="vtAdd(0)">Agregar</button>
   <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">Comprar ahora</button></div>
 </div></div>
 </div>
 <script>
-var VT={product_json},vtU=1,vtP={precio:g};
+var VT={product_json},vtU={def_u},vtP={def_p:g};
 function vtFmt(n){{return Number(n).toLocaleString('en-US')}}
 function vtImg(b,src){{document.querySelectorAll('.vt-thumb').forEach(function(t){{t.classList.remove('on')}});
  b.classList.add('on');document.getElementById('vtMain').src='../images/'+src;
  try{{vbTrack('gallery_view',VT.sku,{{img:src}})}}catch(e){{}}}}
 function vtPack(b){{document.querySelectorAll('.vt-pill').forEach(function(p){{p.classList.remove('on')}});
  b.classList.add('on');vtU=parseInt(b.dataset.u);vtP=parseFloat(b.dataset.p);
- document.getElementById('vtPrice').textContent=vtFmt(vtP);
+ // 顶部大价格固定是「单台含运费价」，不随档位变；变的是底部条和总计行
  document.getElementById('vtPrice2').textContent=vtFmt(vtP);
+ var lbl=document.getElementById('vtPackLbl');
+ if(lbl)lbl.textContent=b.textContent.split('RD$')[0].trim();
  vtSync();try{{vbTrack('tier_select',VT.sku,{{units:vtU,price:vtP}})}}catch(e){{}}}}
 function vtQty(d){{var i=document.getElementById('vtQty');var v=parseInt(i.value||1)+d;
  i.value=v<1?1:(v>99?99:v);vtSync();
  try{{vbTrack('quantity_change',VT.sku,{{qty:parseInt(i.value)}})}}catch(e){{}}}}
-function vtSync(){{var q=parseInt(document.getElementById('vtQty').value||1);
+function vtSync(){{var q=parseInt(document.getElementById('vtQty').value||1),n=vtU*q;
  var el=document.getElementById('vtUnits');
- el.textContent=(vtU>1||q>1)?('Total: '+(vtU*q)+' unidades · RD$ '+vtFmt(vtP*q)):'';}}
+ // 总计一直显示，客人任何时候都知道最终要付多少（含运费，结账不再加价）
+ el.innerHTML='Total: '+n+(n>1?' unidades':' unidad')+' · <b>RD$ '+vtFmt(vtP*q)
+  +'</b> <span class="vt-free">· envío gratis en Gran Santo Domingo</span>';}}
 function vtToast(m){{var t=document.createElement('div');t.className='vt-toast';t.textContent=m;
  document.body.appendChild(t);setTimeout(function(){{t.classList.add('on')}},10);
  setTimeout(function(){{t.classList.remove('on');setTimeout(function(){{t.remove()}},320)}},1900)}}
@@ -3058,8 +3088,15 @@ function vtAdd(buy){{
  var q=parseInt(document.getElementById('vtQty').value||1);
  var sku=vtU>1?(VT.sku+'-P'+vtU):VT.sku;
  var title=vtU>1?(VT.title+' (paquete de '+vtU+')'):VT.title;
- var c=vbCart(),f=c.find(function(x){{return x.sku===sku}});
- if(f){{f.qty+=q}}else{{c.push({{sku:sku,handle:VT.handle,title:title,price:vtP,img:VT.img,qty:q}})}}
+ var item={{sku:sku,handle:VT.handle,title:title,price:vtP,img:VT.img,qty:q}};
+ var c;
+ if(buy){{
+  // 「Comprar ahora」只结算当前商品和当前数量，不把历史购物车带进结算页
+  c=[item];
+ }}else{{
+  c=vbCart();var f=c.find(function(x){{return x.sku===sku}});
+  if(f){{f.qty+=q}}else{{c.push(item)}}
+ }}
  vbSave(c);
  try{{fbq('track','AddToCart',{{content_ids:[sku],content_type:'product',value:vtP*q,currency:'DOP'}})}}catch(e){{}}
  try{{vbTrack('addcart',sku,{{qty:q,price:vtP,units:vtU*q,product_title:title,product_img:VT.img,

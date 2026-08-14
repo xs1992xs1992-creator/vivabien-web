@@ -2,7 +2,6 @@
   "_nota": "站内商品详情页 /producto/abanico-de-techo-led 的唯一配置源。改这里再构建即可，不用改 build.py。价格只搬运，不估算。",
   "_origen": "内容来自店主自有的另一个网站（2026-08-06 由 fan-product-page-standalone.html 迁入），已去掉原稿中的 Temu 广告素材并本地化为多米尼加西语。",
   "activo": true,
-
   "sku": "VB-FAN-E27",
   "handle": "abanico-de-techo-led",
   "titulo": "Abanico de techo con luz LED — rosca E27, 6 aspas, control remoto",
@@ -10,59 +9,110 @@
   "subtitulo": "Abanico e iluminación 2 en 1 — ideal para sala, comedor y habitación",
   "categoria": "Decoración del Hogar",
   "migaja": "Inicio / Abanicos / Abanico de techo con luz LED",
-
-  "precio": 950,
-  "precio_antes": 1900,
+  "precio": 1250,
+  "precio_antes": 2500,
   "descuento_texto": "-50%",
   "moneda": "RD$",
-
   "paquetes": [
-    { "unidades": 1, "precio": 950,  "etiqueta": "x1 Unidad",     "ahorro": 0,   "destacado": false },
-    { "unidades": 2, "precio": 1650, "etiqueta": "x2 Unidades",   "ahorro": 250, "destacado": false },
-    { "unidades": 3, "precio": 2310, "etiqueta": "x3 Unidades",   "ahorro": 540, "destacado": true, "insignia": "Más pedido" }
+    {
+      "unidades": 1,
+      "precio": 1250,
+      "etiqueta": "x1 Unidad",
+      "ahorro": 0,
+      "destacado": false
+    },
+    {
+      "unidades": 2,
+      "precio": 2150,
+      "etiqueta": "x2 Unidades",
+      "ahorro": 350,
+      "destacado": true,
+      "predeterminado": true,
+      "insignia": "Más pedido"
+    },
+    {
+      "unidades": 3,
+      "precio": 3000,
+      "etiqueta": "x3 Unidades",
+      "ahorro": 750,
+      "destacado": false
+    }
   ],
-
   "color": "Blanco",
   "color_nota": "Blanco (color único)",
   "existencias_texto": "Solo 87 unidades disponibles",
-
   "cuenta_regresiva_segundos": 8078,
   "aviso_superior": [
     "💰 Pago contra entrega en el Gran Santo Domingo",
     "50% OFF · Oferta limitada — quedan",
-    "Envíos a todo el país · Garantía de 7 días"
+    "🚚 ENVÍO GRATIS en Gran Santo Domingo · Garantía de 7 días"
   ],
-
   "_nota_imagenes": "相册图。02 已换成店主提供的高清原图（之前是从 Temu 横幅里裁出来的低清版）。加图直接往数组里加一行即可。",
   "imagenes": [
-    { "archivo": "ventilador/abanico-e27-01.jpg", "alt": "Abanico de techo con luz LED y control remoto instalado en el techo" },
-    { "archivo": "ventilador/abanico-e27-02.jpg", "alt": "Abanico de techo con luz LED encendido en una sala, con control remoto" },
-    { "archivo": "ventilador/abanico-e27-03.jpg", "alt": "Funciones del abanico: 3 tonos de luz, velocidades, brillo regulable, silencioso y temporizador" },
-    { "archivo": "ventilador/abanico-e27-04.jpg", "alt": "Abanico de techo con luz LED, control remoto y kit de instalación" },
-    { "archivo": "ventilador/abanico-e27-05.jpg", "alt": "Abanico y lámpara 2 en 1 en sala, comedor y habitación" }
+    {
+      "archivo": "ventilador/abanico-e27-01.jpg",
+      "alt": "Abanico de techo con luz LED y control remoto instalado en el techo"
+    },
+    {
+      "archivo": "ventilador/abanico-e27-02.jpg",
+      "alt": "Abanico de techo con luz LED encendido en una sala, con control remoto"
+    },
+    {
+      "archivo": "ventilador/abanico-e27-03.jpg",
+      "alt": "Funciones del abanico: 3 tonos de luz, velocidades, brillo regulable, silencioso y temporizador"
+    },
+    {
+      "archivo": "ventilador/abanico-e27-04.jpg",
+      "alt": "Abanico de techo con luz LED, control remoto y kit de instalación"
+    },
+    {
+      "archivo": "ventilador/abanico-e27-05.jpg",
+      "alt": "Abanico y lámpara 2 en 1 en sala, comedor y habitación"
+    }
   ],
-
   "_nota_detalle": "详情图：在页面中部整幅展示（供应商详情图）。留空则不显示这一段。",
   "detalle_titulo": "Detalles del producto",
   "imagenes_detalle": [
-    { "archivo": "ventilador/abanico-e27-03.jpg", "alt": "3 tonos de luz, velocidades, brillo regulable, súper silencioso y apagado programado" },
-    { "archivo": "ventilador/abanico-e27-04.jpg", "alt": "Incluye control remoto y kit de instalación (las baterías AA no vienen incluidas)" },
-    { "archivo": "ventilador/abanico-e27-05.jpg", "alt": "Abanico y lámpara 2 en 1 con velocidades de viento para sala, comedor y habitación" }
+    {
+      "archivo": "ventilador/abanico-e27-03.jpg",
+      "alt": "3 tonos de luz, velocidades, brillo regulable, súper silencioso y apagado programado"
+    },
+    {
+      "archivo": "ventilador/abanico-e27-04.jpg",
+      "alt": "Incluye control remoto y kit de instalación (las baterías AA no vienen incluidas)"
+    },
+    {
+      "archivo": "ventilador/abanico-e27-05.jpg",
+      "alt": "Abanico y lámpara 2 en 1 con velocidades de viento para sala, comedor y habitación"
+    }
   ],
-
   "video": {
     "activo": false,
     "titulo": "Conoce el abanico en acción",
     "duracion": "0:30 · HD"
   },
-
   "beneficios": [
-    { "icono": "🔇", "titulo": "Motor silencioso",    "texto": "Funciona desde 30 dB — no molesta a la hora de dormir" },
-    { "icono": "💡", "titulo": "Luz LED 3 tonos",     "texto": "Cálido / neutro / frío — se cambia con el control remoto" },
-    { "icono": "💨", "titulo": "3 velocidades",       "texto": "Desde brisa suave hasta ventilación máxima" },
-    { "icono": "🔩", "titulo": "Instalación fácil",   "texto": "Rosca E27 — se enrosca en el mismo bombillo, sin electricista" }
+    {
+      "icono": "🔇",
+      "titulo": "Motor silencioso",
+      "texto": "Funciona desde 30 dB — no molesta a la hora de dormir"
+    },
+    {
+      "icono": "💡",
+      "titulo": "Luz LED 3 tonos",
+      "texto": "Cálido / neutro / frío — se cambia con el control remoto"
+    },
+    {
+      "icono": "💨",
+      "titulo": "3 velocidades",
+      "texto": "Desde brisa suave hasta ventilación máxima"
+    },
+    {
+      "icono": "🔩",
+      "titulo": "Instalación fácil",
+      "texto": "Rosca E27 — se enrosca en el mismo bombillo, sin electricista"
+    }
   ],
-
   "secciones": [
     {
       "etiqueta": "Producto 2 en 1",
@@ -101,93 +151,259 @@
       "destaque_texto": "Abanico, control remoto y manual incluidos"
     }
   ],
-
   "comparacion": {
     "titulo": "¿Por qué elegir este abanico?",
     "columna_nuestro": "Este abanico",
     "columna_otro": "Abanico común",
     "filas": [
-      ["Motor",             "DC silencioso",  "AC estándar"],
-      ["Nivel de ruido",    "30-45 dB",       "55-65 dB"],
-      ["Brillo regulable",  "✓ 5-100%",       "✗"],
-      ["Luz LED",           "✓ 3 tonos",      "✗"],
-      ["Control remoto",    "✓ incluido",     "✗"],
-      ["Reversible",        "✓",              "✗"],
-      ["Apagado programado","✓ 1 y 2 h",      "✗"],
-      ["Instalación",       "Rosca E27",      "Requiere cableado"]
+      [
+        "Motor",
+        "DC silencioso",
+        "AC estándar"
+      ],
+      [
+        "Nivel de ruido",
+        "30-45 dB",
+        "55-65 dB"
+      ],
+      [
+        "Brillo regulable",
+        "✓ 5-100%",
+        "✗"
+      ],
+      [
+        "Luz LED",
+        "✓ 3 tonos",
+        "✗"
+      ],
+      [
+        "Control remoto",
+        "✓ incluido",
+        "✗"
+      ],
+      [
+        "Reversible",
+        "✓",
+        "✗"
+      ],
+      [
+        "Apagado programado",
+        "✓ 1 y 2 h",
+        "✗"
+      ],
+      [
+        "Instalación",
+        "Rosca E27",
+        "Requiere cableado"
+      ]
     ]
   },
-
   "ficha_tecnica": [
-    { "grupo": "Motor y ventilación", "datos": [
-      ["Tipo de motor", "DC (corriente continua)"],
-      ["Potencia", "30W"],
-      ["Velocidades", "3 niveles"],
-      ["Ruido", "30-45 dB"],
-      ["Reversible", "Sí (verano/invierno)"],
-      ["Aspas", "6 aspas de ABS"]
-    ]},
-    { "grupo": "Luz LED", "datos": [
-      ["Tipo", "LED integrado"],
-      ["Potencia LED", "20W"],
-      ["Tonos", "2700K / 4000K / 6500K"],
-      ["Regulable", "Sí (dimeable)"],
-      ["Lúmenes", "2000 lm"],
-      ["Ángulo", "140°"]
-    ]},
-    { "grupo": "Medidas e instalación", "datos": [
-      ["Diámetro", "106 cm (42\")"],
-      ["Altura", "36 cm"],
-      ["Color", "Blanco"],
-      ["Voltaje", "110V CA 50/60Hz"],
-      ["Rosca", "E27 (socket de bombillo)"],
-      ["Incluye", "Abanico + control remoto + manual"]
-    ]}
+    {
+      "grupo": "Motor y ventilación",
+      "datos": [
+        [
+          "Tipo de motor",
+          "DC (corriente continua)"
+        ],
+        [
+          "Potencia",
+          "30W"
+        ],
+        [
+          "Velocidades",
+          "3 niveles"
+        ],
+        [
+          "Ruido",
+          "30-45 dB"
+        ],
+        [
+          "Reversible",
+          "Sí (verano/invierno)"
+        ],
+        [
+          "Aspas",
+          "6 aspas de ABS"
+        ]
+      ]
+    },
+    {
+      "grupo": "Luz LED",
+      "datos": [
+        [
+          "Tipo",
+          "LED integrado"
+        ],
+        [
+          "Potencia LED",
+          "20W"
+        ],
+        [
+          "Tonos",
+          "2700K / 4000K / 6500K"
+        ],
+        [
+          "Regulable",
+          "Sí (dimeable)"
+        ],
+        [
+          "Lúmenes",
+          "2000 lm"
+        ],
+        [
+          "Ángulo",
+          "140°"
+        ]
+      ]
+    },
+    {
+      "grupo": "Medidas e instalación",
+      "datos": [
+        [
+          "Diámetro",
+          "106 cm (42\")"
+        ],
+        [
+          "Altura",
+          "36 cm"
+        ],
+        [
+          "Color",
+          "Blanco"
+        ],
+        [
+          "Voltaje",
+          "110V CA 50/60Hz"
+        ],
+        [
+          "Rosca",
+          "E27 (socket de bombillo)"
+        ],
+        [
+          "Incluye",
+          "Abanico + control remoto + manual"
+        ]
+      ]
+    }
   ],
-
   "resenas": {
     "promedio": 4.8,
     "total_texto": "12,860",
     "subtitulo": "12,860+ clientes satisfechos",
     "distribucion": [
-      ["5 ★", 86], ["4 ★", 12], ["3 ★", 1], ["2 ★", 0.5], ["1 ★", 0.5]
+      [
+        "5 ★",
+        86
+      ],
+      [
+        "4 ★",
+        12
+      ],
+      [
+        "3 ★",
+        1
+      ],
+      [
+        "2 ★",
+        0.5
+      ],
+      [
+        "1 ★",
+        0.5
+      ]
     ],
     "_nota_lista": "真实买家评价（店主提供）。原文基本保留，只做了两处处理：补重音；第 2 条原文里的 'gracias Temu' 已删（不能在自己店里感谢竞争对手）。nombre 留空会显示 'Cliente verificado'；有真实买家名字就填进去。foto = 该买家的实拍图，和评价文字并排显示；留空则只显示文字。",
     "lista": [
-      { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+      {
+        "inicial": "✓",
+        "nombre": "",
+        "fecha": "",
+        "estrellas": 5,
         "foto": "ventilador/cliente-01.jpg",
         "foto_alt": "Foto de cliente: abanico encendido en la habitación",
-        "texto": "Excelente producto, me encantó, 10/10. Sí es muy bueno, con este calor no se puede dormir y por fin pude dormir fresca y sin estar sudando. Y lo mejor: no suena nada." },
-      { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "texto": "Excelente producto, me encantó, 10/10. Sí es muy bueno, con este calor no se puede dormir y por fin pude dormir fresca y sin estar sudando. Y lo mejor: no suena nada."
+      },
+      {
+        "inicial": "✓",
+        "nombre": "",
+        "fecha": "",
+        "estrellas": 5,
         "foto": "ventilador/cliente-03.jpg",
         "foto_alt": "Foto de cliente: abanico encendido de noche",
-        "texto": "Está buenísimo, genial, lo recomiendo ampliamente. La verdad superó mis expectativas, ¡está excelente! Muy buena compra." },
-      { "inicial": "✓", "nombre": "", "fecha": "", "estrellas": 5,
+        "texto": "Está buenísimo, genial, lo recomiendo ampliamente. La verdad superó mis expectativas, ¡está excelente! Muy buena compra."
+      },
+      {
+        "inicial": "✓",
+        "nombre": "",
+        "fecha": "",
+        "estrellas": 5,
         "foto": "ventilador/cliente-02.jpg",
         "foto_alt": "Foto de cliente: abanico instalado en el techo",
-        "texto": "Es excelente, este artículo funciona súper. Le doy un 10 de 10." }
+        "texto": "Es excelente, este artículo funciona súper. Le doy un 10 de 10."
+      }
     ]
   },
-
   "faq": [
-    { "p": "¿El motor hace mucho ruido?",
-      "r": "No. Motor DC ultra silencioso: solo 30 dB en velocidad baja (como una biblioteca). En velocidad máxima no pasa de 45 dB." },
-    { "p": "¿Cómo cambio los tonos de luz?",
-      "r": "Con el botón del control remoto incluido. También puedes regular la intensidad (dimeable) desde el mismo control." },
-    { "p": "¿Es difícil de instalar?",
-      "r": "No. Se enrosca directo en el socket del bombillo (rosca E27), igual que una bombilla. No hace falta llamar a un electricista." },
-    { "p": "¿Qué voltaje necesita?",
-      "r": "110V CA 50/60Hz, el estándar en República Dominicana. No requiere transformador." },
-    { "p": "¿Cómo pago?",
-      "r": "Contra entrega en el Gran Santo Domingo (pagas cuando lo recibes) o por transferencia bancaria. En el resto del país coordinamos el envío por WhatsApp." }
+    {
+      "p": "¿El motor hace mucho ruido?",
+      "r": "No. Motor DC ultra silencioso: solo 30 dB en velocidad baja (como una biblioteca). En velocidad máxima no pasa de 45 dB."
+    },
+    {
+      "p": "¿Cómo cambio los tonos de luz?",
+      "r": "Con el botón del control remoto incluido. También puedes regular la intensidad (dimeable) desde el mismo control."
+    },
+    {
+      "p": "¿Es difícil de instalar?",
+      "r": "No. Se enrosca directo en el socket del bombillo (rosca E27), igual que una bombilla. No hace falta llamar a un electricista."
+    },
+    {
+      "p": "¿Qué voltaje necesita?",
+      "r": "110V CA 50/60Hz, el estándar en República Dominicana. No requiere transformador."
+    },
+    {
+      "p": "¿Cómo pago?",
+      "r": "Contra entrega en el Gran Santo Domingo (pagas cuando lo recibes) o por transferencia bancaria. En el resto del país coordinamos el envío por WhatsApp."
+    }
   ],
-
   "garantias": [
-    { "icono": "💰", "titulo": "Pago contra entrega", "texto": "En el Gran Santo Domingo" },
-    { "icono": "🚚", "titulo": "Envíos",              "texto": "A todo el país" },
-    { "icono": "🛡️", "titulo": "Garantía de 7 días",  "texto": "Cambio o devolución" },
-    { "icono": "🔒", "titulo": "Compra segura",       "texto": "Producto 100% original" }
+    {
+      "icono": "💰",
+      "titulo": "Pago contra entrega",
+      "texto": "En el Gran Santo Domingo"
+    },
+    {
+      "icono": "🚚",
+      "titulo": "Envío GRATIS",
+      "texto": "En el Gran Santo Domingo"
+    },
+    {
+      "icono": "🛡️",
+      "titulo": "Garantía de 7 días",
+      "texto": "Cambio o devolución"
+    },
+    {
+      "icono": "🔒",
+      "titulo": "Compra segura",
+      "texto": "Producto 100% original"
+    }
   ],
-
-  "footer_intro": "Abanicos, lámparas y todo para el hogar, con entrega en toda República Dominicana."
+  "footer_intro": "Abanicos, lámparas y todo para el hogar, con entrega en toda República Dominicana.",
+  "_nota_precio": "含运费定价：RD$500 以上的大圣多明哥订单原本要另收 RD$300 运费，客人填完地址才看到，是结账流失主因。现在把运费含进标价，实付不变但第一眼就是最终价。外省不包邮，运费仍由 WhatsApp 报价。",
+  "_nota_paquetes": "ahorro = 单台价×数量 − 套餐价。predeterminado=true 的档位在页面打开时默认选中。",
+  "precio_meta": [
+    {
+      "texto": "Pago contra entrega",
+      "cola": "en el Gran Santo Domingo"
+    },
+    {
+      "texto": "Garantía de 7 días",
+      "cola": ""
+    },
+    {
+      "texto": "ENVÍO GRATIS",
+      "cola": "en Gran Santo Domingo"
+    }
+  ],
+  "_nota_precio_meta": "价格框下面那排绿色对勾。texto 加粗，cola 是后面的普通文字。"
 }

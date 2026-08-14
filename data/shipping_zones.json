@@ -6,31 +6,83 @@
       "id": "A",
       "price": 200,
       "eta": "Entrega el mismo día",
-      "sectors": ["Alma Rosa I", "Alma Rosa II", "Ensanche Ozama", "Los Mina", "Los Trinitarios", "Invivienda", "Cancino", "Lucerna", "Villa Faro", "Los Frailes", "El Almirante", "Ensanche Isabelita"]
+      "sectors": [
+        "Alma Rosa I",
+        "Alma Rosa II",
+        "Ensanche Ozama",
+        "Los Mina",
+        "Los Trinitarios",
+        "Invivienda",
+        "Cancino",
+        "Lucerna",
+        "Villa Faro",
+        "Los Frailes",
+        "El Almirante",
+        "Ensanche Isabelita"
+      ]
     },
     {
       "id": "B",
       "price": 200,
       "eta": "Entrega el mismo día",
-      "sectors": ["San Isidro", "Brisa Oriental", "Valle del Este", "La Ureña", "Sabana Perdida", "Villa Duarte", "Zona Colonial", "Ciudad Nueva"]
+      "sectors": [
+        "San Isidro",
+        "Brisa Oriental",
+        "Valle del Este",
+        "La Ureña",
+        "Sabana Perdida",
+        "Villa Duarte",
+        "Zona Colonial",
+        "Ciudad Nueva"
+      ]
     },
     {
       "id": "C1",
       "price": 300,
       "eta": "Entrega en 24 horas",
-      "sectors": ["Naco", "Piantini", "Bella Vista", "Gazcue", "Evaristo Morales", "El Millón", "La Julia", "Ensanche Serrallés"]
+      "sectors": [
+        "Naco",
+        "Piantini",
+        "Bella Vista",
+        "Gazcue",
+        "Evaristo Morales",
+        "El Millón",
+        "La Julia",
+        "Ensanche Serrallés"
+      ]
     },
     {
       "id": "C2",
       "price": 400,
       "eta": "Entrega en 24 horas",
-      "sectors": ["Villa Mella", "Boca Chica", "Andrés", "La Caleta", "Arroyo Hondo", "Los Ríos"]
+      "sectors": [
+        "Villa Mella",
+        "Boca Chica",
+        "Andrés",
+        "La Caleta",
+        "Arroyo Hondo",
+        "Los Ríos"
+      ]
     },
     {
       "id": "D",
       "price": 600,
       "eta": "Entrega en 24-48 horas",
-      "sectors": ["Herrera", "Santo Domingo Oeste", "Los Alcarrizos", "Pantoja", "La Victoria", "San Antonio de Guerra", "Manoguayabo"]
+      "sectors": [
+        "Herrera",
+        "Santo Domingo Oeste",
+        "Los Alcarrizos",
+        "Pantoja",
+        "La Victoria",
+        "San Antonio de Guerra",
+        "Manoguayabo"
+      ]
     }
-  ]
+  ],
+  "envio_gratis_metro": {
+    "_nota": "大圣多明哥（Distrito Nacional / Santo Domingo provincia）包邮开关。运费已经含进商品标价，结账不再另收，Total = 商品金额。外省不受影响，仍然是 por confirmar 由 WhatsApp 报价。改成 false 就立刻恢复按 zones 收费。",
+    "activo": true,
+    "etiqueta": "GRATIS",
+    "eta_default": "Entrega en 24 horas"
+  }
 }

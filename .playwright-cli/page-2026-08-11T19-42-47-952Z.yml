@@ -1,0 +1,72 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "V VivaBien" [ref=e4] [cursor=pointer]:
+      - /url: ./
+      - generic [ref=e5]: V
+      - text: VivaBien
+    - generic [ref=e6]:
+      - link "WhatsApp" [ref=e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=e10] [cursor=pointer]:
+        - /url: "?buscar=1"
+      - link "Carrito" [ref=e14] [cursor=pointer]:
+        - /url: carrito
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - 'searchbox "¿Qué buscas hoy? Ej: audífonos, espejo…" [ref=e23]': máquina de soldar
+      - button "Borrar" [ref=e24] [cursor=pointer]: ✕
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - heading "Resultados para “máquina de soldar”" [level=2] [ref=e27]
+        - paragraph [ref=e28]: 1 productos encontrados
+      - generic [ref=e29]:
+        - button "Compartir resultados" [ref=e30] [cursor=pointer]:
+          - generic [ref=e36]: Compartir
+        - button "Filtrar" [ref=e37] [cursor=pointer]
+        - combobox [ref=e38] [cursor=pointer]:
+          - option "Relevancia" [selected]
+          - 'option "Precio: menor"'
+          - 'option "Precio: mayor"'
+          - option "Nombre A-Z"
+    - generic [ref=e39]: 1 productos
+    - article [ref=e41]:
+      - link "Máquina de soldar inversora / soldadora eléctrica 160A Herramientas Eléctricas Máquina de soldar inversora / soldadora eléctrica 160A RD$ 7,995" [ref=e42] [cursor=pointer]:
+        - /url: producto/m-quina-de-soldar-inversora-soldadora-el-ctrica-160a
+        - generic [ref=e43]:
+          - img "Máquina de soldar inversora / soldadora eléctrica 160A" [ref=e44]
+          - generic [ref=e45]: Herramientas Eléctricas
+        - generic [ref=e46]:
+          - generic [ref=e47]: Máquina de soldar inversora / soldadora eléctrica 160A
+          - generic [ref=e48]: RD$ 7,995
+      - button "Agregar al carrito" [ref=e51] [cursor=pointer]
+    - generic [ref=e55]:
+      - generic [ref=e57]:
+        - heading "Nuestras Tiendas" [level=2] [ref=e58]
+        - paragraph [ref=e59]: Tienda física real en San Pedro de Macorís · compra con confianza
+      - generic [ref=e60]:
+        - article [ref=e61]:
+          - generic [ref=e62]: 🏪Foto pendiente
+          - generic [ref=e63]:
+            - heading "VivaBien · Tienda 1" [level=3] [ref=e64]
+            - paragraph [ref=e65]: San Pedro de Macorís · dirección por confirmar
+            - paragraph [ref=e66]: Horario por confirmar
+            - link "📍 Cómo llegar" [ref=e67] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=San+Pedro+de+Macoris
+        - article [ref=e68]:
+          - generic [ref=e69]: 🏪Foto pendiente
+          - generic [ref=e70]:
+            - heading "VivaBien · Tienda 2" [level=3] [ref=e71]
+            - paragraph [ref=e72]: San Pedro de Macorís · dirección por confirmar
+            - paragraph [ref=e73]: Horario por confirmar
+            - link "📍 Cómo llegar" [ref=e74] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=San+Pedro+de+Macoris
+  - link "WhatsApp" [ref=e75] [cursor=pointer]:
+    - /url: https://wa.me/18092811992
+  - contentinfo [ref=e78]:
+    - generic [ref=e79]:
+      - link "Garantía y devoluciones" [ref=e80] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e81] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e82]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"

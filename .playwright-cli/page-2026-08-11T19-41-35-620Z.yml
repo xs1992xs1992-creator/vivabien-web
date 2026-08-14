@@ -1,0 +1,304 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "V VivaBien" [ref=e4] [cursor=pointer]:
+      - /url: ./
+      - generic [ref=e5]: V
+      - text: VivaBien
+    - generic [ref=e6]:
+      - link "WhatsApp" [ref=e7] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+      - link "Buscar" [ref=e10] [cursor=pointer]:
+        - /url: "?buscar=1"
+      - link "Carrito" [ref=e14] [cursor=pointer]:
+        - /url: carrito
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - 'searchbox "¿Qué buscas hoy? Ej: audífonos, espejo…" [ref=e23]': mesa
+      - button "Borrar" [ref=e24] [cursor=pointer]: ✕
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - heading "Resultados para “mesa”" [level=2] [ref=e27]
+        - paragraph [ref=e28]: 25 productos encontrados
+      - generic [ref=e29]:
+        - button "Compartir resultados" [ref=e30] [cursor=pointer]:
+          - generic [ref=e36]: Compartir
+        - button "Filtrar" [ref=e37] [cursor=pointer]
+        - combobox [ref=e38] [cursor=pointer]:
+          - option "Relevancia"
+          - 'option "Precio: menor" [selected]'
+          - 'option "Precio: mayor"'
+          - option "Nombre A-Z"
+    - generic [ref=e39]: 25 productos
+    - generic [ref=e40]:
+      - article [ref=e41]:
+        - link "Individual redondo para mesa Otros para el Hogar Individual redondo para mesa RD$ 70" [ref=e42] [cursor=pointer]:
+          - /url: producto/individual-redondo-para-mesa
+          - generic [ref=e43]:
+            - img "Individual redondo para mesa" [ref=e44]
+            - generic [ref=e45]: Otros para el Hogar
+          - generic [ref=e46]:
+            - generic [ref=e47]: Individual redondo para mesa
+            - generic [ref=e48]: RD$ 70
+        - button "Agregar al carrito" [ref=e51] [cursor=pointer]
+      - article [ref=e55]:
+        - link "Bandeja plateada metálica en forma de hoja Bandejas y Centros de Mesa Bandeja plateada metálica en forma de hoja RD$ 130" [ref=e56] [cursor=pointer]:
+          - /url: producto/bandeja-plateada-met-lica-en-forma-de-hoja
+          - generic [ref=e57]:
+            - img "Bandeja plateada metálica en forma de hoja" [ref=e58]
+            - generic [ref=e59]: Bandejas y Centros de Mesa
+          - generic [ref=e60]:
+            - generic [ref=e61]: Bandeja plateada metálica en forma de hoja
+            - generic [ref=e62]: RD$ 130
+        - button "Agregar al carrito" [ref=e65] [cursor=pointer]
+      - article [ref=e69]:
+        - link "Libros decorativos / adornos de mesa estilo París Libros y Revistas Decorativas Libros decorativos / adornos de mesa estilo París RD$ 130" [ref=e70] [cursor=pointer]:
+          - /url: producto/libros-decorativos-adornos-de-mesa-estilo-par-s
+          - generic [ref=e71]:
+            - img "Libros decorativos / adornos de mesa estilo París" [ref=e72]
+            - generic [ref=e73]: Libros y Revistas Decorativas
+          - generic [ref=e74]:
+            - generic [ref=e75]: Libros decorativos / adornos de mesa estilo París
+            - generic [ref=e76]: RD$ 130
+        - button "Agregar al carrito" [ref=e79] [cursor=pointer]
+      - article [ref=e83]:
+        - link "Bandeja metálica plateada / charola en forma de hoja 1 unidad Bandejas y Centros de Mesa Bandeja metálica plateada / charola en forma de hoja 1 unidad RD$ 150" [ref=e84] [cursor=pointer]:
+          - /url: producto/bandeja-met-lica-plateada-charola-en-forma-de-hoja-1-unidad
+          - generic [ref=e85]:
+            - img "Bandeja metálica plateada / charola en forma de hoja 1 unidad" [ref=e86]
+            - generic [ref=e87]: Bandejas y Centros de Mesa
+          - generic [ref=e88]:
+            - generic [ref=e89]: Bandeja metálica plateada / charola en forma de hoja 1 unidad
+            - generic [ref=e90]: RD$ 150
+        - button "Agregar al carrito" [ref=e93] [cursor=pointer]
+      - article [ref=e97]:
+        - link "Bandeja decorativa de metal dorado / hoja Bandejas y Centros de Mesa Bandeja decorativa de metal dorado / hoja RD$ 150" [ref=e98] [cursor=pointer]:
+          - /url: producto/bandeja-decorativa-de-metal-dorado-hoja
+          - generic [ref=e99]:
+            - img "Bandeja decorativa de metal dorado / hoja" [ref=e100]
+            - generic [ref=e101]: Bandejas y Centros de Mesa
+          - generic [ref=e102]:
+            - generic [ref=e103]: Bandeja decorativa de metal dorado / hoja
+            - generic [ref=e104]: RD$ 150
+        - button "Agregar al carrito" [ref=e107] [cursor=pointer]
+      - article [ref=e111]:
+        - link "Decoración dorada / adorno dorado para mesa Adornos Decorativos Decoración dorada / adorno dorado para mesa RD$ 215" [ref=e112] [cursor=pointer]:
+          - /url: producto/decoraci-n-dorada-adorno-dorado-para-mesa
+          - generic [ref=e113]:
+            - img "Decoración dorada / adorno dorado para mesa" [ref=e114]
+            - generic [ref=e115]: Adornos Decorativos
+          - generic [ref=e116]:
+            - generic [ref=e117]: Decoración dorada / adorno dorado para mesa
+            - generic [ref=e118]: RD$ 215
+        - button "Agregar al carrito" [ref=e121] [cursor=pointer]
+      - article [ref=e125]:
+        - link "Calendario de mesa / calendario diario floral con base 1 set Otros para el Hogar Calendario de mesa / calendario diario floral con base 1 set RD$ 230" [ref=e126] [cursor=pointer]:
+          - /url: producto/calendario-de-mesa-calendario-diario-floral-con-base-1-set
+          - generic [ref=e127]:
+            - img "Calendario de mesa / calendario diario floral con base 1 set" [ref=e128]
+            - generic [ref=e129]: Otros para el Hogar
+          - generic [ref=e130]:
+            - generic [ref=e131]: Calendario de mesa / calendario diario floral con base 1 set
+            - generic [ref=e132]: RD$ 230
+        - button "Agregar al carrito" [ref=e135] [cursor=pointer]
+      - article [ref=e139]:
+        - link "Bandeja de cerámica dorada forma de piña Bandejas y Centros de Mesa Bandeja de cerámica dorada forma de piña RD$ 250" [ref=e140] [cursor=pointer]:
+          - /url: producto/bandeja-de-cer-mica-dorada-forma-de-pi-a
+          - generic [ref=e141]:
+            - img "Bandeja de cerámica dorada forma de piña" [ref=e142]
+            - generic [ref=e143]: Bandejas y Centros de Mesa
+          - generic [ref=e144]:
+            - generic [ref=e145]: Bandeja de cerámica dorada forma de piña
+            - generic [ref=e146]: RD$ 250
+        - button "Agregar al carrito" [ref=e149] [cursor=pointer]
+      - article [ref=e153]:
+        - link "Bandeja decorativa corazón / charola metálica dorada Bandejas y Centros de Mesa Bandeja decorativa corazón / charola metálica dorada RD$ 275" [ref=e154] [cursor=pointer]:
+          - /url: producto/bandeja-decorativa-coraz-n-charola-met-lica-dorada
+          - generic [ref=e155]:
+            - img "Bandeja decorativa corazón / charola metálica dorada" [ref=e156]
+            - generic [ref=e157]: Bandejas y Centros de Mesa
+          - generic [ref=e158]:
+            - generic [ref=e159]: Bandeja decorativa corazón / charola metálica dorada
+            - generic [ref=e160]: RD$ 275
+        - button "Agregar al carrito" [ref=e163] [cursor=pointer]
+      - article [ref=e167]:
+        - link "Bandeja decorativa / charola plástica dorada rectangular Bandejas y Centros de Mesa Bandeja decorativa / charola plástica dorada rectangular RD$ 305" [ref=e168] [cursor=pointer]:
+          - /url: producto/bandeja-decorativa-charola-pl-stica-dorada-rectangular
+          - generic [ref=e169]:
+            - img "Bandeja decorativa / charola plástica dorada rectangular" [ref=e170]
+            - generic [ref=e171]: Bandejas y Centros de Mesa
+          - generic [ref=e172]:
+            - generic [ref=e173]: Bandeja decorativa / charola plástica dorada rectangular
+            - generic [ref=e174]: RD$ 305
+        - button "Agregar al carrito" [ref=e177] [cursor=pointer]
+      - article [ref=e181]:
+        - link "Mesa plegable para cama o sofá, varios colores Otros para el Hogar Mesa plegable para cama o sofá, varios colores RD$ 325" [ref=e182] [cursor=pointer]:
+          - /url: producto/mesa-plegable-para-cama-o-sofa-varios-colores
+          - generic [ref=e183]:
+            - img "Mesa plegable para cama o sofá, varios colores" [ref=e184]
+            - generic [ref=e185]: Otros para el Hogar
+          - generic [ref=e186]:
+            - generic [ref=e187]: Mesa plegable para cama o sofá, varios colores
+            - generic [ref=e188]: RD$ 325
+        - button "Agregar al carrito" [ref=e191] [cursor=pointer]
+      - article [ref=e195]:
+        - link "Plato decorativo 25cm cerámica dorado/blanco Bandejas y Centros de Mesa Plato decorativo 25cm cerámica dorado/blanco RD$ 1,095" [ref=e196] [cursor=pointer]:
+          - /url: producto/vb5f38cbe5
+          - generic [ref=e197]:
+            - img "Plato decorativo 25cm cerámica dorado/blanco" [ref=e198]
+            - generic [ref=e199]: Bandejas y Centros de Mesa
+          - generic [ref=e200]:
+            - generic [ref=e201]: Plato decorativo 25cm cerámica dorado/blanco
+            - generic [ref=e202]: RD$ 1,095
+        - button "Agregar al carrito" [ref=e205] [cursor=pointer]
+      - article [ref=e209]:
+        - link "Mesa de noche moderna con 2 cajones Muebles Mesa de noche moderna con 2 cajones RD$ 1,440" [ref=e210] [cursor=pointer]:
+          - /url: producto/mesa-noche-2-cajones-3-colores
+          - generic [ref=e211]:
+            - img "Mesa de noche moderna con 2 cajones" [ref=e212]
+            - generic [ref=e213]: Muebles
+          - generic [ref=e214]:
+            - generic [ref=e215]: Mesa de noche moderna con 2 cajones
+            - generic [ref=e216]: RD$ 1,440
+        - button "Agregar al carrito" [ref=e219] [cursor=pointer]
+      - article [ref=e223]:
+        - link "Mesa de noche blanca con 2 cajones y repisa Muebles Mesa de noche blanca con 2 cajones y repisa RD$ 1,695" [ref=e224] [cursor=pointer]:
+          - /url: producto/mesa-noche-repisa-lc050-023
+          - generic [ref=e225]:
+            - img "Mesa de noche blanca con 2 cajones y repisa" [ref=e226]
+            - generic [ref=e227]: Muebles
+          - generic [ref=e228]:
+            - generic [ref=e229]: Mesa de noche blanca con 2 cajones y repisa
+            - generic [ref=e230]: RD$ 1,695
+        - button "Agregar al carrito" [ref=e233] [cursor=pointer]
+      - article [ref=e237]:
+        - link "Mesa de centro de vidrio negra Muebles Mesa de centro de vidrio negra RD$ 2,700" [ref=e238] [cursor=pointer]:
+          - /url: producto/mesa-de-centro-de-vidrio-negra
+          - generic [ref=e239]:
+            - img "Mesa de centro de vidrio negra" [ref=e240]
+            - generic [ref=e241]: Muebles
+          - generic [ref=e242]:
+            - generic [ref=e243]: Mesa de centro de vidrio negra
+            - generic [ref=e244]: RD$ 2,700
+        - button "Agregar al carrito" [ref=e247] [cursor=pointer]
+      - article [ref=e251]:
+        - link "Mesa de gaming Otros para el Hogar Mesa de gaming RD$ 3,125" [ref=e252] [cursor=pointer]:
+          - /url: producto/mesa-de-gaming
+          - generic [ref=e253]:
+            - img "Mesa de gaming" [ref=e254]
+            - generic [ref=e255]: Otros para el Hogar
+          - generic [ref=e256]:
+            - generic [ref=e257]: Mesa de gaming
+            - generic [ref=e258]: RD$ 3,125
+        - button "Agregar al carrito" [ref=e261] [cursor=pointer]
+      - article [ref=e265]:
+        - link "Mesa de centro de vidrio Muebles Mesa de centro de vidrio RD$ 3,300" [ref=e266] [cursor=pointer]:
+          - /url: producto/mesa-de-centro-de-vidrio
+          - generic [ref=e267]:
+            - img "Mesa de centro de vidrio" [ref=e268]
+            - generic [ref=e269]: Muebles
+          - generic [ref=e270]:
+            - generic [ref=e271]: Mesa de centro de vidrio
+            - generic [ref=e272]: RD$ 3,300
+        - button "Agregar al carrito" [ref=e275] [cursor=pointer]
+      - article [ref=e279]:
+        - link "Mesa plegable de 180 cm Otros para el Hogar Mesa plegable de 180 cm RD$ 3,300" [ref=e280] [cursor=pointer]:
+          - /url: producto/mesa-plegable-de-180-cm
+          - generic [ref=e281]:
+            - img "Mesa plegable de 180 cm" [ref=e282]
+            - generic [ref=e283]: Otros para el Hogar
+          - generic [ref=e284]:
+            - generic [ref=e285]: Mesa plegable de 180 cm
+            - generic [ref=e286]: RD$ 3,300
+        - button "Agregar al carrito" [ref=e289] [cursor=pointer]
+      - article [ref=e293]:
+        - link "Juego de mesas de centro nido de cristal de 2 piezas Muebles Juego de mesas de centro nido de cristal de 2 piezas RD$ 3,825" [ref=e294] [cursor=pointer]:
+          - /url: producto/juego-de-mesas-de-centro-nido-de-cristal-de-2-piezas
+          - generic [ref=e295]:
+            - img "Juego de mesas de centro nido de cristal de 2 piezas" [ref=e296]
+            - generic [ref=e297]: Muebles
+          - generic [ref=e298]:
+            - generic [ref=e299]: Juego de mesas de centro nido de cristal de 2 piezas
+            - generic [ref=e300]: RD$ 3,825
+        - button "Agregar al carrito" [ref=e303] [cursor=pointer]
+      - article [ref=e307]:
+        - link "Juego de mesas de centro redondas tipo nido Muebles Juego de mesas de centro redondas tipo nido RD$ 3,825" [ref=e308] [cursor=pointer]:
+          - /url: producto/juego-de-mesas-de-centro-redondas-tipo-nido
+          - generic [ref=e309]:
+            - img "Juego de mesas de centro redondas tipo nido" [ref=e310]
+            - generic [ref=e311]: Muebles
+          - generic [ref=e312]:
+            - generic [ref=e313]: Juego de mesas de centro redondas tipo nido
+            - generic [ref=e314]: RD$ 3,825
+        - button "Agregar al carrito" [ref=e317] [cursor=pointer]
+      - article [ref=e321]:
+        - link "Mesa madre e hija con tablero de piedra Otros para el Hogar Mesa madre e hija con tablero de piedra RD$ 3,825" [ref=e322] [cursor=pointer]:
+          - /url: producto/mesa-madre-e-hija-con-tablero-de-piedra
+          - generic [ref=e323]:
+            - img "Mesa madre e hija con tablero de piedra" [ref=e324]
+            - generic [ref=e325]: Otros para el Hogar
+          - generic [ref=e326]:
+            - generic [ref=e327]: Mesa madre e hija con tablero de piedra
+            - generic [ref=e328]: RD$ 3,825
+        - button "Agregar al carrito" [ref=e331] [cursor=pointer]
+      - article [ref=e335]:
+        - link "Mesa de centro moderna Muebles Mesa de centro moderna RD$ 5,925" [ref=e336] [cursor=pointer]:
+          - /url: producto/mesa-de-centro-moderna
+          - generic [ref=e337]:
+            - img "Mesa de centro moderna" [ref=e338]
+            - generic [ref=e339]: Muebles
+          - generic [ref=e340]:
+            - generic [ref=e341]: Mesa de centro moderna
+            - generic [ref=e342]: RD$ 5,925
+        - button "Agregar al carrito" [ref=e345] [cursor=pointer]
+      - article [ref=e349]:
+        - 'link "Juego de mesas de centro: una de vidrio y otra de piedra Muebles Juego de mesas de centro: una de vidrio y otra de piedra RD$ 5,925" [ref=e350] [cursor=pointer]':
+          - /url: producto/juego-de-mesas-de-centro-una-de-vidrio-y-otra-de-piedra
+          - generic [ref=e351]:
+            - 'img "Juego de mesas de centro: una de vidrio y otra de piedra" [ref=e352]'
+            - generic [ref=e353]: Muebles
+          - generic [ref=e354]:
+            - generic [ref=e355]: "Juego de mesas de centro: una de vidrio y otra de piedra"
+            - generic [ref=e356]: RD$ 5,925
+        - button "Agregar al carrito" [ref=e359] [cursor=pointer]
+      - article [ref=e363]:
+        - 'link "Juego de dos mesas de centro redondas: una de vidrio y otra de piedra sinterizada Otros para el Hogar Juego de dos mesas de centro redondas: una de vidrio y otra de piedra sinterizada RD$ 5,925" [ref=e364] [cursor=pointer]':
+          - /url: producto/juego-de-dos-mesas-de-centro-redondas-una-de-vidrio-y-otra-de-piedra-sin
+          - generic [ref=e365]:
+            - 'img "Juego de dos mesas de centro redondas: una de vidrio y otra de piedra sinterizada" [ref=e366]'
+            - generic [ref=e367]: Otros para el Hogar
+          - generic [ref=e368]:
+            - generic [ref=e369]: "Juego de dos mesas de centro redondas: una de vidrio y otra de piedra sinterizada"
+            - generic [ref=e370]: RD$ 5,925
+        - button "Agregar al carrito" [ref=e373] [cursor=pointer]
+    - button "Ver más productos" [ref=e377] [cursor=pointer]
+    - generic [ref=e378]:
+      - generic [ref=e380]:
+        - heading "Nuestras Tiendas" [level=2] [ref=e381]
+        - paragraph [ref=e382]: Tienda física real en San Pedro de Macorís · compra con confianza
+      - generic [ref=e383]:
+        - article [ref=e384]:
+          - generic [ref=e385]: 🏪Foto pendiente
+          - generic [ref=e386]:
+            - heading "VivaBien · Tienda 1" [level=3] [ref=e387]
+            - paragraph [ref=e388]: San Pedro de Macorís · dirección por confirmar
+            - paragraph [ref=e389]: Horario por confirmar
+            - link "📍 Cómo llegar" [ref=e390] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=San+Pedro+de+Macoris
+        - article [ref=e391]:
+          - generic [ref=e392]: 🏪Foto pendiente
+          - generic [ref=e393]:
+            - heading "VivaBien · Tienda 2" [level=3] [ref=e394]
+            - paragraph [ref=e395]: San Pedro de Macorís · dirección por confirmar
+            - paragraph [ref=e396]: Horario por confirmar
+            - link "📍 Cómo llegar" [ref=e397] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=San+Pedro+de+Macoris
+  - link "WhatsApp" [ref=e398] [cursor=pointer]:
+    - /url: https://wa.me/18092811992
+  - contentinfo [ref=e401]:
+    - generic [ref=e402]:
+      - link "Garantía y devoluciones" [ref=e403] [cursor=pointer]:
+        - /url: garantia
+      - link "Contacto" [ref=e404] [cursor=pointer]:
+        - /url: https://wa.me/18092811992
+    - text: © VivaBien · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+    - generic [ref=e405]: "RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro"
