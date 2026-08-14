@@ -3187,6 +3187,20 @@ function vtVToggle(i){{
   }});
  }},{{threshold:.35}});
  vs.forEach(function(v){{io.observe(v)}});
+ // 兜底：某些浏览器/扩展环境下 IntersectionObserver 回调不触发，视频会一直停在封面。
+ // 所以另外做一次手动可见性检查（首屏 + 滚动 + 窗口变化），保证该播的一定会播。
+ function sweep(){{
+  vs.forEach(function(v){{
+   var r=v.getBoundingClientRect();
+   var vis=r.top<innerHeight*0.9&&r.bottom>innerHeight*0.1;
+   if(vis){{load(v);if(!quiet&&!v.dataset.userPaused&&v.paused){{
+    var p=v.play();if(p&&p.catch)p.catch(function(){{}})}}}}
+   else if(!v.paused){{v.pause()}}
+  }});
+ }}
+ addEventListener('scroll',sweep,{{passive:true}});
+ addEventListener('resize',sweep);
+ sweep();setTimeout(sweep,800);
 }})();
 function vtFaq(q){{var a=q.nextElementSibling,open=q.classList.contains('on');
  document.querySelectorAll('.vt-fq-q').forEach(function(x){{x.classList.remove('on');
