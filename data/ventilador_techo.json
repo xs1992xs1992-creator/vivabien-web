@@ -45,7 +45,7 @@
   "aviso_superior": [
     "💰 Pago contra entrega en el Gran Santo Domingo",
     "50% OFF · Oferta limitada — quedan",
-    "🚚 ENVÍO GRATIS en Gran Santo Domingo · Garantía de 7 días"
+    "🚚 ENVÍO GRATIS en Gran Santo Domingo · Garantía de 1 mes"
   ],
   "_nota_imagenes": "相册图。02 已换成店主提供的高清原图（之前是从 Temu 横幅里裁出来的低清版）。加图直接往数组里加一行即可。",
   "imagenes": [
@@ -332,8 +332,8 @@
     },
     {
       "icono": "🛡️",
-      "titulo": "Garantía de 7 días",
-      "texto": "Cambio o devolución"
+      "titulo": "Garantía de 1 mes",
+      "texto": "Cambio si el equipo falla"
     },
     {
       "icono": "🔒",
@@ -350,7 +350,7 @@
       "cola": "en el Gran Santo Domingo"
     },
     {
-      "texto": "Garantía de 7 días",
+      "texto": "Garantía de 1 mes",
       "cola": ""
     },
     {
@@ -360,29 +360,49 @@
   ],
   "_nota_precio_meta": "价格框下面那排绿色对勾。texto 加粗，cola 是后面的普通文字。",
   "_nota_videos": "「Mira cómo funciona」视频区。源文件是店主自己拍的（WorkBuddy 剪辑输出 1080×1080），已静音无音轨，未做任何裁剪/重压缩，直接搬运。poster 是从第 1 秒抽的帧。文案只写视频里真实看得到的东西：安装视频里能看到 E27 螺口，遥控器上能看到 3 档风速和色温键。",
-  "videos_titulo": "Mira cómo funciona",
+  "videos_titulo": "Lo que todo el mundo pregunta",
   "videos": [
     {
+      "pregunta": "¿Refresca de verdad y alumbra bien?",
       "archivo": "ventilador/video-funcionamiento.mp4",
       "poster": "ventilador/video-funcionamiento-poster.jpg",
-      "titulo": "Ventilación + luz LED",
-      "texto": "Un solo equipo para refrescar e iluminar tu espacio.",
+      "titulo": "Sí — abanico y lámpara en un solo equipo",
+      "texto": "Míralo funcionando: refresca e ilumina al mismo tiempo, sin ocupar espacio extra.",
       "alt": "Video: el abanico girando con la luz LED encendida en una habitación"
     },
     {
+      "pregunta": "¿Y tengo que levantarme para apagarlo?",
       "archivo": "ventilador/video-control-remoto.mp4",
       "poster": "ventilador/video-control-remoto-poster.jpg",
-      "titulo": "Control remoto incluido",
-      "texto": "Ajusta la velocidad y la luz desde tu sofá.",
+      "titulo": "No — viene con control remoto",
+      "texto": "Velocidad, tonos de luz y apagado programado, todo desde tu cama o tu sofá.",
       "alt": "Video: una mano usando el control remoto del abanico"
     },
     {
+      "pregunta": "¿Necesito llamar a un electricista?",
       "archivo": "ventilador/video-instalacion.mp4",
       "poster": "ventilador/video-instalacion-poster.jpg",
-      "titulo": "Instalación fácil",
-      "texto": "Se instala en socket E27, como un bombillo.",
+      "titulo": "No — se enrosca como un bombillo",
+      "texto": "Se instala en el socket E27 que ya tienes en el techo. Mira lo rápido que es.",
       "alt": "Video: el abanico enroscándose en el socket E27 del techo"
     }
   ],
-  "_nota_sin_verificar": "已移除没有产品资料支撑的参数：马达类型(DC)、噪音(30/30-45 dB)、功率(30W/20W)、流明(2000 lm)、光角(140°)、尺寸(直径106cm/高36cm)、色温开尔文值、正反转功能。保留的都是自家视频/详情图/实物遥控器能看到的：3档风速、3色温、5-100%调光、遥控器、E27螺口、6叶、白色、2h/4h定时。拿到正式产品资料后再往回加。"
+  "_nota_sin_verificar": "已移除没有产品资料支撑的参数：马达类型(DC)、噪音(30/30-45 dB)、功率(30W/20W)、流明(2000 lm)、光角(140°)、尺寸(直径106cm/高36cm)、色温开尔文值、正反转功能。保留的都是自家视频/详情图/实物遥控器能看到的：3档风速、3色温、5-100%调光、遥控器、E27螺口、6叶、白色、2h/4h定时。拿到正式产品资料后再往回加。",
+  "dudas_rapidas": [
+    {
+      "icono": "💵",
+      "p": "¿Cómo pago?",
+      "r": "Contra entrega en el Gran Santo Domingo: pagas en efectivo cuando lo recibes. También aceptamos transferencia bancaria."
+    },
+    {
+      "icono": "🔩",
+      "p": "¿Cómo se instala?",
+      "r": "Se enrosca en el socket E27 del techo, igual que un bombillo. No hace falta electricista ni cablear nada."
+    },
+    {
+      "icono": "🛡️",
+      "p": "¿Y si sale malo?",
+      "r": "Garantía de 1 mes. Si el equipo falla, escríbenos por WhatsApp y te lo cambiamos."
+    }
+  ]
 }

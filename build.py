@@ -2722,21 +2722,43 @@ VENTILADOR_CSS = """
 .vt-rc-h span{font-size:11px;color:var(--vt-light)}
 .vt-rc i{color:#ffc107;font-size:13px;display:block;margin-bottom:7px;font-style:normal}
 .vt-rc p{font-size:13px;color:var(--vt-mid);line-height:1.55}
-/* 视频区：统一 1:1 比例，静音自动循环 */
-.vt-vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.vt-vcard{margin:0;background:#fff;border:1px solid var(--vt-bd);border-radius:var(--vt-r);
- overflow:hidden;box-shadow:var(--vt-sh-sm)}
-.vt-vwrap{position:relative;aspect-ratio:1;background:#eef1f6}
+/* 「一个痛点 + 一个视频」：竖排，每块之间留足空隙，不再挤成三列 */
+.vt-qa-in{max-width:860px}
+.vt-qas{display:flex;flex-direction:column;gap:40px}
+.vt-qa{margin:0}
+.vt-qa-q{display:flex;align-items:flex-start;gap:11px;font-size:20px;font-weight:800;
+ line-height:1.35;margin-bottom:16px;color:var(--vt-dark)}
+.vt-qa-q span{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--vt-blue);
+ color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.vt-qa-body{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:22px;align-items:center;
+ background:#fff;border:1px solid var(--vt-bd);border-radius:var(--vt-r);padding:16px;box-shadow:var(--vt-sh-sm)}
+.vt-qa-a b{display:block;font-size:17px;font-weight:800;margin-bottom:7px;color:var(--vt-green)}
+.vt-qa-a span{font-size:14.5px;color:var(--vt-mid);line-height:1.6}
+@media(max-width:760px){.vt-qa-body{grid-template-columns:1fr;gap:15px}.vt-qa-q{font-size:18px}
+ .vt-qas{gap:30px}}
+/* 价格下面的「常问三件事」 */
+.vt-dudas{margin-top:14px;border:1px solid var(--vt-bd);border-radius:var(--vt-r);overflow:hidden;background:#fff}
+.vt-duda+.vt-duda{border-top:1px solid var(--vt-bd)}
+.vt-duda summary{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer;
+ font-size:14px;list-style:none}
+.vt-duda summary::-webkit-details-marker{display:none}
+.vt-duda summary i{font-style:normal;font-size:17px}
+.vt-duda summary b{flex:1;font-weight:700}
+.vt-duda summary u{text-decoration:none;color:var(--vt-blue);font-size:17px;font-weight:700}
+.vt-duda[open] summary u{transform:rotate(45deg)}
+.vt-duda summary:focus-visible{outline:3px solid var(--vt-blue);outline-offset:-3px}
+.vt-duda p{padding:0 15px 14px 40px;font-size:13.5px;color:var(--vt-mid);line-height:1.6}
+.vt-vwrap{position:relative;aspect-ratio:1;background:#eef1f6;border-radius:var(--vt-r-sm);overflow:hidden}
 .vt .vt-video,.vt .vt-vfall{width:100%;height:100%;object-fit:cover;display:block}
 .vt-vbtn{position:absolute;right:10px;bottom:10px;width:38px;height:38px;border-radius:50%;border:none;
  background:rgba(22,32,46,.62);color:#fff;font-size:12px;line-height:1;cursor:pointer;display:flex;
  align-items:center;justify-content:center;backdrop-filter:blur(3px)}
 .vt-vbtn:hover{background:rgba(22,32,46,.82)}
 .vt-vbtn:focus-visible{outline:3px solid var(--vt-blue);outline-offset:2px}
-.vt-vcard figcaption{padding:13px 15px 16px}
-.vt-vcard figcaption b{display:block;font-size:15px;font-weight:800;margin-bottom:4px}
-.vt-vcard figcaption span{font-size:13px;color:var(--vt-mid);line-height:1.5}
-@media(max-width:900px){.vt-vgrid{grid-template-columns:1fr;gap:14px}}
+
+
+
+
 /* 详情图：整幅堆叠，手机上占满宽度 */
 .vt-det{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .vt-det img{width:100%;border-radius:var(--vt-r);box-shadow:var(--vt-sh-sm);background:#fff}
@@ -2913,8 +2935,11 @@ def ventilador_page(products=None):
             pos = str(v.get("poster") or "").lstrip("/")
             alt = esc(v.get("alt") or v.get("titulo") or corto)
             poster_attr = f'poster="../images/{esc(pos)}" ' if pos else ""
+            # 结构：一个痛点提问 → 对应的视频回答。竖排，每块之间留白，不再挤成三列
             cards += (
-                f'<figure class="vt-vcard">'
+                f'<article class="vt-qa">'
+                f'<h3 class="vt-qa-q"><span>{i+1}</span>{esc(v.get("pregunta") or "")}</h3>'
+                f'<div class="vt-qa-body">'
                 f'<div class="vt-vwrap">'
                 f'<video id="vtV{i}" class="vt-video" muted loop playsinline autoplay preload="metadata" '
                 f'{poster_attr}'
@@ -2922,14 +2947,15 @@ def ventilador_page(products=None):
                 f'<source data-src="../images/{esc(mp4)}" type="video/mp4"></video>'
                 + (f'<img class="vt-vfall" id="vtF{i}" src="../images/{esc(pos)}" alt="{alt}" hidden>' if pos else "")
                 + f'<button class="vt-vbtn" id="vtB{i}" type="button" onclick="vtVToggle({i})" '
-                  f'aria-label="Pausar video: {esc(v.get("titulo") or "")}">❚❚</button>'
+                  f'aria-label="Pausar video: {esc(v.get("pregunta") or "")}">❚❚</button>'
                 f'</div>'
-                f'<figcaption><b>{esc(v.get("titulo") or "")}</b>'
-                f'<span>{esc(v.get("texto") or "")}</span></figcaption></figure>')
-        vid_html = (f'<section class="vt-sec"><div class="vt-sec-in">'
-                    f'<div class="vt-sh"><em>Así funciona</em>'
-                    f'<h2>{esc(cfg.get("videos_titulo") or "Mira cómo funciona")}</h2></div>'
-                    f'<div class="vt-vgrid">{cards}</div></div></section>')
+                f'<div class="vt-qa-a"><b>{esc(v.get("titulo") or "")}</b>'
+                f'<span>{esc(v.get("texto") or "")}</span></div>'
+                f'</div></article>')
+        vid_html = (f'<section class="vt-sec alt"><div class="vt-sec-in vt-qa-in">'
+                    f'<div class="vt-sh"><em>Tus dudas, en video</em>'
+                    f'<h2>{esc(cfg.get("videos_titulo") or "Lo que todo el mundo pregunta")}</h2></div>'
+                    f'<div class="vt-qas">{cards}</div></div></section>')
 
     # 详情图（整幅堆叠展示）
     det = [d for d in (cfg.get("imagenes_detalle") or []) if isinstance(d, dict) and d.get("archivo")]
@@ -2993,6 +3019,16 @@ def ventilador_page(products=None):
         f'<div class="vt-tb"><i>{esc(g.get("icono") or "✔")}</i>'
         f'<span><b>{esc(g.get("titulo") or "")}</b>{esc(g.get("texto") or "")}</span></div>'
         for g in (cfg.get("garantias") or []) if isinstance(g, dict))
+
+    # ---- 价格下面的「常问的三件事」：付款 / 安装 / 售后 ----
+    dudas = [x for x in (cfg.get("dudas_rapidas") or []) if isinstance(x, dict) and x.get("p")]
+    dudas_html = ""
+    if dudas:
+        items = "".join(
+            f'<details class="vt-duda"><summary><i>{esc(x.get("icono") or "•")}</i>'
+            f'<b>{esc(x["p"])}</b><u>+</u></summary><p>{esc(x.get("r") or "")}</p></details>'
+            for x in dudas)
+        dudas_html = f'<div class="vt-dudas">{items}</div>'
 
     # ---- 同类商品（站内真实商品，价格直接取自 CSV）----
     rel_html = ""
@@ -3064,6 +3100,7 @@ def ventilador_page(products=None):
   </div>
 
   <div class="vt-trust">{trust}</div>
+  {dudas_html}
  </div>
 </div></section>
 
