@@ -2379,10 +2379,41 @@ class H(BaseHTTPRequestHandler):
                 if not fp.startswith(root) or not os.path.isfile(fp):
                     return self.send(404, "not found")
                 ext = os.path.splitext(fp)[1].lower()
+                # 预览要能放视频：MIME 不对浏览器不会解码（Cloudflare Pages 上是对的，本地预览得自己给）
                 ct = {".jpg":"image/jpeg",".jpeg":"image/jpeg",".png":"image/png",
-                      ".webp":"image/webp",".html":"text/html; charset=utf-8"}.get(ext,"application/octet-stream")
+                      ".webp":"image/webp",".gif":"image/gif",".svg":"image/svg+xml",
+                      ".mp4":"video/mp4",".webm":"video/webm",".mov":"video/quicktime",
+                      ".css":"text/css; charset=utf-8",".js":"application/javascript; charset=utf-8",
+                      ".json":"application/json; charset=utf-8",
+                      ".html":"text/html; charset=utf-8"}.get(ext,"application/octet-stream")
+                # 视频必须支持 Range 请求，否则浏览器不会解码播放（Cloudflare Pages 原生支持，本地预览得自己实现）
+                size = os.path.getsize(fp)
+                rng = self.headers.get("Range", "")
+                m = re.match(r"bytes=(\d*)-(\d*)$", rng.strip()) if rng else None
+                if m and (m.group(1) or m.group(2)):
+                    if m.group(1):
+                        start = int(m.group(1)); end = int(m.group(2)) if m.group(2) else size - 1
+                    else:
+                        start = max(0, size - int(m.group(2))); end = size - 1
+                    end = min(end, size - 1)
+                    if start > end:
+                        self.send_response(416); self.send_header("Content-Range", f"bytes */{size}")
+                        self.end_headers(); return
+                    with open(fp, "rb") as f:
+                        f.seek(start); chunk = f.read(end - start + 1)
+                    self.send_response(206)
+                    self.send_header("Content-Type", ct)
+                    self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+                    self.send_header("Accept-Ranges", "bytes")
+                    self.send_header("Content-Length", str(len(chunk)))
+                    self.end_headers(); self.wfile.write(chunk); return
                 with open(fp,"rb") as f:
-                    return self.send(200, f.read(), ct)
+                    data = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", ct)
+                self.send_header("Accept-Ranges", "bytes")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers(); self.wfile.write(data); return
         self.send(404, "not found")
 
     def do_POST(self):

@@ -2722,6 +2722,21 @@ VENTILADOR_CSS = """
 .vt-rc-h span{font-size:11px;color:var(--vt-light)}
 .vt-rc i{color:#ffc107;font-size:13px;display:block;margin-bottom:7px;font-style:normal}
 .vt-rc p{font-size:13px;color:var(--vt-mid);line-height:1.55}
+/* 视频区：统一 1:1 比例，静音自动循环 */
+.vt-vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.vt-vcard{margin:0;background:#fff;border:1px solid var(--vt-bd);border-radius:var(--vt-r);
+ overflow:hidden;box-shadow:var(--vt-sh-sm)}
+.vt-vwrap{position:relative;aspect-ratio:1;background:#eef1f6}
+.vt .vt-video,.vt .vt-vfall{width:100%;height:100%;object-fit:cover;display:block}
+.vt-vbtn{position:absolute;right:10px;bottom:10px;width:38px;height:38px;border-radius:50%;border:none;
+ background:rgba(22,32,46,.62);color:#fff;font-size:12px;line-height:1;cursor:pointer;display:flex;
+ align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.vt-vbtn:hover{background:rgba(22,32,46,.82)}
+.vt-vbtn:focus-visible{outline:3px solid var(--vt-blue);outline-offset:2px}
+.vt-vcard figcaption{padding:13px 15px 16px}
+.vt-vcard figcaption b{display:block;font-size:15px;font-weight:800;margin-bottom:4px}
+.vt-vcard figcaption span{font-size:13px;color:var(--vt-mid);line-height:1.5}
+@media(max-width:900px){.vt-vgrid{grid-template-columns:1fr;gap:14px}}
 /* 详情图：整幅堆叠，手机上占满宽度 */
 .vt-det{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .vt-det img{width:100%;border-radius:var(--vt-r);box-shadow:var(--vt-sh-sm);background:#fff}
@@ -2888,6 +2903,34 @@ def ventilador_page(products=None):
 
     rcards = "".join(_rcard(r) for r in (rs.get("lista") or []) if isinstance(r, dict))
 
+    # 「Mira cómo funciona」视频区：静音自动循环、带播放/暂停、失败回退封面图
+    vids = [v for v in (cfg.get("videos") or []) if isinstance(v, dict) and v.get("archivo")]
+    vid_html = ""
+    if vids:
+        cards = ""
+        for i, v in enumerate(vids):
+            mp4 = str(v["archivo"]).lstrip("/")
+            pos = str(v.get("poster") or "").lstrip("/")
+            alt = esc(v.get("alt") or v.get("titulo") or corto)
+            poster_attr = f'poster="../images/{esc(pos)}" ' if pos else ""
+            cards += (
+                f'<figure class="vt-vcard">'
+                f'<div class="vt-vwrap">'
+                f'<video id="vtV{i}" class="vt-video" muted loop playsinline autoplay preload="metadata" '
+                f'{poster_attr}'
+                f'aria-label="{alt}" onerror="vtVFail({i})">'
+                f'<source data-src="../images/{esc(mp4)}" type="video/mp4"></video>'
+                + (f'<img class="vt-vfall" id="vtF{i}" src="../images/{esc(pos)}" alt="{alt}" hidden>' if pos else "")
+                + f'<button class="vt-vbtn" id="vtB{i}" type="button" onclick="vtVToggle({i})" '
+                  f'aria-label="Pausar video: {esc(v.get("titulo") or "")}">❚❚</button>'
+                f'</div>'
+                f'<figcaption><b>{esc(v.get("titulo") or "")}</b>'
+                f'<span>{esc(v.get("texto") or "")}</span></figcaption></figure>')
+        vid_html = (f'<section class="vt-sec"><div class="vt-sec-in">'
+                    f'<div class="vt-sh"><em>Así funciona</em>'
+                    f'<h2>{esc(cfg.get("videos_titulo") or "Mira cómo funciona")}</h2></div>'
+                    f'<div class="vt-vgrid">{cards}</div></div></section>')
+
     # 详情图（整幅堆叠展示）
     det = [d for d in (cfg.get("imagenes_detalle") or []) if isinstance(d, dict) and d.get("archivo")]
     det_html = ""
@@ -3024,6 +3067,8 @@ def ventilador_page(products=None):
  </div>
 </div></section>
 
+{vid_html}
+
 {det_html}
 
 {f'<section class="vt-feat"><div class="vt-feat-in">{feats}</div></section>' if feats else ''}
@@ -3105,6 +3150,44 @@ function vtAdd(buy){{
   location.href='../carrito';return}}
  vtToast('✅ Agregado al carrito');
 }}
+function vtVFail(i){{ // 视频加载失败 → 显示封面图兜底
+ var v=document.getElementById('vtV'+i),f=document.getElementById('vtF'+i),b=document.getElementById('vtB'+i);
+ if(v)v.style.display='none'; if(b)b.style.display='none'; if(f)f.hidden=false;}}
+function vtVToggle(i){{
+ var v=document.getElementById('vtV'+i),b=document.getElementById('vtB'+i);
+ if(!v)return;
+ var s=v.querySelector('source[data-src]');
+ if(s&&!s.src){{s.src=s.dataset.src;v.load();v.dataset.loaded='1'}}
+ if(v.paused){{delete v.dataset.userPaused;v.play();b.textContent='❚❚';b.setAttribute('aria-label','Pausar video')}}
+ else{{v.dataset.userPaused='1';v.pause();b.textContent='▶';b.setAttribute('aria-label','Reproducir video')}}}}
+(function(){{
+ // 只加载「滚到眼前」的那一个视频：3 段一起预加载要 5MB，手机流量吃不消。
+ // 离开视口就暂停，省流量也省电。尊重"减少动态效果"设置：不自动播，等用户点。
+ var quiet=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function load(v){{
+  if(v.dataset.loaded)return;
+  var s=v.querySelector('source[data-src]');
+  if(s){{s.src=s.dataset.src;v.load();v.dataset.loaded='1'}}
+ }}
+ var vs=[].slice.call(document.querySelectorAll('.vt-video'));
+ vs.forEach(function(v,i){{
+  v.dataset.i=i;
+  if(quiet){{v.removeAttribute('autoplay');
+   var b=document.getElementById('vtB'+i);
+   if(b){{b.textContent='▶';b.setAttribute('aria-label','Reproducir video')}}}}
+ }});
+ if(!('IntersectionObserver' in window)){{vs.forEach(load);return}}
+ var io=new IntersectionObserver(function(es){{
+  es.forEach(function(e){{
+   var v=e.target;
+   if(e.isIntersecting){{
+    load(v);
+    if(!quiet&&!v.dataset.userPaused){{var p=v.play();if(p&&p.catch)p.catch(function(){{}})}}
+   }}else if(!v.paused){{v.pause()}}
+  }});
+ }},{{threshold:.35}});
+ vs.forEach(function(v){{io.observe(v)}});
+}})();
 function vtFaq(q){{var a=q.nextElementSibling,open=q.classList.contains('on');
  document.querySelectorAll('.vt-fq-q').forEach(function(x){{x.classList.remove('on');
   x.nextElementSibling.classList.remove('on')}});

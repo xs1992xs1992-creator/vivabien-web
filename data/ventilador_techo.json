@@ -405,5 +405,30 @@
       "cola": "en Gran Santo Domingo"
     }
   ],
-  "_nota_precio_meta": "价格框下面那排绿色对勾。texto 加粗，cola 是后面的普通文字。"
+  "_nota_precio_meta": "价格框下面那排绿色对勾。texto 加粗，cola 是后面的普通文字。",
+  "_nota_videos": "「Mira cómo funciona」视频区。源文件是店主自己拍的（WorkBuddy 剪辑输出 1080×1080），已静音无音轨，未做任何裁剪/重压缩，直接搬运。poster 是从第 1 秒抽的帧。文案只写视频里真实看得到的东西：安装视频里能看到 E27 螺口，遥控器上能看到 3 档风速和色温键。",
+  "videos_titulo": "Mira cómo funciona",
+  "videos": [
+    {
+      "archivo": "ventilador/video-funcionamiento.mp4",
+      "poster": "ventilador/video-funcionamiento-poster.jpg",
+      "titulo": "Ventilación + luz LED",
+      "texto": "Un solo equipo para refrescar e iluminar tu espacio.",
+      "alt": "Video: el abanico girando con la luz LED encendida en una habitación"
+    },
+    {
+      "archivo": "ventilador/video-control-remoto.mp4",
+      "poster": "ventilador/video-control-remoto-poster.jpg",
+      "titulo": "Control remoto incluido",
+      "texto": "Ajusta la velocidad y la luz desde tu sofá.",
+      "alt": "Video: una mano usando el control remoto del abanico"
+    },
+    {
+      "archivo": "ventilador/video-instalacion.mp4",
+      "poster": "ventilador/video-instalacion-poster.jpg",
+      "titulo": "Instalación fácil",
+      "texto": "Se instala en socket E27, como un bombillo.",
+      "alt": "Video: el abanico enroscándose en el socket E27 del techo"
+    }
+  ]
 }
