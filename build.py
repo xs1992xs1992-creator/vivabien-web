@@ -2856,8 +2856,33 @@ def ventilador_page(products=None):
     if not paquetes:
         paquetes = [{"unidades": 1, "precio": precio, "etiqueta": "x1 Unidad", "ahorro": 0}]
 
-    wa_url = (f"https://wa.me/{WHATSAPP}?text=" +
-              quote(f"Hola, quiero información sobre: {corto} ({sku})."))
+    # WhatsApp prefill turns the ad click into a structured sales inquiry.
+    price_lines = []
+    for pack in paquetes:
+        units = int(pack.get("unidades") or 1)
+        pack_price = float(pack.get("precio") or 0)
+        saving = float(pack.get("ahorro") or 0)
+        saving_text = f" (ahorras {fmt_price(saving)})" if saving > 0 else ""
+        price_lines.append(f"• {units} {'unidad' if units == 1 else 'unidades'}: {fmt_price(pack_price)}{saving_text}")
+    benefit_lines = []
+    for benefit in (cfg.get("beneficios") or [])[:4]:
+        if isinstance(benefit, dict) and benefit.get("titulo"):
+            benefit_lines.append(f"• {benefit['titulo']}")
+    wa_message = "\n".join([
+        f"Hola, quiero información sobre: {corto} ({sku}).",
+        "",
+        "💰 Precios:",
+        *price_lines,
+        "",
+        "✨ Ventajas:",
+        *benefit_lines,
+        "",
+        "🚚 Envío gratis a todo el país",
+        "💵 Pago contra entrega disponible en Gran Santo Domingo",
+        "",
+        "Quiero comprar: [indicar cantidad]",
+    ])
+    wa_url = f"https://wa.me/{WHATSAPP}?text={quote(wa_message)}"
 
     # ---- 顶部滚动条 ----
     avisos = [str(a) for a in (cfg.get("aviso_superior") or []) if str(a).strip()]
