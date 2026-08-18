@@ -613,6 +613,13 @@ async function handleAdmin(req, env, url) {
        FROM events WHERE sku=? AND type='tier_select' AND ts>=? AND is_bot=0 AND offer_qty>0
        GROUP BY offer_qty ORDER BY quantity`
     ).bind(sku, since).all();
+    const orderQuantities = await env.DB.prepare(
+      `SELECT oi.quantity,COUNT(DISTINCT o.order_id) orders,
+       COALESCE(SUM(oi.quantity),0) units,COALESCE(SUM(oi.line_total),0) revenue
+       FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
+       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled'
+       GROUP BY oi.quantity ORDER BY oi.quantity`
+    ).bind(sku, since).all();
     const devices = await env.DB.prepare(
       `WITH target_sessions AS (SELECT DISTINCT session_id FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'')
        SELECT COALESCE(NULLIF(s.device_type,''),'未知') device,COUNT(*) sessions,SUM(s.converted_cart) carts,
@@ -655,6 +662,7 @@ async function handleAdmin(req, env, url) {
       channels:channels.results || [], daily:daily.results || [],
       daily_orders:dailyOrders.results || [], order_status:orderStatus.results || [],
       colors:colors.results || [], add_sources:addSources.results || [], offers:offers.results || [],
+      order_quantities:orderQuantities.results || [],
       devices:devices.results || [], regions:regions.results || [], quality:quality || {},
       unattributed_orders:unattributedOrders, recent:recent.results || [] });
   }

@@ -492,6 +492,7 @@ def nav(active=""):
             f'<a class="{c("marketing")}" href="/marketing">📣 营销留存</a>'
             f'<a class="{c("stats")}" href="/stats">📊 数据</a>'
             f'<a class="{c("wallpaper")}" href="/wallpaper-stats">墙纸广告</a>'
+            f'<a class="{c("fan")}" href="/fan-stats">🌀 风扇灯广告</a>'
             f'<a class="{c("coll")}" href="/colecciones">🪴 专题</a></div>')
 
 def sub_shell(title, active, inner):
@@ -1063,9 +1064,8 @@ def stats_page():
            '<div class="cardp"><div class="frm"><label>查访客足迹</label><div class="seg2"><input id="q" placeholder="短码 或 访客ID"><select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select><button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div><div id="tl"></div></div></div>' + _STATS_JS + _ANALYTICS_JS)
     return sub_shell("数据分析", "stats", inner)
 
-def wallpaper_stats_page(days=30):
+def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据", product_label="墙纸", product_name="Panel decorativo autoadhesivo"):
     days = days if days in (7, 30, 90) else 30
-    sku = "VB-ROLL-001"
     data, err = worker_call(f"product-analytics?sku={quote(sku)}&days={days}")
     d = data or {}
     s = d.get("summary") or {}
@@ -1079,12 +1079,12 @@ def wallpaper_stats_page(days=30):
         return f"{a / b * 100:.1f}%" if b else "—"
 
     kpis = [
-        ("墙纸访客", visitors, "访问过墙纸商品页"),
+        (f"{product_label}访客", visitors, f"访问过{product_label}商品页"),
         ("加购访客", addcarts, f"访客→加购 {pct(addcarts, visitors)}"),
-        ("加购卷数", int(s.get("addcart_units", 0) or 0), "所有加购事件合计"),
+        ("加购数量", int(s.get("addcart_units", 0) or 0), "所有加购事件合计"),
         ("WhatsApp", whatsapps, f"访客→咨询 {pct(whatsapps, visitors)}"),
         ("有效订单", orders, f"访客→下单 {pct(orders, visitors)}"),
-        ("订单卷数", int(s.get("units", 0) or 0), f"销售额 RD$ {revenue:,.0f}"),
+        ("订单数量", int(s.get("units", 0) or 0), f"销售额 RD$ {revenue:,.0f}"),
     ]
     kpi_html = "".join(
         f'<div class="w-kpi"><span>{esc(label)}</span><b>{value}</b><small>{esc(note)}</small></div>'
@@ -1188,6 +1188,20 @@ def wallpaper_stats_page(days=30):
         f'<td class="n">{int(x.get("actions",0) or 0)}</td><td class="n">{int(x.get("units",0) or 0)}</td></tr>'
         for x in d.get("add_sources", [])
     )
+    offer_rows = "".join(
+        f'<tr><td><b>x{int(x.get("quantity", 0) or 0)} 件</b></td>'
+        f'<td class="n">{int(x.get("sessions", 0) or 0)}</td>'
+        f'<td class="n">{pct(int(x.get("sessions", 0) or 0), visitors)}</td></tr>'
+        for x in d.get("offers", [])
+    )
+    purchase_rows = "".join(
+        f'<tr><td><b>x{int(x.get("quantity", 0) or 0)} 件</b></td>'
+        f'<td class="n">{int(x.get("orders", 0) or 0)}</td>'
+        f'<td class="n">{int(x.get("units", 0) or 0)}</td>'
+        f'<td class="n">RD$ {float(x.get("revenue", 0) or 0):,.0f}</td></tr>'
+        for x in d.get("order_quantities", [])
+    )
+    offer_empty = '<tr><td colspan="3" class="empty">暂无套餐选择埋点，下面显示实际成交档位</td></tr>'
     device_rows = "".join(
         f'<tr><td><b>{esc(x.get("device") or "未知")}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
         f'<td class="n">{int(x.get("carts",0) or 0)} ({pct(int(x.get("carts",0) or 0),int(x.get("sessions",0) or 0))})</td>'
@@ -1207,7 +1221,7 @@ def wallpaper_stats_page(days=30):
 
     empty = '<tr><td colspan="9" class="empty">还没有墙纸广告数据</td></tr>'
     tabs = "".join(
-        f'<a class="{"on" if days == n else ""}" href="/wallpaper-stats?days={n}">近 {n} 天</a>'
+        f'<a class="{"on" if days == n else ""}" href="/{"fan-stats" if sku == "VB-FAN-E27" else "wallpaper-stats"}?days={n}">近 {n} 天</a>'
         for n in (7, 30, 90)
     )
     inner = (
@@ -1219,30 +1233,35 @@ def wallpaper_stats_page(days=30):
         '.w-note{margin-top:12px;color:#6D7A8D;font-size:12px;line-height:1.55}'
         '.wf{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.wf-step,.status-chip{padding:12px;border:1px solid #E5EAF2;border-radius:8px;background:#fff}.wf-step span,.wf-step small,.status-chip span,.status-chip small{display:block;color:#6D7A8D;font-size:10px}.wf-step b,.status-chip b{display:block;margin:4px 0;font-size:21px}.statuses{display:flex;gap:8px;flex-wrap:wrap}.status-chip{min-width:150px}.split-tables{display:grid;grid-template-columns:1fr 1fr;gap:14px}.data-alert{margin:12px 0;padding:11px 13px;border:1px solid #F2D38A;border-radius:8px;background:#FFF9E8;color:#76520B;font-size:12px;line-height:1.5}.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.cost-grid input{width:100%;padding:9px;border:1px solid #DCE4EF;border-radius:7px}.cost-grid label{display:block;margin-bottom:4px;color:#68758a;font-size:10px}'
         '@media(max-width:900px){.w-kpis{grid-template-columns:repeat(2,1fr)}.w-head{align-items:flex-start;flex-direction:column}.wf{grid-template-columns:repeat(2,1fr)}.split-tables{grid-template-columns:1fr}.cost-grid{grid-template-columns:1fr}}'
-        '</style><div class="w-head"><div><h1>墙纸广告数据</h1>'
-        f'<div class="sub">固定商品 {sku} · Panel decorativo autoadhesivo</div></div>'
+        f'</style><div class="w-head"><div><h1>{esc(title)}</h1>'
+        f'<div class="sub">固定商品 {sku} · {esc(product_name)}</div></div>'
         f'<div class="periods">{tabs}</div></div><div class="w-kpis">{kpi_html}</div>'
         f'<div class="w-note">平均停留 {float(s.get("avg_seconds",0) or 0):.0f} 秒 · 平均滚动 {float(s.get("avg_scroll",0) or 0):.0f}%。'
         f' 其中 {int(s.get("meta_network_visitors",0) or 0)} 个访客来自 Meta/Facebook 网络，可能包含广告预览或代理流量，先保留但不要直接当成真实客户。'
-        '订单和销售额按订单商品明细精确计算；渠道转化按访问过墙纸页的同一会话归因。</div>'
+        f'订单和销售额按订单商品明细精确计算；渠道转化按访问过{product_label}页的同一会话归因。</div>'
         f'<div class="data-alert">{esc(quality_note)}</div>'
-        f'<h2 class="w-title">墙纸转化漏斗</h2><div class="wf">{funnel_html}</div>'
+        f'<h2 class="w-title">{product_label}转化漏斗</h2><div class="wf">{funnel_html}</div>'
         f'<h2 class="w-title">订单质量</h2><div class="statuses">{status_html}</div>'
         f'<h2 class="w-title">广告渠道表现</h2><div class="table-scroll"><table><thead><tr>'
         '<th>渠道/活动</th><th>会话</th><th>加购</th><th>加购率</th><th>WhatsApp</th><th>实际订单</th><th>停留</th><th>花费</th><th>每次加购成本</th>'
         f'</tr></thead><tbody>{channel_rows or empty}</tbody></table></div>'
-        f'<div class="split-tables"><div><h2 class="w-title">颜色选择与加购</h2><div class="table-scroll"><table><thead><tr><th>颜色</th><th>选择会话</th><th>加购会话</th><th>加购卷数</th></tr></thead><tbody>{color_rows or empty}</tbody></table></div></div>'
+        f'<div class="split-tables"><div><h2 class="w-title">颜色选择与加购</h2><div class="table-scroll"><table><thead><tr><th>颜色</th><th>选择会话</th><th>加购会话</th><th>加购数量</th></tr></thead><tbody>{color_rows or empty}</tbody></table></div></div>'
         f'<div><h2 class="w-title">加购入口</h2><div class="table-scroll"><table><thead><tr><th>入口</th><th>会话</th><th>动作</th><th>卷数</th></tr></thead><tbody>{source_rows or empty}</tbody></table></div></div></div>'
-        f'<div class="split-tables"><div><h2 class="w-title">设备表现</h2><div class="table-scroll"><table><thead><tr><th>设备</th><th>会话</th><th>加购率</th><th>WhatsApp</th><th>停留</th></tr></thead><tbody>{device_rows or empty}</tbody></table></div></div>'
-        f'<div><h2 class="w-title">地区表现</h2><div class="table-scroll"><table><thead><tr><th>地区</th><th>会话</th><th>加购</th><th>WhatsApp</th></tr></thead><tbody>{region_rows or empty}</tbody></table></div></div></div>'
+        f'<div class="split-tables"><div><h2 class="w-title">购买档位选择</h2><div class="table-scroll"><table><thead><tr><th>档位</th><th>选择会话</th><th>占访客</th></tr></thead><tbody>{offer_rows or offer_empty}</tbody></table></div><div class="table-scroll" style="margin-top:8px"><table><thead><tr><th>实际购买</th><th>订单</th><th>件数</th><th>销售额</th></tr></thead><tbody>{purchase_rows or empty}</tbody></table></div></div>'
+        f'<div><h2 class="w-title">设备表现</h2><div class="table-scroll"><table><thead><tr><th>设备</th><th>会话</th><th>加购率</th><th>WhatsApp</th><th>停留</th></tr></thead><tbody>{device_rows or empty}</tbody></table></div></div></div>'
+        f'<div class="split-tables"><div><h2 class="w-title">地区表现</h2><div class="table-scroll"><table><thead><tr><th>地区</th><th>会话</th><th>加购</th><th>WhatsApp</th></tr></thead><tbody>{region_rows or empty}</tbody></table></div></div></div>'
         f'<h2 class="w-title">每日趋势</h2><div class="table-scroll"><table><thead><tr>'
         f'<th>日期</th><th>访客</th><th>加购访客</th><th>订单</th><th>销售额</th></tr></thead><tbody>{daily_rows or empty}</tbody></table></div>'
-        f'<h2 class="w-title">最近墙纸行为</h2><div class="table-scroll"><table><thead><tr>'
+        f'<h2 class="w-title">最近{product_label}行为</h2><div class="table-scroll"><table><thead><tr>'
         f'<th>时间</th><th>行为</th><th>IP / 地区</th><th>设备</th><th>渠道</th><th>详情</th></tr></thead><tbody>{recent_rows or empty}</tbody></table></div>'
-        '<h2 class="w-title">录入墙纸广告成本</h2><div class="cardp frm"><div class="cost-grid"><div><label>日期</label><input id="costDay" type="date"></div><div><label>Meta 活动 ID / UTM campaign</label><input id="costCampaign"></div><div><label>来源</label><input id="costSource" value="facebook"></div><div><label>花费 RD$</label><input id="costSpend" type="number"></div><div><label>展示量</label><input id="costImp" type="number"></div><div><label>广告点击</label><input id="costClicks" type="number"></div></div><button class="pri" onclick="saveCost()">保存广告成本</button></div>'
+        f'<h2 class="w-title">录入{product_label}广告成本</h2><div class="cardp frm"><div class="cost-grid"><div><label>日期</label><input id="costDay" type="date"></div><div><label>Meta 活动 ID / UTM campaign</label><input id="costCampaign"></div><div><label>来源</label><input id="costSource" value="facebook"></div><div><label>花费 RD$</label><input id="costSpend" type="number"></div><div><label>展示量</label><input id="costImp" type="number"></div><div><label>广告点击</label><input id="costClicks" type="number"></div></div><button class="pri" onclick="saveCost()">保存广告成本</button></div>'
         + _ANALYTICS_JS
     )
-    return sub_shell("墙纸广告数据", "wallpaper", inner)
+    return sub_shell(title, "fan" if sku == "VB-FAN-E27" else "wallpaper", inner)
+
+def fan_stats_page(days=30):
+    return wallpaper_stats_page(days, sku="VB-FAN-E27", title="风扇灯广告数据中心",
+                                product_label="风扇灯", product_name="Abanico de techo con luz LED")
 
 _ORDER_JS = """<script>
 var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',completed:'已完成',cancelled:'已取消'};
@@ -1899,6 +1918,7 @@ dialog::backdrop{{background:rgba(20,30,50,.45);backdrop-filter:blur(2px)}}
 <a href="/marketing">📣 营销留存</a>
 <a href="/stats">📊 数据</a>
 <a href="/wallpaper-stats">墙纸广告</a>
+<a href="/fan-stats">🌀 风扇灯广告</a>
 <a href="{REVIEW_URL}" target="_blank">🧪 审核台</a>
 <button onclick="deployWorker(this)">⚡ 部署接口</button>
 <button onclick="envCheck(this)">🩺 体检 · 环境自检</button>
@@ -2337,6 +2357,12 @@ class H(BaseHTTPRequestHandler):
             except ValueError:
                 days = 30
             return self.send(200, wallpaper_stats_page(days))
+        if p == "/fan-stats":
+            try:
+                days = int(qs.get("days", ["30"])[0])
+            except ValueError:
+                days = 30
+            return self.send(200, fan_stats_page(days))
         if p == "/orders":
             return self.send(200, orders_page())
         if p == "/cart-visitors":
