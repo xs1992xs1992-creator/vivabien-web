@@ -1064,9 +1064,10 @@ def stats_page():
            '<div class="cardp"><div class="frm"><label>查访客足迹</label><div class="seg2"><input id="q" placeholder="短码 或 访客ID"><select id="qt"><option value="code">按短码</option><option value="vid">按访客ID</option></select><button class="pri" style="width:auto;margin:0" onclick="look()">查询</button></div><div id="tl"></div></div></div>' + _STATS_JS + _ANALYTICS_JS)
     return sub_shell("数据分析", "stats", inner)
 
-def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据", product_label="墙纸", product_name="Panel decorativo autoadhesivo"):
+def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据", product_label="墙纸", product_name="Panel decorativo autoadhesivo", period=""):
     days = days if days in (7, 30, 90) else 30
-    data, err = worker_call(f"product-analytics?sku={quote(sku)}&days={days}")
+    today_query = "&period=today" if period == "today" else ""
+    data, err = worker_call(f"product-analytics?sku={quote(sku)}&days={days}{today_query}")
     d = data or {}
     s = d.get("summary") or {}
     visitors = int(s.get("visitors", 0) or 0)
@@ -1220,10 +1221,13 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
                     f'{int(unattributed.get("actual_orders",0) or 0)} 个旧订单因当时未保存 UTM 被列为未归因，不会错误计入直接访问。新版本上线后会逐步消除这些误差。')
 
     empty = '<tr><td colspan="9" class="empty">还没有墙纸广告数据</td></tr>'
-    tabs = "".join(
-        f'<a class="{"on" if days == n else ""}" href="/{"fan-stats" if sku == "VB-FAN-E27" else "wallpaper-stats"}?days={n}">近 {n} 天</a>'
+    stats_path = "fan-stats" if sku == "VB-FAN-E27" else "wallpaper-stats"
+    tabs = (
+        f'<a class="{"on" if period == "today" else ""}" href="/{stats_path}?period=today">今天</a>'
+        + "".join(
+        f'<a class="{"on" if period != "today" and days == n else ""}" href="/{stats_path}?days={n}">近 {n} 天</a>'
         for n in (7, 30, 90)
-    )
+    ))
     inner = (
         f'{_warn(err)}<style>'
         '.w-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px}'
@@ -1259,9 +1263,9 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
     )
     return sub_shell(title, "fan" if sku == "VB-FAN-E27" else "wallpaper", inner)
 
-def fan_stats_page(days=30):
+def fan_stats_page(days=30, period=""):
     return wallpaper_stats_page(days, sku="VB-FAN-E27", title="风扇灯广告数据中心",
-                                product_label="风扇灯", product_name="Abanico de techo con luz LED")
+                                product_label="风扇灯", product_name="Abanico de techo con luz LED", period=period)
 
 _ORDER_JS = """<script>
 var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',completed:'已完成',cancelled:'已取消'};
@@ -2356,13 +2360,13 @@ class H(BaseHTTPRequestHandler):
                 days = int(qs.get("days", ["30"])[0])
             except ValueError:
                 days = 30
-            return self.send(200, wallpaper_stats_page(days))
+            return self.send(200, wallpaper_stats_page(days, period=qs.get("period", [""])[0]))
         if p == "/fan-stats":
             try:
                 days = int(qs.get("days", ["30"])[0])
             except ValueError:
                 days = 30
-            return self.send(200, fan_stats_page(days))
+            return self.send(200, fan_stats_page(days, qs.get("period", [""])[0]))
         if p == "/orders":
             return self.send(200, orders_page())
         if p == "/cart-visitors":

@@ -499,7 +499,12 @@ async function handleAdmin(req, env, url) {
     const sku = String(url.searchParams.get("sku") || "").slice(0, 100);
     if (!sku) return json({ error: "sku_required" }, 400);
     const days = Math.max(1, Math.min(365, Number(url.searchParams.get("days")) || 30));
-    const since = now() - days * 864e5;
+    const period = url.searchParams.get("period") === "today" ? "today" : "range";
+    // “今天”按多米尼加当地自然日计算，避免把最近24小时误当成当天。
+    const drOffset = 4 * 3600e3;
+    const drDate = new Date(now() - drOffset);
+    const todayStart = Date.UTC(drDate.getUTCFullYear(), drDate.getUTCMonth(), drDate.getUTCDate()) + drOffset;
+    const since = period === "today" ? todayStart : now() - days * 864e5;
 
     const summary = await env.DB.prepare(
       `WITH target_sessions AS (
