@@ -851,7 +851,27 @@ TRACK_JS = """<script>
  function ctx(){var p=window.VB_PAGE||{},b={event_id:id(),client_id:client,session_id:ss.id,path:location.pathname,device_type:dev,screen_width:screen.width,site_version:'__VERSION__',category:p.category||'',product_title:p.title||'',product_img:p.img||''};keys.forEach(function(k){b[k]=a[k]||'';b['first_'+k]=first[k]||''});return b}
  function send(t,s,x,beacon){try{var b=ctx();b.type=t;b.sku=s||((window.VB_PAGE||{}).sku||'');if(x)for(var k in x)b[k]=x[k];var raw=JSON.stringify(b);if(beacon&&navigator.sendBeacon)navigator.sendBeacon(API,new Blob([raw],{type:'application/json'}));else fetch(API,{method:'POST',credentials:'include',keepalive:true,headers:{'Content-Type':'application/json'},body:raw}).catch(function(){})}catch(e){}}
  window.vbTrack=send;window.vbContext=ctx;
- document.addEventListener('click',function(e){var x=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(!x)return;var loc=x.classList.contains('wa-float')?'floating':x.classList.contains('hd-wa')?'header':x.classList.contains('btn-wa')?'product':'other';send('whatsapp','',{whatsapp_location:loc})},true);
+ // WhatsApp 点击：同时打自有埋点和 Meta 自定义事件 WhatsAppClick。
+ // 委托绑 document（覆盖动态渲染的浮动按钮）+ 捕获阶段（防被 stopPropagation 拦掉）+ 500ms 去抖。
+ var WA_HOST=/(?:^|\\.)(?:wa\\.me|whatsapp\\.com)$/i,waLast=0;
+ document.addEventListener('click',function(e){
+  var x=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!x)return;
+  var host,href=x.getAttribute('href')||'';
+  try{host=new URL(href,location.href).hostname}catch(err){return}
+  if(!WA_HOST.test(host))return;
+  var now=Date.now();if(now-waLast<500)return;waLast=now;
+  var loc=x.getAttribute('data-wa-source')||
+   (/\\/channel\\//i.test(href)?'canal':
+    x.classList.contains('wa-float')?'floating':
+    x.classList.contains('hd-wa')?'header':
+    x.classList.contains('btn-wa')||x.classList.contains('vt-btn-wa')?'producto_cta':
+    x.closest('header')?'header':x.closest('footer')?'footer':'page');
+  var h1=document.querySelector('h1');
+  try{if(typeof fbq==='function')fbq('trackCustom','WhatsAppClick',{
+   content_name:h1?h1.textContent.trim().slice(0,100):document.title,
+   source_page:location.pathname,placement:loc})}catch(_e){}
+  send('whatsapp','',{whatsapp_location:loc});
+ },true);
  document.addEventListener('scroll',function(){var h=document.documentElement,den=h.scrollHeight-innerHeight;if(den<=0)return;var d=Math.min(100,Math.round(scrollY/den*100));[25,50,75,100].forEach(function(n){if(d>=n&&!sent[n]){sent[n]=1;send('scroll','',{scroll_depth:n})}})},{passive:true});
  setInterval(function(){if(document.visibilityState==='visible'){send('engagement','',{duration_ms:30000});last=Date.now();ss.last=last;put('vb_session',ss)}},30000);
  addEventListener('pagehide',function(){var d=Math.max(0,Math.min(30000,Date.now()-last));if(d>1000)send('engagement','',{duration_ms:d},true)});
