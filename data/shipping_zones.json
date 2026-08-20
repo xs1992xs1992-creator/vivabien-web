@@ -80,9 +80,11 @@
     }
   ],
   "envio_gratis_metro": {
-    "_nota": "大圣多明哥（Distrito Nacional / Santo Domingo provincia）包邮开关。运费已经含进商品标价，结账不再另收，Total = 商品金额。外省不受影响，仍然是 por confirmar 由 WhatsApp 报价。改成 false 就立刻恢复按 zones 收费。",
+    "_nota": "全国包邮开关（2026-08-20 起从「仅大圣多明哥」扩到全国）。运费已含进商品标价，结账一律不另收，Total = 商品金额；全国也一并开放货到付款。改回收费要两处一起改：这里 activo=false，以及 worker/src/index.js 里外省的 cod_allowed 和各档 fee。",
     "activo": true,
+    "alcance": "nacional",
     "etiqueta": "GRATIS",
-    "eta_default": "Entrega en 24 horas"
+    "eta_default": "Entrega en 24 horas",
+    "eta_interior": "1-5 días laborables"
   }
 }

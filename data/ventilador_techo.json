@@ -43,9 +43,9 @@
   "existencias_texto": "Solo 87 unidades disponibles",
   "cuenta_regresiva_segundos": 8078,
   "aviso_superior": [
-    "💰 Pago contra entrega en el Gran Santo Domingo",
+    "💰 Pago contra entrega en todo el país",
     "50% OFF · Oferta limitada — quedan",
-    "🚚 ENVÍO GRATIS en Gran Santo Domingo · Garantía de 1 mes"
+    "🚚 ENVÍO GRATIS a todo el país · Garantía de 1 mes"
   ],
   "_nota_imagenes": "相册图。02 已换成店主提供的高清原图（之前是从 Temu 横幅里裁出来的低清版）。加图直接往数组里加一行即可。",
   "imagenes": [
@@ -316,19 +316,19 @@
     },
     {
       "p": "¿Cómo pago?",
-      "r": "Contra entrega en el Gran Santo Domingo (pagas cuando lo recibes) o por transferencia bancaria. En el resto del país coordinamos el envío por WhatsApp."
+      "r": "Contra entrega en todo el país: pagas en efectivo cuando recibes el producto. También aceptamos transferencia bancaria si prefieres."
     }
   ],
   "garantias": [
     {
       "icono": "💰",
       "titulo": "Pago contra entrega",
-      "texto": "En el Gran Santo Domingo"
+      "texto": "En todo el país"
     },
     {
       "icono": "🚚",
       "titulo": "Envío GRATIS",
-      "texto": "En el Gran Santo Domingo"
+      "texto": "A todo el país"
     },
     {
       "icono": "🛡️",
@@ -347,15 +347,15 @@
   "precio_meta": [
     {
       "texto": "Pago contra entrega",
-      "cola": "en el Gran Santo Domingo"
+      "cola": "en todo el país"
+    },
+    {
+      "texto": "ENVÍO GRATIS",
+      "cola": "a todo el país"
     },
     {
       "texto": "Garantía de 1 mes",
       "cola": ""
-    },
-    {
-      "texto": "ENVÍO GRATIS",
-      "cola": "en Gran Santo Domingo"
     }
   ],
   "_nota_precio_meta": "价格框下面那排绿色对勾。texto 加粗，cola 是后面的普通文字。",
@@ -392,7 +392,7 @@
     {
       "icono": "💵",
       "p": "¿Cómo pago?",
-      "r": "Contra entrega en el Gran Santo Domingo: pagas en efectivo cuando lo recibes. También aceptamos transferencia bancaria."
+      "r": "Contra entrega en todo el país: pagas en efectivo cuando recibes el producto. También aceptamos transferencia bancaria si prefieres."
     },
     {
       "icono": "🔩",
@@ -404,5 +404,8 @@
       "p": "¿Y si sale malo?",
       "r": "Garantía de 1 mes. Si el equipo falla, escríbenos por WhatsApp y te lo cambiamos."
     }
-  ]
+  ],
+  "boton_comprar": "Pagar contra entrega",
+  "boton_carrito": "Agregar al carrito",
+  "_nota_botones": "主按钮文案。多米尼加客人对『货到付款』的信任度远高于『立即购买』，所以主按钮直接写付款方式。"
 }

@@ -921,7 +921,7 @@ def page(title, body, pixel_extra="", desc="", track_sku=None, track_category=""
 {view_js}
 {WA_FLOAT if wa_float else ""}
 <footer><div class="footer-links"><a href="{rel}garantia">Garantía y devoluciones</a><a href="https://wa.me/{WHATSAPP}" target="_blank">Contacto</a></div>
-© {SITE_NAME} · Envíos en toda República Dominicana · Contra entrega en Gran Santo Domingo
+© {SITE_NAME} · Envío gratis a todo el país · Contra entrega en toda República Dominicana
 <div class="rnc">RNC: 132888855 · Registrado bajo la Ley 126-02 de Comercio Electrónico · 🔒 Sitio seguro</div></footer>
 </body></html>"""
 
@@ -1055,8 +1055,9 @@ var ZONES=null, ZFAIL=false, DEF_NOTE='', SHIP=null, FREE=null;
 var OTHER_LABEL='Otro sector / No está en la lista';
 function money(v){return 'RD$ '+Math.round(v).toLocaleString('en-US')}
 function isMetro(){return document.getElementById('sectorFld').style.display!=='none'}
-// 大圣多明哥包邮：运费已含在商品标价里，结账不再另收。开关在 data/shipping_zones.json
-function freeMetro(){return !!(FREE&&FREE.activo)&&isMetro()}
+// 全国包邮：运费已含在商品标价里，结账不再另收。开关在 data/shipping_zones.json
+// alcance='nacional' 时外省也包邮；改回 'metro' 就只有大圣多明哥免运费
+function freeMetro(){if(!(FREE&&FREE.activo))return false;return FREE.alcance==='nacional'?true:isMetro()}
 function shipFee(){if(freeMetro())return 0;return (SHIP&&SHIP.price!=null)?Number(SHIP.price):null}
 function santoParts(){var ps=new Intl.DateTimeFormat('en-US',{timeZone:'America/Santo_Domingo',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',hourCycle:'h23'}).formatToParts(new Date()),o={};ps.forEach(function(x){if(x.type!=='literal')o[x.type]=Number(x.value)});return o}
 function localDate(p){return new Date(p.year,p.month-1,p.day)}
@@ -1138,7 +1139,7 @@ function paintTotals(){
  if(freeMetro()){
   // 不管有没有选 sector 都直接显示 GRATIS，价格不再"最后一步才揭晓"
   tShip.textContent=(FREE&&FREE.etiqueta)||'GRATIS';tShip.classList.add('free');
-  eta.textContent=(SHIP&&SHIP.eta)||(FREE&&FREE.eta_default)||'';
+  eta.textContent=(SHIP&&SHIP.eta)||(FREE&&(isMetro()?FREE.eta_default:(FREE.eta_interior||FREE.eta_default)))||'';
  }
  else if(fee!=null){tShip.textContent=money(fee);eta.textContent=(SHIP&&SHIP.eta)||'';}
  else if(SHIP&&SHIP.other){tShip.textContent='por confirmar';eta.textContent='Te confirmamos el costo del envío por WhatsApp.';}
@@ -1207,9 +1208,11 @@ function provUI(){
  document.getElementById('scheduleBox').classList.toggle('show',metro);
  // 货到付款仅限大圣多明各；外省强制转账（纯前端判断）
  var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=transfer]');
- cod.disabled=!metro;document.getElementById('lCod').style.display=metro?'flex':'none';
- document.getElementById('codNote').classList.toggle('show',!!prov&&!metro);
- if(prov&&!metro)tra.checked=true;
+ // 全国开放货到付款（2026-08-20）：外省不再强制银行转账
+ var codOK=freeMetro()||metro;
+ cod.disabled=!codOK;document.getElementById('lCod').style.display=codOK?'flex':'none';
+ document.getElementById('codNote').classList.toggle('show',!!prov&&!codOK);
+ if(prov&&!codOK)tra.checked=true;
  payUI();sectorUI();
 }
 fillSel('fProv',PROVS);initDeliveryUI();loadZones();paintTotals();
@@ -2925,6 +2928,8 @@ def ventilador_page(products=None):
     off_tag = (f'<span class="vt-tag-off">{esc(cfg.get("descuento_texto") or "")}</span>'
                if cfg.get("descuento_texto") else "")
 
+    btn_buy = str(cfg.get("boton_comprar") or "Comprar ahora")
+    btn_cart = str(cfg.get("boton_carrito") or "Agregar al carrito")
     # ---- 价格框下面那排绿色对勾（含"包邮"）----
     pmeta_cfg = [m for m in (cfg.get("precio_meta") or []) if isinstance(m, dict) and m.get("texto")]
     if not pmeta_cfg:
@@ -3139,8 +3144,8 @@ def ventilador_page(products=None):
   <div class="vt-units" id="vtUnits"></div>
 
   <div class="vt-cta">
-   <button class="vt-btn vt-btn-cart" type="button" onclick="vtAdd(0)">🛒 Agregar al carrito</button>
-   <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">⚡ Comprar ahora</button>
+   <button class="vt-btn vt-btn-cart" type="button" onclick="vtAdd(0)">🛒 {esc(btn_cart)}</button>
+   <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">💵 {esc(btn_buy)}</button>
    <a class="vt-btn vt-btn-wa" href="{esc(wa_url)}" target="_blank" rel="noopener"
       aria-label="Preguntar por WhatsApp" onclick="try{{vbTrack('whatsapp','{esc(sku)}')}}catch(e){{}}">💬</a>
   </div>
@@ -3185,7 +3190,7 @@ def ventilador_page(products=None):
    <small id="vtPackLbl">{esc(paquetes[def_i].get("etiqueta") or "")}</small></div></div>
  <div style="display:flex;gap:10px;flex:1;justify-content:flex-end">
   <button class="vt-btn vt-btn-cart" type="button" onclick="vtAdd(0)">Agregar</button>
-  <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">Comprar ahora</button></div>
+  <button class="vt-btn vt-btn-buy" type="button" onclick="vtAdd(1)">{esc(btn_buy)}</button></div>
 </div></div>
 </div>
 <script>
@@ -3208,7 +3213,7 @@ function vtSync(){{var q=parseInt(document.getElementById('vtQty').value||1),n=v
  var el=document.getElementById('vtUnits');
  // 总计一直显示，客人任何时候都知道最终要付多少（含运费，结账不再加价）
  el.innerHTML='Total: '+n+(n>1?' unidades':' unidad')+' · <b>RD$ '+vtFmt(vtP*q)
-  +'</b> <span class="vt-free">· envío gratis en Gran Santo Domingo</span>';}}
+  +'</b> <span class="vt-free">· envío gratis a todo el país</span>';}}
 function vtToast(m){{var t=document.createElement('div');t.className='vt-toast';t.textContent=m;
  document.body.appendChild(t);setTimeout(function(){{t.classList.add('on')}},10);
  setTimeout(function(){{t.classList.remove('on');setTimeout(function(){{t.remove()}},320)}},1900)}}

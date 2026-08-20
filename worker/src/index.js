@@ -96,22 +96,22 @@ function shippingQuote(province = "", zone = "") {
   if (metro) {
     const exact = (SHIPPING_CONFIG.zones || []).find((item) => (item.sectors || []).includes(z));
     if (exact) {
-      const fee = Math.max(0, Number(exact.price) || 0);
+      const fee = 0;   // 全国包邮：运费已含在商品标价里
       return { ok:true, ready:true, zone:String(exact.id), label:z, fee,
         fee_min:fee, fee_max:fee, delivery:String(exact.eta || "por confirmar"), cod_allowed:true };
     }
     return { ok:true, ready:false, zone:"otro", label:"Otro sector",
-      fee:0, fee_min:150, fee_max:600, delivery:"por confirmar", cod_allowed:true };
+      fee:0, fee_min:0, fee_max:0, delivery:"Entrega en 24 horas", cod_allowed:true };
   }
   if (p.startsWith("Santo Domingo (provincia)") || SHIPPING_NEAR.has(p))
-    return { ok:true, ready:true, zone:"cercana", label:"Zona cercana", fee:250, fee_min:250, fee_max:250,
-      delivery:"1-3 días laborables", cod_allowed:false };
-  if (SHIPPING_MAJOR.has(p)) return { ok:true, ready:true, zone:"ciudades_principales", label:"Ciudades principales", fee:300, fee_min:300, fee_max:300,
-    delivery:"2-4 días laborables", cod_allowed:false };
-  if (SHIPPING_REMOTE.has(p)) return { ok:true, ready:true, zone:"remota", label:"Zona remota", fee:450, fee_min:450, fee_max:450,
-    delivery:"4-7 días laborables", cod_allowed:false };
-  return { ok:true, ready:true, zone:"nacional", label:"Resto del país", fee:350, fee_min:350, fee_max:350,
-    delivery:"3-5 días laborables", cod_allowed:false };
+    return { ok:true, ready:true, zone:"cercana", label:"Zona cercana", fee:0, fee_min:0, fee_max:0,
+      delivery:"1-3 días laborables", cod_allowed:true };
+  if (SHIPPING_MAJOR.has(p)) return { ok:true, ready:true, zone:"ciudades_principales", label:"Ciudades principales", fee:0, fee_min:0, fee_max:0,
+    delivery:"2-4 días laborables", cod_allowed:true };
+  if (SHIPPING_REMOTE.has(p)) return { ok:true, ready:true, zone:"remota", label:"Zona remota", fee:0, fee_min:0, fee_max:0,
+    delivery:"4-7 días laborables", cod_allowed:true };
+  return { ok:true, ready:true, zone:"nacional", label:"Resto del país", fee:0, fee_min:0, fee_max:0,
+    delivery:"3-5 días laborables", cod_allowed:true };
 }
 
 async function logEvent(env, { vid, code = "", type, sku = "", req, details = {} }) {
