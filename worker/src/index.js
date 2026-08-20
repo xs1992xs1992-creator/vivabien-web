@@ -481,7 +481,8 @@ async function handleAdmin(req, env, url) {
       const at = Number(b.delivered_at) > 0 ? Math.floor(Number(b.delivered_at)) : now();
       await env.DB.prepare("UPDATE orders SET status=?,delivered_paid_at=?,updated_at=? WHERE order_id=?")
         .bind(b.status, at, now(), b.order_id).run();
-      const capi = await maybeSendPurchase(env, b.order_id);
+      // 带 test_event_code 时事件只进 Events Manager 的「测试事件」面板，不进正式数据
+      const capi = await maybeSendPurchase(env, b.order_id, b.test_event_code || "");
       return json({ ok: true, capi });
     }
     await env.DB.prepare("UPDATE orders SET status=?,updated_at=? WHERE order_id=?")
@@ -998,8 +999,11 @@ async function maybeSendPurchase(env, orderId, testEventCode = "") {
       { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const out = await res.json().catch(() => ({}));
     if (!res.ok || out.error) throw new Error(JSON.stringify(out).slice(0, 400));
-    await env.DB.prepare("UPDATE orders SET capi_sent=1,capi_sent_at=?,capi_error=NULL WHERE order_id=?")
-      .bind(now(), orderId).run();
+    // 测试事件不算数：不能标记 capi_sent，否则真正该上报的时候会被当成"已发过"跳过
+    if (!testEventCode) {
+      await env.DB.prepare("UPDATE orders SET capi_sent=1,capi_sent_at=?,capi_error=NULL WHERE order_id=?")
+        .bind(now(), orderId).run();
+    }
     return { ok: true, events_received: out.events_received || 0, test: !!testEventCode };
   } catch (e) {
     // 失败必须记录，不能静默吞掉，否则不知道哪些单要补发
