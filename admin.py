@@ -1172,7 +1172,7 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
                         f'<small>{("起点" if i == 0 else pct(value, prev))}</small></div>')
 
     status_names = {"pending":"待确认", "confirmed":"已确认", "shipping":"配送中",
-                    "completed":"已完成", "cancelled":"已取消"}
+                    "delivered_paid":"已送达收款", "completed":"已完成", "cancelled":"已取消"}
     status_html = "".join(
         f'<div class="status-chip"><span>{esc(status_names.get(x.get("status"), x.get("status", "")))}</span>'
         f'<b>{int(x.get("orders",0) or 0)}</b><small>{int(x.get("units",0) or 0)} 卷 · RD$ {float(x.get("revenue",0) or 0):,.0f}</small></div>'
@@ -1268,12 +1268,54 @@ def fan_stats_page(days=30, period=""):
                                 product_label="风扇灯", product_name="Abanico de techo con luz LED", period=period)
 
 _ORDER_JS = """<script>
-var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',completed:'已完成',cancelled:'已取消'};
-async function orderStatus(sel){var id=sel.dataset.id,old=sel.dataset.old;sel.disabled=true;
+var STATUS={pending:'待确认',confirmed:'已确认',shipping:'配送中',delivered_paid:'已送达收款',completed:'已完成',cancelled:'已取消'};
+async function orderStatus(sel){var id=sel.dataset.id,old=sel.dataset.old;
+ var payload={order_id:id,status:sel.value};
+ if(sel.value==='delivered_paid'){
+  // WhatsApp 单在这一步才回传 Meta，所以要确认时间对（可能隔天补录）
+  var d=prompt('送达并收款的时间（留空=现在）\\n格式：2026-08-19 15:30','');
+  if(d===null){sel.value=old;return}
+  if(d.trim()){var t=Date.parse(d.replace(' ','T'));
+   if(isNaN(t)){alert('时间格式看不懂，请用 2026-08-19 15:30');sel.value=old;return}
+   payload.delivered_at=t}
+ }
+ sel.disabled=true;
  try{var r=await fetch('/order_status',{method:'POST',headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({order_id:id,status:sel.value})});if(!r.ok)throw new Error(await r.text());
+  body:JSON.stringify(payload)});if(!r.ok)throw new Error(await r.text());
+  var d2=await r.json().catch(function(){return {}});
   sel.dataset.old=sel.value;sel.closest('.order-card').dataset.status=sel.value;
+  if(d2.capi){
+   var c=d2.capi;
+   if(c.ok&&!c.skipped)alert('✅ 已回传 Meta（Purchase）');
+   else if(c.skipped==='sin_token')alert('⚠️ 状态已改，但没配置 META_CAPI_TOKEN，没有回传 Meta');
+   else if(c.skipped==='no_es_whatsapp')/* 网站单本来就不该回传，静默 */;
+   else if(c.error)alert('⚠️ 状态已改，但回传 Meta 失败：\\n'+c.error+'\\n\\n可以在下面「待补发」里重试');
+  }
  }catch(e){sel.value=old;alert('状态更新失败：'+e.message)}finally{sel.disabled=false}}
+async function capiRetry(btn,id){btn.disabled=true;btn.textContent='重试中…';
+ try{var r=await fetch('/capi_retry',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({order_id:id})});var d=await r.json();
+  if(d.ok){btn.textContent='✓ 已回传';btn.closest('.capi-row').style.opacity=.5}
+  else{btn.disabled=false;btn.textContent='重试';alert('还是失败：\\n'+((d.capi&&(d.capi.error||d.capi.skipped))||d.error||'未知'))}
+ }catch(e){btn.disabled=false;btn.textContent='重试';alert('请求失败：'+e.message)}}
+async function manualOrder(btn){
+ var g=function(id){return (document.getElementById(id).value||'').trim()};
+ var sel=document.getElementById('mSku'),o=sel.options[sel.selectedIndex];
+ if(!g('mName')||!g('mPhone')){alert('姓名和电话必填');return}
+ var qty=parseInt(g('mQty')||'1'),price=g('mPrice')?Number(g('mPrice')):Number(o.dataset.p);
+ btn.disabled=true;btn.textContent='建单中…';
+ try{
+  var r=await fetch('/order_manual',{method:'POST',headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({source:'whatsapp',customer_name:g('mName'),phone:g('mPhone'),
+    province:g('mProv'),zone:g('mZone'),address:g('mAddr'),note:g('mNote'),
+    payment_method:document.getElementById('mPay').value,
+    items:[{sku:sel.value,title:o.dataset.t,image:o.dataset.img,unit_price:price,quantity:qty}]})});
+  var d=await r.json();
+  if(!d.ok)throw new Error(d.error||'建单失败');
+  alert('✅ 已建单 '+d.order_id+'（RD$ '+Number(d.total).toLocaleString('en-US')+'）\\n\\n'
+   +'货送到、钱收到之后，记得把状态改成「已送达收款」——那一步才会告诉 Meta 这笔成交。');
+  location.reload();
+ }catch(e){alert('建单失败：'+e.message);btn.disabled=false;btn.textContent='建单'}}
 function orderFilter(){var q=document.getElementById('orderQ').value.toLowerCase(),s=document.getElementById('orderS').value;
  document.querySelectorAll('.order-card').forEach(function(x){x.style.display=(!s||x.dataset.status===s)&&(!q||x.textContent.toLowerCase().includes(q))?'':'none'})}
 </script>"""
@@ -1282,7 +1324,7 @@ def orders_page():
     data, err = worker_call("orders")
     orders = (data or {}).get("orders", [])
     status_names = {"pending":"待确认", "confirmed":"已确认", "shipping":"配送中",
-                    "completed":"已完成", "cancelled":"已取消"}
+                    "delivered_paid":"已送达收款", "completed":"已完成", "cancelled":"已取消"}
     cards = ""
     counts = {k: 0 for k in status_names}
     for o in orders:
@@ -1323,8 +1365,22 @@ def orders_page():
                          else f'RD$ {ship_min:,.0f}')
         total_text = (f'预计总计 RD$ {total_min:,.0f}–{total_max:,.0f}' if total_max > total_min
                       else f'总计 RD$ {total_min:,.0f}')
+        # 来源标记 + Meta 回传状态（只有 WhatsApp 单需要回传）
+        src_o = str(o.get("source") or "web")
+        src_badge = ('<span class="src-tag src-wa">WhatsApp</span>' if src_o == "whatsapp"
+                     else '<span class="src-tag">网站</span>')
+        capi_html = ""
+        if src_o == "whatsapp":
+            if o.get("capi_sent"):
+                capi_html = '<span class="capi ok">✓ 已回传 Meta</span>'
+            elif o.get("capi_error"):
+                capi_html = f'<span class="capi err" title="{esc(str(o.get("capi_error"))[:200])}">⚠ 回传失败</span>'
+            elif status == "delivered_paid":
+                capi_html = '<span class="capi err">⚠ 待回传</span>'
+            else:
+                capi_html = '<span class="capi wait">收款后回传</span>'
         cards += (f'<article class="order-card" data-status="{esc(status)}">'
-                  f'<header><div><b class="order-id">{esc(o.get("order_id",""))}</b><time>{created}</time></div>'
+                  f'<header><div><b class="order-id">{esc(o.get("order_id",""))}</b>{src_badge}{capi_html}<time>{created}</time></div>'
                   f'<select data-id="{esc(o.get("order_id",""))}" data-old="{esc(status)}" onchange="orderStatus(this)">{opts}</select></header>'
                   f'<div class="order-customer"><div><strong>{esc(o.get("customer_name",""))}</strong>'
                   f'<a href="https://wa.me/{phone}" target="_blank">WhatsApp {esc(o.get("phone",""))}</a></div>'
@@ -1344,6 +1400,41 @@ def orders_page():
     stat_html = "".join(f'<div class="stat"><div class="v">{counts.get(k,0)}</div><div class="l">{v}</div></div>'
                         for k, v in status_names.items())
     order_cards_html = cards or '<div class="empty-orders">还没有客户提交订单</div>'
+
+    # 手工建单：WhatsApp 成交不经过网站结账，没有这个入口这些单就永远进不了系统
+    prod_opts = "".join(
+        f'<option value="{esc(p["sku"])}" data-t="{esc(p["title"])}" data-p="{float(p.get("price") or 0):g}" '
+        f'data-img="{esc(p.get("img",""))}">{esc(p["title"][:60])} — RD$ {float(p.get("price") or 0):,.0f}</option>'
+        for p in products()[:400])
+    manual_form_html = (
+        '<div class="wa-new"><h2>➕ 手工建单（WhatsApp 成交）</h2>'
+        '<p>WhatsApp 上谈成的单在这里录入。只有录进来、并且之后标记成「已送达收款」，Meta 才知道这笔成交。</p>'
+        '<div class="row"><input id="mName" placeholder="客户姓名 *"><input id="mPhone" placeholder="电话 * 例 8092811992">'
+        '<input id="mProv" placeholder="省 / 市"><input id="mZone" placeholder="Sector / 区"></div>'
+        '<div class="row"><input id="mAddr" placeholder="地址">'
+        f'<select id="mSku">{prod_opts}</select>'
+        '<input id="mQty" type="number" min="1" value="1" placeholder="数量">'
+        '<input id="mPrice" type="number" min="0" placeholder="单价（留空=商品原价）"></div>'
+        '<div class="row"><input id="mNote" placeholder="备注（可选）">'
+        '<select id="mPay"><option value="cod">货到付款</option><option value="transfer">银行转账</option></select>'
+        '<button onclick="manualOrder(this)">建单</button></div></div>')
+
+    # 待补发：该传 Meta 却没传成功的
+    pend, _pe = worker_call("capi/pending")
+    pend_orders = (pend or {}).get("orders", [])
+    token_ok = (pend or {}).get("token_configurado")
+    capi_pending_html = ""
+    if pend_orders or token_ok is False:
+        rows = "".join(
+            f'<div class="capi-row"><b>{esc(x.get("order_id",""))}</b>'
+            f'<span>{esc(x.get("customer_name",""))} · RD$ {float(x.get("total") or 0):,.0f}</span>'
+            f'<span style="color:#B3261E">{esc(str(x.get("capi_error") or "尚未上报")[:70])}</span>'
+            f'<button onclick="capiRetry(this,\'{esc(x.get("order_id",""))}\')">重试</button></div>'
+            for x in pend_orders)
+        warn = ("" if token_ok else
+                '<div class="capi-row" style="color:#B3261E"><b>⚠️ 还没配置 META_CAPI_TOKEN</b>'
+                '<span>WhatsApp 成交回传不了 Meta。令牌要设在 Worker 的机密变量里。</span></div>')
+        capi_pending_html = (f'<div class="capi-box"><b>📡 待回传 Meta 的 WhatsApp 订单</b>{warn}{rows or ""}</div>')
     inner = (f'{_warn(err)}<style>'
              '.order-tools{display:flex;gap:10px;margin-bottom:16px}.order-tools input,.order-tools select{border:1.5px solid #E5EAF2;border-radius:10px;padding:10px 12px;background:#fff}.order-tools input{flex:1}'
              '.order-list{display:flex;flex-direction:column;gap:14px}.order-card{background:#fff;border:1px solid #E3E9F2;border-radius:14px;overflow:hidden}.order-card>header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#F8FAFD}.order-id{font-size:16px}.order-card time{font-size:11px;color:#8792a4;margin-left:10px}.order-card select{border:1px solid #DCE4EF;border-radius:9px;padding:8px;background:#fff;font-weight:700}'
@@ -1352,7 +1443,20 @@ def orders_page():
              '.order-items{padding:4px 16px}.order-item{display:grid;grid-template-columns:54px minmax(0,1fr) 52px 90px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F7}.order-item img,.item-noimg{width:54px;height:54px;border-radius:7px;object-fit:cover;background:#F1F4F8}.item-noimg{display:grid;place-items:center;font-size:10px;color:#9aa3b2}.item-main{display:flex;flex-direction:column;gap:4px}.item-main b{font-size:13px}.item-main small{color:#8b96a6}.item-qty{font-weight:800}.item-money{text-align:right;font-weight:800}'
              '.order-card>footer{display:flex;justify-content:space-between;gap:12px;padding:13px 16px}.order-card>footer span{font-size:12px;color:#68758a}.order-card>footer b{margin-left:12px;font-size:16px}.order-note{padding:0 16px 13px;color:#68758a;font-size:12px}.empty-orders{padding:50px;text-align:center;color:#8d98a8}'
              '@media(max-width:720px){.order-customer{grid-template-columns:1fr}.order-card>footer{flex-direction:column}.order-item{grid-template-columns:48px minmax(0,1fr) 34px 76px}.order-item img,.item-noimg{width:48px;height:48px}}'
+             '.src-tag{margin-left:8px;padding:2px 7px;border-radius:5px;background:#EEF2F7;color:#68758a;font-size:11px;font-weight:800}'
+             '.src-tag.src-wa{background:#E3F7EC;color:#138a4b}'
+             '.capi{margin-left:6px;padding:2px 7px;border-radius:5px;font-size:11px;font-weight:800}'
+             '.capi.ok{background:#E3F7EC;color:#138a4b}.capi.err{background:#FDECEC;color:#B3261E}.capi.wait{background:#F3F5F9;color:#8b96a6}'
+             '.wa-new{background:#fff;border:1px solid #E5EAF2;border-radius:14px;padding:16px;margin-bottom:16px}'
+             '.wa-new h2{font-size:15px;margin-bottom:4px}.wa-new p{font-size:12px;color:#7d8999;margin-bottom:12px}'
+             '.wa-new .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin-bottom:9px}'
+             '.wa-new input,.wa-new select{padding:9px 11px;border:1px solid #DCE3ED;border-radius:9px;font-size:13px;width:100%}'
+             '.wa-new button{padding:10px 18px;border:none;border-radius:99px;background:#2563D9;color:#fff;font-weight:800;cursor:pointer}'
+             '.capi-box{background:#FFF8E6;border:1px solid #F3DFA8;border-radius:12px;padding:13px 15px;margin-bottom:16px}'
+             '.capi-row{display:flex;align-items:center;gap:10px;font-size:12.5px;padding:6px 0}'
+             '.capi-row button{margin-left:auto;padding:5px 12px;border:1px solid #2563D9;background:#fff;color:#2563D9;border-radius:99px;font-weight:700;cursor:pointer}'
              '</style><h1>订单 <span class="sub">客户确认购物车后自动进入这里</span></h1>'
+             f'{manual_form_html}{capi_pending_html}'
              f'<div class="stats">{stat_html}</div><div class="order-tools"><input id="orderQ" placeholder="搜索订单、客户、电话、IP、商品" oninput="orderFilter()">'
              '<select id="orderS" onchange="orderFilter()"><option value="">全部状态</option>'
              + "".join(f'<option value="{k}">{v}</option>' for k,v in status_names.items()) + '</select></div>'
@@ -2638,6 +2742,16 @@ class H(BaseHTTPRequestHandler):
             if p == "/order_status":
                 payload = json.loads(body.decode("utf-8") or "{}")
                 data, err = worker_call("order/status", "POST", payload)
+                code = 200 if data and data.get("ok") else 502
+                return self.send(code, json.dumps(data or {"error": err}), "application/json")
+            if p == "/capi_retry":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("capi/retry", "POST", payload)
+                code = 200 if data and data.get("ok") else 502
+                return self.send(code, json.dumps(data or {"error": err}), "application/json")
+            if p == "/order_manual":
+                payload = json.loads(body.decode("utf-8") or "{}")
+                data, err = worker_call("order/manual", "POST", payload)
                 code = 200 if data and data.get("ok") else 502
                 return self.send(code, json.dumps(data or {"error": err}), "application/json")
             if p == "/campaign_cost":

@@ -474,11 +474,67 @@ async function handleAdmin(req, env, url) {
 
   if (sub === "order/status" && req.method === "POST") {
     const b = await req.json().catch(() => ({}));
-    const allowed = ["pending", "confirmed", "shipping", "completed", "cancelled"];
+    const allowed = ["pending", "confirmed", "shipping", "delivered_paid", "completed", "cancelled"];
     if (!b.order_id || !allowed.includes(b.status)) return json({ error: "invalid_status" }, 400);
+    if (b.status === "delivered_paid") {
+      // 允许店主手动指定实际送达时间（可能隔天才补录）
+      const at = Number(b.delivered_at) > 0 ? Math.floor(Number(b.delivered_at)) : now();
+      await env.DB.prepare("UPDATE orders SET status=?,delivered_paid_at=?,updated_at=? WHERE order_id=?")
+        .bind(b.status, at, now(), b.order_id).run();
+      const capi = await maybeSendPurchase(env, b.order_id);
+      return json({ ok: true, capi });
+    }
     await env.DB.prepare("UPDATE orders SET status=?,updated_at=? WHERE order_id=?")
       .bind(b.status, now(), b.order_id).run();
     return json({ ok: true });
+  }
+
+  // 手工建单（WhatsApp 成交）。没有这个入口，WhatsApp 的单根本进不了系统，CAPI 也就无从谈起。
+  if (sub === "order/manual" && req.method === "POST") {
+    const b = await req.json().catch(() => ({}));
+    const phone = String(b.phone || "").trim();
+    const name = String(b.customer_name || "").trim();
+    if (!phone || !name) return json({ error: "faltan_datos" }, 400);
+    const items = Array.isArray(b.items) ? b.items.filter(x => x && x.sku) : [];
+    if (!items.length) return json({ error: "sin_productos" }, 400);
+    const src = b.source === "web" ? "web" : "whatsapp";     // 手工建单默认 whatsapp
+    const oid = "WA-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+    const t = now();
+    let total = 0;
+    for (const it of items) total += Number(it.unit_price || 0) * (Number(it.quantity) || 1);
+    const stmts = [env.DB.prepare(
+      `INSERT INTO orders (order_id,status,source,customer_name,phone,province,zone,address,note,
+        payment_method,subtotal,discount,total,created_at,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+    ).bind(oid, "confirmed", src, name.slice(0, 160), phone.slice(0, 80),
+      String(b.province || "").slice(0, 120), String(b.zone || "").slice(0, 120),
+      String(b.address || "").slice(0, 500), String(b.note || "").slice(0, 500),
+      String(b.payment_method || "cod"), total, 0, total, t, t)];
+    for (const it of items) {
+      const q = Number(it.quantity) || 1, up = Number(it.unit_price) || 0;
+      stmts.push(env.DB.prepare(
+        `INSERT INTO order_items (order_id,sku,title,image,unit_price,quantity,line_total)
+         VALUES (?,?,?,?,?,?,?)`
+      ).bind(oid, String(it.sku).slice(0, 80), String(it.title || "").slice(0, 300),
+        String(it.image || "").slice(0, 300), up, q, up * q));
+    }
+    await env.DB.batch(stmts);
+    return json({ ok: true, order_id: oid, total });
+  }
+
+  // 补发：列出该传却没传成功的订单
+  if (sub === "capi/pending" && req.method === "GET") {
+    const rows = await env.DB.prepare(
+      `SELECT order_id,customer_name,phone,total,delivered_paid_at,capi_error
+         FROM orders WHERE source='whatsapp' AND status='delivered_paid' AND capi_sent=0
+        ORDER BY delivered_paid_at DESC LIMIT 100`).all();
+    return json({ ok: true, orders: rows.results || [], token_configurado: !!env.META_CAPI_TOKEN });
+  }
+  if (sub === "capi/retry" && req.method === "POST") {
+    const b = await req.json().catch(() => ({}));
+    if (!b.order_id) return json({ error: "missing_order_id" }, 400);
+    const capi = await maybeSendPurchase(env, b.order_id, b.test_event_code || "");
+    return json({ ok: !!capi.ok, capi });
   }
 
   if (sub === "cart-visitors" && req.method === "GET") {
@@ -882,4 +938,73 @@ async function handleAdmin(req, env, url) {
   }
 
   return json({ error: "unknown_admin_route" }, 404);
+}
+
+// ============ Meta CAPI：WhatsApp 成交回传 ============
+// 只对 source='whatsapp' 且已确认收款的订单上报。网站订单浏览器 Pixel 已经发过
+// Purchase，再发一次会重复计数、ROAS 虚高一倍。
+const META_DATASET_ID = "882086747967886";
+
+// 手机号规范化是死规矩：带 +、空格、括号、横杠或漏国家码，哈希就完全不同，
+// Meta 匹配率归零而且不报错——看起来在传数据，其实全打水漂。
+async function hashPhone(raw) {
+  const digits = String(raw || "").replace(/\D/g, "");
+  if (!digits) return "";
+  const e164 = digits.length === 10 ? "1" + digits : digits;   // 多米尼加 10 位补国家码 1
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(e164));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function maybeSendPurchase(env, orderId, testEventCode = "") {
+  if (!env.META_CAPI_TOKEN) return { ok: false, skipped: "sin_token" };
+  const o = await env.DB.prepare(
+    "SELECT order_id,source,status,phone,total,capi_sent,delivered_paid_at FROM orders WHERE order_id=?"
+  ).bind(orderId).first();
+  if (!o) return { ok: false, skipped: "orden_no_existe" };
+  if (o.source !== "whatsapp") return { ok: false, skipped: "no_es_whatsapp" };
+  if (o.status !== "delivered_paid") return { ok: false, skipped: "no_confirmado" };
+  if (o.capi_sent) return { ok: true, skipped: "ya_enviado" };
+
+  const itemRows = await env.DB.prepare(
+    "SELECT sku,quantity FROM order_items WHERE order_id=?").bind(orderId).all();
+  const items = itemRows.results || [];
+  const ph = await hashPhone(o.phone);
+  if (!ph) {
+    await env.DB.prepare("UPDATE orders SET capi_error=? WHERE order_id=?")
+      .bind("telefono_vacio", orderId).run();
+    return { ok: false, error: "telefono_vacio" };
+  }
+
+  const body = {
+    data: [{
+      event_name: "Purchase",
+      event_time: Math.floor(Number(o.delivered_paid_at || now()) / 1000),
+      action_source: "business_messaging",
+      event_id: "order_" + o.order_id,            // 用订单号，天然去重
+      user_data: { ph: [ph] },
+      custom_data: {
+        currency: "DOP",
+        value: Number(o.total || 0),
+        content_type: "product",
+        contents: items.map(x => ({ id: String(x.sku), quantity: Number(x.quantity) || 1 })),
+      },
+    }],
+  };
+  if (testEventCode) body.test_event_code = testEventCode;
+
+  try {
+    const res = await fetch(
+      `https://graph.facebook.com/v21.0/${META_DATASET_ID}/events?access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`,
+      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || out.error) throw new Error(JSON.stringify(out).slice(0, 400));
+    await env.DB.prepare("UPDATE orders SET capi_sent=1,capi_sent_at=?,capi_error=NULL WHERE order_id=?")
+      .bind(now(), orderId).run();
+    return { ok: true, events_received: out.events_received || 0, test: !!testEventCode };
+  } catch (e) {
+    // 失败必须记录，不能静默吞掉，否则不知道哪些单要补发
+    await env.DB.prepare("UPDATE orders SET capi_error=? WHERE order_id=?")
+      .bind(String(e.message || e).slice(0, 500), orderId).run();
+    return { ok: false, error: String(e.message || e).slice(0, 300) };
+  }
 }
