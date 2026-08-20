@@ -2606,7 +2606,20 @@ VENTILADOR_CSS = """
 .vt h1,.vt h2,.vt h3,.vt h4{margin:0}
 .vt-band{background:linear-gradient(90deg,var(--vt-orange),var(--vt-orange-dk));color:#fff;text-align:center;
  padding:9px 16px;font-size:13px;font-weight:600;letter-spacing:.2px}
-.vt-band span{margin:0 10px;display:inline-block}
+.vt-bit{margin:0 10px;display:inline-block}
+.vt-bit+.vt-bit::before{content:"·";margin-right:12px;opacity:.6}
+/* 手机上三条并排会折成 3 行、吃掉 70px 首屏，改成一次只显示一条、自动轮播 */
+@media(max-width:720px){
+ .vt-band{padding:8px 14px;font-size:12.5px}
+ .vt-band-in{position:relative;height:17px;overflow:hidden}
+ .vt-bit{position:absolute;inset:0;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease}
+ .vt-bit.on{opacity:1;transform:none}
+ .vt-bit+.vt-bit::before{content:none}
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){
+ .vt-bit{transition:none}
+}
 .vt-hero{background:linear-gradient(135deg,var(--vt-blue-lt) 0%,#f2f7ff 50%,#fff 100%);padding:28px 20px 46px}
 .vt-hero-in{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
 .vt-gal{position:sticky;top:78px}
@@ -2915,8 +2928,9 @@ def ventilador_page(products=None):
         txt = esc(a)
         if cd and "quedan" in a.lower():
             txt += ' <b id="vtCd">--:--:--</b>'
-        band_bits.append(f"<span>{txt}</span>")
-    band = f'<div class="vt-band">{"·".join(band_bits)}</div>' if band_bits else ""
+        band_bits.append(f'<span class="vt-bit{" on" if i == 0 else ""}">{txt}</span>')
+    band = (f'<div class="vt-band" role="status" aria-live="off">'
+            f'<div class="vt-band-in">{"".join(band_bits)}</div></div>') if band_bits else ""
 
     # ---- 相册 ----
     thumbs = "".join(
@@ -3238,6 +3252,23 @@ function vtAdd(buy){{
   location.href='../carrito';return}}
  vtToast('✅ Agregado al carrito');
 }}
+(function(){{ // 顶部横幅：手机上一次只显示一条，轮播；桌面保持一行排开
+ var bits=[].slice.call(document.querySelectorAll('.vt-bit'));
+ if(bits.length<2)return;
+ var mq=matchMedia('(max-width:720px)'),i=0,timer=null;
+ function step(){{ i=(i+1)%bits.length;
+  bits.forEach(function(b,n){{b.classList.toggle('on',n===i)}}); }}
+ function sync(){{
+  if(timer){{clearInterval(timer);timer=null}}
+  if(mq.matches){{ bits.forEach(function(b,n){{b.classList.toggle('on',n===i)}});
+   timer=setInterval(step,3800); }}
+  else{{ bits.forEach(function(b){{b.classList.add('on')}}); }}   // 桌面全部显示
+ }}
+ sync();
+ mq.addEventListener?mq.addEventListener('change',sync):mq.addListener(sync);
+ document.addEventListener('visibilitychange',function(){{
+  if(document.hidden&&timer){{clearInterval(timer);timer=null}} else sync(); }});
+}})();
 function vtVFail(i){{ // 视频加载失败 → 显示封面图兜底
  var v=document.getElementById('vtV'+i),f=document.getElementById('vtF'+i),b=document.getElementById('vtB'+i);
  if(v)v.style.display='none'; if(b)b.style.display='none'; if(f)f.hidden=false;}}
