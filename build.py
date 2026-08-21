@@ -2664,6 +2664,16 @@ VENTILADOR_CSS = """
 .vt-pill s{display:block;font-size:11px;color:var(--vt-green);margin-top:2px;text-decoration:none}
 .vt-pill em{position:absolute;top:-10px;right:-6px;background:var(--vt-orange);color:#fff;font-size:10px;
  font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;font-style:normal}
+/* 尺寸（直径）选择 */
+.vt-sizes{display:flex;gap:10px;flex-wrap:wrap}
+.vt-size{flex:1;min-width:130px;padding:11px 14px;border:2px solid var(--vt-bd);border-radius:var(--vt-r-sm);
+ background:#fff;cursor:pointer;text-align:left;transition:var(--vt-t);font-family:inherit}
+.vt-size:hover{border-color:var(--vt-blue-glow)}
+.vt-size.on{border-color:var(--vt-blue);background:var(--vt-blue-lt)}
+.vt-size b{display:block;font-size:16px;font-weight:800;color:var(--vt-dark)}
+.vt-size span{display:block;font-size:11.5px;color:var(--vt-light);font-weight:600;margin-top:1px}
+.vt-size i{display:block;font-style:normal;font-size:15px;font-weight:800;color:var(--vt-orange);margin-top:5px}
+.vt-size:focus-visible{outline:3px solid var(--vt-blue);outline-offset:2px}
 .vt-color{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--vt-gray);
  border-radius:var(--vt-r-sm);border:1px solid var(--vt-bd);font-size:14px;font-weight:600}
 .vt-sw{width:30px;height:30px;border-radius:50%;background:#f7f7f2;border:2px solid var(--vt-bd);flex-shrink:0}
@@ -2942,6 +2952,34 @@ def ventilador_page(products=None):
     off_tag = (f'<span class="vt-tag-off">{esc(cfg.get("descuento_texto") or "")}</span>'
                if cfg.get("descuento_texto") else "")
 
+    # ---- 尺寸（直径）：每个尺寸有自己的 SKU、价格和三档套餐 ----
+    tams = [t for t in (cfg.get("tamanos") or []) if isinstance(t, dict) and t.get("paquetes")]
+    if tams:
+        ti = next((i for i, t in enumerate(tams) if t.get("predeterminado")), 0)
+        tsel = tams[ti]
+        precio = float(tsel.get("precio") or precio)
+        antes = float(tsel.get("precio_antes") or 0)
+        paquetes = tsel["paquetes"]
+        sku = str(tsel.get("sku") or sku)
+        tam_html = ('<div class="vt-blk"><div class="vt-lab">'
+                    + esc(cfg.get("tamano_label") or "Tamaño") + '</div><div class="vt-sizes">'
+                    + "".join(
+                        f'<button class="vt-size{" on" if i == ti else ""}" type="button" '
+                        f'data-i="{i}" onclick="vtSize(this)" aria-pressed="{"true" if i == ti else "false"}">'
+                        f'<b>{esc(t.get("etiqueta") or "")}</b>'
+                        + (f'<span>{esc(t.get("sub"))}</span>' if t.get("sub") else "")
+                        + f'<i>{fmt_price(float(t["precio"]))}</i></button>'
+                        for i, t in enumerate(tams)) + '</div></div>')
+    else:
+        tam_html = ""
+    tams_json = json.dumps([{ "sku": t.get("sku"), "etiqueta": t.get("etiqueta"),
+        "precio": float(t.get("precio") or 0), "antes": float(t.get("precio_antes") or 0),
+        "off": t.get("descuento_texto") or "",
+        "paquetes": [{"u": int(q.get("unidades") or 1), "p": float(q["precio"]),
+                      "a": float(q.get("ahorro") or 0), "et": q.get("etiqueta") or "",
+                      "ins": q.get("insignia") or "",
+                      "def": bool(q.get("predeterminado"))} for q in (t.get("paquetes") or [])]}
+        for t in tams], ensure_ascii=False).replace("</", "<\\/")
     btn_buy = str(cfg.get("boton_comprar") or "Comprar ahora")
     btn_cart = str(cfg.get("boton_carrito") or "Agregar al carrito")
     # ---- 价格框下面那排绿色对勾（含"包邮"）----
@@ -3137,9 +3175,9 @@ def ventilador_page(products=None):
    <span class="vt-sold">Vendidos: {esc(rs.get("total_texto") or "")}+</span></div>
 
   <div class="vt-pbox">
-   <div class="vt-prow"><span class="vt-price">RD$ {precio:,.0f}</span>
+   <div class="vt-prow"><span class="vt-price">RD$ <span id="vtUnit">{precio:,.0f}</span></span>
     <span class="vt-unit">por unidad</span>
-    {f'<span class="vt-was">{fmt_price(antes)}</span>' if antes > precio else ''}
+    <span class="vt-was" id="vtWas">{fmt_price(antes) if antes > precio else ""}</span>
     {f'<span class="vt-off">{esc(cfg.get("descuento_texto"))}</span>' if cfg.get("descuento_texto") else ''}</div>
    <div class="vt-pmeta">{pmeta}</div>
   </div>
@@ -3147,7 +3185,9 @@ def ventilador_page(products=None):
   <div class="vt-blk"><div class="vt-lab">Color: {esc(cfg.get("color") or "")}</div>
    <div class="vt-color"><span class="vt-sw"></span>{esc(cfg.get("color_nota") or cfg.get("color") or "")}</div></div>
 
-  <div class="vt-blk"><div class="vt-lab">Cantidad:</div><div class="vt-pills">{pills}</div></div>
+  {tam_html}
+
+  <div class="vt-blk"><div class="vt-lab">Cantidad:</div><div class="vt-pills" id="vtPills">{pills}</div></div>
 
   <div class="vt-qty"><span class="vt-lab" style="margin:0">Llevar:</span>
    <div class="vt-qc"><button class="vt-qb" type="button" onclick="vtQty(-1)" aria-label="Menos">−</button>
@@ -3209,10 +3249,35 @@ def ventilador_page(products=None):
 </div>
 <script>
 var VT={product_json},vtU={def_u},vtP={def_p:g};
+var TAMS={tams_json},vtT={ti if 'tams' in dir() else 0};
 function vtFmt(n){{return Number(n).toLocaleString('en-US')}}
 function vtImg(b,src){{document.querySelectorAll('.vt-thumb').forEach(function(t){{t.classList.remove('on')}});
  b.classList.add('on');document.getElementById('vtMain').src='../images/'+src;
  try{{vbTrack('gallery_view',VT.sku,{{img:src}})}}catch(e){{}}}}
+function vtFmtP(n){{return 'RD$ '+Number(n).toLocaleString('en-US')}}
+function vtSize(btn){{
+ var i=parseInt(btn.dataset.i);if(!TAMS||!TAMS[i])return;
+ vtT=i;var t=TAMS[i];
+ document.querySelectorAll('.vt-size').forEach(function(x,n){{
+  x.classList.toggle('on',n===i);x.setAttribute('aria-pressed',n===i?'true':'false')}});
+ // 顶部大价格 = 该尺寸的单台含运费价
+ document.getElementById('vtUnit').textContent=Number(t.precio).toLocaleString('en-US');
+ var was=document.getElementById('vtWas');
+ if(was)was.textContent=(t.antes>t.precio)?vtFmtP(t.antes):'';
+ // 重画三档
+ var box=document.getElementById('vtPills');
+ box.innerHTML=t.paquetes.map(function(q,n){{
+  return '<button class="vt-pill'+(q.def?' on':'')+'" type="button" data-u="'+q.u+'" data-p="'+q.p+'"'
+   +' onclick="vtPack(this)">'+q.et+'<i>'+vtFmtP(q.p)+'</i>'
+   +(q.a>0?'<s>Ahorras '+vtFmtP(q.a)+'</s>':'')+(q.ins?'<em>'+q.ins+'</em>':'')+'</button>';
+ }}).join('');
+ var def=t.paquetes.filter(function(q){{return q.def}})[0]||t.paquetes[0];
+ vtU=def.u;vtP=def.p;
+ document.getElementById('vtPrice2').textContent=vtFmt(vtP);
+ var lbl=document.getElementById('vtPackLbl');if(lbl)lbl.textContent=def.et;
+ vtSync();
+ try{{vbTrack('color_select',t.sku,{{tamano:t.etiqueta,price:t.precio}})}}catch(e){{}}
+}}
 function vtPack(b){{document.querySelectorAll('.vt-pill').forEach(function(p){{p.classList.remove('on')}});
  b.classList.add('on');vtU=parseInt(b.dataset.u);vtP=parseFloat(b.dataset.p);
  // 顶部大价格固定是「单台含运费价」，不随档位变；变的是底部条和总计行
@@ -3233,8 +3298,10 @@ function vtToast(m){{var t=document.createElement('div');t.className='vt-toast';
  setTimeout(function(){{t.classList.remove('on');setTimeout(function(){{t.remove()}},320)}},1900)}}
 function vtAdd(buy){{
  var q=parseInt(document.getElementById('vtQty').value||1);
- var sku=vtU>1?(VT.sku+'-P'+vtU):VT.sku;
- var title=vtU>1?(VT.title+' (paquete de '+vtU+')'):VT.title;
+ var T=(TAMS&&TAMS[vtT])||null;
+ var base=T?T.sku:VT.sku, tl=T?(VT.title+' '+T.etiqueta):VT.title;
+ var sku=vtU>1?(base+'-P'+vtU):base;
+ var title=vtU>1?(tl+' (paquete de '+vtU+')'):tl;
  var item={{sku:sku,handle:VT.handle,title:title,price:vtP,img:VT.img,qty:q}};
  var c;
  if(buy){{

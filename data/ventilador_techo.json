@@ -6,7 +6,7 @@
   "handle": "abanico-de-techo-led",
   "titulo": "Abanico de techo con luz LED — rosca E27, 6 aspas, control remoto",
   "titulo_corto": "Abanico de techo con luz LED",
-  "subtitulo": "Abanico e iluminación 2 en 1 — ideal para sala, comedor y habitación",
+  "subtitulo": "Abanico e iluminación 2 en 1 — en 30 cm y 40 cm, para sala, comedor y habitación",
   "categoria": "Decoración del Hogar",
   "migaja": "Inicio / Abanicos / Abanico de techo con luz LED",
   "precio": 1250,
@@ -222,6 +222,10 @@
       "grupo": "Medidas e instalación",
       "datos": [
         [
+          "Diámetro",
+          "30 cm o 40 cm (según el que elijas)"
+        ],
+        [
           "Color",
           "Blanco"
         ],
@@ -407,5 +411,72 @@
   ],
   "boton_comprar": "Pagar contra entrega",
   "boton_carrito": "Agregar al carrito",
-  "_nota_botones": "主按钮文案。多米尼加客人对『货到付款』的信任度远高于『立即购买』，所以主按钮直接写付款方式。"
+  "_nota_botones": "主按钮文案。多米尼加客人对『货到付款』的信任度远高于『立即购买』，所以主按钮直接写付款方式。",
+  "_nota_tamanos": "两个尺寸（直径）。每个尺寸有自己的 SKU、单价、划线价和三档套餐；predeterminado=true 的尺寸在页面打开时默认选中。ahorro = 单台价×数量 − 套餐价。价格全部由店主提供，未做任何估算。",
+  "tamano_label": "Tamaño (diámetro)",
+  "tamanos": [
+    {
+      "id": "30",
+      "etiqueta": "30 cm",
+      "sub": "Compacto",
+      "sku": "VB-FAN-E27-30",
+      "predeterminado": true,
+      "precio": 995,
+      "precio_antes": 1990,
+      "descuento_texto": "-50%",
+      "paquetes": [
+        {
+          "unidades": 1,
+          "precio": 995,
+          "etiqueta": "x1 Unidad",
+          "ahorro": 0
+        },
+        {
+          "unidades": 2,
+          "precio": 1795,
+          "etiqueta": "x2 Unidades",
+          "ahorro": 195,
+          "predeterminado": true,
+          "insignia": "Más pedido"
+        },
+        {
+          "unidades": 3,
+          "precio": 2695,
+          "etiqueta": "x3 Unidades",
+          "ahorro": 290
+        }
+      ]
+    },
+    {
+      "id": "40",
+      "etiqueta": "40 cm",
+      "sub": "Más viento",
+      "sku": "VB-FAN-E27-40",
+      "precio": 1250,
+      "precio_antes": 2500,
+      "descuento_texto": "-50%",
+      "paquetes": [
+        {
+          "unidades": 1,
+          "precio": 1250,
+          "etiqueta": "x1 Unidad",
+          "ahorro": 0
+        },
+        {
+          "unidades": 2,
+          "precio": 2150,
+          "etiqueta": "x2 Unidades",
+          "ahorro": 350,
+          "predeterminado": true,
+          "insignia": "Más pedido"
+        },
+        {
+          "unidades": 3,
+          "precio": 3000,
+          "etiqueta": "x3 Unidades",
+          "ahorro": 750
+        }
+      ]
+    }
+  ]
 }
