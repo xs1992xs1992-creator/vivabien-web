@@ -1216,9 +1216,9 @@ function render(){
   document.getElementById('itemsBox').innerHTML='<div class="empty">Tu carrito está vacío.<br><br><a href="./">← Ver productos</a></div>';
   ['formBox','payBox','totBox'].forEach(function(i){document.getElementById(i).style.display='none'});
   return;}
- box.innerHTML=c.map(function(it,i){var unit=effectiveUnit(it),tier=unit<Number(it.price);
+ box.innerHTML=c.map(function(it,i){var unit=effectiveUnit(it),tier=unit<Number(it.price),priceUnit=/\(paquete de \d+\)/i.test(it.title)?' por paquete':' por unidad';
   return '<div class="ci"><img src="images/'+it.img+'" onerror="this.style.opacity=0">'
-  +'<div class="t"><div class="nm">'+it.title+'</div><div class="pr">'+money(unit)+' por unidad</div>'
+  +'<div class="t"><div class="nm">'+it.title+'</div><div class="pr">'+money(unit)+priceUnit+'</div>'
   +(tier?'<small class="tier-note">✓ Precio por cantidad aplicado</small>':'')
   +'<div class="qty"><button onclick="qty('+i+',-1)">−</button><span>'+it.qty+'</span><button onclick="qty('+i+',1)">+</button></div></div>'
   +'<button class="rm" onclick="rm('+i+')">✕</button></div>';}).join('');
