@@ -7,6 +7,8 @@
 // 存储：D1（env.DB）。密钥：env.ADMIN_KEY。
 
 import SHIPPING_CONFIG from "../../data/shipping_zones.json";
+import FAN_CONFIG from "../../data/ventilador_techo.json";
+import { buildFanPriceMap, isInactiveFanSku, prepaidOfferValue } from "./checkout-offer.js";
 
 const SITE = "https://vivabien.xyz";
 const VID_COOKIE = "vb_vid";
@@ -16,6 +18,9 @@ const CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz"
 const SHIPPING_REMOTE = new Set(["Pedernales", "Independencia", "Elías Piña", "Dajabón", "Monte Cristi"]);
 const SHIPPING_MAJOR = new Set(["Santiago", "La Altagracia", "La Vega", "Puerto Plata", "Duarte", "Espaillat", "Monseñor Nouel"]);
 const SHIPPING_NEAR = new Set(["San Cristóbal", "Monte Plata", "San Pedro de Macorís", "La Romana", "Peravia"]);
+
+const FAN_OFFER = FAN_CONFIG.checkout_offer || {};
+const FAN_PRICE_BY_SKU = buildFanPriceMap(FAN_CONFIG);
 
 // ---------- 工具 ----------
 const now = () => Date.now();
@@ -225,6 +230,7 @@ async function handleTrack(req, env) {
   if (!["view", "addcart", "checkout", "whatsapp", "engagement", "scroll", "search", "filter", "shipping_quote",
         "gallery_view", "color_select", "tier_select", "quantity_change", "review_open", "calculator_success",
         "section_view", "cart_update", "cart_remove", "checkout_start", "checkout_error",
+        "checkout_payment_method_selected",
         // 推广落地页 /enlaces
         "enlaces_view", "enlaces_click", "cupon_view", "cupon_claim"].includes(type))
     return json({ ok: false }, 400);
@@ -254,10 +260,16 @@ async function handleOrder(req, env) {
   const items = Array.isArray(b.items) ? b.items.slice(0, 50) : [];
   if (!b.customer_name || !b.phone || !b.address || !items.length)
     return json({ error: "missing_order_fields" }, 400);
+  if (items.some((item) => isInactiveFanSku(String(item?.sku || ""), FAN_CONFIG)))
+    return json({ error: "product_unavailable" }, 409);
 
   const orderId = String(b.order_id || ("VB-" + randCode(8).toUpperCase())).slice(0, 32);
-  const exists = await env.DB.prepare("SELECT order_id FROM orders WHERE order_id=?").bind(orderId).first();
-  if (exists) return json({ ok: true, order_id: orderId, duplicate: true });
+  const exists = await env.DB.prepare(
+    `SELECT order_id,payment_method,subtotal,discount,coupon_discount,prepaid_discount,total,
+            shipping_fee,shipping_fee_min,shipping_fee_max,shipping_zone,delivery_estimate,total_min,total_max
+     FROM orders WHERE order_id=?`
+  ).bind(orderId).first();
+  if (exists) return json({ ok: true, duplicate: true, ...exists });
 
   const tracking = b.tracking && typeof b.tracking === "object" ? b.tracking : {};
   const clientId = String(tracking.client_id || "").slice(0, 80);
@@ -267,24 +279,28 @@ async function handleOrder(req, env) {
   const ipHash = await hashIp(m.ip, env.IP_HASH_SALT || env.ADMIN_KEY || "");
   const cleanItems = items.map((raw) => {
     const quantity = Math.max(1, Math.min(99, Number(raw.quantity) || 1));
-    const unitPrice = Math.max(0, Number(raw.unit_price) || 0);
-    return { sku: String(raw.sku || "").slice(0, 100), title: String(raw.title || "Producto").slice(0, 240),
+    const sku = String(raw.sku || "").slice(0, 100);
+    const canonicalFanPrice = FAN_PRICE_BY_SKU.get(sku);
+    const unitPrice = canonicalFanPrice ?? Math.max(0, Number(raw.unit_price) || 0);
+    return { sku, title: String(raw.title || "Producto").slice(0, 240),
       image: String(raw.image || "").slice(0, 240), quantity, unitPrice,
       lineTotal: Math.round(unitPrice * quantity * 100) / 100 };
   });
   const subtotal = Math.round(cleanItems.reduce((sum, item) => sum + item.lineTotal, 0) * 100) / 100;
   const couponCode = String(b.coupon_code || "").trim();
-  let discount = 0;
+  let couponDiscount = 0;
   if (couponCode) {
     const coupon = await env.DB.prepare("SELECT * FROM coupons WHERE code=?").bind(couponCode).first();
     if (coupon && coupon.active && (!coupon.expires_at || coupon.expires_at > now()) &&
         (!coupon.max_uses || coupon.used_count < coupon.max_uses) && subtotal >= (coupon.min_order || 0)) {
-      discount = coupon.kind === "percent" ? subtotal * coupon.value / 100 : coupon.value;
-      discount = Math.round(Math.min(subtotal, discount) * 100) / 100;
+      couponDiscount = coupon.kind === "percent" ? subtotal * coupon.value / 100 : coupon.value;
+      couponDiscount = Math.round(Math.min(subtotal, couponDiscount) * 100) / 100;
     }
   }
   const shipping = shippingQuote(b.province, b.zone);
-  const paymentMethod = b.payment_method === "cod" ? "cod" : "transfer";
+  const paymentMethod = b.payment_method === "prepaid" ? "prepaid" : "cod";
+  const prepaidDiscount = prepaidOfferValue(cleanItems, paymentMethod, subtotal, couponDiscount, FAN_OFFER);
+  const discount = Math.round((couponDiscount + prepaidDiscount) * 100) / 100;
   let mapUrl = String(b.map_url || "").trim().slice(0, 500);
   const mapAllowed = /^(https:\/\/)?(maps\.app\.goo\.gl|www\.google\.[^/]+\/maps|goo\.gl\/maps|waze\.com\/ul|www\.waze\.com\/live-map|ul\.waze\.com)/i;
   if (mapUrl && !mapAllowed.test(mapUrl)) return json({ error:"invalid_location_link" },400);
@@ -312,8 +328,9 @@ async function handleOrder(req, env) {
      subtotal,discount,total,total_min,total_max,coupon_code,
      session_id,utm_source,utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid,
      first_utm_source,first_utm_medium,first_utm_campaign,first_utm_content,first_utm_term,
-     ip_full,ip_masked,ip_hash,country,city,region,postal_code,latitude,longitude,asn,as_org,ua,ref,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+     ip_full,ip_masked,ip_hash,country,city,region,postal_code,latitude,longitude,asn,as_org,ua,ref,
+     coupon_discount,prepaid_discount,created_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(orderId, vid, linkCode, "pending", String(b.customer_name).slice(0,160),
     String(b.phone).slice(0,80), String(b.province || "").slice(0,120), String(b.zone || "").slice(0,120),
    String(b.address).slice(0,500), String(b.note || "").slice(0,500),
@@ -329,7 +346,7 @@ async function handleOrder(req, env) {
     String(tracking.first_utm_content || "").slice(0,180), String(tracking.first_utm_term || "").slice(0,180),
     m.ip, m.ipMasked, ipHash, m.country, m.city, m.region,
     m.postalCode, m.latitude, m.longitude, m.asn, m.asOrg.slice(0,160), m.ua.slice(0,300),
-    m.ref.slice(0,300), created, created)];
+    m.ref.slice(0,300), couponDiscount, prepaidDiscount, created, created)];
   for (const item of cleanItems) {
     statements.push(env.DB.prepare(
       `INSERT INTO order_items (order_id,sku,title,image,unit_price,quantity,line_total)
@@ -341,9 +358,11 @@ async function handleOrder(req, env) {
     await logEvent(env, { vid, code: linkCode, type: "order", sku:item.sku, req,
       details: { ...tracking, order_id:orderId, qty:item.quantity, price:item.unitPrice,
         cart_total:totalMin, product_title:item.title, product_img:item.image,
-        shipping_fee:shipping.fee, shipping_zone:shipping.zone, delivery_estimate:shipping.delivery } });
+        shipping_fee:shipping.fee, shipping_zone:shipping.zone, delivery_estimate:shipping.delivery,
+        source_section:`order_completed_${paymentMethod}` } });
   }
-  return json({ ok:true, order_id:orderId, subtotal, discount, shipping_fee:shipping.fee,
+  return json({ ok:true, order_id:orderId, payment_method:paymentMethod, subtotal, discount,
+    coupon_discount:couponDiscount, prepaid_discount:prepaidDiscount, shipping_fee:shipping.fee,
     shipping_fee_min:shippingMin, shipping_fee_max:shippingMax, shipping_zone:shipping.zone,
     delivery_estimate:shipping.delivery, total, total_min:totalMin, total_max:totalMax }, 201,
     { "Set-Cookie":vidCookieHeader(vid) });

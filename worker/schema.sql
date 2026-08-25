@@ -132,6 +132,8 @@ CREATE TABLE IF NOT EXISTS orders (
   delivery_estimate TEXT DEFAULT '',
   subtotal REAL NOT NULL DEFAULT 0,
   discount REAL NOT NULL DEFAULT 0,
+  coupon_discount REAL NOT NULL DEFAULT 0,
+  prepaid_discount REAL NOT NULL DEFAULT 0,
   total REAL NOT NULL DEFAULT 0,
   total_min REAL NOT NULL DEFAULT 0,
   total_max REAL NOT NULL DEFAULT 0,

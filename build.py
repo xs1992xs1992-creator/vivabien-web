@@ -472,7 +472,7 @@ button{font-family:inherit}
 .hd-r{display:flex;align-items:center;gap:10px}
 .hd-wa{display:flex;align-items:center;gap:7px;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:99px}
 .hd-cart{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1.5px solid #E5EAF2;border-radius:13px;color:#2563D9;background:#fff}
-.cart-n{position:absolute;top:-6px;right:-6px;background:#FF6B4A;color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 4px}
+.cart-n{position:absolute;top:-6px;right:-2px;background:#FF6B4A;color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 4px}
 /* hero */
 .hero{margin:16px auto 4px;background:linear-gradient(120deg,#2563D9,#1A47A6);border-radius:22px;padding:28px 24px;color:#fff;position:relative;overflow:hidden}
 .hero h1{font-weight:800;font-size:26px;line-height:1.15;letter-spacing:-.02em;max-width:340px}
@@ -764,11 +764,16 @@ footer .footer-links{display:flex;justify-content:center;gap:15px;margin-bottom:
 button:focus-visible,.date-choice:focus-visible,.time-choice:focus-visible{outline:3px solid rgba(37,99,217,.25);outline-offset:2px}
 @media(min-width:640px){.map-steps{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible}.map-step{min-width:0}}
 @media(max-width:410px){.map-row{grid-template-columns:1fr}.map-paste{height:42px}.date-shortcuts{grid-template-columns:1fr 1fr}.date-shortcuts .date-choice:last-child{grid-column:1/-1}.time-choices{grid-template-columns:1fr}}
-/* pago radios */
+/* payment method cards */
 .pay{display:flex;flex-direction:column;gap:9px}
-.pay label{display:flex;align-items:center;gap:11px;border:1.5px solid #E5EAF2;border-radius:15px;padding:14px;cursor:pointer;font-weight:700;font-size:14px;background:#fff}
-.pay label.on{border-color:#2563D9;box-shadow:0 0 0 1px #2563D9}
-.pay input{accent-color:#2563D9;width:18px;height:18px}
+.pay label{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:11px;align-items:start;min-height:112px;border:1.5px solid #E5EAF2;border-radius:15px;padding:14px;cursor:pointer;background:#fff;transition:.16s ease}
+.pay label.on{border-color:#2563D9;background:#F3F7FF;box-shadow:0 0 0 1px #2563D9}
+.pay input{position:absolute;opacity:0;pointer-events:none}
+.pay-radio{width:20px;height:20px;border:2px solid #AAB5C6;border-radius:50%;display:grid;place-items:center;background:#fff;margin-top:1px}.pay label.on .pay-radio{border-color:#2563D9}.pay label.on .pay-radio:after{content:"";width:9px;height:9px;border-radius:50%;background:#2563D9}
+.pay-main b{display:block;font-size:14px;line-height:1.25}.pay-main small{display:block;color:#68758A;font-size:11.5px;line-height:1.45;margin-top:6px;font-weight:600}
+.pay-side{min-width:108px;text-align:right}.pay-side em{display:inline-block;border-radius:6px;padding:5px 7px;background:#EEF1F5;color:#566276;font-style:normal;font-size:9px;font-weight:900}.pay-side em.best{background:#2563D9;color:#fff}.pay-side strong{display:block;font-size:17px;margin-top:12px}.pay-side span{display:block;color:#16834B;font-size:10.5px;font-weight:900;margin-top:4px}
+.pay-intro{font-size:11.5px;color:#68758A;line-height:1.45;margin:-4px 0 12px}
+@media(max-width:390px){.pay label{grid-template-columns:20px minmax(0,1fr);padding:13px}.pay-side{grid-column:2;display:flex;align-items:center;justify-content:space-between;min-width:0;text-align:left}.pay-side strong{margin-top:0}.pay-side span{text-align:right}.pay-side em{position:absolute;right:12px;top:12px}.pay-main{padding-right:72px}}
 .bank{display:none;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:15px;padding:13px;margin-top:9px}
 .bank.show{display:block}
 .bank .bk{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
@@ -804,6 +809,7 @@ button:focus-visible,.date-choice:focus-visible,.time-choice:focus-visible{outli
 .ok .ck{width:86px;height:86px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:38px}
 .ok h2{font-weight:800;font-size:26px;margin-bottom:12px}
 .ok p{font-size:14px;color:#d3e0fb;line-height:1.6;max-width:320px;margin:0 auto 26px}
+.ok .bank{max-width:420px;margin:0 auto 18px;text-align:left;color:#16202E;background:#fff}.ok .bank .remind{margin-bottom:0}
 .ok a{display:inline-block;background:#fff;color:#2563D9;font-weight:800;font-size:15px;padding:14px 30px;border-radius:16px}
 .ok-actions{display:flex;flex-direction:column;gap:9px;max-width:320px;margin:0 auto}.ok-actions .ok-wa{background:#25D366;color:#fff}.ok-actions .ok-shop{background:#fff;color:#2563D9}
 """
@@ -949,11 +955,16 @@ def carrito_page():
             "unit_price": float(adhesive_cfg["tier_price"]),
         }
     tier_prices_json = json.dumps(tier_prices, ensure_ascii=False)
+    fan_cfg = load_json("data/ventilador_techo.json", {})
+    prepaid_offer = fan_cfg.get("checkout_offer", {}) if isinstance(fan_cfg, dict) else {}
+    prepaid_offer_json = json.dumps(prepaid_offer, ensure_ascii=False)
+    inactive_fan_skus = fan_cfg.get("inactive_skus", []) if isinstance(fan_cfg, dict) else []
+    inactive_fan_skus_json = json.dumps(inactive_fan_skus, ensure_ascii=False)
 
     body = header() + """
 <div class="ct" id="main">
 <h1>Tu compra</h1>
-<div class="box" id="itemsBox"><div class="bt">🛍️ Productos</div><div id="items"></div></div>
+<div class="box" id="itemsBox"><div class="bt">🛍️ Productos</div><div id="retiredNotice" style="display:none;margin:0 0 12px;padding:10px 12px;border-radius:8px;background:#fff6e5;color:#76510b;font-size:13px">La opción de 30 cm ya no está disponible y fue retirada de tu carrito.</div><div id="items"></div></div>
 
 <div class="box" id="formBox">
 <div class="bt">🚚 Datos de entrega</div>
@@ -1007,11 +1018,12 @@ def carrito_page():
 </div>
 
 <div class="box" id="payBox">
-<div class="bt">💳 ¿Cómo pagas?</div>
+<div class="bt">💳 Forma de pago</div>
+<p class="pay-intro">Elige si prefieres pagar al recibir o ahorrar pagando ahora.</p>
 <div class="pay-note" id="codNote">La entrega contra pago solo está disponible en el Gran Santo Domingo. Para otras zonas usamos transferencia bancaria.</div>
 <div class="pay">
-<label class="on" id="lCod"><input type="radio" name="pay" value="cod" checked onchange="payUI()"> 🤝 Contra entrega (efectivo)</label>
-<label id="lTra"><input type="radio" name="pay" value="transfer" onchange="payUI()"> 🏦 Transferencia bancaria</label>
+<label class="on" id="lCod"><input type="radio" name="pay" value="cod" checked onchange="payUI(true)"><span class="pay-radio"></span><span class="pay-main"><b>Pago contra entrega</b><small>Paga cuando recibas tu pedido.</small></span><span class="pay-side"><em>PAGA AL RECIBIR</em><strong id="payCodPrice">RD$ 0</strong></span></label>
+<label id="lTra"><input type="radio" name="pay" value="prepaid" onchange="payUI(true)"><span class="pay-radio"></span><span class="pay-main"><b>Pago anticipado</b><small>Paga ahora y obtén un mejor precio.</small></span><span class="pay-side"><em class="best" id="prepaidBadge">MEJOR PRECIO</em><strong id="payPrepaidPrice">RD$ 0</strong><span id="prepaidSaving">AHORRA 10%</span></span></label>
 </div>
 <div class="bank" id="bankPanel">
 <div class="steps">
@@ -1029,6 +1041,7 @@ __BANKS__
 <div class="cpn"><input id="cpnCode" placeholder="Código de descuento" autocapitalize="characters" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon()}"><button id="cpnBtn" type="button" onclick="applyCoupon()">Aplicar</button></div>
 <div class="cpn-msg" id="cpnMsg"></div>
 <div class="ln disc" id="discLn" style="display:none">Descuento (<span id="discCode"></span>) <b id="tDisc">- RD$ 0</b></div>
+<div class="ln disc" id="prepaidLn" style="display:none">Descuento pago anticipado <b id="tPrepaid">- RD$ 0</b></div>
 <div class="ship-quote" id="shipQuote"><span>Envío</span><b id="tShip">Selecciona tu sector</b><small id="shipEta">Verás el costo y el tiempo antes de confirmar.</small></div>
 <div class="gt"><span id="totalLabel">Total</span> <span id="tTot">RD$ 0</span></div>
 <button class="btn-conf" id="btnConf" onclick="confirmar()">🛡️ Confirmar pedido</button>
@@ -1038,8 +1051,9 @@ __BANKS__
 
 <div class="ok" id="okScreen">
 <div class="ck">✓</div>
-<h2>¡Pedido confirmado!</h2>
-<p>Tu pedido <b id="okId"></b> quedó registrado correctamente.<br>Te contactaremos para coordinar la entrega.</p>
+<h2 id="okTitle">¡Pedido confirmado!</h2>
+<p id="okCopy">Tu pedido <b id="okId"></b> quedó registrado correctamente.<br>Te contactaremos para coordinar la entrega.</p>
+<div class="bank" id="okBank">__BANKS__<div class="remind">Realiza la transferencia y envíanos el comprobante por WhatsApp para confirmar tu pedido.</div></div>
 <div class="ok-actions"><a class="ok-wa" id="okWa" href="#" target="_blank">Continuar por WhatsApp</a><a class="ok-shop" href="./">Seguir comprando</a></div>
 </div>
 
@@ -1047,6 +1061,8 @@ __BANKS__
 var WA='__WA__';
 var COUPON=null; // {code,kind,value} —— 已应用的优惠券
 var TIER_PRICES=__TIER_PRICES__;
+var PREPAID=__PREPAID__;
+var INACTIVE_FAN_SKUS=__INACTIVE_FAN_SKUS__;
 var DELIVERY_DATE='',DELIVERY_WINDOW='09:00-19:00',DELIVERY_MODE='today';
 var MONTHS_ES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 // 运费状态机：完全由 data/shipping_zones.json 驱动，JS 不硬编码任何 sector/价格
@@ -1119,21 +1135,36 @@ function sectorUI(){
 function tierRule(it){var embedded=Number(it.tier_price)>0?{min_qty:Number(it.tier_min_qty)||2,unit_price:Number(it.tier_price)}:null;return embedded||TIER_PRICES[it.sku]||null}
 function effectiveUnit(it){var rule=tierRule(it);return rule&&it.qty>=rule.min_qty?rule.unit_price:Number(it.price)}
 function itemTotal(it){return effectiveUnit(it)*it.qty}
+function isInactiveFanSku(sku){return INACTIVE_FAN_SKUS.some(function(base){return sku===base||sku.indexOf(base+'-P')===0})}
+function activeCart(){var c=vbCart(),active=c.filter(function(it){return !isInactiveFanSku(it.sku)});if(active.length!==c.length){vbSave(active);var n=document.getElementById('retiredNotice');if(n)n.style.display='block'}return active}
 function subtotal(){return vbCart().reduce(function(a,it){return a+itemTotal(it)},0)}
+function payMethod(){var x=document.querySelector('input[name=pay]:checked');return x?x.value:'cod'}
+function isPrepaidSku(sku){var bases=(PREPAID&&PREPAID.eligible_skus)||[];return bases.some(function(base){return sku===base||sku.indexOf(base+'-P')===0})}
+function prepaidSubtotal(){return vbCart().reduce(function(total,it){return total+(isPrepaidSku(it.sku)?itemTotal(it):0)},0)}
+function prepaidEligible(){return !!(PREPAID&&PREPAID.activo&&prepaidSubtotal()>0)}
 function calcDiscount(sub){
  if(!COUPON)return 0;
  var d=COUPON.kind==='percent'?sub*COUPON.value/100:COUPON.value;
  return Math.min(d,sub);
 }
+function calcPrepaidDiscount(sub,couponDisc,method){
+ if(method!=='prepaid'||!prepaidEligible())return 0;
+ var configured=Math.max(0,Number(PREPAID.valor)||0);
+ var value=PREPAID.tipo==='percent'?prepaidSubtotal()*configured/100:PREPAID.tipo==='fixed'?configured:0;
+ return Math.round(Math.min(value,Math.max(0,sub-couponDisc))*100)/100;
+}
 function paintTotals(){
- var sub=subtotal(),disc=calcDiscount(sub),productTotal=sub-disc;
+ var sub=subtotal(),couponDisc=calcDiscount(sub),method=payMethod();
+ var prepaidDisc=calcPrepaidDiscount(sub,couponDisc,method),disc=couponDisc+prepaidDisc,productTotal=sub-disc;
  var fee=shipFee(),tot=productTotal+(fee||0);
  document.getElementById('tSub').textContent=money(sub);
  var dl=document.getElementById('discLn');
- if(disc>0){dl.style.display='flex';
-  document.getElementById('tDisc').textContent='- '+money(disc);
+ if(couponDisc>0){dl.style.display='flex';
+  document.getElementById('tDisc').textContent='- '+money(couponDisc);
   document.getElementById('discCode').textContent=COUPON.code;
  }else{dl.style.display='none';}
+ var pl=document.getElementById('prepaidLn');
+ if(prepaidDisc>0){pl.style.display='flex';document.getElementById('tPrepaid').textContent='- '+money(prepaidDisc)}else{pl.style.display='none'}
  var tShip=document.getElementById('tShip'),eta=document.getElementById('shipEta');
  tShip.classList.remove('free');
  if(freeMetro()){
@@ -1145,6 +1176,12 @@ function paintTotals(){
  else if(SHIP&&SHIP.other){tShip.textContent='por confirmar';eta.textContent='Te confirmamos el costo del envío por WhatsApp.';}
  else{tShip.textContent='Selecciona tu sector';eta.textContent='Verás el costo y el tiempo antes de confirmar.';}
  document.getElementById('tTot').textContent=money(tot);
+ var cardFee=fee||0,codTotal=sub-couponDisc+cardFee,prepaidValue=calcPrepaidDiscount(sub,couponDisc,'prepaid');
+ document.getElementById('payCodPrice').textContent=money(codTotal)+(fee==null?' + envío':'');
+ document.getElementById('payPrepaidPrice').textContent=money(sub-couponDisc-prepaidValue+cardFee)+(fee==null?' + envío':'');
+ var saving=document.getElementById('prepaidSaving'),badge=document.getElementById('prepaidBadge');
+ if(prepaidValue>0){saving.textContent='AHORRA '+money(prepaidValue);saving.style.display='block';badge.textContent='MEJOR PRECIO'}
+ else{saving.style.display='none';badge.textContent='TRANSFERENCIA'}
  // 包邮时按钮不再因为"没选 sector"而置灰；sector 仍是必填，改由提交时的字段校验提示
  var btn=document.getElementById('btnConf');
  var needSector=isMetro()&&!ZFAIL&&!SHIP&&!freeMetro();
@@ -1174,7 +1211,7 @@ function applyCoupon(){
   msg.className='cpn-msg err';msg.textContent='Error, intenta de nuevo.';});
 }
 function render(){
- var c=vbCart(),box=document.getElementById('items');
+ var c=activeCart(),box=document.getElementById('items');
  if(!c.length){
   document.getElementById('itemsBox').innerHTML='<div class="empty">Tu carrito está vacío.<br><br><a href="./">← Ver productos</a></div>';
   ['formBox','payBox','totBox'].forEach(function(i){document.getElementById(i).style.display='none'});
@@ -1191,11 +1228,13 @@ function render(){
 function qty(i,d){var c=vbCart(),it=c[i];it.qty+=d;if(it.qty<1)it.qty=1;vbSave(c);render();
  try{vbTrack('cart_update',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:d>0?'cart_increase':'cart_decrease'})}catch(e){}}
 function rm(i){var c=vbCart(),it=c[i];c.splice(i,1);vbSave(c);render();try{vbTrack('cart_remove',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:'cart_remove'})}catch(e){}}
-function payUI(){
- var t=document.querySelector('input[name=pay]:checked').value;
+function payUI(track){
+ var t=payMethod();
  document.getElementById('lCod').classList.toggle('on',t==='cod');
- document.getElementById('lTra').classList.toggle('on',t==='transfer');
- document.getElementById('bankPanel').classList.toggle('show',t==='transfer');
+ document.getElementById('lTra').classList.toggle('on',t==='prepaid');
+ document.getElementById('bankPanel').classList.toggle('show',t==='prepaid');
+ paintTotals();
+ if(track){try{vbCart().forEach(function(it){vbTrack('checkout_payment_method_selected',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),source_section:t})})}catch(e){}}
 }
 var PROVS=["","Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
 function fillSel(id,arr){var s=document.getElementById(id);
@@ -1207,13 +1246,13 @@ function provUI(){
  document.getElementById('locationExtra').classList.toggle('show',metro);
  document.getElementById('scheduleBox').classList.toggle('show',metro);
  // 货到付款仅限大圣多明各；外省强制转账（纯前端判断）
- var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=transfer]');
+ var cod=document.querySelector('input[name=pay][value=cod]'),tra=document.querySelector('input[name=pay][value=prepaid]');
  // 全国开放货到付款（2026-08-20）：外省不再强制银行转账
  var codOK=freeMetro()||metro;
  cod.disabled=!codOK;document.getElementById('lCod').style.display=codOK?'flex':'none';
  document.getElementById('codNote').classList.toggle('show',!!prov&&!codOK);
  if(prov&&!codOK)tra.checked=true;
- payUI();sectorUI();
+ payUI(false);sectorUI();
 }
 fillSel('fProv',PROVS);initDeliveryUI();loadZones();paintTotals();
 function fieldState(id,bad){var x=document.getElementById(id);if(x)x.classList.toggle('invalid',!!bad)}
@@ -1242,21 +1281,12 @@ async function confirmar(){
  var oid='VB-'+Math.random().toString(36).slice(2,7).toUpperCase();
  var sub=0,lines=c.map(function(it){var lineTotal=itemTotal(it);sub+=lineTotal;
    return it.qty+'x '+it.title+' ('+it.sku+') — '+money(lineTotal)});
- var disc=calcDiscount(sub),productTotal=sub-disc,tot=productTotal+(fee||0);
+ var couponDisc=calcDiscount(sub),prepaidDisc=calcPrepaidDiscount(sub,couponDisc,pay);
+ var disc=couponDisc+prepaidDisc,productTotal=sub-disc,tot=productTotal+(fee||0);
  var shipEtaTxt=(SHIP&&SHIP.eta)||(freeMetro()&&FREE?FREE.eta_default:'')||'';
  var shippingText=freeMetro()?('GRATIS'+(shipEtaTxt?' ('+shipEtaTxt+')':''))
   :(fee!=null?money(fee)+(shipEtaTxt?' ('+shipEtaTxt+')':''):'por confirmar');
- var msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
-  +(disc>0?'\\n——\\nSubtotal: '+money(sub)+'\\n🏷️ Cupón '+COUPON.code+': - '+money(disc):'')
-  +'\\nSector: '+zona
-  +'\\n🚚 Envío: '+shippingText
-  +'\\n*Total: '+money(tot)+(fee==null?' + envío':'')+'*'
-  +'\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
-  +(metro?'\\n🗺️ Ubicación: '+(mapUrl||(locationLater?'La enviará por Waze o WhatsApp después':'No proporcionada')):'')
-  +(metro?'\\n🕒 Preferencia: '+DELIVERY_DATE+' · '+DELIVERY_WINDOW:'')
-  +(nota?'\\n📝 '+nota:'')
-  +'\\n💳 Pago: '+(pay==='cod'?'Contra entrega (efectivo)':'Transferencia bancaria — enviaré el comprobante')
-  +(pay==='transfer'?'\\n\\nCuentas:\\n__BANKLINES__':'');
+ var msg='';
  var btn=document.getElementById('btnConf');
  btn.disabled=true;btn.textContent='Guardando pedido...';
  try{
@@ -1273,28 +1303,53 @@ async function confirmar(){
      sku:it.sku,title:it.title,image:it.img,unit_price:effectiveUnit(it),quantity:it.qty}})})});
   var orderData=await orderRes.json();
   if(!orderRes.ok||!orderData.ok)throw new Error(orderData.error||'No se pudo guardar el pedido');
+  // Worker response is authoritative for every customer-facing and analytics amount.
+  pay=orderData.payment_method||pay;sub=Number(orderData.subtotal)||0;
+  couponDisc=Number(orderData.coupon_discount)||0;prepaidDisc=Number(orderData.prepaid_discount)||0;
+  disc=Number(orderData.discount)||0;tot=Number(orderData.total)||0;
+  msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
+   +((couponDisc||prepaidDisc)?'\\n——\\nSubtotal: '+money(sub):'')
+   +(couponDisc?'\\n🏷️ Cupón '+COUPON.code+': - '+money(couponDisc):'')
+   +(prepaidDisc?'\\n💳 Descuento pago anticipado: - '+money(prepaidDisc):'')
+   +'\\nSector: '+zona+'\\n🚚 Envío: '+shippingText
+   +'\\n*Total: '+money(tot)+(fee==null?' + envío':'')+'*'
+   +'\\n——\\n👤 '+nom+'\\n📞 '+tel+'\\n📍 '+loc+'\\n🏠 '+dir
+   +(metro?'\\n🗺️ Ubicación: '+(mapUrl||(locationLater?'La enviará por Waze o WhatsApp después':'No proporcionada')):'')
+   +(metro?'\\n🕒 Preferencia: '+DELIVERY_DATE+' · '+DELIVERY_WINDOW:'')
+   +(nota?'\\n📝 '+nota:'')
+   +'\\n💳 Forma de pago: '+(pay==='cod'?'Contra entrega':'Pago anticipado')
+   +(pay==='prepaid'?'\\n\\nCuentas:\\n__BANKLINES__':'');
  }catch(e){btn.disabled=false;paintTotals();try{c.forEach(function(it){vbTrack('checkout_error',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:tot,source_section:'order_api'})})}catch(_e){}
   alert('No pudimos guardar tu pedido. Revisa tu conexión e intenta de nuevo.');return;}
  try{fbq('track','Purchase',{content_ids:c.map(function(x){return x.sku}),content_type:'product',
   num_items:c.reduce(function(a,b){return a+b.qty},0),order_id:oid,
-  value:Math.round(tot/__META_DOP_PER_USD__*100)/100,currency:'USD',local_value_dop:tot})}catch(e){}
- try{c.forEach(function(it){vbTrack('checkout',it.sku,{order_id:oid,qty:it.qty,price:effectiveUnit(it),cart_total:tot,selected_color:it.color||'',source_section:'order_confirmed',coupon:COUPON?COUPON.code:''})})}catch(e){}
+  value:Math.round(tot/__META_DOP_PER_USD__*100)/100,currency:'USD',local_value_dop:tot,
+  payment_method:pay,discount:disc})}catch(e){}
+ try{c.forEach(function(it){vbTrack('checkout',it.sku,{order_id:oid,qty:it.qty,price:effectiveUnit(it),cart_total:tot,selected_color:it.color||'',source_section:'order_confirmed_'+pay,coupon:COUPON?COUPON.code:'',discount:disc})})}catch(e){}
  if(COUPON){try{fetch('__API__/api/coupon/redeem',{method:'POST',credentials:'include',keepalive:true,
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify({code:COUPON.code,order_id:oid})}).catch(function(){})}catch(e){}}
  localStorage.removeItem('vb_cart');localStorage.removeItem('vb_campaign_coupon');vbBadge();
  document.getElementById('okId').textContent=oid;
+ document.getElementById('okTitle').textContent=pay==='prepaid'?'Completa tu pago':'¡Pedido confirmado!';
+ document.getElementById('okCopy').innerHTML=pay==='prepaid'
+  ?'Pedido <b>'+oid+'</b><br>Total a pagar: <b>'+money(tot)+'</b><br>Realiza la transferencia y envíanos el comprobante por WhatsApp para confirmar tu pedido.'
+  :'Tu pedido <b>'+oid+'</b> quedó registrado correctamente.<br>Pagarás cuando recibas tu pedido.';
+ document.getElementById('okBank').classList.toggle('show',pay==='prepaid');
+ document.getElementById('okWa').textContent=pay==='prepaid'?'Enviar comprobante por WhatsApp':'Continuar por WhatsApp';
  document.getElementById('okWa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
  document.getElementById('main').style.display='none';
  document.getElementById('okScreen').style.display='block';
  window.scrollTo(0,0);
 }
 try{localStorage.removeItem('vb_campaign_coupon')}catch(e){}
-render();payUI();
+render();payUI(false);
 </script>"""
     body = (body.replace("__BANKS__", banks_html).replace("__WA__", WHATSAPP)
                 .replace("__BANKLINES__", bank_lines).replace("__API__", API_BASE)
                 .replace("__TIER_PRICES__", tier_prices_json)
+                .replace("__PREPAID__", prepaid_offer_json)
+                .replace("__INACTIVE_FAN_SKUS__", inactive_fan_skus_json)
                 .replace("__META_DOP_PER_USD__", f"{META_DOP_PER_USD:.4f}"))
     return page(f"Tu compra — {SITE_NAME}", body,
                 pixel_extra="fbq('track','InitiateCheckout');",

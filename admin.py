@@ -1365,6 +1365,10 @@ def orders_page():
                          else f'RD$ {ship_min:,.0f}')
         total_text = (f'预计总计 RD$ {total_min:,.0f}–{total_max:,.0f}' if total_max > total_min
                       else f'总计 RD$ {total_min:,.0f}')
+        payment_names = {"cod": "货到付款", "prepaid": "提前付款", "transfer": "银行转账（旧订单）"}
+        payment_name = payment_names.get(str(o.get("payment_method") or "cod"), "货到付款")
+        coupon_discount = float(o.get("coupon_discount", 0) or 0)
+        prepaid_discount = float(o.get("prepaid_discount", 0) or 0)
         # 来源标记 + Meta 回传状态（只有 WhatsApp 单需要回传）
         src_o = str(o.get("source") or "web")
         src_badge = ('<span class="src-tag src-wa">WhatsApp</span>' if src_o == "whatsapp"
@@ -1387,12 +1391,13 @@ def orders_page():
                   f'<div><span>{esc(location)}</span><small>{esc(o.get("address",""))}</small>{map_html}</div>'
                   f'<div><span>IP {esc(o.get("ip_full") or o.get("ip_masked",""))}</span><small>{esc(geo)}</small></div></div>'
                   f'<div class="order-items">{items}</div><footer>'
-                  f'<span>{"转账" if o.get("payment_method") == "transfer" else "货到付款"}'
+                  f'<span>{payment_name}'
                   f' · 预计运费 {shipping_text}'
                   f'{(" · "+esc(o.get("delivery_estimate",""))) if o.get("delivery_estimate") else ""}'
                   f'{(" · 优惠码 "+esc(o.get("coupon_code"))) if o.get("coupon_code") else ""}</span>'
                   f'<div>小计 RD$ {float(o.get("subtotal",0) or 0):,.0f}'
-                  f'{(" · 优惠 -RD$ "+format(float(o.get("discount",0) or 0), ",.0f")) if o.get("discount") else ""}'
+                  f'{(" · 优惠券 -RD$ "+format(coupon_discount, ",.0f")) if coupon_discount else ""}'
+                  f'{(" · 提前付款优惠 -RD$ "+format(prepaid_discount, ",.0f")) if prepaid_discount else ""}'
                   f' · 预计运费 {shipping_text}'
                   f' <b>{total_text}</b></div></footer>'
                   f'{delivery_pref_html}'
