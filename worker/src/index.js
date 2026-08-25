@@ -581,63 +581,69 @@ async function handleAdmin(req, env, url) {
     const drDate = new Date(now() - drOffset);
     const todayStart = Date.UTC(drDate.getUTCFullYear(), drDate.getUTCMonth(), drDate.getUTCDate()) + drOffset;
     const since = period === "today" ? todayStart : now() - days * 864e5;
+    const skuFamily = url.searchParams.get("family") === "1";
+    const skuOp = skuFamily ? "GLOB" : "=";
+    const skuValue = skuFamily ? `${sku}*` : sku;
+    const orderUnitsSql = `CASE WHEN oi.sku GLOB '*-P[0-9]*'
+      THEN MAX(1,CAST(substr(oi.sku,instr(oi.sku,'-P')+2) AS INTEGER))*oi.quantity
+      ELSE oi.quantity END`;
 
     const summary = await env.DB.prepare(
       `WITH target_sessions AS (
          SELECT DISTINCT session_id FROM events
-         WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>''
+         WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND session_id<>''
        ), target_events AS (
          SELECT e.* FROM events e JOIN target_sessions t ON t.session_id=e.session_id
          WHERE e.ts>=? AND e.is_bot=0
        )
        SELECT
          (SELECT COUNT(*) FROM target_sessions) visitors,
-         COUNT(DISTINCT CASE WHEN type='view' AND sku=? THEN session_id END) product_viewers,
-         COUNT(DISTINCT CASE WHEN type='addcart' AND sku=? THEN session_id END) addcart_visitors,
-         COALESCE(SUM(CASE WHEN type='addcart' AND sku=? THEN qty ELSE 0 END),0) addcart_units,
+         COUNT(DISTINCT CASE WHEN type='view' AND sku ${skuOp} ? THEN session_id END) product_viewers,
+         COUNT(DISTINCT CASE WHEN type='addcart' AND sku ${skuOp} ? THEN session_id END) addcart_visitors,
+         COALESCE(SUM(CASE WHEN type='addcart' AND sku ${skuOp} ? THEN qty ELSE 0 END),0) addcart_units,
          COUNT(DISTINCT CASE WHEN type='whatsapp' THEN session_id END) whatsapp_sessions,
-         COUNT(DISTINCT CASE WHEN type='checkout_start' AND sku=? THEN session_id END) checkout_sessions,
-         COUNT(DISTINCT CASE WHEN type='order' AND sku=? THEN session_id END) tracked_order_sessions,
-         COUNT(DISTINCT CASE WHEN type='color_select' AND sku=? THEN session_id END) color_sessions,
-         COUNT(DISTINCT CASE WHEN type='tier_select' AND sku=? THEN session_id END) offer_sessions,
-         COUNT(DISTINCT CASE WHEN type='calculator_success' AND sku=? THEN session_id END) calculator_sessions,
-         COUNT(DISTINCT CASE WHEN type='review_open' AND sku=? THEN session_id END) review_sessions,
+         COUNT(DISTINCT CASE WHEN type='checkout_start' AND sku ${skuOp} ? THEN session_id END) checkout_sessions,
+         COUNT(DISTINCT CASE WHEN type='order' AND sku ${skuOp} ? THEN session_id END) tracked_order_sessions,
+         COUNT(DISTINCT CASE WHEN type='color_select' AND sku ${skuOp} ? THEN session_id END) color_sessions,
+         COUNT(DISTINCT CASE WHEN type='tier_select' AND sku ${skuOp} ? THEN session_id END) offer_sessions,
+         COUNT(DISTINCT CASE WHEN type='calculator_success' AND sku ${skuOp} ? THEN session_id END) calculator_sessions,
+         COUNT(DISTINCT CASE WHEN type='review_open' AND sku ${skuOp} ? THEN session_id END) review_sessions,
          COUNT(DISTINCT CASE WHEN type='engagement' OR scroll_depth>=25 THEN session_id END) engaged_sessions,
-         COUNT(DISTINCT CASE WHEN sku=? AND (ip_full LIKE '2a03:2880:%' OR UPPER(as_org) LIKE '%META%' OR UPPER(as_org) LIKE '%FACEBOOK%') THEN session_id END) meta_network_visitors,
-         (SELECT ROUND(AVG(s.engaged_ms)/1000.0,1) FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id) avg_seconds,
+         COUNT(DISTINCT CASE WHEN sku ${skuOp} ? AND (ip_full LIKE '2a03:2880:%' OR UPPER(as_org) LIKE '%META%' OR UPPER(as_org) LIKE '%FACEBOOK%') THEN session_id END) meta_network_visitors,
+         (SELECT ROUND(AVG(MIN(s.engaged_ms,1800000))/1000.0,1) FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id) avg_seconds,
          (SELECT ROUND(AVG(s.max_scroll),1) FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id) avg_scroll
        FROM target_events`
-    ).bind(sku, since, since, sku, sku, sku, sku, sku, sku, sku, sku, sku, sku).first();
+    ).bind(skuValue, since, since, skuValue, skuValue, skuValue, skuValue, skuValue, skuValue, skuValue, skuValue, skuValue, skuValue).first();
 
     const orderSummary = await env.DB.prepare(
-      `SELECT COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(oi.quantity),0) units,
+      `SELECT COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(${orderUnitsSql}),0) units,
        COALESCE(SUM(oi.line_total),0) revenue
        FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
-       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled'`
-    ).bind(sku, since).first();
+       WHERE oi.sku ${skuOp} ? AND o.created_at>=? AND o.status<>'cancelled'`
+    ).bind(skuValue, since).first();
 
     const orderStatus = await env.DB.prepare(
-      `SELECT o.status,COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(oi.quantity),0) units,
+      `SELECT o.status,COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(${orderUnitsSql}),0) units,
        COALESCE(SUM(oi.line_total),0) revenue
        FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
-       WHERE oi.sku=? AND o.created_at>=? GROUP BY o.status ORDER BY orders DESC`
-    ).bind(sku, since).all();
+       WHERE oi.sku ${skuOp} ? AND o.created_at>=? GROUP BY o.status ORDER BY orders DESC`
+    ).bind(skuValue, since).all();
 
     const channels = await env.DB.prepare(
       `WITH target_sessions AS (
          SELECT DISTINCT session_id FROM events
-         WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>''
+         WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND session_id<>''
        )
        SELECT COALESCE(NULLIF(s.utm_campaign,''),NULLIF(s.link_code,''),
               NULLIF(s.utm_source,''),'直接访问') channel,
          COUNT(*) sessions,SUM(s.converted_cart) carts,
          SUM(s.converted_whatsapp) whatsapps,SUM(s.converted_order) orders,
-         ROUND(AVG(s.engaged_ms)/1000.0,1) avg_seconds,
+         ROUND(AVG(MIN(s.engaged_ms,1800000))/1000.0,1) avg_seconds,
          ROUND(AVG(s.max_scroll),1) avg_scroll
        FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id
        WHERE s.started_at>=? AND s.is_bot=0
        GROUP BY channel ORDER BY sessions DESC LIMIT 30`
-    ).bind(sku, since, since).all();
+    ).bind(skuValue, since, since).all();
 
     const costs = await env.DB.prepare(
       `SELECT campaign,SUM(spend) spend,SUM(impressions) impressions,SUM(ad_clicks) ad_clicks
@@ -649,8 +655,8 @@ async function handleAdmin(req, env, url) {
        WHEN o.utm_source<>'' THEN o.utm_source WHEN o.session_id<>'' THEN '直接访问' ELSE '未归因订单' END channel,
        COUNT(DISTINCT o.order_id) actual_orders,COALESCE(SUM(oi.line_total),0) revenue
        FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
-       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled' GROUP BY channel`
-    ).bind(sku, since).all();
+       WHERE oi.sku ${skuOp} ? AND o.created_at>=? AND o.status<>'cancelled' GROUP BY channel`
+    ).bind(skuValue, since).all();
     const revenueMap = Object.fromEntries((channelRevenue.results || []).map((x) => [x.channel, x]));
     const unattributedOrders = revenueMap["未归因订单"] || { actual_orders:0, revenue:0 };
     for (const row of channels.results || []) {
@@ -671,75 +677,75 @@ async function handleAdmin(req, env, url) {
        COUNT(DISTINCT CASE WHEN type='view' THEN session_id END) visitors,
        COUNT(DISTINCT CASE WHEN type='addcart' THEN session_id END) addcarts,
        COALESCE(SUM(CASE WHEN type='addcart' THEN qty ELSE 0 END),0) units
-       FROM events WHERE sku=? AND ts>=? AND is_bot=0
+       FROM events WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0
        GROUP BY day ORDER BY day ASC`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
 
     const colors = await env.DB.prepare(
       `SELECT selected_color color,
        COUNT(DISTINCT CASE WHEN type='color_select' THEN session_id END) selectors,
        COUNT(DISTINCT CASE WHEN type='addcart' THEN session_id END) carts,
        COALESCE(SUM(CASE WHEN type='addcart' THEN qty ELSE 0 END),0) units
-       FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND selected_color<>''
+       FROM events WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND selected_color<>''
        GROUP BY selected_color ORDER BY carts DESC,selectors DESC`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
     const addSources = await env.DB.prepare(
       `SELECT COALESCE(NULLIF(source_section,''),'未标记') source,
        COUNT(DISTINCT session_id) sessions,COUNT(*) actions,COALESCE(SUM(qty),0) units
-       FROM events WHERE sku=? AND type='addcart' AND ts>=? AND is_bot=0
+       FROM events WHERE sku ${skuOp} ? AND type='addcart' AND ts>=? AND is_bot=0
        GROUP BY source ORDER BY sessions DESC`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
     const offers = await env.DB.prepare(
       `SELECT offer_qty quantity,COUNT(DISTINCT session_id) sessions
-       FROM events WHERE sku=? AND type='tier_select' AND ts>=? AND is_bot=0 AND offer_qty>0
+       FROM events WHERE sku ${skuOp} ? AND type='tier_select' AND ts>=? AND is_bot=0 AND offer_qty>0
        GROUP BY offer_qty ORDER BY quantity`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
     const orderQuantities = await env.DB.prepare(
-      `SELECT oi.quantity,COUNT(DISTINCT o.order_id) orders,
-       COALESCE(SUM(oi.quantity),0) units,COALESCE(SUM(oi.line_total),0) revenue
+      `SELECT ${orderUnitsSql} quantity,COUNT(DISTINCT o.order_id) orders,
+       COALESCE(SUM(${orderUnitsSql}),0) units,COALESCE(SUM(oi.line_total),0) revenue
        FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
-       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled'
-       GROUP BY oi.quantity ORDER BY oi.quantity`
-    ).bind(sku, since).all();
+       WHERE oi.sku ${skuOp} ? AND o.created_at>=? AND o.status<>'cancelled'
+       GROUP BY ${orderUnitsSql} ORDER BY ${orderUnitsSql}`
+    ).bind(skuValue, since).all();
     const devices = await env.DB.prepare(
-      `WITH target_sessions AS (SELECT DISTINCT session_id FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'')
+      `WITH target_sessions AS (SELECT DISTINCT session_id FROM events WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND session_id<>'')
        SELECT COALESCE(NULLIF(s.device_type,''),'未知') device,COUNT(*) sessions,SUM(s.converted_cart) carts,
-       SUM(s.converted_whatsapp) whatsapps,SUM(s.converted_order) orders,ROUND(AVG(s.engaged_ms)/1000.0,1) avg_seconds
+       SUM(s.converted_whatsapp) whatsapps,SUM(s.converted_order) orders,ROUND(AVG(MIN(s.engaged_ms,1800000))/1000.0,1) avg_seconds
        FROM sessions s JOIN target_sessions t ON t.session_id=s.session_id GROUP BY device ORDER BY sessions DESC`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
     const regions = await env.DB.prepare(
       `SELECT COALESCE(NULLIF(region,''),NULLIF(city,''),'未知') region,COUNT(DISTINCT session_id) sessions,
        COUNT(DISTINCT CASE WHEN type='addcart' THEN session_id END) carts,
        COUNT(DISTINCT CASE WHEN type='whatsapp' THEN session_id END) whatsapps
-       FROM events WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'' GROUP BY region ORDER BY sessions DESC LIMIT 15`
-    ).bind(sku, since).all();
+       FROM events WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND session_id<>'' GROUP BY region ORDER BY sessions DESC LIMIT 15`
+    ).bind(skuValue, since).all();
     const quality = await env.DB.prepare(
       `WITH target AS (SELECT session_id,COUNT(DISTINCT vid) vids FROM events
-       WHERE sku=? AND ts>=? AND is_bot=0 AND session_id<>'' GROUP BY session_id)
+       WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND session_id<>'' GROUP BY session_id)
        SELECT COUNT(*) sessions,SUM(vids>1) multi_vid_sessions,COALESCE(SUM(vids-1),0) extra_vids,
-       (SELECT COUNT(*) FROM events WHERE sku=? AND type='addcart' AND ts>=? AND is_bot=0 AND cart_total<=0) addcarts_without_total
+       (SELECT COUNT(*) FROM events WHERE sku ${skuOp} ? AND type='addcart' AND ts>=? AND is_bot=0 AND cart_total<=0) addcarts_without_total
        FROM target`
-    ).bind(sku, since, sku, since).first();
+    ).bind(skuValue, since, skuValue, since).first();
 
     const dailyOrders = await env.DB.prepare(
       `SELECT date((o.created_at/1000)-14400,'unixepoch') day,
-       COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(oi.quantity),0) units,
+       COUNT(DISTINCT o.order_id) orders,COALESCE(SUM(${orderUnitsSql}),0) units,
        COALESCE(SUM(oi.line_total),0) revenue
        FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
-       WHERE oi.sku=? AND o.created_at>=? AND o.status<>'cancelled'
+       WHERE oi.sku ${skuOp} ? AND o.created_at>=? AND o.status<>'cancelled'
        GROUP BY day ORDER BY day ASC`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
 
     const recent = await env.DB.prepare(
       `SELECT ts,vid,type,qty,price,cart_total,ip_full,ip_masked,city,region,as_org,
        device_type,utm_source,utm_campaign,code,session_id,source_section,selected_color,offer_qty,
        gallery_index,review_index,calculated_qty,wall_width,wall_height,order_id
-       FROM events WHERE sku=? AND ts>=? AND is_bot=0
+       FROM events WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0
        AND type NOT IN ('scroll','engagement','section_view')
        ORDER BY ts DESC LIMIT 100`
-    ).bind(sku, since).all();
+    ).bind(skuValue, since).all();
 
-    return json({ ok:true, sku, days, summary:{ ...(summary || {}), ...(orderSummary || {}) },
+    return json({ ok:true, sku, sku_family:skuFamily, days, summary:{ ...(summary || {}), ...(orderSummary || {}) },
       channels:channels.results || [], daily:daily.results || [],
       daily_orders:dailyOrders.results || [], order_status:orderStatus.results || [],
       colors:colors.results || [], add_sources:addSources.results || [], offers:offers.results || [],

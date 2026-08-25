@@ -3339,7 +3339,8 @@ function vtPack(b){{document.querySelectorAll('.vt-pill').forEach(function(p){{p
  document.getElementById('vtPrice2').textContent=vtFmt(vtP);
  var lbl=document.getElementById('vtPackLbl');
  if(lbl)lbl.textContent=b.textContent.split('RD$')[0].trim();
- vtSync();try{{vbTrack('tier_select',VT.sku,{{units:vtU,price:vtP}})}}catch(e){{}}}}
+ vtSync();try{{vbTrack('tier_select',VT.sku,{{qty:vtU,units:vtU,offer_qty:vtU,price:vtP,
+  cart_total:vtP,source_section:'package_selector'}})}}catch(e){{}}}}
 function vtQty(d){{var i=document.getElementById('vtQty');var v=parseInt(i.value||1)+d;
  i.value=v<1?1:(v>99?99:v);vtSync();
  try{{vbTrack('quantity_change',VT.sku,{{qty:parseInt(i.value)}})}}catch(e){{}}}}
@@ -3368,7 +3369,8 @@ function vtAdd(buy){{
  }}
  vbSave(c);
  try{{fbq('track','AddToCart',{{content_ids:[sku],content_type:'product',value:vtP*q,currency:'DOP'}})}}catch(e){{}}
- try{{vbTrack('addcart',sku,{{qty:q,price:vtP,units:vtU*q,product_title:title,product_img:VT.img,
+ try{{vbTrack('addcart',sku,{{qty:vtU*q,price:vtP,units:vtU*q,offer_qty:vtU,
+  source_section:buy?'buy_now':'add_to_cart',product_title:title,product_img:VT.img,
   cart_total:c.reduce(function(a,x){{return a+x.price*x.qty}},0)}})}}catch(e){{}}
  if(buy){{try{{fbq('track','InitiateCheckout',{{value:vtP*q,currency:'DOP'}})}}catch(e){{}}
   location.href='../carrito';return}}

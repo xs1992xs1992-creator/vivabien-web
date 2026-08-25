@@ -1066,8 +1066,9 @@ def stats_page():
 
 def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据", product_label="墙纸", product_name="Panel decorativo autoadhesivo", period=""):
     days = days if days in (7, 30, 90) else 30
+    is_fan = sku == "VB-FAN-E27"
     today_query = "&period=today" if period == "today" else ""
-    data, err = worker_call(f"product-analytics?sku={quote(sku)}&days={days}{today_query}")
+    data, err = worker_call(f"product-analytics?sku={quote(sku)}&days={days}&family=1{today_query}")
     d = data or {}
     s = d.get("summary") or {}
     visitors = int(s.get("visitors", 0) or 0)
@@ -1135,6 +1136,8 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
                   "tier_select":"选优惠", "gallery_view":"查看主图", "review_open":"查看评论图",
                   "calculator_success":"使用计算器", "cart_update":"修改数量", "cart_remove":"移除商品",
                   "order":"正式下单", "scroll":"滚动", "engagement":"停留"}
+    if is_fan:
+        type_names["tier_select"] = "选套餐"
     for x in d.get("recent", [])[:50]:
         ts = time.strftime("%m-%d %H:%M", time.localtime((x.get("ts", 0) or 0) / 1000))
         geo = " · ".join(v for v in (x.get("city", ""), x.get("region", "")) if v)
@@ -1155,29 +1158,41 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
             f'<td>{esc(detail)}</td></tr>'
         )
 
-    funnel_steps = [
-        ("访问墙纸页", visitors),
-        ("有效互动", int(s.get("engaged_sessions", 0) or 0)),
-        ("选择颜色", int(s.get("color_sessions", 0) or 0)),
-        ("查看多件优惠", int(s.get("offer_sessions", 0) or 0)),
-        ("使用计算器", int(s.get("calculator_sessions", 0) or 0)),
-        ("加入购物车", addcarts),
-        ("到达结账页", int(s.get("checkout_sessions", 0) or 0)),
-        ("正式下单", orders),
-    ]
+    if is_fan:
+        funnel_steps = [
+            (f"访问{product_label}页", visitors),
+            ("有效互动", int(s.get("engaged_sessions", 0) or 0)),
+            ("选择套餐", int(s.get("offer_sessions", 0) or 0)),
+            ("加入购物车", addcarts),
+            ("到达结账页", int(s.get("checkout_sessions", 0) or 0)),
+            ("点击 WhatsApp", whatsapps),
+            ("正式下单", orders),
+        ]
+    else:
+        funnel_steps = [
+            (f"访问{product_label}页", visitors),
+            ("有效互动", int(s.get("engaged_sessions", 0) or 0)),
+            ("选择颜色", int(s.get("color_sessions", 0) or 0)),
+            ("查看多件优惠", int(s.get("offer_sessions", 0) or 0)),
+            ("使用计算器", int(s.get("calculator_sessions", 0) or 0)),
+            ("加入购物车", addcarts),
+            ("到达结账页", int(s.get("checkout_sessions", 0) or 0)),
+            ("正式下单", orders),
+        ]
     funnel_html = ""
     for i, (label, value) in enumerate(funnel_steps):
-        prev = funnel_steps[i - 1][1] if i else visitors
         funnel_html += (f'<div class="wf-step"><span>{esc(label)}</span><b>{value}</b>'
-                        f'<small>{("起点" if i == 0 else pct(value, prev))}</small></div>')
+                        f'<small>{("起点" if i == 0 else "占访客 " + pct(value, visitors))}</small></div>')
 
     status_names = {"pending":"待确认", "confirmed":"已确认", "shipping":"配送中",
                     "delivered_paid":"已送达收款", "completed":"已完成", "cancelled":"已取消"}
+    unit_label = "件" if is_fan else "卷"
     status_html = "".join(
         f'<div class="status-chip"><span>{esc(status_names.get(x.get("status"), x.get("status", "")))}</span>'
-        f'<b>{int(x.get("orders",0) or 0)}</b><small>{int(x.get("units",0) or 0)} 卷 · RD$ {float(x.get("revenue",0) or 0):,.0f}</small></div>'
+        f'<b>{int(x.get("orders",0) or 0)}</b><small>{int(x.get("units",0) or 0)} {unit_label} · RD$ {float(x.get("revenue",0) or 0):,.0f}</small></div>'
         for x in d.get("order_status", [])
     ) or '<div class="empty">暂无订单状态数据</div>'
+    empty = f'<tr><td colspan="9" class="empty">还没有{esc(product_label)}广告数据</td></tr>'
 
     color_rows = "".join(
         f'<tr><td><b>{esc(x.get("color") or "未标记")}</b></td><td class="n">{int(x.get("selectors",0) or 0)}</td>'
@@ -1190,19 +1205,32 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
         for x in d.get("add_sources", [])
     )
     offer_rows = "".join(
-        f'<tr><td><b>x{int(x.get("quantity", 0) or 0)} 件</b></td>'
+        f'<tr><td><b>x{int(x.get("quantity", 0) or 0)} {unit_label}</b></td>'
         f'<td class="n">{int(x.get("sessions", 0) or 0)}</td>'
         f'<td class="n">{pct(int(x.get("sessions", 0) or 0), visitors)}</td></tr>'
         for x in d.get("offers", [])
     )
     purchase_rows = "".join(
-        f'<tr><td><b>x{int(x.get("quantity", 0) or 0)} 件</b></td>'
+        f'<tr><td><b>x{int(x.get("quantity", 0) or 0)} {unit_label}</b></td>'
         f'<td class="n">{int(x.get("orders", 0) or 0)}</td>'
         f'<td class="n">{int(x.get("units", 0) or 0)}</td>'
         f'<td class="n">RD$ {float(x.get("revenue", 0) or 0):,.0f}</td></tr>'
         for x in d.get("order_quantities", [])
     )
-    offer_empty = '<tr><td colspan="3" class="empty">暂无套餐选择埋点，下面显示实际成交档位</td></tr>'
+    offer_empty = f'<tr><td colspan="3" class="empty">暂无{("套餐" if is_fan else "多件优惠")}选择埋点，下面显示实际成交档位</td></tr>'
+    if is_fan:
+        attribute_tables = (
+            f'<h2 class="w-title">加购入口</h2><div class="table-scroll"><table><thead><tr>'
+            f'<th>入口</th><th>会话</th><th>动作</th><th>{unit_label}数</th></tr></thead>'
+            f'<tbody>{source_rows or empty}</tbody></table></div>'
+        )
+    else:
+        attribute_tables = (
+            f'<div class="split-tables"><div><h2 class="w-title">颜色选择与加购</h2><div class="table-scroll"><table><thead><tr>'
+            f'<th>颜色</th><th>选择会话</th><th>加购会话</th><th>加购数量</th></tr></thead><tbody>{color_rows or empty}</tbody></table></div></div>'
+            f'<div><h2 class="w-title">加购入口</h2><div class="table-scroll"><table><thead><tr>'
+            f'<th>入口</th><th>会话</th><th>动作</th><th>{unit_label}数</th></tr></thead><tbody>{source_rows or empty}</tbody></table></div></div></div>'
+        )
     device_rows = "".join(
         f'<tr><td><b>{esc(x.get("device") or "未知")}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
         f'<td class="n">{int(x.get("carts",0) or 0)} ({pct(int(x.get("carts",0) or 0),int(x.get("sessions",0) or 0))})</td>'
@@ -1220,7 +1248,6 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
                     f'有 {int(q.get("addcarts_without_total",0) or 0)} 条旧加购缺少购物车金额；'
                     f'{int(unattributed.get("actual_orders",0) or 0)} 个旧订单因当时未保存 UTM 被列为未归因，不会错误计入直接访问。新版本上线后会逐步消除这些误差。')
 
-    empty = '<tr><td colspan="9" class="empty">还没有墙纸广告数据</td></tr>'
     stats_path = "fan-stats" if sku == "VB-FAN-E27" else "wallpaper-stats"
     tabs = (
         f'<a class="{"on" if period == "today" else ""}" href="/{stats_path}?period=today">今天</a>'
@@ -1238,7 +1265,7 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
         '.wf{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.wf-step,.status-chip{padding:12px;border:1px solid #E5EAF2;border-radius:8px;background:#fff}.wf-step span,.wf-step small,.status-chip span,.status-chip small{display:block;color:#6D7A8D;font-size:10px}.wf-step b,.status-chip b{display:block;margin:4px 0;font-size:21px}.statuses{display:flex;gap:8px;flex-wrap:wrap}.status-chip{min-width:150px}.split-tables{display:grid;grid-template-columns:1fr 1fr;gap:14px}.data-alert{margin:12px 0;padding:11px 13px;border:1px solid #F2D38A;border-radius:8px;background:#FFF9E8;color:#76520B;font-size:12px;line-height:1.5}.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.cost-grid input{width:100%;padding:9px;border:1px solid #DCE4EF;border-radius:7px}.cost-grid label{display:block;margin-bottom:4px;color:#68758a;font-size:10px}'
         '@media(max-width:900px){.w-kpis{grid-template-columns:repeat(2,1fr)}.w-head{align-items:flex-start;flex-direction:column}.wf{grid-template-columns:repeat(2,1fr)}.split-tables{grid-template-columns:1fr}.cost-grid{grid-template-columns:1fr}}'
         f'</style><div class="w-head"><div><h1>{esc(title)}</h1>'
-        f'<div class="sub">固定商品 {sku} · {esc(product_name)}</div></div>'
+        f'<div class="sub">商品系列 {sku} · {esc(product_name)}</div></div>'
         f'<div class="periods">{tabs}</div></div><div class="w-kpis">{kpi_html}</div>'
         f'<div class="w-note">平均停留 {float(s.get("avg_seconds",0) or 0):.0f} 秒 · 平均滚动 {float(s.get("avg_scroll",0) or 0):.0f}%。'
         f' 其中 {int(s.get("meta_network_visitors",0) or 0)} 个访客来自 Meta/Facebook 网络，可能包含广告预览或代理流量，先保留但不要直接当成真实客户。'
@@ -1249,9 +1276,8 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
         f'<h2 class="w-title">广告渠道表现</h2><div class="table-scroll"><table><thead><tr>'
         '<th>渠道/活动</th><th>会话</th><th>加购</th><th>加购率</th><th>WhatsApp</th><th>实际订单</th><th>停留</th><th>花费</th><th>每次加购成本</th>'
         f'</tr></thead><tbody>{channel_rows or empty}</tbody></table></div>'
-        f'<div class="split-tables"><div><h2 class="w-title">颜色选择与加购</h2><div class="table-scroll"><table><thead><tr><th>颜色</th><th>选择会话</th><th>加购会话</th><th>加购数量</th></tr></thead><tbody>{color_rows or empty}</tbody></table></div></div>'
-        f'<div><h2 class="w-title">加购入口</h2><div class="table-scroll"><table><thead><tr><th>入口</th><th>会话</th><th>动作</th><th>卷数</th></tr></thead><tbody>{source_rows or empty}</tbody></table></div></div></div>'
-        f'<div class="split-tables"><div><h2 class="w-title">购买档位选择</h2><div class="table-scroll"><table><thead><tr><th>档位</th><th>选择会话</th><th>占访客</th></tr></thead><tbody>{offer_rows or offer_empty}</tbody></table></div><div class="table-scroll" style="margin-top:8px"><table><thead><tr><th>实际购买</th><th>订单</th><th>件数</th><th>销售额</th></tr></thead><tbody>{purchase_rows or empty}</tbody></table></div></div>'
+        f'{attribute_tables}'
+        f'<div class="split-tables"><div><h2 class="w-title">购买档位选择</h2><div class="table-scroll"><table><thead><tr><th>档位</th><th>选择会话</th><th>占访客</th></tr></thead><tbody>{offer_rows or offer_empty}</tbody></table></div><div class="table-scroll" style="margin-top:8px"><table><thead><tr><th>实际购买</th><th>订单</th><th>{unit_label}数</th><th>销售额</th></tr></thead><tbody>{purchase_rows or empty}</tbody></table></div></div>'
         f'<div><h2 class="w-title">设备表现</h2><div class="table-scroll"><table><thead><tr><th>设备</th><th>会话</th><th>加购率</th><th>WhatsApp</th><th>停留</th></tr></thead><tbody>{device_rows or empty}</tbody></table></div></div></div>'
         f'<div class="split-tables"><div><h2 class="w-title">地区表现</h2><div class="table-scroll"><table><thead><tr><th>地区</th><th>会话</th><th>加购</th><th>WhatsApp</th></tr></thead><tbody>{region_rows or empty}</tbody></table></div></div></div>'
         f'<h2 class="w-title">每日趋势</h2><div class="table-scroll"><table><thead><tr>'
