@@ -1139,6 +1139,7 @@ function isInactiveFanSku(sku){return INACTIVE_FAN_SKUS.some(function(base){retu
 function activeCart(){var c=vbCart(),active=c.filter(function(it){return !isInactiveFanSku(it.sku)});if(active.length!==c.length){vbSave(active);var n=document.getElementById('retiredNotice');if(n)n.style.display='block'}return active}
 function subtotal(){return vbCart().reduce(function(a,it){return a+itemTotal(it)},0)}
 function payMethod(){var x=document.querySelector('input[name=pay]:checked');return x?x.value:'cod'}
+var PAY_LAST=payMethod(),PAY_CHANGE_N=0;
 function isPrepaidSku(sku){var bases=(PREPAID&&PREPAID.eligible_skus)||[];return bases.some(function(base){return sku===base||sku.indexOf(base+'-P')===0})}
 function prepaidSubtotal(){return vbCart().reduce(function(total,it){return total+(isPrepaidSku(it.sku)?itemTotal(it):0)},0)}
 function prepaidEligible(){return !!(PREPAID&&PREPAID.activo&&prepaidSubtotal()>0)}
@@ -1229,12 +1230,15 @@ function qty(i,d){var c=vbCart(),it=c[i];it.qty+=d;if(it.qty<1)it.qty=1;vbSave(c
  try{vbTrack('cart_update',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:d>0?'cart_increase':'cart_decrease'})}catch(e){}}
 function rm(i){var c=vbCart(),it=c[i];c.splice(i,1);vbSave(c);render();try{vbTrack('cart_remove',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),selected_color:it.color||'',source_section:'cart_remove'})}catch(e){}}
 function payUI(track){
- var t=payMethod();
+ var t=payMethod(),previous=PAY_LAST;
  document.getElementById('lCod').classList.toggle('on',t==='cod');
  document.getElementById('lTra').classList.toggle('on',t==='prepaid');
  document.getElementById('bankPanel').classList.toggle('show',t==='prepaid');
  paintTotals();
- if(track){try{vbCart().forEach(function(it){vbTrack('checkout_payment_method_selected',it.sku,{qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),source_section:t})})}catch(e){}}
+ if(track&&t!==previous){PAY_CHANGE_N++;try{vbCart().forEach(function(it){vbTrack('checkout_payment_method_selected',it.sku,{
+  qty:it.qty,price:effectiveUnit(it),cart_total:subtotal(),source_section:t,
+  filter_group:previous,filter_sub:t,result_count:PAY_CHANGE_N})})}catch(e){}}
+ PAY_LAST=t;
 }
 var PROVS=["","Distrito Nacional (Santo Domingo)","Santo Domingo (provincia)","Santiago","La Altagracia","La Vega","San Cristóbal","Puerto Plata","Duarte","San Pedro de Macorís","La Romana","Espaillat","Azua","Barahona","Monseñor Nouel","Sánchez Ramírez","Peravia","Valverde","Monte Plata","Hato Mayor","El Seibo","Samaná","María Trinidad Sánchez","Hermanas Mirabal","Bahoruco","Independencia","Elías Piña","San Juan","Dajabón","Santiago Rodríguez","Monte Cristi","Pedernales","San José de Ocoa"];
 function fillSel(id,arr){var s=document.getElementById(id);

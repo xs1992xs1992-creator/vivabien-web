@@ -707,6 +707,76 @@ async function handleAdmin(req, env, url) {
        WHERE oi.sku ${skuOp} ? AND o.created_at>=? AND o.status<>'cancelled'
        GROUP BY ${orderUnitsSql} ORDER BY ${orderUnitsSql}`
     ).bind(skuValue, since).all();
+
+    const paymentSummary = await env.DB.prepare(
+      `WITH payment_events AS (
+         SELECT session_id,source_section method FROM events
+         WHERE sku ${skuOp} ? AND type='checkout_payment_method_selected' AND ts>=? AND is_bot=0
+         AND session_id<>'' AND source_section IN ('cod','prepaid')
+       ), payment_sessions AS (
+         SELECT session_id,COUNT(*) actions,
+          MAX(CASE WHEN method='cod' THEN 1 ELSE 0 END) saw_cod,
+          MAX(CASE WHEN method='prepaid' THEN 1 ELSE 0 END) saw_prepaid
+         FROM payment_events GROUP BY session_id
+       )
+       SELECT COUNT(*) interacted_sessions,COALESCE(SUM(actions),0) total_actions,
+        COALESCE(SUM(saw_cod),0) cod_sessions,COALESCE(SUM(saw_prepaid),0) prepaid_sessions,
+        COALESCE(SUM(CASE WHEN saw_cod=1 AND saw_prepaid=1 THEN 1 ELSE 0 END),0) switched_sessions,
+        (SELECT COUNT(*) FROM payment_events WHERE method='cod') cod_actions,
+        (SELECT COUNT(*) FROM payment_events WHERE method='prepaid') prepaid_actions
+       FROM payment_sessions`
+    ).bind(skuValue, since).first();
+
+    const paymentLatest = await env.DB.prepare(
+      `WITH ranked AS (
+         SELECT session_id,source_section method,
+          ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY ts DESC,id DESC) rn
+         FROM events WHERE sku ${skuOp} ? AND type='checkout_payment_method_selected'
+         AND ts>=? AND is_bot=0 AND session_id<>'' AND source_section IN ('cod','prepaid')
+       )
+       SELECT method,COUNT(*) sessions FROM ranked WHERE rn=1 GROUP BY method ORDER BY sessions DESC`
+    ).bind(skuValue, since).all();
+
+    const paymentTransitions = await env.DB.prepare(
+      `WITH ordered AS (
+         SELECT session_id,source_section method,
+          COALESCE(LAG(source_section) OVER (PARTITION BY session_id ORDER BY ts,id),
+                   NULLIF(filter_group,'')) previous_method
+         FROM events WHERE sku ${skuOp} ? AND type='checkout_payment_method_selected'
+         AND ts>=? AND is_bot=0 AND session_id<>'' AND source_section IN ('cod','prepaid')
+       )
+       SELECT previous_method,method,COUNT(*) actions,COUNT(DISTINCT session_id) sessions
+       FROM ordered WHERE previous_method IS NOT NULL AND previous_method<>method
+       GROUP BY previous_method,method ORDER BY actions DESC`
+    ).bind(skuValue, since).all();
+
+    const paymentOrders = await env.DB.prepare(
+      `WITH product_orders AS (
+         SELECT o.order_id,COALESCE(NULLIF(o.payment_method,''),'cod') payment_method,
+          MAX(o.prepaid_discount) prepaid_discount,MAX(o.total) total,
+          SUM(${orderUnitsSql}) units,SUM(oi.line_total) product_value
+         FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
+         WHERE oi.sku ${skuOp} ? AND o.created_at>=? AND o.status<>'cancelled'
+         GROUP BY o.order_id,payment_method
+       )
+       SELECT payment_method,COUNT(*) orders,COALESCE(SUM(units),0) units,
+        COALESCE(SUM(product_value),0) product_value,
+        COALESCE(SUM(prepaid_discount),0) prepaid_discount,COALESCE(SUM(total),0) total
+       FROM product_orders GROUP BY payment_method ORDER BY orders DESC`
+    ).bind(skuValue, since).all();
+
+    const paymentRecent = await env.DB.prepare(
+      `WITH payment_events AS (
+         SELECT id,ts,session_id,source_section method,
+          COALESCE(NULLIF(filter_group,''),
+                   LAG(source_section) OVER (PARTITION BY session_id ORDER BY ts,id)) previous_method,
+          ip_full,ip_masked,city,region,device_type,utm_source,utm_campaign,code
+         FROM events WHERE sku ${skuOp} ? AND type='checkout_payment_method_selected'
+         AND ts>=? AND is_bot=0 AND source_section IN ('cod','prepaid')
+       )
+       SELECT * FROM payment_events ORDER BY ts DESC,id DESC LIMIT 50`
+    ).bind(skuValue, since).all();
+
     const devices = await env.DB.prepare(
       `WITH target_sessions AS (SELECT DISTINCT session_id FROM events WHERE sku ${skuOp} ? AND ts>=? AND is_bot=0 AND session_id<>'')
        SELECT COALESCE(NULLIF(s.device_type,''),'未知') device,COUNT(*) sessions,SUM(s.converted_cart) carts,
@@ -750,6 +820,9 @@ async function handleAdmin(req, env, url) {
       daily_orders:dailyOrders.results || [], order_status:orderStatus.results || [],
       colors:colors.results || [], add_sources:addSources.results || [], offers:offers.results || [],
       order_quantities:orderQuantities.results || [],
+      payment_summary:paymentSummary || {}, payment_latest:paymentLatest.results || [],
+      payment_transitions:paymentTransitions.results || [], payment_orders:paymentOrders.results || [],
+      payment_recent:paymentRecent.results || [],
       devices:devices.results || [], regions:regions.results || [], quality:quality || {},
       unattributed_orders:unattributedOrders, recent:recent.results || [] });
   }

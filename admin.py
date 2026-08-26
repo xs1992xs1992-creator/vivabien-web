@@ -1135,7 +1135,8 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
                   "checkout_start":"到达结账", "checkout_error":"结账受阻", "color_select":"选颜色",
                   "tier_select":"选优惠", "gallery_view":"查看主图", "review_open":"查看评论图",
                   "calculator_success":"使用计算器", "cart_update":"修改数量", "cart_remove":"移除商品",
-                  "order":"正式下单", "scroll":"滚动", "engagement":"停留"}
+                  "checkout_payment_method_selected":"选择付款", "order":"正式下单",
+                  "scroll":"滚动", "engagement":"停留"}
     if is_fan:
         type_names["tier_select"] = "选套餐"
     for x in d.get("recent", [])[:50]:
@@ -1145,6 +1146,8 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
         detail = ""
         if x.get("type") == "addcart":
             detail = f'×{int(x.get("qty", 0) or 0)} · RD$ {float(x.get("cart_total", 0) or 0):,.0f}'
+        elif x.get("type") == "checkout_payment_method_selected":
+            detail = "先付款" if x.get("source_section") == "prepaid" else "货到付款"
         elif x.get("selected_color"):
             detail = str(x.get("selected_color"))
         elif x.get("type") == "calculator_success":
@@ -1231,6 +1234,80 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
             f'<div><h2 class="w-title">加购入口</h2><div class="table-scroll"><table><thead><tr>'
             f'<th>入口</th><th>会话</th><th>动作</th><th>{unit_label}数</th></tr></thead><tbody>{source_rows or empty}</tbody></table></div></div></div>'
         )
+
+    payment_monitor_html = ""
+    if is_fan:
+        payment_names = {"cod": "货到付款", "prepaid": "先付款", "transfer": "银行转账（旧订单）"}
+        payment_summary = d.get("payment_summary") or {}
+        checkout_sessions = int(s.get("checkout_sessions", 0) or 0)
+        interacted_sessions = int(payment_summary.get("interacted_sessions", 0) or 0)
+        no_card_click = max(0, checkout_sessions - interacted_sessions)
+        payment_kpis = [
+            ("到达结账", checkout_sessions, "看到付款方案"),
+            ("操作付款卡", interacted_sessions, "至少点击过一次"),
+            ("点过先付款", int(payment_summary.get("prepaid_sessions", 0) or 0),
+             f'{int(payment_summary.get("prepaid_actions", 0) or 0)} 次点击'),
+            ("点过货到付款", int(payment_summary.get("cod_sessions", 0) or 0),
+             f'{int(payment_summary.get("cod_actions", 0) or 0)} 次点击'),
+            ("两种间切换", int(payment_summary.get("switched_sessions", 0) or 0), "两个选项都点过"),
+            ("付款卡点击", int(payment_summary.get("total_actions", 0) or 0), "全部选择动作"),
+        ]
+        payment_kpi_html = "".join(
+            f'<div class="w-kpi"><span>{esc(label)}</span><b>{value}</b><small>{esc(note)}</small></div>'
+            for label, value, note in payment_kpis
+        )
+        payment_latest_rows = "".join(
+            f'<tr><td><b>{esc(payment_names.get(x.get("method"), x.get("method") or "未知"))}</b></td>'
+            f'<td class="n">{int(x.get("sessions", 0) or 0)}</td>'
+            f'<td class="n">{pct(int(x.get("sessions", 0) or 0), interacted_sessions)}</td></tr>'
+            for x in d.get("payment_latest", [])
+        ) or '<tr><td colspan="3" class="empty">暂时还没有付款卡点击</td></tr>'
+        payment_transition_rows = "".join(
+            f'<tr><td><b>{esc(payment_names.get(x.get("previous_method"), x.get("previous_method") or "未知"))}'
+            f' → {esc(payment_names.get(x.get("method"), x.get("method") or "未知"))}</b></td>'
+            f'<td class="n">{int(x.get("sessions", 0) or 0)}</td>'
+            f'<td class="n">{int(x.get("actions", 0) or 0)}</td></tr>'
+            for x in d.get("payment_transitions", [])
+        ) or '<tr><td colspan="3" class="empty">暂时没有来回切换记录</td></tr>'
+        payment_order_rows = "".join(
+            f'<tr><td><b>{esc(payment_names.get(x.get("payment_method"), x.get("payment_method") or "未知"))}</b></td>'
+            f'<td class="n">{int(x.get("orders", 0) or 0)}</td>'
+            f'<td class="n">{int(x.get("units", 0) or 0)}</td>'
+            f'<td class="n">RD$ {float(x.get("product_value", 0) or 0):,.0f}</td>'
+            f'<td class="n">RD$ {float(x.get("prepaid_discount", 0) or 0):,.0f}</td>'
+            f'<td class="n">RD$ {float(x.get("total", 0) or 0):,.0f}</td></tr>'
+            for x in d.get("payment_orders", [])
+        ) or '<tr><td colspan="6" class="empty">暂时没有付款方式订单</td></tr>'
+        payment_recent_rows = ""
+        for x in d.get("payment_recent", []):
+            ts = time.strftime("%m-%d %H:%M", time.localtime((x.get("ts", 0) or 0) / 1000))
+            method = payment_names.get(x.get("method"), x.get("method") or "未知")
+            previous = payment_names.get(x.get("previous_method"), x.get("previous_method") or "")
+            action = f"{previous} → {method}" if previous and previous != method else f"选择{method}"
+            geo = " · ".join(v for v in (x.get("city", ""), x.get("region", "")) if v)
+            source = x.get("utm_campaign") or x.get("code") or x.get("utm_source") or "直接访问"
+            payment_recent_rows += (
+                f'<tr><td>{ts}</td><td><b>{esc(action)}</b></td>'
+                f'<td><b>{esc(x.get("ip_full") or x.get("ip_masked", ""))}</b><small>{esc(geo)}</small></td>'
+                f'<td>{esc(x.get("device_type") or "未知")}</td><td><code>{esc(source)}</code></td></tr>'
+            )
+        payment_recent_rows = payment_recent_rows or '<tr><td colspan="5" class="empty">暂时没有付款选择记录</td></tr>'
+        payment_monitor_html = (
+            f'<section id="payment-monitor"><h2 class="w-title">付款方式选择与切换</h2>'
+            f'<div class="w-note pay-note">有 {no_card_click} 个到达结账的会话没有点击付款卡。'
+            f'货到付款是默认项，所以“没有点击”不等于放弃订单；最终付款方式请以实际订单表为准。</div>'
+            f'<div class="w-kpis pay-kpis">{payment_kpi_html}</div>'
+            f'<div class="split-tables"><div><h3 class="w-title">最后一次点击偏好</h3><div class="table-scroll"><table><thead><tr>'
+            f'<th>付款方式</th><th>会话</th><th>占操作会话</th></tr></thead><tbody>{payment_latest_rows}</tbody></table></div></div>'
+            f'<div><h3 class="w-title">切换方向</h3><div class="table-scroll"><table><thead><tr>'
+            f'<th>方向</th><th>会话</th><th>次数</th></tr></thead><tbody>{payment_transition_rows}</tbody></table></div></div></div>'
+            f'<h3 class="w-title">实际下单付款方式</h3><div class="table-scroll"><table><thead><tr>'
+            f'<th>付款方式</th><th>订单</th><th>件数</th><th>风扇灯商品额</th><th>提前付款优惠</th><th>订单总额</th>'
+            f'</tr></thead><tbody>{payment_order_rows}</tbody></table></div>'
+            f'<h3 class="w-title">最近付款选择</h3><div class="table-scroll"><table><thead><tr>'
+            f'<th>时间</th><th>选择/切换</th><th>IP / 地区</th><th>设备</th><th>渠道</th>'
+            f'</tr></thead><tbody>{payment_recent_rows}</tbody></table></div></section>'
+        )
     device_rows = "".join(
         f'<tr><td><b>{esc(x.get("device") or "未知")}</b></td><td class="n">{int(x.get("sessions",0) or 0)}</td>'
         f'<td class="n">{int(x.get("carts",0) or 0)} ({pct(int(x.get("carts",0) or 0),int(x.get("sessions",0) or 0))})</td>'
@@ -1255,13 +1332,16 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
         f'<a class="{"on" if period != "today" and days == n else ""}" href="/{stats_path}?days={n}">近 {n} 天</a>'
         for n in (7, 30, 90)
     ))
+    if is_fan:
+        tabs += '<a href="#payment-monitor">付款方式监控</a>'
     inner = (
         f'{_warn(err)}<style>'
         '.w-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px}'
-        '.w-head h1{margin:0}.periods{display:flex;gap:6px}.periods a{padding:8px 11px;border:1px solid #DCE4EF;border-radius:7px;color:#536176;text-decoration:none;font-size:12px;font-weight:800;background:#fff}.periods a.on{background:#2563D9;color:#fff;border-color:#2563D9}'
+        '.w-head h1{margin:0}.periods{display:flex;gap:6px;flex-wrap:wrap}.periods a{padding:8px 11px;border:1px solid #DCE4EF;border-radius:7px;color:#536176;text-decoration:none;font-size:12px;font-weight:800;background:#fff}.periods a.on{background:#2563D9;color:#fff;border-color:#2563D9}'
         '.w-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.w-kpi{background:#fff;border:1px solid #E5EAF2;border-radius:8px;padding:14px}.w-kpi span,.w-kpi small{display:block;color:#6D7A8D;font-size:11px}.w-kpi b{display:block;font-size:24px;margin:5px 0;color:#172033}.w-kpi small{line-height:1.35}'
         '.w-title{font-size:17px;margin:24px 0 10px}.table-scroll{overflow:auto}.table-scroll table{min-width:780px}.daybar{display:flex;align-items:center;gap:8px;min-width:180px}.daybar i{display:block;height:8px;background:#2563D9;border-radius:4px;max-width:140px}.daybar b{font-size:12px}.etype{display:inline-block;padding:3px 7px;border-radius:5px;background:#EDF3FF;color:#2563D9;font-size:11px;font-weight:800}td small{display:block;color:#8A96A7;margin-top:3px}'
         '.w-note{margin-top:12px;color:#6D7A8D;font-size:12px;line-height:1.55}'
+        '#payment-monitor{scroll-margin-top:16px}.pay-note{margin:0 0 10px;padding:11px 13px;border-left:3px solid #2563D9;background:#F3F7FF;border-radius:6px}.pay-kpis{margin-bottom:12px}'
         '.wf{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.wf-step,.status-chip{padding:12px;border:1px solid #E5EAF2;border-radius:8px;background:#fff}.wf-step span,.wf-step small,.status-chip span,.status-chip small{display:block;color:#6D7A8D;font-size:10px}.wf-step b,.status-chip b{display:block;margin:4px 0;font-size:21px}.statuses{display:flex;gap:8px;flex-wrap:wrap}.status-chip{min-width:150px}.split-tables{display:grid;grid-template-columns:1fr 1fr;gap:14px}.data-alert{margin:12px 0;padding:11px 13px;border:1px solid #F2D38A;border-radius:8px;background:#FFF9E8;color:#76520B;font-size:12px;line-height:1.5}.cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.cost-grid input{width:100%;padding:9px;border:1px solid #DCE4EF;border-radius:7px}.cost-grid label{display:block;margin-bottom:4px;color:#68758a;font-size:10px}'
         '@media(max-width:900px){.w-kpis{grid-template-columns:repeat(2,1fr)}.w-head{align-items:flex-start;flex-direction:column}.wf{grid-template-columns:repeat(2,1fr)}.split-tables{grid-template-columns:1fr}.cost-grid{grid-template-columns:1fr}}'
         f'</style><div class="w-head"><div><h1>{esc(title)}</h1>'
@@ -1272,6 +1352,7 @@ def wallpaper_stats_page(days=30, sku="VB-ROLL-001", title="墙纸广告数据",
         f'订单和销售额按订单商品明细精确计算；渠道转化按访问过{product_label}页的同一会话归因。</div>'
         f'<div class="data-alert">{esc(quality_note)}</div>'
         f'<h2 class="w-title">{product_label}转化漏斗</h2><div class="wf">{funnel_html}</div>'
+        f'{payment_monitor_html}'
         f'<h2 class="w-title">订单质量</h2><div class="statuses">{status_html}</div>'
         f'<h2 class="w-title">广告渠道表现</h2><div class="table-scroll"><table><thead><tr>'
         '<th>渠道/活动</th><th>会话</th><th>加购</th><th>加购率</th><th>WhatsApp</th><th>实际订单</th><th>停留</th><th>花费</th><th>每次加购成本</th>'
