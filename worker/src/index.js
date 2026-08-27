@@ -106,7 +106,9 @@ function shippingQuote(province = "", zone = "") {
         fee_min:fee, fee_max:fee, delivery:String(exact.eta || "por confirmar"), cod_allowed:true };
     }
     return { ok:true, ready:false, zone:"otro", label:"Otro sector",
-      fee:0, fee_min:0, fee_max:0, delivery:"Entrega en 24 horas", cod_allowed:true };
+      fee:0, fee_min:0, fee_max:0,
+      delivery:String(SHIPPING_CONFIG.envio_gratis_metro?.eta_default || "Entrega en 24 horas · Solo en Gran Santo Domingo"),
+      cod_allowed:true };
   }
   if (p.startsWith("Santo Domingo (provincia)") || SHIPPING_NEAR.has(p))
     return { ok:true, ready:true, zone:"cercana", label:"Zona cercana", fee:0, fee_min:0, fee_max:0,

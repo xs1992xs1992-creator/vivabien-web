@@ -39,7 +39,7 @@
     {
       "id": "C1",
       "price": 300,
-      "eta": "Entrega en 24 horas",
+      "eta": "Entrega en 24 horas · Solo en Gran Santo Domingo",
       "sectors": [
         "Naco",
         "Piantini",
@@ -54,7 +54,7 @@
     {
       "id": "C2",
       "price": 400,
-      "eta": "Entrega en 24 horas",
+      "eta": "Entrega en 24 horas · Solo en Gran Santo Domingo",
       "sectors": [
         "Villa Mella",
         "Boca Chica",
@@ -84,7 +84,7 @@
     "activo": true,
     "alcance": "nacional",
     "etiqueta": "GRATIS",
-    "eta_default": "Entrega en 24 horas",
+    "eta_default": "Entrega en 24 horas · Solo en Gran Santo Domingo",
     "eta_interior": "1-5 días laborables"
   }
 }

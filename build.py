@@ -1311,6 +1311,11 @@ async function confirmar(){
   pay=orderData.payment_method||pay;sub=Number(orderData.subtotal)||0;
   couponDisc=Number(orderData.coupon_discount)||0;prepaidDisc=Number(orderData.prepaid_discount)||0;
   disc=Number(orderData.discount)||0;tot=Number(orderData.total)||0;
+  // Keep the customer message aligned with the server's province-aware estimate.
+  shipEtaTxt=String(orderData.delivery_estimate||shipEtaTxt||'');
+  shippingText=(Number(orderData.shipping_fee)||0)===0
+   ?('GRATIS'+(shipEtaTxt?' ('+shipEtaTxt+')':''))
+   :(money(Number(orderData.shipping_fee))+(shipEtaTxt?' ('+shipEtaTxt+')':''));
   msg='🛒 *Pedido '+oid+'*\\n'+lines.join('\\n')
    +((couponDisc||prepaidDisc)?'\\n——\\nSubtotal: '+money(sub):'')
    +(couponDisc?'\\n🏷️ Cupón '+COUPON.code+': - '+money(couponDisc):'')
